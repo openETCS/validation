@@ -4,6 +4,7 @@
 \usepackage{xspace}
 \usepackage{longtable}
 \usepackage{array}
+\usepackage{xifthen}% provides \isempty test
 
 \pagestyle{myheadings}
 \markright{openETCS \hfill {\tiny This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License} \hfill}
@@ -33,9 +34,21 @@
 \newcommand{\bgcmmnt}[1]{\nl\framebox{\parbox{.95\textwidth}{#1}}\nl[2mm]}
 
 % Macros for minutes
-\newcommand{\Q}[2]{\paragraph{Question} by {#1}: #2}
-\newcommand{\A}[2]{\newline{\textbf{Answer}} by {#1}: #2}
-\newcommand{\C}[2]{\newline{\textbf{Comment}} by {#1}: #2}
+\newcommand{\Q}[2]{\paragraph{Question} 
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty
+    : #2}
+\newcommand{\A}[2]{\newline{\textbf{Answer}}
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty    
+    : #2}
+\newcommand{\C}[2]{\newline{\textbf{Comment}}
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty    
+    : #2}
 
 
 %Uncomment for getting rid of comments in output
@@ -53,7 +66,7 @@
 \begin{document}
 \title{Workshop on Safety Strategy  \\openETCS Meeting in Paris}
 \author{Marc Behrens}
-\date{Version 01, 2013-03-13}
+\date{Version 01, 2013-03-12}
 
 %\pagestyle{empty}
 
@@ -62,13 +75,15 @@
 
 \section*{Document Control}
 
-\begin{tabular}{|l|r|*{2}{p{.3\textwidth}|}}
+\begin{tabular}{|l|r|p{.15\textwidth}|p{.5\textwidth}|}
 \hline
 \multicolumn{4}{|l|}{\texttt{OETCS\_SafetyStrategy\_Workshop\_Minutes\_Paris\_130312.tex}}
 \\\hline
 \textbf{Version} & \textbf{Date} & \textbf{Author} & \textbf{Changes/Comment}
 \\\hline
-01 & 2013-03-13 & Behrens & All sections  
+01 & 2013-03-12 & Behrens & All sections  
+\\\hline
+02 & 2013-03-27 & Behrens & Incorporating review comments by S.Baro on \S 2.1, 2.1.5, 2.1.6, 2.1.7  \newline Numbering refined according to the agenda.  
 \\\hline
 \end{tabular}
 
@@ -137,9 +152,6 @@ Sylvain Baro & SNCF
 \setcounter{subsection}{0}
 \subsection{Workshop on Safety Strategy concerning Methods and Process} %2.1 
 
- 
-
-
 K.-R. Hase: Project Goal Priority
 
 \begin{itemize}
@@ -150,6 +162,9 @@ K.-R. Hase: Project Goal Priority
 	\item [$4^{th}$] tool's chain certifiable (what is the constraint on the tool's chain/ continuously) %$\Rightarrow$ maybe not 100\% of that
 	\item [$5^{th}$] (inofficial) certifiable model
 \end{itemize}
+
+\C{P.-F.Jauquet and S.Baro}{Safety cannot be considered afterwards with a low priority. The priority order is impossible to meet. Either safety should be completely discarded, or change of priority order should be done.}
+\A{K.-R.Hase}{The priority is written down in the first four points.}
 
 Validation of the specification is planned by means of tests.
 
@@ -216,9 +231,9 @@ possibilities could be:
 \item France: who can provide a use case?
 \end{itemize}
 
-Are BL3 Use cases available?
+Are BL3 use cases available?
 & F
-& Fr\´{e}d\´{e}rique, Armand, Cyril, Jan, Merlin, Baseliyos, Marc, Ralf
+& Fr\'{e}d\'{e}rique, Armand, Cyril, Jan, Merlin, Baseliyos, Marc, Ralf
 \\\hline
 
 \subsubsection{Open debate \& decision on Methods user story} %2.1.5
@@ -238,6 +253,7 @@ To define clear rules for strictly formal models the following should be respect
 \item coming from semi-formal to a formal model
 \end{itemize}
 
+\C{S.Baro}{The reason of the 'rules' arrow is that it is expected that the modelling of the semi-formal model needs to be made considering that the modeling of the strictly-formal model comes afterwards.}
 
 
 Info:
@@ -251,13 +267,14 @@ Decision affirmed on way ahead to model and Jens will sum it up and put it on Gi
 \setcounter{subsubsection}{5}
 
 \subsubsection{Presentation of workshop results on Process} %2.1.6  
+Results see presentation '2-1-6-User-stories\_on\_Safety-Strategy\_on\_Process\_130311.pdf'
 
-3.x Use cases are not yet real in operation
 
-Results see presentation.
+ETCS Basleine 3 use cases are not yet in operation.
 
-\Q{}{Which operating Rules are we talking about?}
-\A{}{Betuweroute \& VDE 8 are proposed within the FPP}
+\C{M.Pokam}{The need of operational scenarios for the process containing operational rules was identified during the workshop.}
+\Q{}{Which operating rules are we talking about?}
+\A{K.-R.Hase}{Betuweroute \& VDE 8 are proposed within the FPP}
 
 \Q{Session Participants}{open Point: Do we need Aim 4 and if yes who will define the safety strategy 
 If Safety considered you have to put it on top  --> Is safety considered?}
@@ -275,17 +292,15 @@ But we can ...
 \Q{M.Behrens}{Who identifies the subset to make an assessment on it?}
 Proposition: Mid of April (Workshop) - What is the requirement on which we will focus the safety demonstration of the tool's chain
 
-\C{S.Baro \& P.-F. Jauquet}Decision: Model as much as possible /all of the OBU and then try to do the whole safety activities on a small part of the subset.
-For which the tool chain a nd process are compliant.
+\C{S.Baro \& P.-F. Jauquet}{Decision: Model as much as possible all of the OBU and then try to do the whole safety activities on a small part of the subset.For which the tool chain and process are compliant.}
 
-\C{P.-F. Jauquet}WP3 takes a small part of the model out of the tool evaluation project to evaluate the safety model.
+\C{P.-F. Jauquet}{WP3 takes a small part of the model out of the tool evaluation project to evaluate the safety model.}
 
-Focus: Only the semi-final model should be safety certifiable.
+\paragraph{Focus:} Only the semi-formal model and the strictly-formal should be safety certifiable.
 
 
-Decision:Safety proof will be done on semi- formal model
-Decision: Code Generation taking out of safety strategy
- No T3 Code generator in focus
+\paragraph{Decision} Safety proof will be done on semi-/ strictly- formal model.
+\paragraph{Decision} Code generation is taken out of the safety strategy. No T3 Code generator is in focus.
 
 & F
 & Cyril Cornu
@@ -336,7 +351,7 @@ Properties may come directly from the SRS or the API.
 
 Different properties to be verified to what extend they can contribute to a high level of assurance.
 
-Pie diagrams in green and red within the model says: Real time property of the executable code can probably not mathematically verified.
+Pie diagrams in green and red within the model says: Some properties i.e. real time property of the executable code can probably not be mathematically verified.
 & F
 & Jens Gerlach 
 \\\hline

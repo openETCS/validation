@@ -4,6 +4,7 @@
 \usepackage{xspace}
 \usepackage{longtable}
 \usepackage{array}
+\usepackage{xifthen}% provides \isempty test
 
 \pagestyle{myheadings}
 \markright{openETCS \hfill {\tiny This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License} \hfill}
@@ -33,10 +34,37 @@
 \newcommand{\bgcmmnt}[1]{\nl\framebox{\parbox{.95\textwidth}{#1}}\nl[2mm]}
 
 % Macros for minutes
-\newcommand{\Q}[2]{\paragraph{Question} by {#1}: #2}
-\newcommand{\A}[2]{\newline{\textbf{Answer}} by {#1}: #2}
-\newcommand{\C}[2]{\newline{\textbf{Comment}} by {#1}: #2}
+\newcommand{\Q}[2]{\paragraph{Question} 
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty
+    : #2}
+\newcommand{\A}[2]{\newline{\textbf{Answer}}
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty    
+    : #2}
+\newcommand{\C}[2]{\newline{\textbf{Comment}}
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty    
+    : #2}
 
+
+\newcommand{\tablenewpage}[2]{
+		& #1	& #2
+		\end{longtable}
+        		\vskip 1 cm 
+		        \clearpage
+		\vskip 1 cm 
+	    \begin{longtable}{|p{0.83\textwidth}|p{.02\textwidth}|p{.15\textwidth}|}
+	    \hline
+	    \textbf{Description} & \textbf{T} & \textbf{Resp.} 
+	    \hline
+	    \endhead
+	    \vskip 0cm
+	    }
+    
 
 %Uncomment for getting rid of comments in output
 %\renewcommand{cmmnt}[1]{}
@@ -69,6 +97,9 @@
 \\\hline
 01 & 2013-03-13 &Marc  Behrens & All sections  
 \\\hline
+02 & 2013-03-27 &Marc  Behrens & Incorporating review from S.Baro to \S 2.3.2 
+\\\hline
+
 \end{tabular}
 
 \section*{Organizational Data}
@@ -171,8 +202,9 @@ User Story of SNCF is presented by S. Baro:
 \end{itemize}
 
 \Q{K.-R.Hase}{Where are the resources for the additional goals coming from?}
+\A{S.Baro}{For us, this is not a change of scope because we always understood that the scope of work included safety, considering in particular the number of times the word is used in the FPP.}
 
-\Q{J-F.Jauquet}{What are the degraded mode on the test? -- If the test does not support the degraded mode, the  test model will never be takten.}
+\Q{J-F.Jauquet}{What are the degraded mode on the test? -- If the test does not support the degraded mode, the  test model will never be taken.}
 \A{K.R.Hase}{Not sure we can cover all of the degraded modes, e.g. failure modes result in degraded modes, in the project.}
 
 
@@ -188,7 +220,9 @@ The UIC is on the way to give official support to openETCS.
 \C{P.-F.Jauquet}{Performance of the basic functions is something very important e.g. performance of the odometry, you cannot decolourate the performance of the basic software and the performance of the functional software.}
 
 \Q{K.-R.Hase}{Who will do the work on the safety issues?}
-\A{S.Baro}{Requirements on safety will be written within WP2.}
+\A{S.Baro}{A sample of requirements will be chosen from Subset 91 by WP2. In my opinion, safety activities themselves were in the scope of WP4.}
+
+\tablenewpage{F}{S.Baro}    
 
 \Q{K.-R.Hase}{Who is doing the safety concept on system level?}
 \Q{P.-F.Jauquet}{Who is defining the SSRS (WP2 or WP3?)}
@@ -272,7 +306,7 @@ EIRENE Specification totally managed by UIC
 
 UIC would like to support openETCS as long as the conditions (see presentation) are fulfilled.
 
-\Q{K.R.Hase}{Idea of reference for certification?}
+\Q{K.-R.Hase}{Idea of reference for certification?}
 \A{P.Petruccioli}{Idea of the golden on-board to be used at European level, a real train with such a device supported able to run at a certain line which has been pre-qualified at the labs by tests with such a 'golden on-baord vehicle' is similar with the reference to the original meter. Idea: The on-board should react in the worst timely manner. 
 Expect: For the OBU to react in the worst possible way to be able to fully test the trackside.}
 \A{K.-R.Hase}{This is an Error detection device, more than a golden devic}

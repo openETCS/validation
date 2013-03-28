@@ -1,0 +1,310 @@
+\documentclass[a4paper]{article}
+%\documentclass[a4paper,german]{article}
+\usepackage{graphicx}
+\usepackage{xspace}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xifthen}% provides \isempty test
+
+
+\pagestyle{myheadings}
+\markright{openETCS \hfill {\tiny This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License} \hfill}
+
+
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+% % Deutsche Silbentrennung
+% \usepackage[ngerman]{babel}
+% % Deutsche Umlaute
+% \usepackage[ansinew]{inputenc}
+% %\usepackage[latin1]{inputenc}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+
+% editing
+
+% Starts a new line nearly everywhere
+\newcommand{\nl}{\mbox{}\\}
+
+%Texts in a box (eg. for comments)
+% Short text (no line break) 
+\newcommand{\cmmnt}[1]{\framebox{#1}}
+% Long text (separate lines
+\newcommand{\bgcmmnt}[1]{\nl\framebox{\parbox{.95\textwidth}{#1}}\nl[2mm]}
+
+%Uncomment for getting rid of comments in output
+%\renewcommand{cmmnt}[1]{}
+%\renewcommand{\bgcmmnt}[1]{}
+
+% Macros for minutes
+\newcommand{\Q}[2]{\paragraph{Question} 
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty
+    : #2}
+\newcommand{\A}[2]{\newline{\textbf{Answer}}
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty    
+    : #2}
+\newcommand{\C}[2]{\textbf{Comment} by #1: #2}
+
+% End of document marker
+\newcommand{\eod}{\rule{\textwidth}{1pt}\nl \textit{End of Document}}
+
+\begin{document}
+\title{Telephone conferenc eon V\&V Process Synchronization  \\openETCS TelCo}
+\author{Marc Behrens}
+\date{Version 01, 2013-03-26}
+
+\setlength{\oddsidemargin}{0mm}
+\setlength{\textwidth}{150mm}
+
+%\pagestyle{empty}
+
+\maketitle
+
+\section*{Document Control}
+
+\begin{tabular}{|l|r|*{2}{p{.3\textwidth}|}}
+\hline
+\multicolumn{4}{|l|}{\texttt{'OETCS\_VV\_Process\_Synchronization\_TelCo\_Minutes\_130326.tex'}}
+\\\hline
+\textbf{Version} & \textbf{Date} & \textbf{Author} & \textbf{Changes/Comment}
+\\\hline
+01 & 2013-03-27 & Marc Behrens & All sections  
+\\\hline
+02 & 2013-03-28 & Hardi Hungar & Slight revision
+\\\hline
+\end{tabular}
+
+\section*{Organizational Data}
+
+\begin{tabular}{|l|r|r|}
+\hline
+\textbf{Type of meeting} & \multicolumn{2}{|c|}{ WebConf}
+\\\hline
+\textbf{Start} & 2013-03-26 & 11:00
+\\\hline
+ \textbf{End} & 2013-03-26 & 12:45
+\\\hline
+\end{tabular}
+
+\medskip\noindent%
+
+\begin{tabular}{|l|r|}
+  \hline
+\textbf{Participant} & \textbf{Organisation}
+\\\hline
+%Armand Nachtef & CEA List \\
+Baseliyos Jacob& DB \\
+%Cyril Cornu &All4tec \\
+%Fr\'{e}d\'{e}rique Val\'{e}e & All4tec \\
+Hardi Hungar & DLR \\
+Jan Welte & TU-BS \\
+%Jens Gerlach & Fraunhofer \\
+Jo\~{a}o Santos & Institut Telecom \\
+Klaus-R\"udiger Hase & DB \\
+Marc Behrens & DLR \\
+Marielle Petit-Doche & Systerel \\
+%Martin Schr\"{o}der & ERA \\
+Merlin Pokam & AEbt 
+%Pierre-Fran\c{c}ois Jauquet & ALSTOM\\
+%Piero Petroccioli & UIC \\
+%Stephan Jagusch & AEbt \\
+%Sylvain Baro & SNCF
+\\\hline
+\end{tabular}
+
+\pagebreak
+
+\renewcommand{\contentsname}{Agenda}
+\label{sec:agenda}
+\tableofcontents
+
+
+\section*{Results}
+
+% Use several tabular environments to split long result lists over pages
+
+%\setcounter{section}{0}
+%\setcounter{subsection}{0}
+%use sections to document the agenda
+\section{V\&V Process Synchronization} %1
+\subsection{Synchronization on Agenda} %1.1
+\setlength{\extrarowheight}{1.5pt}
+\begin{longtable}{|p{0.83\textwidth}|p{.02\textwidth}|p{.15\textwidth}|}
+% Description (free text)
+% A (action item) OR D (decision) OR F (fact/finding) 
+% responsible (for action items)
+% 	deadline (for action items)
+%
+% in case of multi-page tables use the following sequence to end one page:
+%		& T & Author
+%		\end{longtable}
+%        		\vskip 1 cm 
+%		        \clearpage
+%	    \begin{longtable}{|p{0.83\textwidth}|p{.02\textwidth}|p{.15\textwidth}|}
+%	    \vskip 1 cm 
+% header ------------------------
+\hline
+\textbf{Description} & \textbf{T} & \textbf{Resp.} 
+%\hline
+\endhead
+\hline
+
+
+%\Q{B.Jacob}{Who is responsible for safety properties?}
+
+\textbf{Decision on safety functions:} The ones who start the model are responsible to identify the safety functions.
+
+\C{M.Petit-Doche}{Safety Analysis and preliminary Hazard analysis to be done.}
+\Q{B.Jacob}{Who is in charge of the safety analysis?}
+\Q{B.Jacob}{How big will the scope be of the safety issues?}
+
+\Q{K.-R.Hase}{What is the scope of the SSRS?}
+\A{M.Petit-Doche}{SSRS is the functional architecture view.}
+
+\Q{M.Petit-Doche}{Onboard only scope of the project?}
+\A{K.-R.Hase}{Trackside has to be respected.}
+\A{M.Behrens}{Agree there should be a trackside model defined, see Subset-026-2.4. Trackside model should be used for data preparation of the use case scenarios and test cases.}
+
+\C{K.-R.Hase}{Clear interfaces are very important. The interface has to be described in the formalisation.}
+\paragraph{Trackside Model}{It was agreed on to separate the SSRS into trackside (smaller data-preparation model) and on-board side (bigger part)}
+
+& F/ \newline D
+& Marc Behrens
+\\\hline
+
+\end{longtable}
+%\vskip 1 cm 
+%\clearpage
+
+\subsection{V\&V Process Synchronization} %1.2
+
+\begin{longtable}{|p{0.83\textwidth}|p{.02\textwidth}|p{.15\textwidth}|}
+\hline
+\textbf{Description} & \textbf{T} & \textbf{Resp.} 
+%\hline
+\endhead
+\hline
+
+
+	    \hline
+%\subsection{V\&V Process Synchronization} %1.1.1
+\begin{enumerate}
+\item Each design artifact needs a reference artifact which it
+  implements.  e.g.\ code to detailed model, detailed model to SRS
+  model.
+		
+        Each step has to be verified. Saying this artifact comes from
+        this part of the model: Verification needs a reference of each
+        artifact of what should be implemented.
+      \item The implementation relation shall be specified in detail,
+        (e.g.\ for a state machine and a higher level state machine, a
+        mapping of interfaces, states and transitions is required).
+        This includes additional invariants, input assumptions and
+        further restrictions. This information is the basis for
+        verification activities.
+		
+        V\&V needs detailed references on parts of the model which are
+        implemented.  Relation between these parts of the model is
+        needed.  e.g.\ states of the concrete model map in a specific
+        state mapping.
+
+      \item The verifiability shall be incorporated within the model
+        design. The same applies to the code. For the code, the
+        standard (EN 50128) includes some explicit requirements for
+        verifiability.
+
+        Every designer has to keep verifiability in mind when
+        performing some kind of implementation task.  At the very
+        least, she/he should be able to justify the correctness of the
+        implementation step (otherwise, the verifyer will most
+        probably not be able to do his/her job). In order for the
+        verifier to stand a chance on verifying explicit requirements
+        for e.g.\ code verification should be anticipated beginning
+        modelling.
+
+      \item The findings from verification shall result in
+        corrections.  Results can be:
+		
+        a) things we cannot verify
+		
+        b) the verification is able to identify detailed defects.
+
+        Issues are reported back to the designer and need to be
+        discussed and/or corrected.
+		
+        This feedback process from V\&V should be defined by WP4 and
+        referenced in the QA-Plan.
+	
+        The design process should include its part of the feedback
+        loop (clearing issues, correcting defects).
+		
+        \C{M.Petit-Doche}{Taking and checking the feedback from verification is a complex process.}
+
+      \item Preliminary verification steps shall be performed and
+        during model design and code development.
+
+
+	Only stable code which passes basic functional tests, and only
+        models which are reasonably consistent and complete and, if
+        applicable, animated so that the main functions has been exercised
+        should be the subject of a thorough verification. This is
+        common practice as it is too costly to have a third party
+        analyze an artifact which is most probably immature and buggy.
+\end{enumerate}
+
+		& D & Marc Behrens, \newline Hardi Hungar
+		\end{longtable}
+        		\vskip 1 cm 
+		        \clearpage
+	    \begin{longtable}{|p{0.83\textwidth}|p{.02\textwidth}|p{.15\textwidth}|}
+	    %\vskip 1 cm 
+	    \hline
+	    \textbf{Description} & \textbf{T} & \textbf{Resp.} 
+	    %\hline
+	    \endhead
+	    \hline
+	    \newline
+
+	
+\Q{Agenda}{What are the requirements from V\&V influencing the other working streams and thus need to be predefined.}
+\A{Meeting}{The process should be described by WP4}
+
+\paragraph{Open questions}
+\begin{enumerate}
+	\item Which parts of the process do we expect to be described within the requirements?
+	\item At what level does e.g. the V\&V plan fill in?
+\end{enumerate}
+
+& D
+& Marc Behrens, \newline
+Hardi Hungar
+\\\hline
+\end{longtable}
+
+\bgcmmnt{\textbf{T} for type of item:
+\begin{description}
+	\item[A] action item
+	\item[D] decision
+	\item[F] fact / finding
+\end{description}}
+
+
+
+\section*{Notes}
+
+This format lacks references to ITEA~2 so far.
+
+% Optional for additional free text
+  
+\eod
+
+
+ 
+
+\end{document}

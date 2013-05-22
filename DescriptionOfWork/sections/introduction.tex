@@ -1,30 +1,106 @@
 %-----------------------------------------------------------------------
 \section*{Introduction}
 %-----------------------------------------------------------------------
-\tbd
+
+\subsection*{Objectives}
+
+\emph{Verification} is the activity to ascertain that a particular
+step in the development has achieved its goals, i.e., that its result
+correctly refines or implements its input, which may be a higher-level
+design or a specification. \emph{Validation} is about making sure that
+the end result of the development meets its initial specification,
+that is, the requirements of the user. The term validation is also
+used when a design artifact is checked against requirements from
+previous steps. Verification and/or validation is required for most
+development artifacts.  What exactly has to be checked depends on the
+set of items produced in the development process, their role and their
+nature.  As the EVC software contributes to several safety-critical
+functions of the ETCS onboard unit, the specific requirements
+concerning the safety aspects of the standards EN~50128 and EN~50129
+have to be respected throughout.
+
+A main obligation of this work package is the verification or
+validation of development artifacts produced by WP~3. This work will
+concentrate on the functional and safety aspect. Besides \vv,
+the work package shall also establish a coherent and comprehensive
+chain of methods and tools for V\&V in cooperation with WP~7. Specific
+challenges in this respect arise from the wish to use models
+extensively in the development process, which means that more common
+approaches have to be improved or substituted to fit a
+model-based development style, and from the requirement of
+using open-source tools, or even trying to realize the EVC software as
+an \emph{open proof} item.
+
+In pursuing these goals, the work package generates feedback
+concerning the adequacy, correctness and safety of development
+artifacts for WP~3, and the usefulness of tools and methods for WP~7.  
+
+\subsection*{Organisation of the Work package}
+
+The work packages consists of five tasks. The first task defines the
+\vv strategy and formulates the initial \vv plan. This plan defines the
+\vv activities to be done in openETCS and proposes the means to
+perform them. In later stages of the project the plan will be extended
+and revised to reflect the findings made while applying methods and
+tools to the artifacts at hand.
+
+Both model and code of the EVC software are subjected to \vv as they
+are produced by WP~3, and the tools and methods proposed in the \vv
+plan as well as newly developed or improved tools from WP~7 are applied
+and evaluated in the process. Findings from these steps are
+iteratively fed back to the respective work package and used to refine
+the \vv plan.
+
+A dedicated activity studies the safety aspect of \vv. It takes into
+cosideration what the standards (mainly EN~50128 and EN~50129) mandate
+and defines how these requirements can be met by the combination of
+life cycle, methods and tools.
+
+An internal assessment will simulate a real Assessor's task doing a 
+Software Development assessment of the project impacting Working Packages 
+1, 2, 3, 4, 5, 6 and 7.
+
+The phases defining the \vv process is divided into the design phase and 
+the application phase. The \emph{design phase} covers the time before the 
+release of the artifacts which are to be evaluated. In this phase the 
+findings of the last application phase are taken into account to improve 
+\vv.
+The \emph{application phase} covers the time after the release of the 
+artifacts to be evaluated until the \vv report is written. For this phase 
+the artifacts to be evaluated are frozen to a fixed release date.  
+
 %-----------------------------------------------------------------------
-\subsection{Techniques for \VV}
+\subsection*{Techniques for \VV}
 %-----------------------------------------------------------------------
 
-\VV techniques can be roughly classified into \emph{dynamic} and \emph{static} techniques.
-Dynamic  \vv techniques include:
+\VV techniques can be roughly classified into \emph{dynamic} and
+\emph{static} techniques.  The most common dynamic \vv techniques are
+various forms of \emph{testing}, which execute the code or the
+model. They are classfied by their object or their purpose. These
+include:
 \begin{itemize}
-\item software-in-the-Loop
-\item model-in-the-Loop
-\item model-based testing
-\item monitoring
-\item coverage analysis
+\item Unit testing
+\item Integration testing
+\item Acceptance test
+\item Software-in-the-Loop
+\item Model-in-the-Loop
+\item Model-based testing
+\item Monitoring
+\item Coverage analysis
 \end{itemize}
+A related dynamic activity is \emph{animation}, which may play a role
+in analysing an executable model.
 
-Static \vv techniques include:
+Static \vv techniques---not executing model or code---include:
 \begin{itemize}
 \item Checking of coding guidelines
-\item \ldots
-\item formal methods
+\item Review
+\item Walkthrough
+\item Formal methods
 \begin{itemize}
-\item model checking
-\item deductive verification (theorem proving)
-\item abstract interpretation
+\item Model checking
+\item Deductive verification (theorem proving)
+\item Abstract interpretation
 \end{itemize}
 \end{itemize}
 
@@ -34,5 +110,44 @@ Static \vv techniques include:
 %\caption{openETCS open proofs concept}
 %\end{figure}
 
-\todo{description on V\&V classification non formal-> formal -> formal -> code \& description}
+\todo{description on V\&V classification non formal-> formal -> formal
+  -> code \& description}
+
+\subsection*{Coping with a Model-Based Development Style}
+
+Models appear at different stages of the development. An important
+artifact of openETCS is a semi-formal model of the requirements. 
+Depending on the modelling framework, the modelling language and
+formalization of the system requirements a
+concept has to be defined how the consistency and coherence of the
+model as well as the coverage of system requirements will be
+transparently verified. For this task, static verification techniques
+will very likely offer the best approach.
+
+To verify that the model correctly captures the ETCS system
+requirement specification (Subset-026 et al.), also dynamic techniques
+like animation might be useful. And finally, it may be helpful to also
+validate the model against the user requirements.
+
+For later development stages, correct refinement or implementation of
+the model will have to be established. Again, techniques to be applied
+depend heavily on the nature of the model(s) and the process of how
+the code is derived. Model-based testing, i.e., deriving test cases
+from a model to ascertain that an executable behaves consistent to a
+model, is a technique to be used. Alternatively, if code is generated
+automatically from a model, other means like tools checking the
+correctness of a generation procedure (or its outcome on a
+case-by-case basis) may be chosen.
+
+An important issue to be kept in mind is the suitability of models
+and tools for a safety-critical development. Modelling languages that
+lack a formal semantics or the expressive power to capture system
+aspects essential for safety considerations are of limited
+usefulness. And tools need to be qualifiable according to their role.  
+For instance, a code generator needs to be verified or qualified or it
+must be accompanied by some tool checking the correctness of the
+generation step. Otherwise, the resulting code will have to verified
+similar as manually written code.
+
+
 

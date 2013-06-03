@@ -64,9 +64,87 @@
 
 \section{Safety Process}
 
-The CENELEC standards define safety as the "freedom from unacceptable level of risk  
+The EN50128 standard defines safety as the ``freedom from unacceptable levels of risk of harm to people" \cite{EN50128}, which shows that the safety approach required by the CENELEC standards is risk-based. As the risk is defined as the ``combination of the rate of occurrence of accidents and incidents resulting in harm (caused by a hazard) and the degree of severity  of that harm" this approach is based on a probabilistic understanding of event occurrence. The overall relations between all these safety-related terms used to define the safety characteristics and the properties are demonstrated by the Risk-Genesis-Model of Schnieder, which is shown in the following figure \ref{fig:Risiko-Genese-Modell-eng}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{O:/Projektordner/03_Arbeitsunterlagen/Bearbeitung/WP4/Task4-4/Risiko-Genese-Modell-eng}
+\caption{Risk-Genesis-Model showing the relations between the safety-related terms \cite{Schnieder.2010}}
+\label{fig:Risiko-Genese-Modell-eng}
+\end{figure}
+
+This demonstrates that the first step is to define the system characteristics of a system identifying the harms and their lated hazardous situations. This has to be performed during a system hazard analysis. Afterwards the specific properties of this characteristics have to be defined by assessing the risk concerning the identified hazards. Based on this work safety integrity levels can be determined for all safety functionalities which are then allocated during the design to certain safety-related systems. As this work is closely related to all design decisions, it has to be specified for all abstraction levels during the system design. This leads to safety requirements which have to be implemented in the software design and verified, as well as validated specifically on system level. 
+
+Respectively the EN50126 describes the safety process as a series of safety tasks for each life cycle phase. This task are related to a number of safety artifacts which are created, used and adapted over time by different safety activities.
+
+\subsection{Safety artifacts}
+
+Since all safety activities are based on the system development activities all system design artifacts are part of the safety process. Therefore, the following design artifacts of the CENELEC standard development process build the basis for all safety artifacts:
+
+\begin{itemize}
+\item System Concept
+\item System Requirements Specification
+\item Software Requirement Specification
+\item Software Architecture Specification
+\item Software Design Specification
+\item Software Module Design Specification
+\item Software Source Code
+\end{itemize}
+
+The main safety artifacts are those which are set-up to build the reference for the safety-related aspect during the system development, which are continuously evolved during the design phases. Correspondingly the safety process has to create artifacts to demonstrated that all safety and quality-related requirements included in the system design. Respectivly the following artifacts are created during the safety process:
+
+\begin{itemize}
+\item System Safety Plan
+\item Software Quality Assurance Plan
+\item Hazard Log
+\item System Safety Requirement Specification
+\item Safety Case
+\end{itemize} 
+
+This artifacts have to be managed over the development process. Since all safety requirement have to be verified and validated there is likewise a close to all Test and Validation Reports.
+
+\subsection{Safety activities}
+
+The safety activities set-up or evolve the safety artifacts in relation to the different design artifacts. Respectively, every activity has certain input and output artifacts as defined in table \ref{tab:SafetyAct}:
+
+\begin{table}[h]
+\centering
+\caption{Safety Activities and their inputs and outputs}
+\label{tab:SafetyAct}
+
+\begin{tabular}{|p{5cm}|p{4cm}|p{4cm}|}
+\hline \textbf{Safety Activity} & \textbf{Input Artifact(s)} & \textbf{Output Artifact(s)}  \\ 
+\hline Preliminary Hazard Analysis & System Concept & Safety Plan \\ 
+\hline System Hazard and Safety Risk Analysis & System Concept and Description & Hazard Log \\ 
+\hline Risk Assessment & System Concept and Description + Hazard Log & Hazard Log \\ 
+\hline Specification of System Safety Requirements & System Requirements Specification + Hazard Log  & System Safety Requirement Specifications \\ 
+\hline Define Safety Acceptance Criteria & Hazard Log & Safety Plan  \\ 
+\hline Define Safety Related Functional Requirements & System Safety Requirement Specifications & System Requirements Specification  \\ 
+\hline Specify Sub-System and Component Safety requirements & System Requirements Specification + System Safety Requirement Specification & System Safety Plan + System Requirements Specification + System Safety Requirement Specification\\
+\hline Implement Safety Plan & Safety Plan & Hazard Log + Safety Case \\
+\hline Validate System Safety Requirements & System Safety Requirements & Safety Case \\
+\hline 
+\end{tabular}  
+\end{table}
+
+Overall the safety activities have to be performed in close relation to the overall verification and validation activities as these have to verify and validate all safety requirements and their results become part of the safety plan.
 
 
+\subsection{OpenETCS safety process}
+
+The presented CENELEC standard safety artifacts and activities are always related to the overall system development. Since the openETCS development process just describes the development of the on-board unit software for ETCS additional system informations are needed for the openETCS safety process. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{./images/WholeSafetyProcess}
+\caption{OpenETCS Safety Process}
+\label{fig:WholeSafetyProcess}
+\end{figure}
+
+
+\subsection{Tools for safety activities}
+
+\section{Evaluation Criteria}
 
 \subsection{Safety artifacts}
 
@@ -105,24 +183,6 @@ C->Safety Req/CSB	3. Verification of code against the code safety requirements	S
 		
 Abbreviation	Validation Activities	Degree of formalisation
 C->HL	1. Validation of the implemented system against all identified hazards and their associated risk	Semi-formal/ Strictly-Formal -> Semi-Formal/ Informal
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\linewidth]{./images/WholeSafetyProcess}
-\caption{OpenETCS Safety Process}
-\label{fig:WholeSafetyProcess}
-\end{figure}
-
-
-\subsection{Tools for safety activities}
-
-\section{Evaluation Criteria}
-
-\subsection{Safety artifacts}
-
-
-\subsection{Safety activities}
-
 
 \subsection{Tools for safety activities}
 

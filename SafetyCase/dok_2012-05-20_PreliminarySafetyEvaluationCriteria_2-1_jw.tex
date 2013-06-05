@@ -104,7 +104,7 @@ The main safety artifacts are those which are set-up to build the reference for 
 This artifacts have to be managed over the development process. Since all safety requirement have to be verified and validated there is likewise a close to all Test and Validation Reports.
 
 \subsection{Safety activities}
-
+\label{safetyactivities}
 The safety activities set-up or evolve the safety artifacts in relation to the different design artifacts. Respectively, every activity has certain input and output artifacts as defined in table \ref{tab:SafetyAct}:
 
 \begin{table}[htbp]
@@ -240,7 +240,7 @@ Therefore the overall safety management process has to be followed during the op
      EN 50126 & 4 & Railway RAMS  \\ 
     EN 50126 & 6 & RAMS lifecycle \\
      EN 50128 & Table A.3 & Software Error Effect Analysis\\
-    EN 50129 & 5.3 & Evidence of safety mangement \\
+    EN 50129 & 5.3 & Evidence of safety management \\
     EN 50129 & Annex A & Safety Integrity Levels \\
     EN 50129 & Annex B & Detailed technical requirements \\
     \end{tabular}%
@@ -249,11 +249,44 @@ Therefore the overall safety management process has to be followed during the op
 
 \subsection{Supporting tools}
 
+All tasks of the safety process have to be supported by suitable tools, which are able to handle the artifacts. As the openETCS project wants to use FLOSS tools, this is also one important evaluation criteria for all tools of the safety process. As it has been demonstrated in subsection \ref{safetyactivities} most safety activities have to deal with in- and output from design artifacts, therefore the tools shall be able to interact with those data formats chosen for the specific design artifacts. Overall the safety process tools should be integrated into the tool chain as far as possible.  
+
+In addition some tools needed to support the safety process basically provide the same functionality as it is used during the design or the verification and validation process. If there is no specific need to use different tools to avoid common failures, the same tools shall be used for the same functionalities to reduce interfaces.
+
+Table \ref{ToolEvalCrit} gives an overview about the needed supporting tools and the main evaluation criteria for each of the tools.
+
+
+\begin{table}[htbp]
+  \centering
+  \caption{Supporting tools and associated evaluation criteria}
+    \begin{tabular}{r|r|r|}
+    \textbf{Evaluation Criteria} & \textbf{Description} & \textbf{Evaluation Categorization} \\
+    \hline
+    Text Editor & Editor to write mainly testual documents e.g. Safety Plan & \begin{itemize}
+    \item Usability
+    \item Open formats
+    \item Tool chain integration
+    \end{itemize} \\ 
+     Sub-System Hazard and Risk Analysis (SSHA) & Mainly SSRS + Safety Goals & Hazard Log \\ 
+     Specification of Sub-System Safety Requirements & SUBSET-26 + SUBSET-91 + Hazard Log  & Safety Requirement Specifications \\ 
+     Define Safety Acceptance Criteria & Hazard Log & Safety Plan  \\ 
+     Update Hazard Log & Verification Reports + Test Cases & Hazard Log \\
+     Specify functional and model specific Requirements & SSRS + Safety Requirement Specification & Safety Plan + Model Backlogs\\
+     Verify Safety Requirements & Models + Safety Requirements + Model Backlogs & Verification Report + Safety Case \\
+     Validate Safety Requirements & Source Code + Safety Requirements & Validation Report + Safety Case \\
+    
+    Traceability & traceability of all artifacts towards hazards and derived requirements according to the HL and Safety Req & Traceability \\
+    Functional Safety Test &       & Functional/ Black-box Testing \\
+    Property Tests & validation of the model and code properties according to high level safety properties & Formal Proof \\
+    Property Tests & validation of the model and code properties according to high level safety properties & Static Analysis \\
+    \end{tabular}%
+  \label{ToolEvalCrit}%
+\end{table}%
 
 
 \section{Conclusion}
 
-\nocite{*}
+\nocite{*} 
 
 \bibliographystyle{unsrt}
 \bibliography{erdc}

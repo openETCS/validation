@@ -1,7 +1,7 @@
 \documentclass{template/openetcs_article}
 % Use the option "nocc" if the document is not licensed under Creative Commons
 %\documentclass[nocc]{template/openetcs_article}
-\usepackage{lipsum,url}
+\usepackage{url,longtable}
 \graphicspath{{./template/}{.}{./images/}}
 \begin{document}
 \frontmatter
@@ -64,7 +64,7 @@
 
 \section{Safety Process}
 
-The EN50128 standard defines safety as the ``freedom from unacceptable levels of risk of harm to people" \cite{EN50128}, which shows that the safety approach required by the CENELEC standards is risk-based. As the risk is defined as the ``combination of the rate of occurrence of accidents and incidents resulting in harm (caused by a hazard) and the degree of severity  of that harm" this approach is based on a probabilistic understanding of event occurrence. The overall relations between all these safety-related terms used to define the safety characteristics and the properties are demonstrated by the Risk-Genesis-Model of Schnieder, which is shown in the following figure \ref{fig:Risiko-Genese-Modell-eng}.
+The EN50128 standard defines safety as the ``freedom from unacceptable levels of risk of harm to people" \cite{EN50128:2011}, which shows that the safety approach required by the CENELEC standards is risk-based. As the risk is defined as the ``combination of the rate of occurrence of accidents and incidents resulting in harm (caused by a hazard) and the degree of severity  of that harm" \cite{EN50128:2011} this approach is based on a probabilistic understanding of event occurrence. The overall relations between all these safety-related terms used to define the safety characteristics and the properties are demonstrated by the Risk-Genesis-Model of Schnieder, which is shown in the following figure \ref{fig:Risiko-Genese-Modell-eng}.
 
 \begin{figure}[h]
 \centering
@@ -73,7 +73,7 @@ The EN50128 standard defines safety as the ``freedom from unacceptable levels of
 \label{fig:Risiko-Genese-Modell-eng}
 \end{figure}
 
-This demonstrates that the first step is to define the system characteristics of a system identifying the harms and their lated hazardous situations. This has to be performed during a system hazard analysis. Afterwards the specific properties of this characteristics have to be defined by assessing the risk concerning the identified hazards. Based on this work safety integrity levels can be determined for all safety functionalities which are then allocated during the design to certain safety-related systems. As this work is closely related to all design decisions, it has to be specified for all abstraction levels during the system design. This leads to safety requirements which have to be implemented in the software design and verified, as well as validated specifically on system level. 
+This demonstrates that the first step is to define the system characteristics of a system identifying the harms and their related hazardous situations. This has to be performed during a system hazard analysis. Afterwards the specific properties of this characteristics have to be defined by assessing the risk concerning the identified hazards. Based on this work safety integrity levels can be determined for all safety functionalities which are then allocated during the design to certain safety-related systems. As this work is closely related to all design decisions, it has to be specified for all abstraction levels during the system design. This leads to safety requirements which have to be implemented in the software design and verified, as well as validated specifically on system level. 
 
 Respectively the EN50126 describes the safety process as a series of safety tasks for each life cycle phase. This task are related to a number of safety artifacts which are created, used and adapted over time by different safety activities.
 
@@ -185,7 +185,7 @@ The openETCS safety process will be specified more detailed in the safety plan. 
     Safety Req & Safety Requirements: list of all requirements which have to be respected during the system development to reach the safety goals & Informal/ Semi-Formal / Formal \\
     HL    & Hazard Log: List of identified hazards and its associated risk classification as well as information concerning the risk control & Informal \\
     SP    & Safety Plan: Document which specifies all activities, resources and events to ensure that the source code will satisfy all relevant safety requirements & Informal \\
-    SC    & Safety Case: Documentation which demonstrates that the used development process and the resulting source code fulfill all safety requirements & Informal \\
+    SC    & Safety Case: Documentation which demonstrates that the used development process and the resulting source code fulfil all safety requirements & Informal \\
     CSB   & Code Safety Backlog: list of requirements/ properties to be implemented inside the dM derived from  the HL (and the dMSB) & Semi-Formal/ Strictly-Formal \\
     dMSB  & Detailed Model Safety Backlog: list of requirements/ properties to be implemented inside the dM derived from the HL (and  the hLSB) & Semi-Formal/ Strictly-Formal \\
     hLSB  & High Level Safety Backlog: list of requirements/ properties to be implemented inside the hM derived from the HL & Informal/ Semi-Formal \\
@@ -215,7 +215,7 @@ The openETCS safety process will be specified more detailed in the safety plan. 
 
 Supporting software tools are needed to handle the safety artifacts and to some degree to more efficiently perform the safety activities. As some safety artifacts like the safety requirement specifications and the safety backlogs are closely related to design artifacts the same tools can be used. Especially all requirements should be handled by one tool to ensure full traceability and provide one main interface for the verification and validation activities.
 
-Depending on the methods used for hazard and risk analysis appropriate tools are needed to perform the analysis, collect the hazards and associated risks in the hazard log and to evaluated possible risk control measures. Thereby, traceability has to be guarantied between all activities.
+Depending on the methods used for hazard and risk analysis appropriate tools are needed to perform the analysis, collect the hazards and associated risks in the hazard log and to evaluated possible risk control measures. Thereby, traceability has to be guaranteed between all activities.
 
 Since the safety plan and safety case provide the basis for the safety approval the tools used to generated these artifacts should help to generate a consistent argumentation and efficiently collect the data needed to provide evidence. Respectively, interfaces to manage documents and automatically generate reports would be helpful functionalities.
 
@@ -225,9 +225,9 @@ The safety process has to ensure and demonstrated that the development process i
 
 \subsection{Safety Process}
 
-The safety process and the resulting documentation constitute the main documents for the system approval, as it is required by European and national law to do everything reasonable expectable to prevent harm. Accordingly the CENELEC standards build the common technical rules for for the development process. The Common Safety Methods present a concept based on the EN50126 how the risk evaluation and management has to be performed. 
+The safety process and the resulting documentation constitute the main documents for the system approval, as it is required by European and national law to do everything reasonable expectable to prevent harm. Accordingly the CENELEC standards build the common technical rules for the development process. The Common Safety Methods present a concept based on the EN50126 how the risk evaluation and management has to be performed. 
 
-Therefore the main references concerning the safety process are the CENELEC standards, mainly the EN50126 on how the safety aspects have to be handled as part of the RAMS management over the development process. The overall risk evaluation concept is also defined at this point. The specific concerning the safety case preparations are defined in the EN50129 including the SSafety Integrity Level concept. 
+Therefore the main references concerning the safety process are the CENELEC standards, mainly the EN50126 on how the safety aspects have to be handled as part of the RAMS management over the development process. The overall risk evaluation concept is also defined at this point. The specific concerning the safety case preparations are defined in the EN50129 including the Safety Integrity Level concept. 
 
 Therefore the overall safety management process has to be followed during the openETCS project, as far as it is concerning the scope of openETCS. Therefore the following table \ref{tab:Safety Process Requirements} presents a first list of relevant requirements:
 
@@ -256,48 +256,93 @@ In addition some tools needed to support the safety process basically provide th
 Table \ref{ToolEvalCrit} gives an overview about the needed supporting tools and the main evaluation criteria for each of the tools.
 
 
-\begin{table}[htbp]
-  \centering
-  \caption{Supporting tools and associated evaluation criteria}
-    \begin{tabular}{r|r|r|}
-    \textbf{Evaluation Criteria} & \textbf{Description} & \textbf{Evaluation Categorization} \\
-    \hline
-    Text Editor & Editor to write mainly testual documents e.g. Safety Plan & \begin{itemize}
+
+  
+    \begin{longtable}[htbp]{p{4cm}|p{5cm}|p{5cm}}
+    
+    \caption{Supporting tools and associated evaluation criteria}   
+    \label{ToolEvalCrit} \\
+    
+          \textbf{Evaluation Criteria} & \textbf{Description} & \textbf{Evaluation Criteria} \\
+            \hline
+        \endfirsthead
+        
+        \textbf{Evaluation Criteria} & \textbf{Description} & \textbf{Evaluation Criteria} \\
+        \hline
+        \endhead
+        
+        \hline\multicolumn{3}{r}{\textit{Fortsetzung auf der
+        n\"{a}chsten Seite}}\\\hline
+        \endfoot
+        \hline
+        \endlastfoot
+    
+    Text Editor & Editor to write mainly textual documents e.g. Safety Plan,  & \begin{itemize}
     \item Usability
     \item Open formats
     \item Tool chain integration
-    \end{itemize} \\ 
-     Sub-System Hazard and Risk Analysis (SSHA) & Mainly SSRS + Safety Goals & Hazard Log \\ 
-     Specification of Sub-System Safety Requirements & SUBSET-26 + SUBSET-91 + Hazard Log  & Safety Requirement Specifications \\ 
-     Define Safety Acceptance Criteria & Hazard Log & Safety Plan  \\ 
-     Update Hazard Log & Verification Reports + Test Cases & Hazard Log \\
-     Specify functional and model specific Requirements & SSRS + Safety Requirement Specification & Safety Plan + Model Backlogs\\
-     Verify Safety Requirements & Models + Safety Requirements + Model Backlogs & Verification Report + Safety Case \\
-     Validate Safety Requirements & Source Code + Safety Requirements & Validation Report + Safety Case \\
-    
-    Traceability & traceability of all artifacts towards hazards and derived requirements according to the HL and Safety Req & Traceability \\
-    Functional Safety Test &       & Functional/ Black-box Testing \\
-    Property Tests & validation of the model and code properties according to high level safety properties & Formal Proof \\
-    Property Tests & validation of the model and code properties according to high level safety properties & Static Analysis \\
-    \end{tabular}%
-  \label{ToolEvalCrit}%
-\end{table}%
+        \end{itemize}
+     \\ 
+     Modelling (and Analysis) tool for top-down Hazard Analysis & To identify potential hazards a top-down system analysis will be performed. To do this methods like FTA or STAMP use different kinds of modelling tools to systematically identify hazards in the system structure and behaviour. To efficiently use this methods a modelling editor with limited functionalities to analyse the model is needed.  & \begin{itemize}
+         \item Simple Usability
+         \item Modelling (and Analysis) functionality depending on method
+         \item Vertical tool chain integration (import system information/ export hazard information)
+         \item Traceability to SRS and SSRS
+             \end{itemize} \\ 
+     Modelling (and Analysis) tool for bottom-up Hazard and Risk Analysis & To identify potential hazards and to estimate the risk a bottom-up system analysis will be performed. To do this methods like FMEA or HAZOP use different kinds of systematic approaches to evaluated the system structure and its behaviour. To efficiently use this methods a modelling editor with limited functionalities to analyse the model is needed.  & \begin{itemize}
+              \item Simple Usability
+              \item Modelling (and Analysis) functionality depending on method
+              \item Vertical tool chain integration (import system information/ export hazard and risk information)
+              \item Traceability to SRS and SSRS
+                  \end{itemize} \\ 
+                  
+     Database for Hazard Log & The hazard log is the central artifact to collect all identified hazards and their associated risks as well as potential risk control measures. A database tool is needed to store these hazards while providing the needed traceability information to retrace their correct identification and evaluation. & \begin{itemize}
+                        \item Simple Usability
+                        \item Proper Versioning system 
+                        \item Easy ability for Queries
+                        \item Horizontal tool chain integration
+                        \item Traceability to Hazard and Risk Analysis and Safety Requirements
+                        \item Generation of documentation
+                            \end{itemize} \\
+                  
+     Database for Safety Requirements & As the safety requirements have to be defined based on the risk control measures chosen based on the hazard and risk analysis, these have to be stored and handled as all other requirements. & \begin{itemize}
+                   \item Simple Usability
+                   \item Proper Versioning system 
+                   \item Easy ability for Queries
+                   \item Horizontal and vertical tool chain integration
+                   \item Traceability to Hazard Log, all design, verification and validation artifacts
+                   \item Generation of documentation
+                       \end{itemize} \\  
+     Tools for safety requirement verification and validation & Tools equivalent to verification and validation tools to handle the safety requirements & \begin{itemize}
+                        \item Simple usability
+                        \item Efficient performance
+                        \item Vertical tool chain integration
+                        \item Traceability to safety requirements
+                        \item Ability to provide T2 (or T3) tool qualification 
+                        \item Automatic generation of documentation
+                            \end{itemize}\\
+     Safety Case management tool & To develope and manage the safety case over time from the generic concept to the specific documentation a tool is needed. This tool has to help to develope a consisten generic argumentation chain and to link this to the actual documents. Thereby the information concerning the documents should be provided mostly automatically to avoid inconsistencies. & \begin{itemize}
+                   \item Simple Usability
+                   \item Modelling  functionality for safety case structure
+                   \item Linking to versioning and configuration systems
+                   \item Automatic document generatio
+                       \end{itemize}   \\ 
+    \end{longtable}%
+ 
 
 
 \section{Conclusion}
 
+This document presents a general overview about the safety process as it will be implemented in the openETCS project and which references have to be respected. This plan will be developed further in the actual safety plan. As most safety activities are closely related to design, verification and validation activities more details will be defined as these processes are refined.
+
+Based on this safety process concept evaluation criteria mainly for the needed supporting tools are defined, which shall build the basis for a first tool evaluation. These criteria have to be defined more specific with respect to the overall tool chain development taking the specific data formats and tool interfaces into account.
+
 \nocite{*} 
 
-\bibliographystyle{unsrt}
-\bibliography{erdc}
+\bibliographystyle{plain}
+\bibliography{ref/dok_2012-05-20_PreliminarySafetyEvaluationCriteria_2-1_jw}
 
 
-
-\begin{thebibliography}{9}
-
-
-
-\end{thebibliography}
 
 %===================================================
 %Do NOT change anything below this line

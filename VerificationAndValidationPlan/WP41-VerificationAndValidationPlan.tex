@@ -24,8 +24,12 @@
 	\end{itshape}
 	\end{quote}
 }
-
+%Uncertain items
+\newcommand{\qq}[1]{?`#1?}
+%C++
 \newcommand{\cxx}{C\nolinebreak[4]\hspace{-.05em}\raisebox{.3ex}{\footnotesize\bf ++}\xspace}
+
+
 
 
 \graphicspath{{./template/}{.}{./images/}}
@@ -38,7 +42,7 @@
 % The document metadata is defined below
 
 %assign a report number here
-\reportnum{OETCS/WP4/D4.1V00.02}
+\reportnum{OETCS/WP4/D4.1V00.03}
 
 %define your workpackage here
 \wp{Work Package 4: ``Validation \& Verification Strategy''}
@@ -47,7 +51,7 @@
 \title{openETCS Validation \& Verification Plan}
 
 %set a subtitle here
-\subtitle{Version 00.02}
+\subtitle{Version 00.03}
 
 %set the date of the report here
 \date{June 2013}
@@ -131,6 +135,8 @@ eMail: Stephan.Jagusch@AEbt.de}
 \newpage
 %=============================
 
+\chapter{Document Control}
+
 \begin{tabular}{|p{4.4cm}|p{8.7cm}|}
 \hline
 \multicolumn{2}{|c|}{Document information} \\
@@ -139,7 +145,7 @@ Work Package &  WP4  \\
 Deliverable ID or doc.\ ref.\ & D4.1\\
 \hline
 Document title & openETCS Validation \& Verification Plan\\
-Document version & 00.01 \\
+Document version & 00.03 \\
 Document authors (org.)  & Hardi Hungar (DLR), Marc Behrens (DLR),
 Stephan Jagusch (AEbt) \\
 \hline
@@ -179,6 +185,10 @@ Version &  Date & Author(s) & Justification  \\
 00.02 & 14.06.2013 & J. Gerlach, H. Hungar &  Completed one
 requirement table from draft, added detail to V\&V plan for full dev., \\
 \hline  
+00.03 & 20.06.2013 & J. Gerlach, H. Hungar & Major revisions and
+additions
+\\
+\hline
 \end{tabular}
 
 % The actual document starts below this line
@@ -186,6 +196,8 @@ requirement table from draft, added detail to V\&V plan for full dev., \\
 
 
 %Start here
+
+\mainmatter
 
 \chapter{Introduction}
 
@@ -275,7 +287,41 @@ organised to contribute to such a task, and how to demonstrate that it
 can be realised.
 
 The document is only valid in conjunction with the Quality Assurance
-plan [1104G13-QA-plan]
+plan [1104G13-QA-plan]. It is supplemented by the safety plan, which
+focuses on the safety aspect. Verification and validation play an
+important role in the safety case. This document identifies the V\&V
+activities which do contribute and refers to the safety plan for
+further details on the additional requirements to be met and a precise
+statement of what has to be established.
+
+\section{Document Structure}
+\label{sec:document-structure}
+
+This document comprises both verification and validation plan, as
+these activities share some of their methods and tools, and in some
+case are applied to the same design artifacts. Nevertheless, these
+activities are intended to be and remain independent.
+
+There are three main issues which make this plan different from an
+ordinary V\&V plan for a software to develop. First, openETCS is not
+only concerned with the software part of the EVC. As part of the
+activities, a semi-formal model for SS~026 is to be developed and to
+be verified. As the SS~026 covers parts of the ETCS system beyond the
+software, also process steps on the system (not just software) level
+are to be performed. And in particular the design does not start with
+a clearly defined set of requirements on the software.
+
+As a second point, openETCS will not only do development, but
+shall also be concerned with processes, methods and tools with the
+goal of being able to propose a complete SIL~4 compliant approach. As
+part of this, it has to be defined how to handle verification and
+validation. This is done in the sections
+addressing a ``full development''. Due to the limited resources of the
+project, actually performing such a full development is out of the
+project's scope. Instead, only some functions will be implemented, and
+only partial lines of development will be realised. V\&V related to
+these activities is to be planned in the specific sections dedicated
+to  ``openETCS''.  
 
 \section{Plan for Completing this Document}
 \label{sec:plan-completing-this}
@@ -300,7 +346,7 @@ plan [1104G13-QA-plan]
 \item[WP4-T1-G1:] The plan shall give an overview of and a structure to
   the things required from V\&V for an openETCS (FLOSS-) development.
   \begin{description}
-  \item[WP4-T1-M1:] Identifies all (most) of the activities which have
+  \item[WP4-T1-M1:] Identify all (most) of the activities which have
     to be made for a full development according to the standards, in a
     form relevant to the approach of openETCS (FLOSS,
     participants). This may include alternatives.
@@ -348,7 +394,7 @@ plan [1104G13-QA-plan]
 {\it
 \paragraph{Concrete First Steps (in SCRUM terminology: the backlog)}
 \label{sec:concrete-first-steps}
-
+\tbd{outdated---update tbd}
 \begin{description}
 \item[WP4-T1-S1:] Assess the input material
   \begin{description}
@@ -367,7 +413,8 @@ plan [1104G13-QA-plan]
   \item[WP4-T1-S1-3:] Assess D2.9 ``Requirements for \VV''
     \begin{description}
     \item[WP4-T1-F1-3-1:] very high-level, requirements included in
-      the appendix for reference in further completion in relevant for future steps 
+      the appendix for reference in further completion in relevant for
+      future steps  
     \end{description}
   \item[WP4-T1-S1-4:] Assess D2.1 (``Report on Existing Methodologies'')
     \begin{description}
@@ -387,9 +434,11 @@ plan [1104G13-QA-plan]
     \item[WP4-T1-S2-1-2:] Revise the structure according to what is
       expected to be done - accommodating the info on the process (D2.3
       -WP4-T1-S1-2) and on ongoing activities  (WP4-T1-S1-5). 
-    \item[WP4-T1-S2-1-3:] References to the requirements (D2.9 - WP4-T1-S1-3) are to be included
+    \item[WP4-T1-S2-1-3:] References to the requirements (D2.9 -
+      WP4-T1-S1-3) are to be included 
     \item[WP4-T1-S2-1-4:] Tools and methods
-    \item[WP4-T1-S2-1-4-1:] Format for evaluation (formulate evaluation criteria, D4.1a)
+    \item[WP4-T1-S2-1-4-1:] Format for evaluation (formulate
+      evaluation criteria, D4.1a) 
     \item[WP4-T1-S2-1-5:] Result collection
     \item[WP4-T1-S2-1-5-1:] Sketch all the formats (purpose)
     \item[WP4-T1-S2-1-5-2:] Sketch the process of information collection
@@ -454,12 +503,13 @@ Validation is name for the activity by which the compliance of the end
 result with the initial requirements is shown. In the case of
 openETCS, this means that the demonstrator (or parts of it) are
 checked against the SS~026 or one of its close descendants (i.e.,
-SSRS). This will consist of testing the equipment according to a test
-plan derived form the requirements and detailed into concrete test
-cases at some later stage. Tool support for validation will thus
-mainly concern test execution and evaluation, perhaps supplemented by
-test derivation or test management. Ambitous techniques like formal
-proof are most likely not applicable here.
+SSRS), taking also further sources of requirements from operational
+scenarios and TSIs into accoutn. This will consist of testing the
+equipment according to a test plan derived from the requirements and
+detailed into concrete test cases at some later stage. Tool support
+for validation will thus mainly concern test execution and evaluation,
+perhaps supplemented by test derivation or test management. Ambitious
+techniques like formal proof are most likely not applicable here.
 
 Thus, the tool support for validation will not differ substantially
 from that for similar verification activities.
@@ -467,11 +517,55 @@ from that for similar verification activities.
 One might also consider ``early'' validation activities, e.g.\
 ``validating'' an executable model against requirements from the
 SS~026. These are not mandated by the standards and can per se not
-replace design step verification. They may nevertheless be worthwhile
+replace  verification of design steps. They may nevertheless be worthwhile
 as means for early defect detection.
 
 Further (mostly complementary) information on V\&V can be found in the
 report on the CENELEC standards (D2.2).
+
+\chapter{Document Evolution}
+
+The verification and validation plan shall be revised in the course of
+the project as the design progresses and gets detailed and experiences
+with verification and validation are made. This is in accordance with
+the EN~50128, where it is required that the plan shall be maintained
+throughout the development cycle.
+
+\begin{description}
+\item[V01, T0+13:] First version of the plan
+\item[V02, T0+17:] First revision, based on the 1st V\&V interim
+  reports on applicability of the V\&V approach to model and
+  implementation/code (D4.2.1, D4.2.2)
+\item[V03, T0+25:] Second revision, based on the internal reports on
+  the applicability of the V\&V approach to prototypes of design
+  models and code
+\item[V04, T0+36:] Final version as part of the final V\&V report (D4.4) 
+\end{description}
+
+\chapter{\VV in the Design Process}
+\label{cha:vv-design-process}
+
+\textit{Name the design stages and associated V\&V steps, both for the
+ideal development (openETCS vision) and project realisation (where we
+end with a demonstrator).}
+
+D2.3 defines the openETCS process on an abstract level. It already
+defines the main steps. A slightly more detailed picture than the one
+given in D2.3 is given in Fig.~\ref{fig:openETCSProcess}. 
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=.9\textwidth]{images/ProcessOpenETCS-BeM.png}
+  \caption{openETCS Process (rough view)}
+  \label{fig:openETCSProcess}
+\end{figure}
+
+\textit{The figure needs to be detailed to include all the main design
+steps. E.g., the integration activities are subsumed within ``3e) V\&V
+on code''. For instance, the integration into the demonstrator should
+be made visible. In the end, the figure shall define merely the
+``full'' development, this will be of more help than ``openETCS
+implementation'' of it. }
 
 
 \chapter{\VV Strategy}
@@ -483,22 +577,49 @@ report on the CENELEC standards (D2.2).
   consideration shall be to strive for conformance with the
   requirements of the standards (EN~50128 and further). This means
   that the contribution of all activities to a complete verification
-  and validation shall be defined and assessed.  }
+  and validation shall be defined.  }
 
 \section{\VV Strategy for a Full Development }
 \label{sec:vv-strategy-full}
 
+\textit{Here, the ideal shall be described: What we would like to do
+  in openETCS but cannot, because we do not know the right methods and
+tools yet }
+
+\subsection{Verification Strategy for a Full Development}
+\label{sec:verif-strategy-full}
+
+
+
 {\it 
-Define the strategy for a full EVC software development.}
+Define the strategy for verifying a full devlopment of the EVC software
+from the requirements source (ss~026+TSIs+\ldots). This ends with the
+verification of the software/hardware integration. The API is
+currently the best description of the
+interface }
+
+\subsection{Validation Strategy for a Full Development}
+\label{sec:valid-strategy-full}
+
+\textit{Classical validation starts after SW/HW integration. Sketch
+  how this should look like for the openETCS architecture approach
+  (with SSRS and API). Ideal would be a description of how a full
+  openETCS EVC software could be taken up by some manufacturer and
+  brought to life in a product (validation aspect only, of
+  course). Validation will use tests covering operational scenarios.
+Not-so-classical validation can start earlier when executable models
+become available. If a model can be animated to run an operational
+scenario (perhaps with some additional environment/rest-of-system
+modeling), design defects may get unveiled before the real validation.}
+
+
 
 \section{\VV Strategy for openETCS}
 \label{sec:vv-strategy-project}
 
-{\it
-The project will only perform part of the development, and thus also
-only a part of the V\&V activities. Define how the project
-demonstrates that a full development would be possible.
-}
+{\it The project will only perform part of the development, and thus
+  also only a part of the V\&V activities. These need to be defined
+  and planned, of course.  }
 
 \chapter{\VV Plan for a Full Development}
 
@@ -536,11 +657,48 @@ identify \vv activities to be performed and documents to be produced.}
   The plan also contains partial instantiations of V\&V which match
   partial developments that are realised within openETCS.}
 
-\section{Plan Overview}
+\section{\VV Plan Overview}
 \label{sec:plan-overview}
 
 \todo{A list of all steps, with input and output from Jagusch, adapted
 to D2.3 steps}
+
+A short overview of the activities (Verification or Validation) which
+happen at the respective development steps, to be detailed in the
+subsequent sections. The numbering (e.g.\ 2e) refers to
+Fig.~\ref{fig:openETCSProcess}.
+
+\begin{description}
+\item[SSRS---Verification (1c):] verification that the SSRS the requirements
+  consistently extends the requirements base. 
+\item[SSRS---Validation (1c):] Deriving a sub-system test specification
+\item[SFM---Verification (2c):] Verification that the model formalises
+  the requirements
+\item[SFM---Validation (2c):] Detailing the test specification,
+  perhaps validating the model (e.g.\ via animation)
+\item[SW-SFM---Verification (3d):] Verifying the SW-HW architecture
+  definition (should be somewhere) and the software model
+\item[SW-SFM---Validation (3d):]Perhaps validation of the software model
+\item[SW-FFM---Verification (3d):]  verification, employing also
+  formal methods/tools 
+\item[SW-FFM---Validation (3d):] validation, may e.g.\ employ model checkers
+\item[Code---Verification (3e):] verification depends on code
+  generation method, unit test requirements have to be met, then code integration
+\item[Code---Validation (3e):] no specific activities foreseen
+\end{description}
+
+The following steps need some coherent concept. A viable solution
+might look simpler / different.  
+\begin{description}
+\item[EVC Software---Verification (tbd):] Perform software system verification
+\item[EVC Software---Validation (tbd):] Validation against user
+  requirements/scenarios 
+\item[SW/HW integration (tbd):] \qq{Use the API}
+\item[Final Validation (tbd):] User requirements and scenarios (based
+  on sub-system test specification
+\end{description}
+
+
 
 \section{Requirements Base}
 \label{sec:requirements-base}
@@ -550,132 +708,12 @@ specifications.
 
 \todo{detail this, add references}
 
-\section{Verification of the SSRS (Process Step 1c)}
-\label{sec:verification-ssrs}
-
-\subsection{Definition of the Object of Verification}
-\label{sec:defin-SSRS}
-
-The SSRS (sub-system requiement specification) outlines the subsystem
-which is going to be modeled within the project. The SSRS describes
-the architecture of the subsystem (functions and their I/O) and the
-requirements allocated to these functions. If necessary, the
-requirements are rewritten in order to address the I/O and to
-correspond to the allocation. It also provides the classification into
-vital and non vital requirements and data
-streams. The architecture part is described in a semi-formal language,
-and the requirements are described in natural language.
-
-The SSRS is to be viewed as a supplement to the SS-026 and the
-TSIs and is not intended to replace them. The verification has to
-check that a complete and consistent set of functionalities have been
-identified and that the architecture is adequate. Due to the informal
-nature of the SSRS, mainly manual techniques are to be applied. 
-
-\todo{Verifiy hazard analysis too?}
-
-\subsection{Documentation to Be Created}
-\label{sec:docum-SSRS}
-
-\todo{define documents}
-
-\section{Verification of the Subsystem Model (Process Step 2a)}
-\label{sec:verif-subsyst-model}
-
-\todo{add detail}
-
-
-
-\section{Structure of the \VV Report}
-\label{sec:structure-vv-plan}
-
-
-{\it
-The verification and validation plan covers the following central topics:
-\begin{description}\setlength{\parsep}{0pt}\setlength{\itemsep}{0pt}\setlength{\topsep}{0pt}
-%\reqfixed{04}{040}{x}
-%\subreqfixed{04}{040}{1}{x}
-\item[Header] containing all information to identify, this report, the
-  authors, the approbation and reviewing entities.
-\item[Executive Summary] giving an overview of the major elements from
-  all sections. 
-\item[Problem Statement] describing the challenges to be answered by
-  \VV as well as the decisions to be taken based on the V\&V results
-  as well as how to cope with potentially faulty output. It further
-  describes the accreditation scope based on the risk assessment done
-  on V\&V-level. 
-\item[V\&V Requirements Traceability Matrix] links every V\&V artifact
-  back to the requirements to measure e.g. test coverage and to
-  directly link V\&V results to the requirements. 
-\item[Acceptability Criteria,] describing the criteria for acceptance
-  of the artifact into the \VV process e.g. as the direct translation
-  of the requirements into metrics to measure success, are used
-  e.g. for burndown charts within the process. 
-\item[Assumptions] that are identified during the design of the
-  verification and validation strategy and how these assumptions have
-  an impact on the verdict by listing capabilities and limitations. 
-\item[Risks and Impacts] that come across the execution of V\&V tasks
-  together with the impacts foreseen. 
-\item[V\&V Design] states how the V\&V process builds up including
-  data preparation, execution and evaluation. 
-\item[V\&V Methodologies] giving a step-by-step walkthrough of all
-  possible V\&V activities including the assumptions, and
-  verdict-relevant limitations and criteria for, e.g.,  model
-  verification, model-to-code verification, unit testing, integration
-  testing and final validation (according to the standard, this
-  involves running the software on the target hardware).  
-\item[V\&V Issues] describing unsolved V\&V issues and their impact on
-  the affected proof or verdict. 
-\item[Peer Reviews] going into details on how the community can take
-  part and how official bodies and partners are integrated into the
-  development and review process. 
-\item[Test Plan Definition] going into the details of testing by
-  describing among other things: 
-
-\begin{description} 
-\item[Title] as a unique identifier to the test plan.
-\item[Description] of the test and the test-item giving information about version and revision.
-\item[Features] to be tested and not to be tested in combination are
-  listed together with information background.  
-\item[Entry Criteria] which have to be met by the EVC before a test
-  can be started, e.g. that the EVC has to be in level~3 limited
-  supervision with the order to switch to level~2. 
-\item[Suspension criteria and resumption requirements] are the central
-  key to a smooth automation of the tests covering topics like
-  \emph{when exiting this test before step 10, which entry criteria
-    does it comply to or which resumption sequence has to be executed
-    to continue testing}. 
-\item[Walkthrough] covering a step-by-step approach of the test plan.
-\item[Environmental requirements] going into the details of what is
-  needed concerning the test environment, e.g. tools, adapter, data
-  preparation. 
-\end{description}
-
-\item[Discrepancy Reports] identifying the defects.
-\item[Key Participants] describing the assignment and task for each role involved. 
-
-\begin{description}
-\item[Accreditation of Participants] describing who was accredited to
-  which role during the \VV phase. 
-\item[V\&V Participants] listing the partners participating in V\&V activities,
-\item[Other participants] including other interest groups such as
-  reviewer by affiliate partners\footnote{affiliate partners are
-    non-funded companies who signed the project cooperation agreement
-    and with it get read access to the repositories starting from
-    incubation phase to contribute e.g. by reviewing}. 
-\end{description}
-
-\item[Timeline] giving the timeline for the baselines as input to the
-  V\&V process and identifying when each artifact should be created. 
-\end{description}
-}
-
-
-\section{Methods and Tools}
+\section{\VV Methods and Tools }
 \label{sec:methods-tools}
 
 {\it The project shall select / develop / describe a chain of methods
-  and tools for doing \vv in a full development.}
+  and tools for doing \vv in a full development. Some will be
+  suitable for both, \vv, tasks. Each proposal shall be labeled accordingly.}
 
 
 In common language, the notion {\em ``formal''} is often used in a
@@ -902,6 +940,265 @@ software tools and languages must be taken into account
 \cite[Section~6.7]{en50128}.
 
 
+
+\section{Verification for a Full Development}
+\label{sec:verif-full-devel}
+
+\textit{for each of the verification steps identified in the plan
+  overview, the following has to be instantiated: }
+\subsection{DASV Verification}
+\label{sec:dasv-verification}
+
+\subsubsection{Task}
+\label{sec:dasv-verif-task}
+
+\subsubsection{Documents to Be Produced}
+\label{sec:dasv-verif-docum-be-prod}
+
+\subsubsection{Phase Specific Activities}
+\label{sec:dasv-verif-phase-spec-activ}
+
+\subsubsection{Techniques and Measures}
+\label{sec:dasv-verif-techniques-measures}
+
+\textit{Here the verfication plan begins}
+
+\subsection{SSRS Verification (1c)}
+\label{sec:ssrs-verification}
+
+\subsubsection{Task}
+\label{sec:ssrs-verif-task}
+
+The SSRS (sub-system requiement specification) outlines the subsystem
+which is going to be modeled within the project. The SSRS describes
+the architecture of the subsystem (functions and their I/O) and the
+requirements allocated to these functions. If necessary, the
+requirements are rewritten in order to address the I/O and to
+correspond to the allocation. It also provides the classification into
+vital and non vital requirements and data
+streams. The architecture part is described in a semi-formal language,
+and the requirements are described in natural language.
+
+The SSRS is to be viewed as a supplement to the SS-026 and the
+TSIs and is not intended to replace them. The verification has to
+check that a complete and consistent set of functionalities have been
+identified and that the architecture is adequate. 
+
+\todo{Verifiy hazard analysis too?}
+
+
+\subsubsection{Documents to Be Produced}
+\label{sec:ssrs-verif-docum-be-prod}
+
+SSRS verification report.
+
+\subsubsection{Phase Specific Activities}
+\label{sec:ssrs-verif-phase-spec-activ}
+
+\subsubsection{Techniques and Measures}
+\label{sec:ssrs-verif-techniques-measures}
+
+ Due to the informal
+nature of the SSRS, mainly manual techniques are to be applied.
+
+\qq{Review}
+
+
+
+\subsection{SFM Verification (2c)}
+\label{sec:sfm-verif-verification}
+
+\subsubsection{Task}
+\label{sec:sfm-verif-task}
+
+\subsubsection{Documents to Be Produced}
+\label{sec:sfm-verif-docum-be-prod}
+
+\subsubsection{Phase Specific Activities}
+\label{sec:sfm-verif-phase-spec-activ}
+
+\subsubsection{Techniques and Measures}
+\label{sec:sfm-verif-techniques-measures}
+
+
+
+
+\todo{further verification phases}
+
+
+
+\section{Structure of the Verification Report}
+\label{sec:structure-vv-plan}
+
+\tbd{the following is a draft which is to be adapted to the }
+{\it
+The verification and validation plan covers the following central topics:
+\begin{description}\setlength{\parsep}{0pt}\setlength{\itemsep}{0pt}\setlength{\topsep}{0pt}
+%\reqfixed{04}{040}{x}
+%\subreqfixed{04}{040}{1}{x}
+\item[Header] containing all information to identify, this report, the
+  authors, the approbation and reviewing entities.
+\item[Executive Summary] giving an overview of the major elements from
+  all sections. 
+\item[Problem Statement] describing the challenges to be answered by
+  \VV as well as the decisions to be taken based on the V\&V results
+  as well as how to cope with potentially faulty output. It further
+  describes the accreditation scope based on the risk assessment done
+  on V\&V-level. 
+\item[V\&V Requirements Traceability Matrix] links every V\&V artifact
+  back to the requirements to measure e.g. test coverage and to
+  directly link V\&V results to the requirements. 
+\item[Acceptability Criteria,] describing the criteria for acceptance
+  of the artifact into the \VV process e.g. as the direct translation
+  of the requirements into metrics to measure success, are used
+  e.g.\ for burndown charts within the process. 
+\item[Assumptions] that are identified during the design of the
+  verification and validation strategy and how these assumptions have
+  an impact on the verdict by listing capabilities and limitations. 
+\item[Risks and Impacts] that come across the execution of V\&V tasks
+  together with the impacts foreseen. 
+\item[V\&V Design] states how the V\&V process builds up including
+  data preparation, execution and evaluation. 
+\item[V\&V Methodologies] giving a step-by-step walkthrough of all
+  possible V\&V activities including the assumptions, and
+  verdict-relevant limitations and criteria for, e.g.,  model
+  verification, model-to-code verification, unit testing, integration
+  testing and final validation (according to the standard, this
+  involves running the software on the target hardware).  
+\item[V\&V Issues] describing unsolved V\&V issues and their impact on
+  the affected proof or verdict. 
+\item[Peer Reviews] going into details on how the community can take
+  part and how official bodies and partners are integrated into the
+  development and review process. 
+\item[Test Plan Definition] going into the details of testing by
+  describing among other things: 
+
+\begin{description} 
+\item[Title] as a unique identifier to the test plan.
+\item[Description] of the test and the test-item giving information
+  about version and revision. 
+\item[Features] to be tested and not to be tested in combination are
+  listed together with information background.  
+\item[Entry Criteria] which have to be met by the EVC before a test
+  can be started, e.g. that the EVC has to be in level~3 limited
+  supervision with the order to switch to level~2. 
+\item[Suspension criteria and resumption requirements] are the central
+  key to a smooth automation of the tests covering topics like
+  \emph{when exiting this test before step 10, which entry criteria
+    does it comply to or which resumption sequence has to be executed
+    to continue testing}. 
+\item[Walkthrough] covering a step-by-step approach of the test plan.
+\item[Environmental requirements] going into the details of what is
+  needed concerning the test environment, e.g. tools, adapter, data
+  preparation. 
+\end{description}
+
+\item[Discrepancy Reports] identifying the defects.
+\item[Key Participants] describing the assignment and task for each
+  role involved.  
+
+\begin{description}
+\item[Accreditation of Participants] describing who was accredited to
+  which role during the \VV phase. 
+\item[V\&V Participants] listing the partners participating in V\&V activities,
+\item[Other participants] including other interest groups such as
+  reviewer by affiliate partners\footnote{affiliate partners are
+    non-funded companies who signed the project cooperation agreement
+    and with it get read access to the repositories starting from
+    incubation phase to contribute e.g. by reviewing}. 
+\end{description}
+
+\item[Timeline] giving the timeline for the baselines as input to the
+  V\&V process and identifying when each artifact should be created. 
+\end{description}
+}
+
+
+\section{Validation for a Full Development}
+\label{sec:valid-full-devel}
+
+\textit{for each of the validation steps identified in the plan
+  overview, the following has to be instantiated: }
+\subsection{DASV Validation}
+\label{sec:dasv-validation}
+
+\subsubsection{Task}
+\label{sec:dasv-valid-task}
+
+
+\subsubsection{Documents to Be Produced}
+\label{sec:dasv-valid-docum-be-prod}
+
+
+\subsubsection{Phase Specific Activities}
+\label{sec:dasv-valid-phase-spec-activ}
+
+\subsubsection{Techniques and Measures}
+\label{sec:dasv-valid-techniques-measures}
+
+
+
+\subsection{SFM Validation (3d)}
+\label{sec:sfm-validation}
+
+\subsubsection{Task}
+\label{sec:sfm-valid-task}
+
+The formalisation of the reqauirements in form of a semi-formal model
+enables a systematic check of the completeness and consistency of the
+system test specification.
+
+The model itself can perhaps be animated (depending on the concrete
+form which is not yet fixed). This offers the chance to an early
+(preliminary) validation of the design.
+
+\subsubsection{Documents to Be Produced}
+\label{sec:sfm-valid-docum-be-prod}
+
+\begin{enumerate}
+\item Revised System Test Specification
+\item SFM validation report
+\end{enumerate}
+
+\subsubsection{Phase Specific Activities}
+\label{sec:sfm-valid-phase-spec-activ}
+
+\tbd{}
+
+\subsubsection{Techniques and Measures}
+\label{sec:sfm-valid-techniques-measures}
+
+\tbd{}
+
+\subsection{Final Validation (tbd)}
+\label{sec:final-validation}
+
+\subsubsection{Task}
+\label{sec:final-valid-task}
+
+The final validation shall ascertain that the end result of the
+development---the EVC software in its specified environment---behaves
+as required. 
+
+\subsubsection{Documents to Be Produced}
+\label{sec:final-valid-docum-be-prod}
+
+\begin{enumerate}
+\item System Test Definition (based on System Test Specification)
+\item System Validation Report
+\end{enumerate}
+
+\subsubsection{Phase Specific Activities}
+\label{sec:final-valid-phase-spec-activ}
+
+Testing the software against the user requirements.
+
+\subsubsection{Techniques and Measures}
+\label{sec:final-valid-techniques-measures}
+
+\qq{Testing in a validated testbed (including API animation/simulation)}
+
+
 \section{Implementation of \VV}
 \label{sec:implementation-vv}
 
@@ -921,7 +1218,9 @@ tools.
 
 \chapter{\VV Plan for openETCS}
 
-\todo{Describe how to proceed in openETCS to achieve the most.}
+\todo{Describe how to proceed in openETCS to achieve the most. Include
+all partial V\&V instantiations with their relation/potential
+contribution to a full V\&V.}
 
 {\it
   \begin{itemize}
@@ -930,6 +1229,13 @@ tools.
   \item demonstration story of capabilities
   \end{itemize}
 }
+
+
+\section{Verification Plan for openETCS}
+\label{sec:verif-plan-open}
+
+\section{Validation Plan for openETCS}
+\label{sec:valid-plan-open}
 
 
 
@@ -1005,6 +1311,7 @@ activities.
 
 \section{General Requirements on Verification}
 
+\tbd{Reformulate text taken from the EN~50128 to avoid copyright infringements.}
 {\footnotesize\sffamily\centering
   \begin{longtable}{||p{.15\textwidth}|p{.4\textwidth}|p{.4\textwidth}||}
     \hline\hline
@@ -1014,81 +1321,61 @@ activities.
     \endhead
     \hline\hline
     \endfoot
-    5.3.2.7 
-    &
-    For each document, traceability shall be provided in
+    5.3.2.7 & For each document, traceability shall be provided in
     terms of a unique reference number and a defined and documented
-    relationship with other documents. 
-    &
+    relationship with other documents.  &
     fully applicable\\
-    \hline
-    5.3.2.8 
-    &
-    Each term, acronym or abbreviation shall have the same meaning in every document.
-    If, for historical  reasons, this is not possible,
-    the different meanings shall be listed and the references given. 
-    &
+    \hline 5.3.2.8 & Each term, acronym or abbreviation shall have the
+    same meaning in every document.  If, for historical reasons, this
+    is not possible, the different meanings shall be listed and the
+    references given.  &
     \\
-    \hline
-    5.3.2.9 
-    &
-    Except for documents relating to pre-existing software (see 7.3.4.7),
-    each document shall be written  according to the following rules:  
+    \hline 5.3.2.9 & Except for documents relating to pre-existing
+    software (see 7.3.4.7), each document shall be written according
+    to the following rules:
     \begin{itemize}
     \item it shall contain or implement all applicable conditions and
-        requirements of the preceding document with which it has a hierarchical relationship;  
+      requirements of the preceding document with which it has a
+      hierarchical relationship;
     \item it shall not contradict the preceding document.
     \end{itemize}
     &
     \\
-    \hline
-    5.3.2.10 
-    &
-    Each item or concept shall be referred to by the same name or description in every document. 
-    &
+    \hline 5.3.2.10 & Each item or concept shall be referred to by the
+    same name or description in every document.  &
     \\
-    \hline
-    6.5.4.14 
-    &
-    Traceability to requirements shall be an important consideration in the
-    validation of a safety-related system and means shall be provided to allow
-    this to be demonstrated throughout all phases of the lifecycle. 
-    &
+    \hline 6.5.4.14 & Traceability to requirements shall be an
+    important consideration in the validation of a safety-related
+    system and means shall be provided to allow this to be
+    demonstrated throughout all phases of the lifecycle.  &
     \\
-    \hline
-    6.5.4.15 
-    &
-    Within the context of this European Standard,
-    and to a degree appropriate to the specified software  safety integrity level,
-    traceability shall particularly address  
+    \hline 6.5.4.15 & Within the context of this European Standard,
+    and to a degree appropriate to the specified software safety
+    integrity level, traceability shall particularly address
     \begin{enumerate}[a)]
-    \item  traceability of requirements to the design or other objects which fulfil them, 
-    \item  traceability of design objects to the implementation objects which instantiate them.
-    \item  traceability  of  requirements  and  design  objects  to  the  tests 
-           (component,  integration,  overall  test)  and analyses that verify them.  
+    \item traceability of requirements to the design or other objects
+      which fulfil them,
+    \item traceability of design objects to the implementation objects
+      which instantiate them.
+    \item traceability of requirements and design objects to the tests
+      (component, integration, overall test) and analyses that verify
+      them.
     \end{enumerate}
 
-    Traceability shall be the subject of configuration management.  
-    &
+    Traceability shall be the subject of configuration management.  &
     \\
-    \hline
-    6.5.4.16
-    &
-    In special cases, e.g. pre-existing software or prototyped software,
-    traceability may be established  after the implementation and/or
-    documentation of the code, but prior to verification/validation.
-    In these cases, it  shall  be  shown  that  verification/validation 
-    is  as  effective  as  it  would  have  been  with  traceability  over  all phases. 
-    &
-    This requirement does’nt apply to the project.
+    \hline 6.5.4.16 & In special cases, e.g. pre-existing software or
+    prototyped software, traceability may be established after the
+    implementation and/or documentation of the code, but prior to
+    verification/validation.  In these cases, it shall be shown that
+    verification/validation is as effective as it would have been with
+    traceability over all phases.  & This requirement does not apply to
+    the project.
     \\
-    \hline
-    6.5.4.17
-    &
-    Objects  of  requirements,  design  or  implementation  that  cannot  be 
-    adequately  traced  shall  be demonstrated to have no bearing upon the safety
-    or integrity of the system.
-    &
+    \hline 6.5.4.17 & Objects of requirements, design or
+    implementation that cannot be adequately traced shall be
+    demonstrated to have no bearing upon the safety or integrity of
+    the system.  &
     \\
     \hline
 \end{longtable}}
@@ -1102,100 +1389,90 @@ activities.
     \endhead
     \hline\hline
     \endfoot
-    6.1.4.1
-    &
-    Tests performed by other parties such as the Requirements Manager, Designer or Implementer,
-    if fully documented and complying with the following requirements, may be accepted by
+    6.1.4.1 & Tests performed by other parties such as the
+    Requirements Manager, Designer or Implementer, if fully documented
+    and complying with the following requirements, may be accepted by
     the Verifier.
     \\
-    \hline
-    6.1.4.2
-    &
-    Measurement equipment used for testing shall be calibrated appropriately.
-    Any tools, hardware or software, used for testing shall be shown to be suitable for the purpose.
+    \hline 6.1.4.2 & Measurement equipment used for testing shall be
+    calibrated appropriately.  Any tools, hardware or software, used
+    for testing shall be shown to be suitable for the purpose.
     \\
-    \hline
-    6.1.4.3
-    &
-    Software testing shall be documented by a Test Specification and a Test Report,
-    as defined in the  following.
+    \hline 6.1.4.3 & Software testing shall be documented by a Test
+    Specification and a Test Report, as defined in the following.
     \\
-    \hline
-    6.2.4.2
-    &
-    A Software Verification Plan shall be written,
-    under the responsibility of the Verifier, on the basis of the necessary documentation.
+    \hline 6.2.4.2 & A Software Verification Plan shall be written,
+    under the responsibility of the Verifier, on the basis of the
+    necessary documentation.
     \\
-    \hline
-    6.2.4.3
-    &
-    The  Software  Verification  Plan  shall  describe  the  activities  to  be
-    performed  to  ensure  proper  verification and that particular design or
-    other verification needs are suitably provided for
+    \hline 6.2.4.3 & The Software Verification Plan shall describe the
+    activities to be performed to ensure proper verification and that
+    particular design or other verification needs are suitably
+    provided for
     \\
-    \hline
-    6.2.4.4
-    &
-    During development (and depending upon the size of the system) the plan may be
-    sub-divided into a number of child documents and be added to, 
-    as the detailed needs of verification become clearer.
+    \hline 6.2.4.4 & During development (and depending upon the size
+    of the system) the plan may be sub-divided into a number of child
+    documents and be added to, as the detailed needs of verification
+    become clearer.
     \\
-    \hline
-    6.2.4.5
-    &
-    The Software Verification Plan shall document all the criteria, techniques and
-    tools to be used in the  verification  process. 
-    The  Software  Verification  Plan  shall  include  techniques  and  measures  chosen 
-    from  Table A.5, Table A.6, Table A.7 and Table A.8.
-    The selected combination shall be justified as a set satisfying  4.8, 4.9 and 4.10
+    \hline 6.2.4.5 & The Software Verification Plan shall document all
+    the criteria, techniques and tools to be used in the verification
+    process.  The Software Verification Plan shall include techniques
+    and measures chosen from Table A.5, Table A.6, Table A.7 and Table
+    A.8.  The selected combination shall be justified as a set
+    satisfying 4.8, 4.9 and 4.10
     \\
-    \hline
-    6.2.4.6
-    &
-    The  Software  Verification  Plan  shall describe the activities to be
-    performed to ensure correctness  and consistency with respect to the
-    input to that phase. These include reviewing, testing and integration.
+    \hline 6.2.4.6 & The Software Verification Plan shall describe the
+    activities to be performed to ensure correctness and consistency
+    with respect to the input to that phase. These include reviewing,
+    testing and integration.
     \\
-    \hline
-    6.2.4.7
-    &
-    In  each  development  phase  it  shall  be  shown  that  the  functional, 
-    performance  and  safety  requirements are met.
+    \hline 6.2.4.7 & In each development phase it shall be shown that
+    the functional, performance and safety requirements are met.
     \\
-    \hline
-    6.2.4.8
-    &
-    The results of each verification shall be retained in a format defined or
-    referenced in the Software  Verification Plan.  
+    \hline 6.2.4.8 & The results of each verification shall be
+    retained in a format defined or referenced in the Software
+    Verification Plan.
     \\
-    \hline
-    6.2.4.9
-    &
-    The Software Verification Plan shall address the following:  
+    \hline 6.2.4.9 & The Software Verification Plan shall address the
+    following:
     \begin{enumerate}[a)]
-    \item  the selection of verification strategies and techniques
-         (to avoid undue complexity in the assessment of the verification and testing,
-         preference shall be given to the selection of techniques which are in
-         themselves readily analysable);  
-    \item  selection of techniques from Table A.5, Table A.6, Table A.7 and Table A.8;
+    \item the selection of verification strategies and techniques (to
+      avoid undue complexity in the assessment of the verification and
+      testing, preference shall be given to the selection of
+      techniques which are in themselves readily analysable);
+    \item selection of techniques from Table A.5, Table A.6, Table A.7
+      and Table A.8;
     \item  the selection and documentation of verification activities;  
     \item  the evaluation of verification results gained;   
     \item  the evaluation of the safety and robustness requirements;  
-    \item  the roles and responsibilities of the personnel involved in the verification process;  
-    \item  the degree of the functional based test coverage required to be achieved;  
-    \item  the structure and content of each verification step, especially for the
-           Software Requirement Verification  (7.2.4.22), 
-           Software  Architecture  and  Design  Verification  (7.3.4.41,  7.3.4.42), 
-           Software  Components Verification (7.4.4.13),
-           Software Source Code Verification (7.5.4.10) and
-           Integration Verification (7.6.4.13) in a way that facilitates review against
-           the Software Verification Plan.
+    \item the roles and responsibilities of the personnel involved in
+      the verification process;
+    \item the degree of the functional based test coverage required to
+      be achieved;
+    \item the structure and content of each verification step,
+      especially for the Software Requirement Verification (7.2.4.22),
+      Software Architecture and Design Verification (7.3.4.41,
+      7.3.4.42), Software Components Verification (7.4.4.13), Software
+      Source Code Verification (7.5.4.10) and Integration Verification
+      (7.6.4.13) in a way that facilitates review against the Software
+      Verification Plan.
     \end{enumerate}
     \\
     \hline
 \end{longtable}}
 
 \todo{Insert other tables.}
+
+\section{Glossary}
+\label{sec:glossary}
+
+\begin{description}
+\item [DAS2V:] Design Artifact Subject to Verification or Validation
+\item[EVC] European Vital Computer
+\end{description}
+
+\tbd{bibliography}
 
 \nocite{*}
 %===================================================

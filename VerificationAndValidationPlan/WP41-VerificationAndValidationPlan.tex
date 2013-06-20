@@ -25,6 +25,8 @@
 	\end{quote}
 }
 
+\newcommand{\cxx}{C\nolinebreak[4]\hspace{-.05em}\raisebox{.3ex}{\footnotesize\bf ++}\xspace}
+
 
 \graphicspath{{./template/}{.}{./images/}}
 \begin{document}
@@ -674,6 +676,231 @@ The verification and validation plan covers the following central topics:
 
 {\it The project shall select / develop / describe a chain of methods
   and tools for doing \vv in a full development.}
+
+
+In common language, the notion {\em ``formal''} is often used in a
+broad sense, meaning everything that can be described by rules, even
+if they are rather vague.
+%
+Contrary to that, we use {\em ``formal''} in the narrow sense of
+EN-50128 \cite[Section~D.28]{en50128},
+meaning strictly mathematical techniques and methods.
+%
+Since the Aerospace Standard DO-178C \cite{DO-178C}
+follows a similar understanding,
+but gives more elaborate explanation in its supplementary document
+%DO-333 
+devoted to formal methods \cite{DO-333},
+our presentation closely follows the terminology of the latter.
+
+
+\begin{quote}
+{\em Formal methods are mathematically based techniques for the
+specification, development, and verification of software aspects of
+digital systems.
+%
+The mathematical basis of formal methods consists
+of formal logic, discrete mathematics, and computer-readable
+languages.
+%
+The use of formal methods is motivated by the expectation
+that, as in other engineering disciplines, performing appropriate
+mathematical analyses can contribute to establishing the correctness
+and robustness of a design.}
+
+\hfill
+\cite[Section~1.0, p.1]{DO-333}
+\end{quote}
+
+
+\subsection{Characterisation of Formal Methods}
+
+Based on rigorous mathematical notions, formal methods may be used
+to describe software systems' requirements in an unambiguous way,
+thus supporting precise communication between engineers.
+%
+Formally specified requirements can be checked for consistency and
+completeness by appropriate tools;
+also, compliance between different representation levels of
+specification can be verified.
+%
+Formal methods allow one to check software properties like:
+
+\begin{itemize}
+\item Freedom from exceptions
+\item Freedom from deadlock
+\item Non-interference between different levels of criticality
+\item Worst case resource usage (execution time, stack, \ldots)
+\item Correct synchronous or asynchronous behaviour,
+        including absence of unintended behaviour
+\end{itemize}
+
+
+In order to subsume this variety of applications under a single
+paradigm,
+the DO-178C
+considers a formal method to consist in applying a
+formal {\em analysis} to a formal {\em model}.
+%
+Both analysis and model differs dependent on the particular method.
+%
+For most methods, the model
+is just identical to the source code; however, it may
+also be e.g.\ a tool-internally generated abstract state space (used
+in the Abstract Interpretation method, cf.\
+Section~\ref{sec:Abstract Interpretation} below).
+%
+For most methods, analysis tools need human advice;
+however, they may also be fully automatic (e.g.\ for Model Checking, cf.\
+\ref{sec:Model Checking}).
+
+\subsection{Formal Analysis Methods}
+\label{sec:formal-analysis}
+
+In this section we present
+the three most common methods for formal analysis.
+The foundation of these analysis
+methods are well understood and they have been
+applied to many practical problems.
+
+
+\subsubsection{Abstract Interpretation}
+\label{sec:Abstract Interpretation}
+
+The abstract interpretation method
+\cite{Cousot.Cousot.1976}
+builds at every point of a given program a conservative\footnote{
+        i.e.\ guaranteeing soundness
+}
+representation
+of the set of possible states that may occur there
+during any execution run.
+%
+It determines particular effects of the program relevant for the
+properties to be analysed, but does not actually execute it.
+%
+This allows one to statically determine dynamic properties of
+infinite-state programs.
+%
+The main application is to check the absence of runtime errors, like
+e.g.\ dereferencing of null-pointers, zero-divides,
+and out-of-bound array accesses.
+%
+While conventional ad-hoc static analysis tools such as PCLint or \mbox{QA\cxx}
+are well-tailored for quick, but incomplete analyses,
+abstract-interpretation based tools require more computation time, but
+guarantee that {\em all} runtime errors are detected, due to the
+conservative
+approximation of state sets.
+%
+Human intervention is required to improve the approximation accuracy
+w.r.t.\ those program points where {\em false alarms}
+have to be removed.
+
+
+\subsubsection{Deductive Verification}
+
+Deductive methods
+\cite{Beckert.Marche.2010}
+\cite{Ledinot.Pariente.2010}\nocite{Beckert.Marche.2010}
+perform mathematical proofs to establish formally specified properties
+of a given program, thus providing rigorous evidence.
+%
+Tools usually extract proof obligations from program code and property
+specifications and attempt to prove them, automated or interactively.
+%
+Even automated prover tools usually need human assistance, e.g.\ by
+providing loop invariants.
+
+
+\subsubsection{Model Checking}
+\label{sec:Model Checking}
+
+Model checking
+\cite{Clarke.Schlingloff.2001}\nocite{Robinson.Voronkov.2001}
+explores all possible behaviours of a program to
+determine whether a specified property is satisfied.
+%
+It is applicable only to programs with reasonable small state spaces;
+the specifications are usually about temporal properties.
+%
+If a property is unsatisfied, a counter-example can be generated
+automatically,
+showing a use case leading to property violation.
+
+
+\subsection{Verification with Formal Methods}
+
+In the railway domain, the standard
+EN~50128 highly recommends use of formal methods in
+requirements specification (\cite[Table A.2]{en50128}),
+software architecture (A.3),
+software design and implementation (A.4),
+verification and testing (A.5),
+data preparation (A.11), and
+modelling (A.17)
+for Safety Integrity Level SIL~3 and above.
+%
+However, functional\slash black-box testing is still mandatory in
+verification; this constraint may be considered as discouraging from
+the use of formal methods.
+
+Until recently, the situation was quite similar in the aerospace
+domain.
+%
+J.\ Joyce, a member of the RTCA
+standardisation committee SC-205, described
+Airbus' problems in certifying their ``unit-proof for unit-test''
+approach:
+
+        \begin{quote}
+        ``{\em Formal methods were used for certification credit in
+        development of the A380, but apparently it was not a trivial
+        matter to persuade certification authorities that this was
+        acceptable even with the reference to formal methods in
+        DO-178B as an alternative method.}''
+        \end{quote}
+
+
+Such experiences eventually caused the more detailed treatment of
+formal method issues in the revision C of DO-178 that appeared in
+late 2011.
+%
+The DO-178C considers formal methods as special cases of
+reviews and analyses; thus incorporating them without major
+structural changes of the software development recommendations.
+%
+For an employed formal method, the standard requires to justify its
+unambiguity, its soundness\footnote{
+        i.e., that the method never asserts a property to be true
+        when it actually may be not true
+},
+and any additional assumptions\footnote{
+        e.g.\ data range limits
+}
+needed by the method.
+%
+The DO-178C admits formal property verification on object code
+as well as on source code, the latter additionally needing
+evidence about property preservation of the source-to-object
+code compiler.
+%
+However, ``{\em functional tests
+executed in target hardware are always required to ensure that the
+software in the target computer will satisfy the high-level requirements}''
+\cite[FM.12.3.5]{DO-333}.
+
+As a consequence of subsuming formal methods under general reviews and
+analyses, no deviating special rules to qualify tools are necessary:
+``{\em
+Any tool that supports the formal analysis should be assessed under
+the tool qualification
+guidance required by DO-178C and qualified where necessary.}''
+\cite[FM.1.6.2]{DO-333}.
+Of course, for the railway domain, the rules of EN~50128 for supporting
+software tools and languages must be taken into account
+\cite[Section~6.7]{en50128}.
+
 
 \section{Implementation of \VV}
 \label{sec:implementation-vv}

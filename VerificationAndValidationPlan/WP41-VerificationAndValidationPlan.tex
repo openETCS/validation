@@ -939,6 +939,110 @@ Of course, for the railway domain, the rules of EN~50128 for supporting
 software tools and languages must be taken into account
 \cite[Section~6.7]{en50128}.
 
+During the last 15 years, formal methods have grown out of academic
+playgrounds and become practically relevant in several applications
+domains.
+Below, we sketch a few different tools, also to indicate the variety
+of issues formal methods can be applied for.
+Many of the tools mentioned below provide formal verification for programs
+written in~C.
+There is currently insufficient support for the programming language~\cxx,
+which is predominantly used in Thales' RBC product.
+%
+A list of free software tools for formal verification
+can be found at \cite{gulliver}.
+%
+The list is not meant to be complete.
+%
+It is structured by tool purpose, and each tool is briefly
+introduced.
+
+\subsubsection{The Frama-C Source Code Analysis Suite}
+\label{sec:Frama-C}
+
+{\em Frama-C} is a suite of tools from CEA-LIST\footnote{
+        Commissariat \`a l'\'energie atomique et aux \'energies alternatives
+},
+dedicated to the analysis of the source
+code of software written in C.
+Frama-C gathers several static analysis techniques in a single
+collaborative framework.
+%
+Its {\em WP} plug-in implements a weakest precondition calculus for
+{\em ACSL}\footnote{
+        \textsc{ANSI/ISO C Specification Language},
+        a notation to express program properties written in C
+}
+annotations through C programs.
+For each code annotation, this technique generates a bundle of proof
+obligations, i.e.\ mathematical first-order logic formulas that are
+submitted to automated or interactive theorem provers.
+
+\subsubsection{Microsoft's Verifier for Concurrent C (VCC)}
+
+VCC is a tool from Microsoft Research
+to prove correctness of annotated concurrent C programs.
+It was mainly developed to verify Microsoft's \emph{Hyper-V} hypervisor.
+%
+It supports an own annotation language providing
+e.g.\ contracts, pre- and postconditions, and type invariants.
+%
+It uses the Boogie tool to generate proof obligations,
+and the automatic prover Z3 to prove them.
+%
+If an obligation is violated, the Model Viewer tool can generate a
+counter-example use case.
+%
+VCC is available for non-commercial use from \cite{vcc}.
+
+
+\subsubsection{The Proof Assistants Coq and Isabelle}
+
+
+{\em Coq} is an interactive theorem prover and proof checker,
+developed at INRIA, and based on
+higher-order logic and the natural deduction calculus.
+%
+It provides the formal language {\em Gallina}, in which
+mathematical definitions can be expressed as well as
+executable algorithms and theorems.
+%
+The supporting tool for tactics-based semi-interactive development of
+proofs is available from \cite{coq}.
+%
+It has been used to verify CompCert (cf.\ sect.\ \ref{sec:CompCert})
+and JavaCard w.r.t.\ the Common Criteria (cf.\ sect.\ \ref{sec:JavaCard}).
+
+{\em Isabelle}, maintained at Cambridge University,
+and its predecessor {\em HOL}\footnote{
+        Higher Order Logic
+},
+are similar tactic-oriented interactive theorem provers.
+%
+Isabelle is available from \cite{isabelle}.
+%
+While Isabelle is not yet supported in the Frama-C environment,
+Coq is.
+
+
+\subsubsection{The Model Checker NuSMV}
+
+{\em SMV}\footnote{
+        Symbolic Model Verifier
+}
+has been the first model checker based on binary decision
+diagrams.
+%
+{\em NuSMV} is a reimplementation by the Fondazione Bruno Kessler
+that is in addition capable of
+performing SAT-based model-checking.
+%
+It supports both
+Linear Temporal Logic (LTL) and Computation Tree Logic (CTL).
+%
+NuSMV's source code is available under an LGPL license from
+\cite{nusmv}.
+
 
 
 \section{Verification for a Full Development}
@@ -1472,7 +1576,10 @@ activities.
 \item[EVC] European Vital Computer
 \end{description}
 
-\tbd{bibliography}
+
+\bibliographystyle{unsrt}
+\bibliography{bibliography}
+
 
 \nocite{*}
 %===================================================

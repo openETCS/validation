@@ -804,6 +804,7 @@ Formal methods allow one to check software properties like:
 \item Worst case resource usage (execution time, stack, \ldots)
 \item Correct synchronous or asynchronous behaviour,
         including absence of unintended behaviour
+\item absence of run-time error
 \end{itemize}
 
 
@@ -813,7 +814,7 @@ the DO-178C
 considers a formal method to consist in applying a
 formal {\em analysis} to a formal {\em model}.
 %
-Both analysis and model differs dependent on the particular method.
+Both analysis and model differs depending on the particular method.
 %
 For most methods, the model
 is just identical to the source code; however, it may
@@ -822,7 +823,8 @@ in the Abstract Interpretation method, cf.\
 Section~\ref{sec:Abstract Interpretation} below).
 %
 For most methods, analysis tools need human advice;
-however, they may also be fully automatic (e.g.\ for Model Checking, cf.\
+however, they may also be fully automatic (e.g.\ for 
+Abstract Interpretation or Model Checking, cf.\
 \ref{sec:Model Checking}).
 
 \subsection{Formal Analysis Methods}
@@ -843,11 +845,15 @@ The abstract interpretation method
 builds at every point of a given program a conservative\footnote{
         i.e.\ guaranteeing soundness
 }
-representation
-of the set of possible states that may occur there
-during any execution run.
+abstraction
+of the set of \emph{all} possible states that may occur there
+during any execution run. Such a representation is also called an 
+\emph{over-approximation}, in the sense that it captures all possible
+concrete behaviours of the program, while the abstraction might lead to 
+consider states that cannot occur in a concrete execution.
 %
-It determines particular effects of the program relevant for the
+Abstract interpretation 
+determines particular effects of the program relevant for the
 properties to be analysed, but does not actually execute it.
 %
 This allows one to statically determine dynamic properties of
@@ -859,12 +865,16 @@ and out-of-bound array accesses.
 %
 While conventional ad-hoc static analysis tools such as PCLint or \mbox{QA\cxx}
 are well-tailored for quick, but incomplete analyses,
-abstract-interpretation based tools require more computation time, but
-guarantee that {\em all} runtime errors are detected, due to the
-conservative
-approximation of state sets.
+abstract-interpretation based tools while requiring more computation time, are
+\emph{safe} in the sense that they guarantee that {\em all} potential
+runtime errors are detected. On the other hand, such a tool might report 
+spurious warnings, related to states that are included in the abstraction but
+do not correspond to concrete executions. Such \emph{false alarms} can be
+avoided to some extent by increasing the precision of the 
+abstraction~\cite{astree_airbus},
+at the expense of the computation time of the analysis. However,
 %
-Human intervention is required to improve the approximation accuracy
+human intervention is often required to improve the approximation accuracy
 w.r.t.\ those program points where {\em false alarms}
 have to be removed.
 

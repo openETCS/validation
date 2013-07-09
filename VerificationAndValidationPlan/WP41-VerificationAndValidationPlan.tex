@@ -885,14 +885,49 @@ Deductive methods
 \cite{Beckert.Marche.2010}
 \cite{Ledinot.Pariente.2010}\nocite{Beckert.Marche.2010}
 perform mathematical proofs to establish formally specified properties
-of a given program, thus providing rigorous evidence.
-%
-Tools usually extract proof obligations from program code and property
-specifications and attempt to prove them, automated or interactively.
-%
-Even automated prover tools usually need human assistance, e.g.\ by
-providing loop invariants.
+of a given program, thus providing rigorous evidence. Its primary use is to
+verify functional properties of the program.
+This method is based on the Hoare logic~\cite{Hoare.1969,Hoare.Wirth.1973},
+or axiomatic semantics, in
+which functions are seen as predicate transformers. In summary, a function
+\texttt{f}
+is given a state described by a given predicate $P$ and transforms 
+it into a new state, described by another predicate $f(P)$.
+In this context, the specification of \texttt{f} is given by a \emph{contract}, 
+which defines the predicate $R$ that \texttt{f} requires from its callers and
+the predicate $E$ that it ensures upon return. Verifying the implementation
+against such a specification amounts to proving that for each $P$ such that
+$P\Rightarrow R$ (i.e.\ that satisfies the requirement of \texttt{f}), then
+$E\Rightarrow f(P)$ 
+(i.e.\ the concrete final state is implied by what \texttt{f} ensures).
 
+%
+Tools based on deductive verification usually extract proof obligations 
+from program code and property specifications and attempt to 
+prove them, either automatically or interactively. Some tools are tightly
+coupled to a given theorem prover, while other such as Why3~\cite{why3} 
+promote a cooperation across a wide range of provers.
+%
+In addition to the contracts of the function, it is often required to provided
+additional annotations in order to be able to use deductive verification. In
+particular, for each loop in the code, a suitable \emph{loop invariant} has
+to be provided. A loop invariant is a property that is true when encountering
+the loop for the first time and, if true at the beginning of a loop step, stays
+true at the end of this step. From both hypotheses, it is then possible to
+inductively conclude that the invariant is true for any number of step, and in
+particular at the end of the loop. While it is possible to synthesize
+automatically loop invariant in some simple cases, in particular thanks to
+abstract interpretation, this activity must most of the time be done manually.
+
+Similarly, some proof obligations are too complicated to be handled by automated
+theorem provers, and must be discharged interactively via proof
+assistants~\cite{coq,isabelle}. Deductive verification is thus much less
+automated than abstract interpretation. On the other hand, it is much more
+flexible for functional properties verification, in the sense that it can be
+used to prove any property that can be expressed in the specification language
+of the tool (usually any first-order logic property), while abstract
+interpretation is limited to the properties that fit within the abstract setting
+that has been chosen.
 
 \subsubsection{Model Checking}
 \label{sec:Model Checking}

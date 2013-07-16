@@ -1053,7 +1053,30 @@ or an industrial~\cite{Ledinot.Pariente.2010} background. The remainder of this
 section only deals with the plugins that are released with Frama-C's kernel and
 are the most relevant for OpenETCS.
 
-\paragraph{Value Analysis}
+\paragraph{Value Analysis} is based on abstract interpretation 
+(section~\ref{sec:Abstract Interpretation}). This plugin analyses a
+complete application, starting from a given entry point, and gives at
+each program point an over-approximation of the values that can appear
+in each memory location at this point. For each operation, Value also
+checks that whether the abstract value of the operands guarantees that
+the operation is safe. If this is not the case, it emits an alarm, in
+the form of an ACSL assertion, and attempts to reduce its abstract
+state to represent only safe concrete values. If all concrete values
+are unsafe, then either the corresponding branch of the code is dead
+(and was only taken because of the over-approximation), or there is a
+real error in the code. Otherwise, the analysis resumes with the
+reduced state. Conversely, if no alarm is emitted by Value, the
+analysed code is guaranteed not to lead to a run-time error.
+
+Value can also be used to check whether ACSL annotations hold or
+not. However, it is restricted to the subset of the ACSL language that
+fits well within the abstract representation that is used.
+
+Finally, Value can be tweaked in various ways to increase the
+precision of the results (leading to fewer false alarms), generally at
+the expense of the computation time and amount of memory used by the
+analysis. These options are described in more detail in Value's
+reference manual~\cite{frama-c-va}.
 
 \paragraph{WP}
 %+RTE

@@ -783,6 +783,183 @@ and robustness of a design.}
 \cite[Section~1.0, p.1]{DO-333}
 \end{quote}
 
+\subsection{Model Based Testing Method}
+\subsubsection{Model Based Testing Strategy - generalities}
+Testing consists in executing the System Under Test (SUT)
+ for some particular inputs and in assessing whether or not the
+ corresponding SUT executions conform to some requirements.
+ Whatever the testing technique used is, one has to define test cases
+ to be submitted to the SUT and associate to them a decision procedure
+ called oracle. The oracle allows the tester to compute verdicts according 
+to what the executions of SUT (resulting from the test case submission) 
+reveal about its correctness.
+This correctness is measured with respect to requirements. Model based
+ testing is a particular kind of testing technique in which requirements are 
+described by models which are executable specifications. Their execution
+ traces (or ”traces” for short) are sequences of stimulations of the SUT and
+ resulting observations of the SUT reactions. Test cases are sequences of 
+stimulations that are selected from the test model. A sequence corresponding
+ to an input test data can be obtained by considering a trace of the model and
+ ”forgetting” all observations occurring in it. For functional testing, SUT is 
+considered as a black bbox: the tester (a human or a test bench) can only
+ stimulate the SUT and observe its reactions. Interactions between the tester
+ and the SUT result on the definition of traces. Therefore, a SUT can be seen
+ as a set of traces that is not known (since SUT is a black box) but the tester
+ may discover some of those traces by interacting with SUT. The oracle is based
+ on a so called conformance relation. A conformance relation is a mathematical
+ relation between the set of traces of the SUT and the set of traces of the model.
+ When these sets of traces fulfill the relation we say that the SUT conforms to 
+the model. The oracle takes as inputs traces representing an interaction between
+ the tester and the SUT and compute verdicts. Whatever the testing techniqu
+e is, the set of possible verdicts always contain the verdict Fail which is emitted 
+whenever the trace taken as input demonstrates that the SUT does not conform 
+to the model. Depending on the testing technique used there may be different 
+verdicts emitted when Fail is not emitted. These different verdicts reflect different
+ traceability information related to interaction trace taken as input. In this section
+ we briefly discuss two model based testing tools that we will use conjointly in the 
+OpenETCS project.
+
+\subsubsection{Model Based Testing applied to Open ETCS V\&V}
+According to the previous activity on defining the project process, 
+the Open ETCS process is based on 3 main inputs for methodology and 
+product lifecycle: the SCRUM methodology, the Model Driven Design and the
+ Cenelec software development V cycle.
+Traditionally, system requirements are directly translated into formal specifications
+ on which verification and proof techniques are applied. The use of formal 
+specifications and formal language allows then to derive the models using dedicated
+ languages (B for instance) in order to guaranty conservation of properties along 
+the design process. The main difficulty in this context is to be sure that the
+ interpretation of rules has correctly been captured in the formalized specification
+ which is not easy to check by the regulators. For this reason, the model based testing
+ has been chosen as testing and verification technique within the V\&V activities of
+ the OpenETCS project. This technique application will be explained in the following
+ paragraphs through an example based on two different model-based testing tools: 
+MaTeLo and Diversity.
+
+\subsubsection{Matelo Model Based Testing solution}
+MaTeLo purpose is to generate test cases for systems whose expected usage and 
+behavior are described by a probabilistic model. MaTeLo tool is based on its own test
+ model called "usage model" and uses, among other characteristics, usage profiles for 
+test case generation. This usage model describes the possibilities regarding the use of 
+the soft (in our case; operating scenario) during its whole lifecycle. This usage model is
+ performed thanks to a Matelo specific modeler, it allows to generate test cases that will 
+then be plugged to the SUT which will be the software semi-formal model realized in the 
+frame of WP3 activities.
+MaTeLo has three main functionalities: test modeler, test cases generator and test campaign
+ analyser. Even if MaTeLo is mainly a test case generation tool, we can consider that this
+ tool performs also analysis for different reasons:
+\begin{itemize}
+\item A test model can be considered as a development artifact the same way as a system
+ model for example. So analysis on it could identify some ambiguous or erroneous points in
+ test model (i.e. in the future test campaign) or in the specifications (because MaTeLo mode
+l is built from system specifications).
+\item Even whether test campaign analysis is mainly based on testing activities, analysis
+ techniques have to be used as wellThe limit between a model to perform test and a model
+ to perform analysis is not so obvious.
+\end{itemize}
+
+Because its test case generation is based on a model, MaTeLo belongs to the family of
+ Model-Based Testing solutions. MaTeLo model basically uses Markov Chains to describe 
+the test model of the SUT implemented for "Black Box Testing" in all xIL steps (MIL, SIL, PIL, HIL).
+MaTeLo Usage Model edition facility allows for implementing test models that describe the use
+ cases of the SUT completed with the tester point of view, and then, Matelo testing facility 
+can generate automatically the test cases generated by the tool.
+Thanks to the numerous validation steps, MaTeLo Test Campaign Analysis provides information
+ such as test coverage (requirements, model) or reliability of the SUT.
+Once the MaTeLo test model is performed and the testing strategy is defined with MaTeLo profiles
+ faciulities, MaTeLo generates test cases. For that, MaTeLo Testor contains several test generation 
+algorithms that can be used for different purposes. Different test case generators are based on a
+ Usage profile approach, considering the occurrence probability of each model transition. Other are
+ deterministic (most probable execution path, or all the transitions are covered). 
+In the case of Open ETCS project, the SUT model is an on-board EVC, designed according to the 
+SRS Subset 026. This specification itself is not sufficient to cover all functional aspects, and tests 
+depend strongly on the operating rules to be considered on the observed track. The principle 
+for the MaTeLo model would be to encompass all the possible states and transitions that can 
+be considered in a well-defined perimeter (based on Subset026, signaling and exploitation
+ rules to consider). Then, the test could be precisely defined by the usage profile to adapt 
+it to a track oriented testing campaign.
+
+\subsubsection{Diversity Model Based Testing solution}
+DIVERSITY is a model based testing tool developed at CEA LIST. Its underlying technology is symbolic
+ execution. Symbolic execution has been first defined for programs. The goal of this technique is
+ to identify, for each possible execution of the program, the constraints to be satisfied in order to 
+follow it. The main idea consists in executing the program, not for concrete numerical values but for 
+symbolic parameters, and to characterize constraints on these parameters at each step of the execution.
+ In that sens, DIVERSITY is a white box testing tool.
+In the frame of the openETCS project we plan to use DIVERSITY to extract test cases from models 
+defined in the first phases of the system design. Our goal is to extract test cases dedicated to
+ abstract safety requirements. More precisely we focus on safety requirements dealing with 
+communication between sub systems. For that purpose we will use the language of sequence 
+diagrams extended with timing constraints to specify such requirements. With sequence diagrams,
+ one may describe execution scenarios in terms of partially ordered message passing between 
+subsystems. Message passing can be structured thanks to operators expressing sequencing, 
+parallelism, choice, loop...  
+It is possible to automatically analyze sequence diagrams with DIVERSITY in order to extract test
+ cases. The originality is that, thanks to projection mechanisms, it is possible to extract test cases,
+ not only for the entire system, but also for any sub systems composing it. Because of this mechanism, 
+sub systems can be tested as soon as they are implemented, even though the entire system is 
+not yet implemented. In such a process we perform a particular kind of unitary testing in which 
+unit test cases are built according to the usage that will be made of the sub system in the entire
+ system. In the frame of OpenETCS, this functionality could be useful in order to realize the unitary
+ and modular tests.
+The first step consists in defining a requirement model in the form of a sequence diagram or a
+ Matelo Test scenario. The requirement model is analyzed with DIVERSITY in step 2. This analysis 
+results on a so-called symbolic tree, who’s each path denotes a possible (symbolic) execution of
+ the sequence diagram. Such trees may be theoretically infinite due to the possible occurrences
+ of the "loop" operator of sequence diagrams. Therefore, DIVERSITY uses various stopping 
+criteria to stop the computation (typically based on message coverage notions). 
+The symbolic tree computed in step 2 characterizes executions of the whole system model. 
+However, because testing the whole system may be complicated in terms of testing architecture, 
+or simply because one wants to test some sub systems before the whole system is implemented, 
+we offer a mechanism to extract symbolic trees for each distinguished sub system. This is based 
+on so-called projection techniques. This operation is realized in step 3. In step 4, each identified 
+sub system is tested thanks to a real time off-line testing algorithm.
+Then, we can relate correctness of sub systems and correctness of the whole system by using a 
+compositionality theorem.
+The compositionality theorem expresses that, the conformance of each subsystems to all their 
+projections guarantees the conformance of the whole system to the sequence diagram. A direct
+ consequence is that any faults of the whole system can be discovered as a fault of at least one
+ of its sub systems. This implies that testing the whole system mainly comes to test each of its 
+sub systems after a short test integration phase testing that each sub system is correctly connected.
+ We believe that such an approach will be very useful for ETCS systems which are by nature very 
+distributed and thus hardly observable and controllable as a whole. The share of OBU EVC kernel
+ in sub-system is the role of the SSRS model, and this refinement to diversity will be possible once
+ this functional decomposition of the EVC will be released.
+
+\subsubsection{Complementary use of the two tools}
+The use of the two tools can be done in a complementary way that would 
+allow a more efficient test case set generation. 
+MaTeLo would start from the test model, and generate automatically all the
+ use cases that can be encountered in CBTC use. MaTeLo tool analyses the 
+models as black box, and generates tests according to a stochastic approach. 
+DIVERSITY will analyze these scenarios, based on a symbolic execution of the 
+semi-formal SysML model (white box testing), in order to filter the tests generated
+ by MaTeLo and to reduce the test case set.
+As discussed in previous Sections, the two tools DIVERSITY and MaTeLo handle 
+different kinds of models. The version of DIVERSITY that we will use in the project 
+handles high level models in the form of sequence diagrams. Such models can be used 
+to specify requirements on communication scenario between subsystems of a reference
+ system under test. Models handled in MaTeLo are automata labeled by transfer functions
+ and probabilities. Such models are useful to describe executable behaviors very close to
+ the actual implementation, and based on operating scenarii. Clearly these two levels of 
+modeling are useful in design processes of safety critical applications such as ETCS implementations,
+ and can be combined in different ways for improving the test coverage of our EVC Software kernel.
+ Indeed, ETCS systems have such a level of complexity, that it is difficult to describe them in a model
+ straight from the requirements. Therefore, the refinements provided by two modeling levels are very
+ helpful. Moreover, it is mandatory to maintain a good traceability between these two levels of modeling, 
+in order to fulfill the safety requirements.
+The complementarity of these tools takes place in some refinement processes in which high level 
+requirements can be implemented into executable models. However, it is crucial to assess whether 
+executable models correctly implement requirements. In practice this may be a difficult question
+ because it requires to efficiently explore the executable model, which by nature is generally 
+huge because it represents in a precise manner the functional behaviors of the actual implementation.
+ In order to overcome this problem we plan to take benefits from the fact that executable 
+models of ETCS will be described in the form of communicating executable models. This fact permits
+ to see the model as a collection of communicating subsystems. This permits to take benefits of the 
+compositional result described in the Diversity, and use it for white box testing (the internal behavior
+ of functional modules and blocks defined in the kernel can then be precisely tested)..
+
+
 
 \subsection{Characterisation of Formal Methods}
 

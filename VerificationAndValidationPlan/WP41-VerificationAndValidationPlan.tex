@@ -1108,6 +1108,17 @@ dangerous operation. WP can then generate proof obligations for these assertions
 as usual.
 
 \paragraph{Aoraï}
+While Value and WP are used to verify program properties, the Aoraï plugin is
+dedicated to generate ACSL specifications (which can then be proved by Value
+or WP). More precisely, it takes as input an automaton describing the sequence
+of function calls that are allowed during the execution of a program (from a
+given entry point). From that automaton, Aoraï instruments the code and provides
+ACSL contract for each function so that if all the contracts hold, then the
+code is behaving according to the automaton.
+
+Transitions of the automaton can be guarded by conditions over the state of the
+program at a given call point. Full syntax of Aoraï's input language is 
+described in~\cite{aorai}.
 
 \paragraph{Miscellaneous plugins}
 % Slicing, sparecode, counter examples

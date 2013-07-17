@@ -11,6 +11,8 @@
 \usepackage{datetime}
 \usepackage{appendix}
 \usepackage{enumerate}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,automata,petri,calc}
 
 
 %user specified macros
@@ -1250,6 +1252,93 @@ Linear Temporal Logic (LTL) and Computation Tree Logic (CTL).
 %
 NuSMV's source code is available under an LGPL license from
 \cite{nusmv}.
+
+
+\subsubsection{Formal Verification of Real-Time Aspects based on Timed Automata}
+
+Verifying system properties involving time is difficult with traditional model checking methods. Commonly used \emph{temporal logics}, such as LTL or CTL catch discrete and qualitative aspects of time and allow to formulate properties such as\footnote{The prefixes are the corresponding linear time operators.}
+\begin{itemize}
+  \item[\bf X] At the next point in time a property holds.
+  \item[\bf F] At some future point in time a property holds.
+  \item[\bf G] Always/generally (now and at any future point in time) a property holds.
+  \item[\bf U] A property $p$ holds until a property $q$ holds.
+\end{itemize}
+
+While it is possible to state properties that must be satisfied at individual (discrete) points in time, continuous and quantitative aspects of time as in the safety requirement
+\begin{quote}
+``The delay between receiving an emergency message and the issuing of a brake order is less than 1 second.''
+\end{quote}
+are a real challenge. The problem does not stem from discrete vs. continuous time, as any physical realisation of a real-time system is inherently discretised by its clock. Instead, an operator for expressing arbitrary temporal quantities or differences is missing. Thus, for LTL and a clock of 1 kHz, it would be required to use the operator \textbf{X} 1000 times. This notation is rather unhandy, as it enforces to express a functional property relative to a particular system.
+
+
+This lack of expressivity is not merely a matter of notation, i.e., LTL or CTL, but also of the underlying semantics. Before introducing a better suited logic we will first consider a formalism that serves as this logic’s semantics -- namely \emph{timed automata}.
+
+\paragraph{Timed Automata}
+
+Timed automata \cite{Alur1994} are essentially finite automata extended with a finite set of clocks that all proceed at the same rate. Clocks may be individually reset to zero. Clock variables can be part of constraint expressions that may be used as transition guards. A transition can only be taken if its guard is fulfilled. Similarly, it is possible to specify an invariant for a state that must be satisfied when the automaton is in this state. Thus, we can enforce time constraints for the runs of the automaton.
+
+\paragraph{An Example}
+The timed automaton in Figure~\ref{fig:ta:emergency1} depicts an automaton representing an over-simplified version of an OBU subsystem processing emergency messages. It has three states, one clock $x$ and three actions, \textit{emg\_msg} (reception of an emergency message), \textit{proc\_msg} (processing the message, e.g. raising an alarm) and \textit{brake} (issueing the brake order). Upon receiving an emergency message the clock $x$ is reset. The \textit{proc\_msg}-transition is guarded by the clock constraint $x<1$ preventing the transition to be taken if $x\geq 1$. The same holds for the \textit{brake}-transition. 
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}[node distance=1.3cm,bend angle=45,auto]
+\node [state, initial] (s1) at (0,0) { wait };
+\node [state] (s2) at (4,0) { rcvd };
+\node [state] (s3) at (8,0) { prcd };
+\path[->] (s1) edge node {$\mathit{emg\_msg}, x:=0$}(s2);
+\path[->] (s2) edge node {$x<1, \mathit{proc\_msg}$}(s3); 
+\path[->] (s3) edge [bend left] node {$x<1, \mathit{brake}$}(s1);
+\end{tikzpicture}
+\end{center}
+\caption{First (faulty) version of a timed automaton for processing emergency messages}
+\label{fig:ta:emergency1}
+\end{figure}
+
+One might think that the automaton from Figure~\ref{fig:ta:emergency1} thus fulfills the safety requirement stated above. Due to the operational semantics of timed automata this is not true: a timed automaton in a given state can either take a transition or wait for an arbitrary amount of time. Thus, if automaton waits in state rcvd and $x$ exceeds one second, the system will deadlock as the next transition is guarded by the constraint $x<1$. A run of the automaton that could serve as counterexample is, e.g.
+
+$$(\mathrm{wait},0)\rightarrow(\mathrm{wait},0.5)\rightarrow(\mathrm{rcvd},0.5)\rightarrow(\mathrm{rcvd},2)\rightarrow\textrm{DEADLOCK}$$
+
+A solution to this problem is to force the automaton to proceed by placing \emph{progress} constraints on the states. This has been done in Figure~\ref{fig:ta:emergency2}. The transition guards have been omitted as they are not necessary anymore. Now the safety property ``The delay between receiving an emergency message and the issuing of a brake order is less than 1 second.'' is fulfilled.
+
+\begin{figure}
+\begin{center}
+\small
+\begin{tikzpicture}[node distance=1.3cm,bend angle=45,auto]
+\node [state, initial] (s1) at (0,0) { wait };
+\node [state] (s2) at (4,0) { rcvd }; 
+\node [state] (s3) at (8,0) { prcd };
+\node at (4,-0.7) {$x<1$};
+\node at (8,-0.7) {$x<1$};
+\path[->] (s1) edge node {$\mathit{emg\_msg}, x:=0$}(s2);
+\path[->] (s2) edge node {$\mathit{proc\_msg}$}(s3); 
+\path[->] (s3) edge [bend left] node {$\mathit{brake}$}(s1);
+\end{tikzpicture}
+\end{center}
+\caption{Corrected version of the timed automaton for processing emergency messages}
+\label{fig:ta:emergency2}
+\end{figure}
+
+\paragraph{UPPAAL}
+
+\textsc{Uppaal} is a tool for modelling and verifying timed automata developed by the universities of Uppsala and Aalborg \cite{UppaalTutorial04}. This toolkit is under constant development and comes with an academic as well as a commercial licence. Moreover, there is a comparably large body of literature featuring \textsc{Uppaal}, providing introductory and industrial examples. 
+
+\textsc{Uppaal} extends timed automata with synchronisation enabling concurrent, communicating automata representing different parts of a system. In addition, variables other than clocks are supported making the modelling language more powerful. The logic used for expressing real-time properties is a subset of TCTL (Timed Computation Tree Logic). Nesting of temporal operators is not supported leading to a restriction in expressiveness.
+
+\paragraph{From SysML/UML to Timed Automata}
+
+Timed automata and statecharts in SysML/UML are both based on the concept of finite automata. Thus, it is reasonable to extract timed automata from existing statecharts which is addressed in the literature \cite{David2002, Knapp2002, Jensen2004}. In this way, safety properties -- formalised as TCTL formulae -- can be verified in an automated fashion for a given statechart.
+
+\textcolor{red}{To be continued}
+
+
+
+\subsection{Simulation-based Approaches}
+
+\subsubsection{Simulation with SystemC}
+
+
+
 
 
 

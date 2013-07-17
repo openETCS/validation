@@ -1299,6 +1299,41 @@ Transitions of the automaton can be guarded by conditions over the state of the
 program at a given call point. Full syntax of Aoraï's input language is 
 described in~\cite{aorai}.
 
+
+
+
+\subsubsection{The Diversity Symbolic Execution Tool}
+
+
+DIVERSITY is a symbolic execution tool developed at $CEA-LIST$. Its underlying technology is {\em symbolic execution}.  Symbolic execution has been first defined for programs \cite{King75,Clarke,Rama}. The goal of this technique is to identify, for each possible execution of the program, the constraints to be satisfied in order to follow it.  
+The main idea consists in executing the program, not for concrete numerical values but for symbolic parameters, and to characterize constraints on those parameters at each step of the execution. 
+For instance let us consider that at a given step of an execution the next instruction $ins$ to be executed is $if(x>14) x:=x+1$. Moreover let us suppose that from the previous steps we have computed a couple $(x\rightarrow a, a<45)$ meaning that before the execution of $ins$, the  value of $x$ is represented by the symbolic parameter $a$, with the constraint that $a<45$. Executing $ins$ results on a new context $(x\rightarrow a+1 , a<45 \land a>14)$ taking into account both the constraints so that the instruction is executable ($x$ has to be greater than $14$ and since $x$ value is $a$ it means that $a$ has to be greater than $14$) and the variable updates induced by the instruction (the result of the execution of $x:=x+1$ is that $x$ value is now $a+1$). $a<45 \land a>14$ is called a {\em path
+  condition}. Generating test data to follow some executions comes the to use solvers to find values satisfying such path conditions. 
+Symbolic execution has been later adapted to modeling formalisms like {\em Input Output Symbolic Transition Systems} (\cite{RGLG03,GAL00}), later to timed version of Input Output Symbolic Transition Systems (\cite{EGL11,BEGL12}) and also to various industrial modeling languages like the {sequence diagrams} of the $UML$ (\cite{BGS11}). Those symbolic execution adaptations have been used in model based testing contexts. System under test are compared to their models by means of two conformance relations namely {\em $ioco$} (\cite{Tre96a}) and its timed extension {\em $tioco$} (\cite{Kri04}). Those two conformance relations are among the most widely accepted conformance relations. Several testing algorithms were defined based on those conformance relations (\cite{GLRT06, EGL11, BEGL12}).
+
+In the frame of the openETCS project we plan to use DIVERSITY to extract test cases from models defined in the first phases of the system design. Our goal is to extract test cases dedicated to abstract safety requirements. More precisely we focus on safety requirements  dealing with communication between sub systems. For that purpose we will use the language of sequence diagrams extended with timing constraints to specify such requirements. With sequence diagrams, one may describe execution scenarios in terms of partially ordered message passing between subsystems. Message passing can be structured thanks to powerful operators expressing sequencing, parallelism, choice, loop...   
+In \cite{BGS11} we show how to automatically analyze such sequence diagrams with DIVERSITY in order to extract test cases. The originality is that is that, thanks to projection mechanisms, it is possible to extract test cases, not only for the entire system, but also for any of its distinguished sub systems. Thanks to this mechanism, sub systems can be tested as soon as they are implemented, even though the entire system is not yet implemented. In such a process we perform a particular kind of unitary testing in which unit test cases are built according to the usage that will be made of the sub system in the entire system. 
+Faults identified with such an approach are very relevant because we know that they will be activated in the system. The process is illustrated in Figure \ref{ct}.
+The first step consists in defining a requirement model in the form of a sequence diagram. The requirement model is analyzed with DIVERSITY in step $(2)$. This analysis results on a so-called {\em symbolic tree}, whose each path denotes a possible (symbolic) execution of the sequence diagram. 
+Such trees may be theoretically infinite due to the possible occurrences of the "loop" operator of sequence diagrams. Therefore, DIVERSITY uses various stopping criteria to stop the computation (typically based on message coverage notions). 
+The symbolic tree computed in step $(2)$ characterizes executions of the whole system model. However because testing the whole system may be complicated in terms of testing architecture, or simply because one wants to test some sub systems before the whole system is implemented, we offer a mechanisms to extract symbolic trees for each distinguished sub system. This is based on so-called {\em projection} techniques (\cite{FGG07,EGL11}). This operation is realized in step $(3)$. In step $(4)$ Each identified sub system is tested thanks to a real time off-line testing algorithm (\cite{BEGL12}).
+Thanks to a compositionality theorem (\cite{bannour2012}) we can relate correctness of sub systems and correctness of the whole system (see step $5$).
+The compositionality theorem expresses that, the conformance of each subsystems to all their projections guarantees the conformance of the whole system to the sequence diagram. A direct consequence is that any faults of the whole system can be discovered as a fault of at least one of its sub systems. This implies that testing the whole system mainly comes to test each of its sub systems regardless of a very simple test integration phase in which one only tests that each sub system is correctly connected. We believe that such an approach will be very useful for ETCS systems which are by nature very distributed and thus hardly observable and controllable as a whole. We plan to identify with experts how to partition them into several sub systems that will be more easily observable and controllable at the testing phase.  
+
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.525]{approach_3.pdf}
+\caption{\label{ct}Compositionnal Testing}
+\end{figure}
+
+
+
+
+
+
+
+
 \subsubsection{Microsoft's Verifier for Concurrent C (VCC)}
 
 VCC is a tool from Microsoft Research

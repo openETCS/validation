@@ -981,6 +981,7 @@ Formal methods allow one to check software properties like:
 \item Worst case resource usage (execution time, stack, \ldots)
 \item Correct synchronous or asynchronous behaviour,
         including absence of unintended behaviour
+\item absence of run-time error
 \end{itemize}
 
 
@@ -990,7 +991,7 @@ the DO-178C
 considers a formal method to consist in applying a
 formal {\em analysis} to a formal {\em model}.
 %
-Both analysis and model differs dependent on the particular method.
+Both analysis and model differs depending on the particular method.
 %
 For most methods, the model
 is just identical to the source code; however, it may
@@ -999,7 +1000,8 @@ in the Abstract Interpretation method, cf.\
 Section~\ref{sec:Abstract Interpretation} below).
 %
 For most methods, analysis tools need human advice;
-however, they may also be fully automatic (e.g.\ for Model Checking, cf.\
+however, they may also be fully automatic (e.g.\ for 
+Abstract Interpretation or Model Checking, cf.\
 \ref{sec:Model Checking}).
 
 \subsection{Formal Analysis Methods}
@@ -1020,11 +1022,15 @@ The abstract interpretation method
 builds at every point of a given program a conservative\footnote{
         i.e.\ guaranteeing soundness
 }
-representation
-of the set of possible states that may occur there
-during any execution run.
+abstraction
+of the set of \emph{all} possible states that may occur there
+during any execution run. Such a representation is also called an 
+\emph{over-approximation}, in the sense that it captures all possible
+concrete behaviours of the program, while the abstraction might lead to 
+consider states that cannot occur in a concrete execution.
 %
-It determines particular effects of the program relevant for the
+Abstract interpretation 
+determines particular effects of the program relevant for the
 properties to be analysed, but does not actually execute it.
 %
 This allows one to statically determine dynamic properties of
@@ -1036,30 +1042,69 @@ and out-of-bound array accesses.
 %
 While conventional ad-hoc static analysis tools such as PCLint or \mbox{QA\cxx}
 are well-tailored for quick, but incomplete analyses,
-abstract-interpretation based tools require more computation time, but
-guarantee that {\em all} runtime errors are detected, due to the
-conservative
-approximation of state sets.
+abstract-interpretation based tools while requiring more computation time, are
+\emph{safe} in the sense that they guarantee that {\em all} potential
+runtime errors are detected. On the other hand, such a tool might report 
+spurious warnings, related to states that are included in the abstraction but
+do not correspond to concrete executions. Such \emph{false alarms} can be
+avoided to some extent by increasing the precision of the 
+abstraction~\cite{Souyris.Delmas.2007},
+at the expense of the computation time of the analysis. However,
 %
-Human intervention is required to improve the approximation accuracy
+human intervention is often required to improve the approximation accuracy
 w.r.t.\ those program points where {\em false alarms}
 have to be removed.
 
 
 \subsubsection{Deductive Verification}
-
+\label{sec:deduct-verif}
 Deductive methods
 \cite{Beckert.Marche.2010}
 \cite{Ledinot.Pariente.2010}\nocite{Beckert.Marche.2010}
 perform mathematical proofs to establish formally specified properties
-of a given program, thus providing rigorous evidence.
-%
-Tools usually extract proof obligations from program code and property
-specifications and attempt to prove them, automated or interactively.
-%
-Even automated prover tools usually need human assistance, e.g.\ by
-providing loop invariants.
+of a given program, thus providing rigorous evidence. Its primary use is to
+verify functional properties of the program.
+This method is based on the Hoare logic~\cite{Hoare.1969,Hoare.Wirth.1973},
+or axiomatic semantics, in
+which functions are seen as predicate transformers. In summary, a function
+\texttt{f}
+is given a state described by a given predicate $P$ and transforms 
+it into a new state, described by another predicate $f(P)$.
+In this context, the specification of \texttt{f} is given by a \emph{contract}, 
+which defines the predicate $R$ that \texttt{f} requires from its callers and
+the predicate $E$ that it ensures upon return. Verifying the implementation
+against such a specification amounts to proving that for each $P$ such that
+$P\Rightarrow R$ (i.e.\ that satisfies the requirement of \texttt{f}), then
+$E\Rightarrow f(P)$ 
+(i.e.\ the concrete final state is implied by what \texttt{f} ensures).
 
+%
+Tools based on deductive verification usually extract proof obligations 
+from program code and property specifications and attempt to 
+prove them, either automatically or interactively. Some tools are tightly
+coupled to a given theorem prover, while other such as Why3~\cite{why3} 
+promote a cooperation across a wide range of provers.
+%
+In addition to the contracts of the function, it is often required to provided
+additional annotations in order to be able to use deductive verification. In
+particular, for each loop in the code, a suitable \emph{loop invariant} has
+to be provided. A loop invariant is a property that is true when encountering
+the loop for the first time and, if true at the beginning of a loop step, stays
+true at the end of this step. From both hypotheses, it is then possible to
+inductively conclude that the invariant is true for any number of step, and in
+particular at the end of the loop. While it is possible to synthesize
+automatically loop invariant in some simple cases, in particular thanks to
+abstract interpretation, this activity must most of the time be done manually.
+
+Similarly, some proof obligations are too complicated to be handled by automated
+theorem provers, and must be discharged interactively via proof
+assistants~\cite{coq,isabelle}. Deductive verification is thus much less
+automated than abstract interpretation. On the other hand, it is much more
+flexible for functional properties verification, in the sense that it can be
+used to prove any property that can be expressed in the specification language
+of the tool (usually any first-order logic property), while abstract
+interpretation is limited to the properties that fit within the abstract setting
+that has been chosen.
 
 \subsubsection{Model Checking}
 \label{sec:Model Checking}
@@ -1170,23 +1215,87 @@ introduced.
 \subsubsection{The Frama-C Source Code Analysis Suite}
 \label{sec:Frama-C}
 
-{\em Frama-C} is a suite of tools from CEA-LIST\footnote{
-        Commissariat \`a l'\'energie atomique et aux \'energies alternatives
-},
-dedicated to the analysis of the source
-code of software written in C.
+{\em Frama-C}~\cite{Cuoq.2012} is a suite of tools 
+from CEA LIST and INRIA Saclay, dedicated to the analysis of C source code.
 Frama-C gathers several static analysis techniques in a single
-collaborative framework.
-%
-Its {\em WP} plug-in implements a weakest precondition calculus for
-{\em ACSL}\footnote{
-        \textsc{ANSI/ISO C Specification Language},
-        a notation to express program properties written in C
-}
-annotations through C programs.
-For each code annotation, this technique generates a bundle of proof
-obligations, i.e.\ mathematical first-order logic formulas that are
-submitted to automated or interactive theorem provers.
+collaborative framework. Frama-C also features a formal specification language,
+ACSL~\cite{ACSL}, in which the contract of each function of the program can
+be written (see section~\ref{sec:deduct-verif}), as well as assertions that
+are supposed to hold at a given program point.
+
+Frama-C's kernel as well as many analysis plug-ins are available under the
+LGPL Open-Source licence from~\cite{frama-c}. Other plug-ins have been
+developed by third-party developers, either in an academic~\cite{Bouajjani.2011}
+or an industrial~\cite{Ledinot.Pariente.2010} background. The remainder of this
+section only deals with the plugins that are released with Frama-C's kernel and
+are the most relevant for OpenETCS.
+
+\paragraph{Value Analysis} 
+Value analysis is based on abstract interpretation 
+(section~\ref{sec:Abstract Interpretation}). This plugin analyses a
+complete application, starting from a given entry point, and gives at
+each program point an over-approximation of the values that can appear
+in each memory location at this point. For each operation, Value also
+checks that whether the abstract value of the operands guarantees that
+the operation is safe. If this is not the case, it emits an alarm, in
+the form of an ACSL assertion, and attempts to reduce its abstract
+state to represent only safe concrete values. If all concrete values
+are unsafe, then either the corresponding branch of the code is dead
+(and was only taken because of the over-approximation), or there is a
+real error in the code. Otherwise, the analysis resumes with the
+reduced state. Conversely, if no alarm is emitted by Value, the
+analysed code is guaranteed not to lead to a run-time error.
+
+Value can also be used to check whether ACSL annotations hold or
+not. However, it is restricted to the subset of the ACSL language that
+fits well within the abstract representation that is used.
+
+Finally, Value can be tweaked in various ways to increase the
+precision of the results (leading to fewer false alarms), generally at
+the expense of the computation time and amount of memory used by the
+analysis. These options are described in more detail in Value's
+reference manual~\cite{frama-c-va}.
+
+\paragraph{WP} 
+WP is a plugin dedicated to deductive verification 
+(see section~\ref{sec:deduct-verif}). It uses different models 
+to represent C memory states in the logic. More abstract models lead to easier
+proof obligations, but cannot be used in presence of low-level pointer 
+arithmetic, while more concrete ones are able to deal with any C construction,
+at the expense of far more complex proof obligations.
+
+WP has two native interfaces to discharge proof obligations. The first one calls
+the Alt-Ergo~\cite{alt-ergo} automated theorem prover, while the second let the
+user do the proof within the Coq~\cite{coq} interactive proof assistant. In
+both cases, the original formulas are first run through an internal simplifier,
+that can directly discharge the simplest proof obligations, without the need
+for a call to an external tool. In addition, WP can also call the
+Why3~\cite{why3} back-end, through which it has access to a
+variety of automated provers. Alt-Ergo, Coq and Why3 are available
+under Open-Source licences (Cecill-C and LGPL). The various possible settings
+of WP are described in its user manual~\cite{WP}.
+
+While WP's primary usage is to prove functional properties expressed as 
+function contracts, it can also be used to prove the absence of runtime error,
+either by discharging the alarms emitted by Value Analysis, or by generating
+proof obligations for all operations that might lead to a runtime error 
+(without having to use Value first). The latter case is done through the use
+of the \emph{RTE} plugin, that generates an ACSL assertion for each potentially
+dangerous operation. WP can then generate proof obligations for these assertions
+as usual.
+
+\paragraph{Aoraï}
+While Value and WP are used to verify program properties, the Aoraï plugin is
+dedicated to generate ACSL specifications (which can then be proved by Value
+or WP). More precisely, it takes as input an automaton describing the sequence
+of function calls that are allowed during the execution of a program (from a
+given entry point). From that automaton, Aoraï instruments the code and provides
+ACSL contract for each function so that if all the contracts hold, then the
+code is behaving according to the automaton.
+
+Transitions of the automaton can be guarded by conditions over the state of the
+program at a given call point. Full syntax of Aoraï's input language is 
+described in~\cite{aorai}.
 
 \subsubsection{Microsoft's Verifier for Concurrent C (VCC)}
 

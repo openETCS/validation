@@ -1053,7 +1053,8 @@ or an industrial~\cite{Ledinot.Pariente.2010} background. The remainder of this
 section only deals with the plugins that are released with Frama-C's kernel and
 are the most relevant for OpenETCS.
 
-\paragraph{Value Analysis} is based on abstract interpretation 
+\paragraph{Value Analysis} 
+Value analysis is based on abstract interpretation 
 (section~\ref{sec:Abstract Interpretation}). This plugin analyses a
 complete application, starting from a given entry point, and gives at
 each program point an over-approximation of the values that can appear
@@ -1078,8 +1079,33 @@ the expense of the computation time and amount of memory used by the
 analysis. These options are described in more detail in Value's
 reference manual~\cite{frama-c-va}.
 
-\paragraph{WP}
-%+RTE
+\paragraph{WP} 
+WP is a plugin dedicated to deductive verification 
+(see section~\ref{sec:deduct-verif}). It uses different models 
+to represent C memory states in the logic. More abstract models lead to easier
+proof obligations, but cannot be used in presence of low-level pointer 
+arithmetic, while more concrete ones are able to deal with any C construction,
+at the expense of far more complex proof obligations.
+
+WP has two native interfaces to discharge proof obligations. The first one calls
+the Alt-Ergo~\cite{alt-ergo} automated theorem prover, while the second let the
+user do the proof within the Coq~\cite{coq} interactive proof assistant. In
+both cases, the original formulas are first run through an internal simplifier,
+that can directly discharge the simplest proof obligations, without the need
+for a call to an external tool. In addition, WP can also call the
+Why3~\cite{why3} back-end, through which it has access to a
+variety of automated provers. Alt-Ergo, Coq and Why3 are available
+under Open-Source licences (Cecill-C and LGPL). The various possible settings
+of WP are described in its user manual~\cite{WP}.
+
+While WP's primary usage is to prove functional properties expressed as 
+function contracts, it can also be used to prove the absence of runtime error,
+either by discharging the alarms emitted by Value Analysis, or by generating
+proof obligations for all operations that might lead to a runtime error 
+(without having to use Value first). The latter case is done through the use
+of the \emph{RTE} plugin, that generates an ACSL assertion for each potentially
+dangerous operation. WP can then generate proof obligations for these assertions
+as usual.
 
 \paragraph{Aoraï}
 

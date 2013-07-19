@@ -1617,14 +1617,26 @@ Timed automata and statecharts in SysML/UML are both based on the concept of fin
 
 
 
-\subsection{Simulation-based Approaches}
+\subsection{Verification with model-based simulation}
+\textcolor{red}{first draft}
 
-\subsubsection{Simulation with SystemC}
+This section addresses verification based on simulation. By building an executable model of system components its real-time behaviour can by analysed and evaluated before actually building the entire system.
 
+\subsubsection{Modelling with SysML and SystemC}
 
+Specifications in natural language are difficult to handle. Breaking down an overall system description into small comprehensible parts reduces complexity and eases interdisciplinary communication to be more efficient in performing development tasks.
 
+SysML, developed by the OMG (Object Management Group), is a simple but powerful general-purpose graphical modeling language that does not directly support executable models. However, there is a variety of tools for code generation from UML/SysML, especially for the Eclipse platform and the Papyrus framework that will be used in the project.
 
+To enable model execution and especially real-time simulation it is considered to generate semi-formal SystemC code from that abstract SysML models. It has to be investigated whether the the SysML model have to be adapted to a domain or language specific version. Concrete analysis will show whether this is feasible.
 
+SystemC is a C++ library providing an event-driven simulation interface suitable for electronic system design at various abstraction levels (from high level down to individual hardware components). It enables a system designer to simulate concurrent processes. SystemC processes can communicate in a simulated real-time environment, using channels of different datatypes (all C++ types and user defined types are supported). SystemC supports hardware and software synthesis (with the corresponding tools). SystemC models are executable.
+
+\subsubsection{Model execution and simulation}
+
+The aim of the execution of an SystemC model is to ensure that the working capacity (performance) of the underlying hardware system is sufficient to meet the system requirements. It has to be analysed which hardware resources will be needed for the OBU to avoid excessive delays and to ensure adequate response times in critical situations.  Because of the integrated simulation enviroment, SystemC enables scheduling analysis for average and worst-case conditions and provides analyses of process resources for individual system functions.
+
+In addition, by creating an executable system model from SysML or UML, the (real time) behaviour of the system can be analysed which is not feasible at the SysML level.
 
 \section{Verification for a Full Development}
 \label{sec:verif-full-devel}

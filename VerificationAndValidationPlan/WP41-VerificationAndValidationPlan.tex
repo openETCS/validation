@@ -1539,6 +1539,9 @@ NuSMV's source code is available under an LGPL license from
 
 
 \subsubsection{Formal Verification of Real-Time Aspects based on Timed Automata}
+\label{sct:twt:descrTA}
+
+\textcolor{magenta}{===== Start TWT =====}
 
 Verifying system properties involving time is difficult with traditional model checking methods. Commonly used \emph{temporal logics}, such as LTL or CTL catch discrete and qualitative aspects of time and allow to formulate properties such as\footnote{The prefixes are the corresponding linear time operators.}
 \begin{itemize}
@@ -1611,14 +1614,18 @@ A solution to this problem is to force the automaton to proceed by placing \emph
 
 \paragraph{From SysML/UML to Timed Automata}
 
-Timed automata and statecharts in SysML/UML are both based on the concept of finite automata. Thus, it is reasonable to extract timed automata from existing statecharts which is addressed in the literature \cite{David2002, Knapp2002, Jensen2004}. In this way, safety properties -- formalised as TCTL formulae -- can be verified in an automated fashion for a given statechart.
+Timed automata and statecharts in SysML/UML are both based on the concept of finite automata. Thus, it seems reasonable to extract timed automata from existing statecharts which is addressed in the literature \cite{David2002, Knapp2002, Jensen2004}. In this way, safety properties -- formalised as TCTL formulae -- can be verified in an automated fashion for a given statechart. However, there remain challenges:
+\begin{itemize}
+\item Translating hierarchical states to timed automata is not straight-forward and complicates matters significantly. If an hierarchical state-chart is flattened, structural information is lost and makes the timed automaton more difficult to read and understand. Thus, it is advisable to retain some kind of hierarchy, possibly by using synchronisation mechanisms.
+\item Special statechart features, such as history nodes that have a partially undefined semantics according to the current SysML/UML standard \cite{fecher_29_2005}, introduce problems. As they are not used very often, they can possibly left out in a first iteration.
+\end{itemize}
 
-\textcolor{red}{To be continued}
+\textcolor{magenta}{===== End TWT =====}
 
+\subsection{Verification with Model-Based Simulation}
+\label{sct:uro:systemc}
 
-
-\subsection{Verification with model-based simulation}
-\textcolor{red}{first draft}
+\textcolor{magenta}{===== Start URO (first draft) =====}
 
 This section addresses verification based on simulation. By building an executable model of system components its real-time behaviour can by analysed and evaluated before actually building the entire system.
 
@@ -1637,6 +1644,8 @@ SystemC is a C++ library providing an event-driven simulation interface suitable
 The aim of the execution of an SystemC model is to ensure that the working capacity (performance) of the underlying hardware system is sufficient to meet the system requirements. It has to be analysed which hardware resources will be needed for the OBU to avoid excessive delays and to ensure adequate response times in critical situations.  Because of the integrated simulation enviroment, SystemC enables scheduling analysis for average and worst-case conditions and provides analyses of process resources for individual system functions.
 
 In addition, by creating an executable system model from SysML or UML, the (real time) behaviour of the system can be analysed which is not feasible at the SysML level.
+
+\textcolor{magenta}{===== End URO =====}
 
 \section{Verification for a Full Development}
 \label{sec:verif-full-devel}
@@ -1658,7 +1667,7 @@ In addition, by creating an executable system model from SysML or UML, the (real
 \subsubsection{Techniques and Measures}
 \label{sec:dasv-verif-techniques-measures}
 
-\textit{Here the verfication plan begins}
+\textit{Here the verification plan begins}
 
 \subsection{SSRS Verification (1c)}
 \label{sec:ssrs-verification}
@@ -1942,6 +1951,37 @@ contribution to a full V\&V.}
 
 \section{Verification Plan for openETCS}
 \label{sec:verif-plan-open}
+
+
+\subsection{Formal Verification of Real-Time Aspects based on Timed Automata (TWT)}
+
+This section describes our the plans regarding the verification of real-time aspects by employing timed automata and the UPPAAL tool within the project. In Section~\ref{sct:twt:descrTA} (page \pageref{sct:twt:descrTA}) we have given an introduction to and described the principles of verification based on timed automata.
+
+TWT's work will be based on the following action items:
+\begin{enumerate}
+  \item We will analyze whether/how UML/SysML statecharts\footnote{The statecharts in UML and SysML are actually the same.} can be transformed to timed automata in a sensible manner while retaining as much structural information as possible.
+  \item Parts of the ETCS specification where timing plays a vital role will be analysed and veried based on timed automata by employing the transformation mechanism. Here we assume that the corresponding parts of the specification have already been modelled in SysML as will be done within WP3. In the case that a direct, automatic transformation is not feasible for now, we will manually create timed automata models to conduct our analyses.
+  \item We will provide documentation and feedback to WP3 and WP4 about our results to align our efforts with the other partners.
+  \item We will investigate, how our approach can be integrated in the Eclipse environment and develop such integration if feasible with our efforts.
+  \item We plan to publish our results on action item 1.
+\end{enumerate}
+
+Please note that the above list may be subject to future change.
+
+\subsection{Verification with Model-Based Simulation using SystemC (TWT, URO)}
+
+In Section~\ref{sct:uro:systemc} (page \pageref{sct:uro:systemc}) the basics of SystemC and the SysML/SystemC joint approach have been described. TWT and the University of Rostock (URO) will work on this concept based on the following action items:
+
+\begin{enumerate}
+  \item TWT will analyse methods for generating SystemC code from SysML models. In first investigations the Acceleo tool (Eclipse plugin, based on OMG standard) seems to be a promising candidate for model-to-text transformation.
+  \item URO will build a modular and executable SystemC model for braking curves that is suitable for real-time simulation. An accompanying  high-level SysML model will be constructed as well and will be means to test the transformation methods to be developed in the context of action item 1.
+  \item TWT and URO plan to investigate which other parts of the ETCS specification can benefit from real-time simulation and build models accordingly.
+  \item URO will investigate whether performance analysis based on the underlying hardware system is feasible within the openETCS project. This will allow to scale the hardware resources of the OBU system accordingly.
+  \item In addition, using the results from action item 1, TWT and URO plan to transform existing SysML models (to be developed in WP3) to SystemC for real-time simulation.
+  \item Evaluation (and possibly implementation) of an Eclipse integration
+\end{enumerate}
+
+Please note that the above list may be subject to future change.
 
 \section{Validation Plan for openETCS}
 \label{sec:valid-plan-open}

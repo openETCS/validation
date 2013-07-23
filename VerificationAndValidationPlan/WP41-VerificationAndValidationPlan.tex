@@ -150,7 +150,8 @@ Document title & openETCS Validation \& Verification Plan\\
 Document version & 00.04 \\
 Document authors (org.)  &  Marc Behrens (DLR),
 Cecile Braunstein (U Bremen), Cyril Cornu (All4Tec), Jens Gerlach
-(Fraunhofer), Christophe Gaston (CEA), Hardi Hungar (DLR), Stephan Jagusch (AEbt), Virgile Prevosto (CEA)
+(Fraunhofer), Christophe Gaston (CEA), Hardi Hungar (DLR), Stephan Jagusch
+(AEbt), Jan Peleska (U Bremen), Virgile Prevosto (CEA)
 Stefan Rieger (TWT)\\
 \hline
 \end{tabular}
@@ -826,13 +827,18 @@ verdicts emitted when Fail is not emitted. These different verdicts reflect diff
  we briefly discuss two model based testing tools that we will use conjointly in the 
 OpenETCS project.
 
-\textcolor{magenta}{Start Uni Bremen****\\ }
- The model based testing (MBT) may apply at different level during the
+Model based testing (MBT) may apply at different level during the
 lifecycle:
 \begin{itemize}
-\item Integration testing
-\item (Object) code verification
+\item System integration testing
+\item Software integration testing
+\item High level code verification
+\item Object code verification
 \end{itemize}
+High-level code verification may be performed on any host perform
+whereas object code verification intends to test the running code on
+the target hardware.
+
 \paragraph{Model-Based System Integration Testing}
 The objectives of MBT on system integration level are to
 \begin{itemize}
@@ -856,11 +862,22 @@ are visible) to grey-box level (some global variables may be monitored or even m
 
 \item the development model may contain errors that are only revealed during HW/SW integration (for example, calculations failing due to inadequate register word size, or deadlines missed due to insufficient CPU resources).
 \end{itemize}
-\paragraph{Model-Based Generated Code Testing}
-The second application of MBT is for the objective of code verification.
-If model-to-text and text-to-text transformations are not formally verified, it
+
+Software integration is  performed by software-in-the-loop technology
+on host computers. The software components as well as the complete
+software are tested on host computer with a testing environment that
+simulates the hardware behavior and the operational environment. The
+main advantage is that all software properties can be easily simulated
+and tested. The tests for software-in-the-loop may be generated from a
+model but at this level unite test for each software functionalities
+may also be performed.
+
+\paragraph{Model-Based Testing of Generated High-Level Code}
+Another application of MBT aims at the verification of generated
+high-level code (for openETCS, the target language will be C).
+If model-to-text transformations are not formally verified, it
 is necessary to verify the outcome of each transformation. Since the transformation
-source is a model $M$ (recall that also high-level code is regarded as a model, represented, for example, by its control flow graphs), MBT suites can be derived automatically from this model to show that the
+source is a model $M$, MBT suites can be derived automatically from this model to show that the
 generated code conforms to $M$. 
 
 Observe that in contrast to system-level MBT no redundant model is used for this objective, but the
@@ -886,14 +903,17 @@ in~\cite{Pnueli98}. In
 have been refined and applied to the railway domain.
 
 
-A main advantage of this approach in comparison to performing V\&V for
+The  main advantage of this approach in comparison to performing V\&V for
 generators and compilers is that the latter do not have to be
 re-verified after improvements and extensions. Therefore we advocate
 the test-based code verification approach to be applied in openETCS
 for verifying generated high-level source code or object code of SIL-4
 applications. 
 
-\textcolor{magenta}{End Uni Bremen****\\ }
+
+The HW/SW integration testing is out of the scope of this
+project. Nevertheless, Model-Based Testing of Compiled Object Code
+or/and  Alternative Unit test on target HW may also be performed.
 
 
 \subsubsection{Model Based Testing applied to Open ETCS V\&V}
@@ -911,13 +931,12 @@ the design process. The main difficulty in this context is to be sure that the
  has been chosen as testing and verification technique within the V\&V activities of
  the OpenETCS project. 
 
-\textcolor{magenta}{Start Uni Bremen****\\ }
 Moreover, we suggest to create test models on the basis of the ETCS standard (subset 026) and
 the existing high-level test suites made available in subset 076. The latter test cases should 
 be feasible computations of the test model, so that the test model really creates a {\it superset}
 of the existing test suite from subset 076.
 
-\textcolor{magenta}{End Uni Bremen****\\ }
+
 
 This technique application will be explained in the following
  paragraphs through the description of different model-based testing tools: 
@@ -1050,7 +1069,7 @@ compositional result described in the Diversity, and use it for white box testin
 
 
 \subsubsection{The RT-tester} 
-\textcolor{magenta}{Start Uni Bremen****\\ }
+
 The RT-Tester test automation tool, made by Verified
 \cite{verified_website}, performs automatic test generation, test
 execution and real-time test evaluation.  It supports different
@@ -1102,7 +1121,7 @@ DO178C has been proposed and applied with success to the RT-tester
 tool. Following the same  approach compatibility with the CENELEC EN50128
 may be easily done. 
 
-\textcolor{magenta}{End Uni Bremen****\\ }
+
 \subsection{Characterisation of Formal Methods}
 
 Based on rigorous mathematical notions, formal methods may be used

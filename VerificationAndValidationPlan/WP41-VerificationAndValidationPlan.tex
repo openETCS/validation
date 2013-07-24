@@ -12,6 +12,12 @@
 \usepackage{appendix}
 \usepackage{enumerate}
 \usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{breakurl}
+\usepackage{color, colortbl}
+\definecolor{myblue}{rgb}{0.6,.6,1}
+\definecolor{mydarkblue}{rgb}{0,0,0.5}
+\definecolor{mylightblue}{rgb}{0.8,0.8,1}
 \usetikzlibrary{arrows,shapes,automata,petri,calc}
 
 
@@ -583,7 +589,7 @@ implementation'' of it. }
   \item[DLR] Overall coherence, Safety interface
   \item[All4Tec] aspects of model-based development, FLOSS,
     safety. Mainly in Sec.~\ref{sec:vv-strategy-full} (Full Development).
-  \item[SQS] \qq{Contributions to all sections}
+  \item[SQS] {Review 4.1 V\&V Strategy for a full development and contribution to 4.2 V\&V Strategy for openETCS}
   \item[TUBS] Safety interface
   \item[DB, SNCF, NS] Operator role (scenarios, validation goals)
   \end{description}
@@ -648,7 +654,7 @@ modeling), design defects may get unveiled before the real validation.}
   \begin{description}
   \item[DLR] Overall coherence, revise structure of the Verification Report
   \item[All4Tec] Role of model-based testing, \qq{hopefully more}
-  \item[SQS] tbd
+  \item[SQS] Overall coherence
   \item[CEA] Tools and methods Sec.~\ref{sec:methods-tools})
   \item[U Bremen] Tools and methods (model based testing, bounded
     model checking Sec.~\ref{sec:methods-tools}),
@@ -1948,7 +1954,7 @@ tools.
   \item[DLR] overall coherence, lab test description
   \item[U Bremen] RT Tester application, \qq{more}
   \item[Siemens] Application story (to be detailed)
-  \item[SQS] tbd
+  \item[SQS] Contribution to chapter 6.1 Verification Plan for openETCS
   \item[CEA] Application story (to be detailed)
   \item[All4Tec] Application story (to be detailed)
   \item[DB, SNCF, NS] Validation requirements
@@ -1971,8 +1977,165 @@ contribution to a full V\&V.}
 \section{Verification Plan for openETCS}
 \label{sec:verif-plan-open}
 
+\subsection{Verification overview}
+\textit{Guidance: Describe the organization, schedule, resources, responsibilities, tools, techniques, and methodologies to be 
+deployed in order to perform the verification activities.}
 
-\subsection{Formal Verification of Real-Time Aspects based on Timed Automata (TWT)}
+\subsubsection{Organisation}
+\textit{Guidance: Define the relationship of verification to other efforts such as development, project management, quality assurance, and configuration management. Define the lines of communication within the verification effort, the authority for resolving issues, and the authority for approving verification deliverables.}
+
+\subsubsection{Schedule}
+\textit{Guidance: The schedule summarizes the various verification tasks
+and their relationship to the overall openETCS project.
+It Describes the project life cycle and project milestones including completion dates.
+Summarize the schedule of verification tasks and how verification results provide feedback to the whole openETCS process to support overall project management functions.
+The objective of this section is to define an orderly flow of material between project activities and verification tasks.}
+
+The schedule of Verification activities is summarized in Table \ref{tab:1}.
+
+\begin{center}
+\begin{longtable}{|m{2cm}|m{6cm}|m{2cm}|m{2cm}|}
+\caption{SW Verification Schedule}\label{tab:1}\\
+
+\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity Code} & \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Estimated Delivery} & \multicolumn{1}{|c|}{Real Delivery} \\ \hline 
+\endfirsthead
+
+\multicolumn{4}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\rowcolor{myblue} \multicolumn{1}{|c|}{Activity Code} & \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Estimated Delivery} & \multicolumn{1}{|c|}{Real Delivery} \\ \hline
+\endhead
+
+\hline \multicolumn{4}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+
+\hline \hline
+\endlastfoot
+
+\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 0: SW Requirements Verification} \\\hline
+SWReq-Ver-Act1 & Compliance with SSRS verification & & \\\hline
+SWReq-Ver-Act2 & Accuracy, Consistency, Completeness, Correctness assurance & & \\\hline
+SWReq-Ver-Act3 & Testability assurance & & \\\hline 
+SWReq-Ver-Act4 & Verificability assurance & & \\\hline 
+SWReq-Ver-Act5 & Compliance with Standards & & \\\hline 
+SWReq-Ver-Act6 & Traceability with SSRS verification & & \\\hline
+SWReq-Ver-Act7 & Requirements modelling correctness & & \\\hline
+\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 1: SW Architecture and Design Verification} \\\hline
+SWArch-Ver-Act1 & software architecture design verification & & \\\hline
+SWArch-Ver-Act2 & Handle attributes verification & & \\\hline
+SWArch-Ver-Act3 & incompatibilities checking & & \\\hline
+SWArch-Ver-Act4 & Model coherency verification & & \\\hline
+SWArch-Ver-Act5 & Constraints analysis verification & & \\\hline
+SWArch-Ver-Act6 & Traceability verification & & \\\hline
+SWArch-Ver-Act7 & Compliance with Standards verification & & \\\hline
+\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 2: SW Component Design} \\\hline
+ & & & \\\hline
+\end{longtable}
+\end{center}
+
+\begin{center}
+\begin{longtable}{|m{1cm}|m{6,5cm}|m{2cm}|m{2cm}|}
+\caption{Tool chain Verification Schedule}\\
+
+\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity Code} & \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Estimated Delivery} & \multicolumn{1}{|c|}{Real Delivery} \\ \hline 
+\endfirsthead
+
+\multicolumn{4}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\rowcolor{myblue} \multicolumn{1}{|c|}{Activity Code} & \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Estimated Delivery} & \multicolumn{1}{|c|}{Real Delivery} \\ \hline
+\endhead
+
+\hline \multicolumn{4}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+
+\hline \hline
+\endlastfoot
+
+\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 0: Tool chain Requirements} \\\hline
+ & & & \\\hline
+\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 1:} \\\hline
+ & & & \\\hline
+\end{longtable}
+\end{center}
+
+\subsubsection{Resources}
+\textit{Guidance: This section summarizes the resources needed to perform verification tasks, including staffing, facilities, tools, finances, and special procedural requirements such as security, access rights, and documentation control.}
+
+\subsubsection{Responsibilities}
+\label{sec:Responsibilities}
+\textit{Guidance: Identify the organization responsible for performing Verification tasks. There are two levels of responsibility – 
+general responsibilities and specific responsibilities for the Verification tasks to be performed should be assigned to individuals. General responsibilities should be supplemented with specific 
+responsibility for each task in the verification plan.}
+
+\begin{center}
+\begin{longtable}{|m{2,5cm}|m{6cm}|m{2cm}|m{2cm}|}
+\caption{Responsabilities}\\
+
+\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Role} & \multicolumn{1}{|c|}{Name of the person} & \multicolumn{1}{|c|}{Company} & \multicolumn{1}{|c|}{Activity Code} \\ \hline 
+\endfirsthead
+
+\multicolumn{4}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\rowcolor{myblue} \multicolumn{1}{|c|}{Role} & \multicolumn{1}{|c|}{Name of the person} & \multicolumn{1}{|c|}{Company} & \multicolumn{1}{|c|}{Activity Code} \\ \hline
+\endhead
+
+\hline \multicolumn{4}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+
+\hline \hline
+\endlastfoot
+
+Verification Team Manager & & & \\\hline
+Verifier & & & \\\hline
+\end{longtable}
+\end{center}
+
+\subsection{Verification Methods and Tools} 
+
+\textit{Guidance: Identify the special software tools, techniques, and methodologies to be employed by the verification team. 
+The purpose of each should be defined and plans for the acquisition, training, support, and qualification of each shall be described in this section.}
+
+\subsubsection{Reviews and Inspections}
+The introduction of reviews in the openETCS project will enable the adherence to design specifications as well as ensuring that appropriate coding generation techniques - including relevant coding standards have been used.  
+The use of an appropriate review technique will also help ensure consistency of approach across development teams and may result in improved standards through the identification of best practice solutions.
+Software reliability will be increased due to the removal of a larger percentage of the errors that would otherwise have existed in the software. Specialist analysis techniques exist for predicting the reliability of software. 
+
+The only way of verifying any product whether it is a piece of software, a design specification, test script or anything else is to carry out some sort of review or inspection process. The introduction of formal review processes provides us with definite points in time when we can carry out these essential assessments.
+
+It is possible to review just about anything. In the openETCS project all written documents, specifications, models and code can be reviewed. It is also important to include all documents concerned with the creation and delivery of the openETCS product. This means that strategies, plans, approaches, operation and maintenance manual, user guides, the contract that will initiate the work should all be reviewed in a structured way. 
+
+On the other hand, an inspection is a visual examination of a software product to detect and identify software anomalies, including errors and deviations from standards and specifications. Inspections are peer examinations led by impartial facilitators who are trained in inspection techniques. Determination of remedial or investigative action for an anomaly is a mandatory element of a software inspection, although the solution should not be determined in the inspection meeting.
+
+Both Review and inspections methods shall be used in different contexts during the execution of the Verification activities. 
+
+More information about the reviews can be found in Quality Assurance Plan [??].
+
+\subsubsection{Software Architecture Analysis Method (SAAM)}
+
+SAAM is one of the simpler methods for scenario-based architecture evaluation, which was the first to be published. SAAM is suitable for the testing of software architectures with regard to quality attributes (qualitative requirements), such as
+
+\begin{itemize}
+\item Modifiability,
+\item Portability,
+\item Growth Potential,
+\item Performance,
+\item Reliability,
+\end{itemize}
+
+but also for the evaluation of the functionality (functional requirements) of a software architecture. 
+
+In a SAAM evaluation basically scenarios are developed, prioritized and assigned to those parts of the software architecture to be tested that are affected by them. This may be sufficient to indicate problems in the architecture.
+
+\subsubsection{Architecture Tradeoff Analysis Method (ATAM)}	
+
+ATAM is used to review the design decisions of the architecture. It is checked whether the design decisions satisfactorily support the requirements concerning quality. Risks and compromises included in the architecture are identified and documented.
+
+The process includes two phases. 
+\begin{itemize}
+\item In the first phase the necessary components are presented. Then the architecture is checked and analyzed. 
+\item In the second phase it is tested whether the analysis and the test were correct and complete. Then the results are summed up.
+\end{itemize}
+
+\subsubsection{Formal Verification of Real-Time Aspects based on Timed Automata (TWT)}
 
 This section describes our the plans regarding the verification of real-time aspects by employing timed automata and the UPPAAL tool within the project. In Section~\ref{sct:twt:descrTA} (page \pageref{sct:twt:descrTA}) we have given an introduction to and described the principles of verification based on timed automata.
 
@@ -1987,7 +2150,7 @@ TWT's work will be based on the following action items:
 
 Please note that the above list may be subject to future change.
 
-\subsection{Verification with Model-Based Simulation using SystemC (TWT, URO)}
+\subsubsection{Verification with Model-Based Simulation using SystemC (TWT, URO)}
 
 In Section~\ref{sct:uro:systemc} (page \pageref{sct:uro:systemc}) the basics of SystemC and the SysML/SystemC joint approach have been described. TWT and the University of Rostock (URO) will work on this concept based on the following action items:
 
@@ -2001,6 +2164,394 @@ In Section~\ref{sct:uro:systemc} (page \pageref{sct:uro:systemc}) the basics of 
 \end{enumerate}
 
 Please note that the above list may be subject to future change.
+
+\subsection{Verification Activities}
+This section provides the detailed plan for the verification tasks throughout the openETCS project life cycle.
+
+\subsubsection{System Verification}
+\textcolor{red}{<Brief Introduction>}
+
+\paragraph{SSRS Verification(1c)}
+The SSRS Verification phase refers to the task already defined in the \ref{sec:SSRSVerification} section of this document that involves the full development. 
+For further details about the activities involved, please go to the mentioned section.
+
+\subsubsection{Software Verification}
+The SW process is detailed in the D.2.3 OpenETCS process. Bearing in mind that the tasks described in this openETCS Verification plan are strongly linked to the Software process defined in that document, the following figure is included in order to have present the key points to be covered in the plan.
+
+\begin{figure}[h]
+  \centering
+  \fbox{\includegraphics[width=4in]{Model-phase.png}}
+  \caption{Software phase description}
+  \label{fig:detailed software}
+\end{figure}
+
+\textbf{SW Requirements Verification}
+
+\underline{Task} 
+
+In the SW Requirements Specification the SSRS shall be taken as starting point, redefining them to ensure the software constraints are considered. 
+The SW Requirements Verification phase then shall verify that the proposed Software Requirements cover as much as possible of the SSRS and provide a correct implementation of the System Requirements in the Software context.
+On the other hand, the Verification done in this phase shall include the assessment of the SW Requirements modelling, the objective is to ensure the representation of the requirements is coherent with their specification as well as complete, explicit and implementable, as well as traceable to the semi-formal and/or formal models defined in the system phase.
+
+\underline{Documents to Be Produced} 
+
+\begin{itemize}
+\item SW Requirements Verification Report
+\end{itemize}
+
+\underline{Activities}
+
+Some activities shall be performed to ensure the requirements are written in a readable and testable manner. The Verification of the Software Requirements shall assess whether the requirements met the following aspects:
+\begin{itemize}
+\item Deterministic: Given an initial system state and a set of inputs, you must be able to predict exactly what the outputs will be.
+\item Unambiguous: All openETCS project members must get the same meaning from the requirements; otherwise they are ambiguous.
+\item Correct: The relationships between causes and effects are described correctly.
+\item Complete: All requirements are included. There are no omissions.
+\item Non-redundant: Just as the Software modelling (semi-formal and formal) provides a non-redundant set of data, the requirements should provide a non-redundant set of functions and events.
+\item Lends itself to change control: Requirements, like all other deliverables of the openETCS project, should be placed under change control.
+\item Traceable: SW Requirements must be traceable to each other, to the SSRS, to the objectives, to the design, to the test cases, and to the code.
+\item Readable by all project team members: The project stakeholders, including the users, experts and testers, must each arrive at the same understanding of the requirements.
+\item Written in a consistent style: Requirements should be written in a consistent style to make them easier to understand.
+\item Explicit: Requirements must never be implied.
+\item Logically consistent: There should be no logic errors in the relationships between causes and effects.
+\item Lends itself to reusability: Good requirements can be reused on future projects based on openETCS.
+\item Succinct: Requirements should be written in a brief manner, with as few words as possible.
+\item Annotated for criticality: Each SW requirement should note the level of criticality to the openETCS project. In this way, the priority of each requirement can be determined, and the proper amount of
+emphasis placed on developing and testing each requirement.
+\item Feasible: If the software design is not capable of delivering the requirements, then the requirements are not feasible.
+\end{itemize}
+
+The activities that shall ensure these aspects are successfully met are the following:
+\begin{itemize}
+\item {\it SWReq-Ver-Act1. Compliance with SSRS}: the SW Requirements are based on the SSRS, so it shall be ensured that their specification is compliant and coherent with regard to the SSRS; the SW requirements complement, adjust and enlarge the scope delimited by the SSRS in the Software phase.
+\item {\it SWReq-Ver-Act2. Accuracy, Consistency, Completeness, Correctness assurance}: A significant problem with recording requirements as text is the difficulty of analyzing them for completeness, consistency, and correctness. The Specification of the SW Requirements has precise syntactic and semantic rules (e.g., data type consistency) and the specification of the requirements shall be compared against those established rules to ensure these aspects are correctly covered.
+\item {\it SWReq-Ver-Act3. Testability assurance}: The two objectives for testing the openETCS safety-critical SW are the demonstration that the software satisfies its requirements and the demonstration that errors that could lead to unacceptable failures have been removed.
+\item {\it SWReq-Ver-Act4. Verificability assurance}: The SW Requirements shall identify the main functionality and describe the functional breakdown and data flows from top-level functions to low-level functions. The description provided as well as the flows identified shall be verifiable.
+\item {\it SWReq-Ver-Act5. Compliance with Standards}: Compliance with CENELEC Standards (EN50126, EN50128 and EN50129) shall be verified.
+\item {\it SWReq-Ver-Act6. Traceability with SSRS}: Each SSRS allocated to software must map to one or more software requirement. Traceability analysis, which can be automated, determines the completeness of the mapping of SSRS to software. A table similar to this one shall be obtained, either manually or automatically to assess the conformance with this expected activity.
+\item {\it SWReq-Ver-Act7. Requirements modelling correctness}: Considering  "the result of the modelling activities is a document that represents a thorough understanding of the problem the proposed software is intended to solve"\textcolor{red}{[1. Cho, Chin-Kuei, Quality Programming, John Wiley \& Sons, Inc, 1987, p 21.]}, during the SW Requirements verification, it shall be possible to capture all required information, including additional information for safety-critical aspects with the support of the models. These Requirements representations shall be compared to their original specification and assess whether they are complete and enough to cover all the information provided by them.
+\end{itemize}
+
+\begin{center}
+\begin{longtable}{|m{5cm}|m{7cm}|}
+\caption{Requirements Trace Table}\\
+\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Source SSRS ID} & \multicolumn{1}{|c|}{SW Requirement ID} \\ \hline 
+\endfirsthead
+\multicolumn{2}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\rowcolor{myblue} \multicolumn{1}{|c|}{Source SSRS ID} & \multicolumn{1}{|c|}{SW Requirement ID} \\ \hline
+\endhead
+\hline \multicolumn{2}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+\hline \hline
+\endlastfoot
+SSRS-xxxx &
+SWR-yyy
+\\\hline
+SSRS-xxxx &
+SWR-yyy
+\\\hline
+\end{longtable}
+\end{center}
+
+\underline{Tools, Techniques, Methods and Measures} 
+
+\textit{Guidance: Identify the special software tools, techniques, and methodologies to be employed by the verification team. 
+The purpose of each should be defined and plans for the acquisition, training, support, and qualification of each shall be described in this section.}
+
+The following table summarizes the Techniques, methods, measures or tools proposed for the identified activities.
+
+\begin{center}
+\begin{longtable}{|m{3cm}|m{7cm}|m{4cm}|}
+\caption{SW Requirements Verification Tools, Techniques, Methods and Measures}\\
+\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Techniques/ Methods/ Measures} & \multicolumn{1}{|c|}{Tools}\\ \hline 
+\endfirsthead
+\multicolumn{3}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\rowcolor{myblue} \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Techniques/ Methods/ Measures} & \multicolumn{1}{|c|}{Tools} \\\hline
+\endhead
+\hline \multicolumn{3}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+\hline \hline
+\endlastfoot
+{\it SWReq-Ver-Act1} & 
+This compliance is verified by peer review. The first version of SW Requirements is usually incomplete and composed primarily of top-level adjustments. The meaning of the SW requirements is described textually. & 
+<To be defined>  
+\\\hline
+{\it SWReq-Ver-Act2} & 
+Since the modelling at this stage is provided, verification is mostly based on review and with a tools-based modelling approach. Some consistency checks between the SW Requirements and both the semi-formal modelling and the formal modelling can be automated.
+& 
+<To be defined>  
+\\\hline
+{\it SWReq-Ver-Act3} &
+Requirements-based testing has been found to be effective at revealing errors early in the testing process Requirement models created with standard UML use-case notations are not robust enough to create requirements based test cases that met the safety-critical aspects, so the standard use-case model notation shall be extended to allow the capture of additional information required to determine test cases. &
+Test cases can be automatically generated from “test-ready” use-case models. <To be defined>  
+\\\hline
+{\it SWReq-Ver-Act4} & 
+Verification is mostly based on review &
+<To be defined> 
+\\\hline
+{\it SWReq-Ver-Act5} & 
+Verification is mostly based on review &
+<To be defined>
+\\\hline
+{\it SWReq-Ver-Act6} & 
+A traceability matrix between SSRS and SW Requirements shall be prepared either manually or automatically and assessed by review & 
+Integrated tools can generate software to system requirements traceability tables showing which software requirements are allocated to system requirements. <To be defined>
+\\\hline
+{\it SWReq-Ver-Act7} & 
+Verification is mostly based on review & 
+<To be defined>
+\\\hline
+\end{longtable}
+\end{center}
+
+\textbf{SW Architecture, Design and Modelling Verification}
+
+\underline{Task} 
+
+This phase aims to ensure that the software architecture design adequately fulfils the software requirements specification already verified in the SW Requirements Verification phase.
+The software architecture defines the major elements and subsystems of the openETCS software, how they are interconnected, and how the required (safety integrity) attributes will be achieved. It also defines the overall behaviour of the software, and how the software elements interact. 
+To carry this phase the information from the current software lifecycle phase shall be verified. All essential information should be available and must be verified; the information should include the adequacy of the specifications, design and plans in the current phase. 
+The architecture and design shall be modelled and the coherence of those models with regard to their specification shall be verified to assess whether the constraints are correctly treated.
+The verification configuration should be precisely defined and the verification activities shall be repeatable.
+
+\underline{Documents to Be Produced} 
+
+\begin{itemize}
+\item SW Architecture, Design and Modelling Verification Report
+\end{itemize}
+
+\underline{Activities}
+
+Software architecture verification should consider whether the software architecture design adequately fulfils the SW requirements specification. 
+
+The essential properties to be verified during this phase are:
+
+\begin{itemize}
+\item What is the software supposed to do: including the SW specification and the system capabilities
+\item What is the software not supposed to do: be aware of the unexpected emergent behaviour, boundary specifications, inhibits
+\item What is the software supposed to do under adverse conditions: system biases, tolerances
+\item What are the safety considerations
+\item What are the integration or interfacing considerations: subsystems, modules, components, relationship between hardware and software, partitions, parallelism, compatibility
+\item What are the dependability considerations: performance, capacity, complexity, stability
+\end{itemize}
+
+Considering these aspects, a table shall be prepared to list a relation of verification dimensions regarding to the Architecture and Design that facilitates the process. An example is given below:
+
+\begin{center}
+\begin{longtable}{|m{2cm}|m{2cm}|m{2,1cm}|m{2cm}|m{1cm}|m{2cm}|m{2,1cm}|}
+\caption{SW Architecture Verification preparation table - Example of contents}\\
+\hline \rowcolor{myblue} \centering \textbf{Verification dimension} & \centering \textbf{Intended behaviour} & \centering \textbf{Unacceptable behaviour} & \centering \textbf{Adverse conditions} & \centering \textbf{Safety} & \centering \textbf{Integration} & \textbf{Dependability} \\\hline 
+\endfirsthead
+\multicolumn{7}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\rowcolor{myblue} \centering \textbf{Verification dimension} & \centering \textbf{Intended behaviour} & \centering \textbf{Unacceptable behaviour} & \centering \textbf{Adverse conditions} & \centering \textbf{Safety} & \centering \textbf{Integration} & \textbf{Dependability} \\\hline 
+\endhead
+\hline \multicolumn{7}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+\hline \hline
+\endlastfoot
+Performance analysis & Service delivery & Consequences of service failure, unexpected emergent behaviour & Distributed redundancy and fail-over & & &  
+\\\hline
+Timing Requirements & normal behaviour & Blown performance margins, missing timing requirements & Distributed redundancy and fail-over & Safety and Recoverability, timing margins & Timeline 
+management, phase transition interlocks &  
+\\\hline
+Security Requirements & Secure communication & Compromised communication & Redundant communication channels & & & 
+\end{longtable}
+\end{center}
+The software architecture modelling, which consists of determining and connecting software components, requires a phase of analysis to be able to validate the representation carried out, as errors can occur in the representation. It is thus necessary to be able to identify and to provide them to the designer. 
+
+Modelling must also bring answers in term of feasibility and the constraint shall be analyzed so 
+the interdependent functions should not overlap.
+
+The verifications done at the software architecture level are related to specification and execution model coherency.
+
+The expected activities for this phase are the following:
+\begin{itemize}
+\item {\it SWArch-Ver-Act1. Check the software architecture design}: The SW architecture and design should fulfil the SW requirements specification. From a safety point of view, the software architecture phase is where the basic safety strategy for the software is developed.
+\item {\it SWArch-Ver-Act2. Handle attributes}: The attributes of major elements and subsystems should be adequate with reference to the feasibility of the safety performance required, testability for further verification, readability by the development and verification team, and safe modification to permit further evolution. With the attributes, on which we rely once the software is specified, it is possible to check if the model of execution and the coherence of the periods of the various software components are corrects.
+\item {\it SWArch-Ver-Act3. Check incompatibilities}: The incompatibilities between design and specification should be checked. 
+\item {\it SWArch-Ver-Act4. Model coherency}: Verify the representation carried out with the modelling. The errors identified can be related to the symmetry of the inter-connected functions. A certain number of constraints of coherence must thus be analyzed. 
+\item {\it SWArch-Ver-Act5. Constraints analysis}: Ensure system dysfunctions do not occur. Some components can also execute an operation depending on a signal resulting from another component, which results in constraints of synchronization that must also be taken into account. 
+
+\end{itemize}
+
+\underline{Tools, Techniques, Methods and Measures} 
+
+\textit{Guidance: Identify the special software tools, techniques, and methodologies to be employed by the verification team. 
+The purpose of each should be defined and plans for the acquisition, training, support, and qualification of each shall be described in this section.}
+
+The following table summarizes the Techniques, methods, measures or tools proposed for the identified activities.
+
+\begin{center}
+\begin{longtable}{|m{3cm}|m{7cm}|m{4cm}|}
+\caption{SW Architecture, Design and Modelling Verification Tools, Techniques, Methods and Measures}\\
+\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Techniques/ Methods/ Measures} & \multicolumn{1}{|c|}{Tools}\\ \hline 
+\endfirsthead
+\multicolumn{3}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\rowcolor{myblue} \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Techniques/ Methods/ Measures} & \multicolumn{1}{|c|}{Tools} \\\hline
+\endhead
+\hline \multicolumn{3}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+\hline \hline
+\endlastfoot
+{\it SWArch-Ver-Act1} & 
+ & 
+<To be defined> 
+\\\hline
+{\it SWArch-Ver-Act2} & 
+&  
+<To be defined> 
+\\\hline
+{\it SWArch-Ver-Act3} &
+&
+<To be defined> 
+\\\hline
+{\it SWArch-Ver-Act4} & 
+ &
+<To be defined> 
+\\\hline
+{\it SWArch-Ver-Act5} & 
+ &
+<To be defined> 
+\\\hline
+\end{longtable}
+\end{center}
+
+\textbf{SW Component and Modelling Verification}
+
+\underline{Task} 
+
+This phase analyzes whether the SW components defined in the openETCS Software process are verifiable by design, with a focus on the formal verification of data aspects of components and components modelling.
+
+This phase delivers methods and tools to
+
+\begin{itemize}
+\item Verify the component models by model-checking techniques, with a focus on behavioural aspects such as attributes and data-dependent properties
+\item Verify the specification of the components is coherent to the SW architecture and design previously verified. This activity shall be based on the existing models in the component stage as well as previous phases, in close connection with the model checking activities.
+\end{itemize}
+
+\underline{Documents to Be Produced} 
+
+\begin{itemize}
+\item SW Component and Modelling Verification Report
+\end{itemize}
+
+\underline{Activities}
+
+This phase aims to assess whether the specification and modelling of components are reusable, configurable, and implementable in the expected code automatically generated environment. 
+
+The activities that shall ensure these aspects are successfully met are the following:
+\begin{itemize}
+\item {\it SWComp-Ver-Act1.  }:  
+\item {\it SWComp-Ver-Act2.  }:  
+\item {\it SWComp-Ver-Act3.  }:  
+\item {\it SWComp-Ver-Act4.  }:  
+\item {\it SWComp-Ver-Act5.  }:  
+\item {\it SWComp-Ver-Act6.  }:   
+\end{itemize}
+
+\underline{Tools, Techniques, Methods and Measures} 
+
+\textit{Guidance: Identify the special software tools, techniques, and methodologies to be employed by the verification team. 
+The purpose of each should be defined and plans for the acquisition, training, support, and qualification of each shall be described in this section.}
+
+The following table summarizes the Techniques, methods, measures or tools proposed for the identified activities.
+
+\begin{center}
+\begin{longtable}{|m{3cm}|m{7cm}|m{4cm}|}
+\caption{SW Component and Modelling Verification Tools, Techniques, Methods and Measures}\\
+\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Techniques/ Methods/ Measures} & \multicolumn{1}{|c|}{Tools}\\ \hline 
+\endfirsthead
+\multicolumn{3}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\rowcolor{myblue} \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Techniques/ Methods/ Measures} & \multicolumn{1}{|c|}{Tools} \\\hline
+\endhead
+\hline \multicolumn{3}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+\hline \hline
+\endlastfoot
+{\it SWComp-Ver-Act1} & 
+ & 
+<To be defined>  
+\\\hline
+{\it SWComp-Ver-Act2} & 
+& 
+<To be defined>  
+\\\hline
+{\it SWComp-Ver-Act3} &
+ &
+ <To be defined>  
+\\\hline
+{\it SWComp-Ver-Act4} & 
+ &
+<To be defined> 
+\\\hline
+{\it SWComp-Ver-Act5} & 
+ &
+<To be defined>
+\\\hline
+{\it SWComp-Ver-Act6} & 
+ & 
+<To be defined>
+\\\hline
+
+\end{longtable}
+\end{center}
+
+\textbf{SW code generation Verification}
+
+\textbf{Traceability matrix Verification}
+
+\textbf{Test Verification}
+
+\textbf{Coverage Verification}
+
+\textbf{Safety Verification}
+
+\subsubsection{Tool chain Verification}
+\textit{Verification of the identified list of tools that have been collected in the tool chain.}
+
+\subsection{Verification Reporting}
+\textit{This section describes how the results of implementing the Verification Plan will be documented.
+Verification reporting will occur throughout the software life cycle.
+The content, format, and timing of all verification reports shall be specified in this section.}
+
+The following reports will be generated during the Verification process:
+\begin{itemize}
+\item \textbf{Anomaly reports:} 
+\item \textbf{Phase Summary Verification reports:} 
+\item \textbf{Final report:}
+\end{itemize}
+
+The structure of the Verification report is already defined in the \ref{sec:structure-vv-plan} section of this document
+
+\subsection{Administrative procedures}
+This section identifies the existing administrative procedures that are to be implemented as part of the Verification Plan.
+Verification efforts consist of both management and technical tasks.
+Furthermore, it is the task of the SQA team to monitor whether the procedures as defined in the management plans ([QAPlan], [SCMP], [Review and Revision processes]) are followed.
+
+\subsubsection{Problem Report}
+The problem reporting procedure is described within the document Change/Problem Management Process.
+
+Any problem, failure and error encountered during the review activities (QA. Verification, Validation, Assessment) planned in the software development life-cycle, problems reported by users and customers as well as change requests initiated by any of the system stakeholders will be reported and managed following the Change/Problem Management Process detailed in \href{https://github.com/openETCS/governance/tree/master/Change-Problem%20Process}{[governance]} and through the Change/Problem Management Tool.
+
+\subsubsection{Task Iteration Process}
+Any change in the requirements (system, sub-systems, sw or components) require repeated verification and validation activities.
+
+Once the change is accepted following the change/problem management procedure, the phases and items affected by it must be evaluated. These tests will be redesigned to reflect the change in the requirement and will be executed again.
+
+In turn, a new analysis of the Software Integrity Level will involve the analysis of the activities requirements and documentation presented by the EN50128 standard and include such activities in the SVVP if necessary.
+
+\subsubsection{Deviation Process}
+The Quality Manager will be informed in the case of detection of a deviation regarding Verification Plan. In addition, he/she also be informed if it is deemed necessary by an amendment to the Plan, whether or not motivated by a deviation
+
+The Quality Manager will report such incidents to the Project Managers and with whom shall act appropriately. All persons listed in the \ref{sec:Responsibilities} Responsibilities section shall be informed of a change in the Verification Plan
+
+\subsubsection{Control Procedure}
+Control procedures are specified in the Configuration Management Plan [SCMP]
 
 \section{Validation Plan for openETCS}
 \label{sec:valid-plan-open}

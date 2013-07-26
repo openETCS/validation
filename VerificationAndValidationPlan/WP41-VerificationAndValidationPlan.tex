@@ -859,23 +859,32 @@ The objectives of MBT on system integration level are to
 order to achieve the system-level capabilities.
 \end{itemize}
 
-The first objective implies that the {\it test model} and the original development model are
-separate entities; otherwise the system integration test would just validate that all logical
-errors still residing in the openETCS development model are really implemented in the code. Even in presence
-of a formally validated development model, in which high confidence can be placed, we prefer to create a 
-separate test model, because
+The first objective implies that the {\it test model} and the original
+development model are separate entities; otherwise the system
+integration test would just validate that all logical errors still
+residing in the openETCS development model are really implemented in
+the code. Even in presence of a formally validated development model,
+in which high confidence can be placed, we prefer to create a separate
+test model, because
 \begin{itemize}
 \item the test model may use a higher level of abstraction since only the SUT behaviour visible at the 
 system interfaces is relevant,
 
-\item the test model may specify different interfaces to the SUT, depending on the observable interfaces
-in a test suite; the observation level ranges from black-box (only the ``real'' SUT system interfaces
-are visible) to grey-box level (some global variables may be monitored or even manipulated by the testing environment, some task or object communications may be observed etc.),  
+\item the test model may specify different interfaces to the SUT,
+  depending on the observable interfaces in a test suite; the
+  observation level ranges from black-box (only the ``real'' SUT
+  system interfaces are visible) to grey-box level (some global
+  variables may be monitored or even manipulated by the testing
+  environment, some task or object communications may be observed
+  etc.),
 
-\item the development model may contain errors that are only revealed during HW/SW integration (for example, calculations failing due to inadequate register word size, or deadlines missed due to insufficient CPU resources).
+\item the development model may contain errors that are only revealed
+  during HW/SW integration (for example, calculations failing due to
+  inadequate register word size, or deadlines missed due to
+  insufficient CPU resources).
 \end{itemize}
 
-Software integration is  performed by software-in-the-loop technology
+Software integration is performed by software-in-the-loop technology
 on host computers. The software components as well as the complete
 software are tested on host computer with a testing environment that
 simulates the hardware behavior and the operational environment. The
@@ -2268,31 +2277,34 @@ integration testing. Uni Bremen will focus on the following items~:
 \begin{enumerate}
 \item Create a test model in SysML. From the model evaluation
   activities, the management of the radio communication is already
-  available. To cover different aspect of the specification, the ceiling
-  speed monitoring model will be also provided.
+  available. To cover different aspect of the specification, the
+  ceiling speed monitoring model will be also provided.
 \item Generate test cases according to the defined interface given by
-  DLR. (RT-Tester)
-\item Study the automatic generation of the track layouts and speed simulations
+  DLR. (RT-Tester) item Provide simulation environment for the
+  track-to-train simulation (including braking curves/speed
+  profiles)\footnote{ OpenETCS system testing for the EVC on-board
+    computer requires test execution in real physical time and also
+    track layout with realistic speed profiles.  We also want to
+    contribute to the track and Speed Simulation by automatically
+    generates ``relevant'' layout for OpenETCS.}  along routes used
+  for testing
+\item Study the automatic generation of these track layouts and speed
+  simulations; if feasible, implement a generator and integrated it in
+  the DLR laboratory environment
 \item Set up a test environments for
-  \begin{itemize}
-    \item Software-in-loop testing with code provided by SCADE
-      (Siemens)
-    \item Testing within DLR laboratory.
+  \begin{itemize}  
+  \item Hardware-in-the-loop Testing within DLR laboratory.
+  \item Software-in-loop testing with code provided by SCADE (Siemens)
   \end{itemize}
 \end{enumerate}
 
 
-\paragraph{Track simulation}
-OpenETCS system testing for the EVC on-board computer requires test
-execution in real physical time and also track layout with realistic
-speed profiles.  We also want to contribute to the track and Speed
-Simulation by automatically generates ``relevant'' layout for OpenETCS.
 
 
 \paragraph{Test cases Generation}
 We also plan different activities to ensure the pertinence of our test cases.
 \begin{enumerate}
-\item Check the test model (SysML) : RTT-BMC or other model checkers
+\item Check the test model (SysML) : RTT-BMC
 \item Add relevant LTL properties if needed
 \item Test case analysis by 
   \begin{itemize}
@@ -2303,8 +2315,41 @@ We also plan different activities to ensure the pertinence of our test cases.
   \end{itemize}
 \end{enumerate}
 
+
+\paragraph{Test cases analysis -- comparison to Subset 76}
+\begin{enumerate}
+\item Provide techniques and Howto describing how test cases from
+  Subset 76 can be executed in the RT-Tester environment, either as SW
+  integration test or as HiL test in the DLR simulation environment
+\item Create new set of test cases for the ceiling speed monitoring
+  (As far as we know,they do not yet exist in Subset 76)
+\item Compare new test cases created by RT-Tester to new test cases
+  for ceiling speed monitoring provided by ERTMS standardization
+  group, as soon as available; suggest improvements for the Subset 76
+  test cases. 
+ \end{enumerate}
+
+%\paragraph{Object Code Verification}
+%---> please suggest something!!!
+
+\paragraph{Exchange Formats}
+Test models represented in XMI/Ecore are used as SysML test modeling
+standard. RT-Tester model parsers are extended to cope with this
+format.
+
+Test procedures will be represented in a general abstract syntax
+format, so that procedures generated by RT-tester can be run on any
+test execution platform.
+
+Test results (test execution logs) will be represented in a general
+format, so that exchange of test results between tools (for example,
+for simulation purposes) becomes possible.
+
+
+
 A first part of these activities have already been done for model of
-radio management communication (see the model-evaluation EA/RT-tester).
+radio management communication (see the model-evaluation for
+\href{https://github.com/openETCS/model-evaluation/blob/master/model/EA-SysML/new_version/doc/ea_sysml_report.pdf}{EA/RT-tester}).
 
 
 \subsection{Verification Activities---Timeline}

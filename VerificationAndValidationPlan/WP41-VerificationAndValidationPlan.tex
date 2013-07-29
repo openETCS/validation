@@ -50,7 +50,7 @@
 % The document metadata is defined below
 
 %assign a report number here
-\reportnum{OETCS/WP4/D4.1V00.05}
+\reportnum{OETCS/WP4/D4.1V00.06}
 
 %define your workpackage here
 \wp{Work Package 4: ``Validation \& Verification Strategy''}
@@ -59,26 +59,39 @@
 \title{openETCS Validation \& Verification Plan}
 
 %set a subtitle here
-\subtitle{Version 00.05}
+\subtitle{Version 00.06}
 
 %set the date of the report here
-\date{24 July 2013}
+\date{29 July 2013}
 
 %define a list of authors and their affiliation here
 
-\author{Marc Behrens and Hardi Hungar}
+\author{Editor:\\
+Hardi Hungar}
 
 \affiliation{DLR\\
   Lilienthalplatz 7\\
   38108 Brunswick, Germany
-   \\eMail:\{hardi.hungar,marc.behrens\}@dlr.de }
+   \\eMail:hardi.hungar@dlr.de }
 
-\author{Stephan Jagusch}
+\author{Contributions by:\\
+\mbox{}\\
+ Marc Behrens (DLR),\\
+  Cecile Braunstein (U Bremen), \\
+Cyril Cornu (All4Tec), \\
+Christophe
+  Gaston (CEA),\\ Jens Gerlach 
+  (Fraunhofer), \\ 
+Ainhoa Gracia (SQS), \\
+Hardi Hungar (DLR),\\
+ Stephan Jagusch (AEbt),\\
+ Alexander Nitsch (U Rostock), \\
+Jan Peleska (U Bremen),\\
+  Virgile Prevosto (CEA),\\
+  Stefan Rieger (TWT),\\ 
+Izaskun de la Torre (SQS)}
 
-\affiliation{AEbt Angewandte Eisenbahntechnik GmbH\\
-Adam-Klein-Str.\ 26\\
-90429 N\"urnberg, Germany\\
-eMail: Stephan.Jagusch@AEbt.de}
+\affiliation{}
   
 % define the coverart
 \coverart[width=350pt]{openETCS_EUPL}
@@ -160,7 +173,7 @@ eMail: Stephan.Jagusch@AEbt.de}
   (Fraunhofer), Ainhoa Gracia (SQS), Hardi Hungar (DLR), Stephan Jagusch
   (AEbt), Alexander Nitsch (U Rostock), Jan Peleska (U Bremen),
   Virgile Prevosto (CEA),
-  Stefan Rieger (TWT)\\
+  Stefan Rieger (TWT), Izaskun de la Torre (SQS)\\
   \hline
 \end{tabular}
 
@@ -204,8 +217,10 @@ additions
 00.04 & 19.07.2013 & C. Braunstein, C. Cornu, C. Gaston, V. Prevosto,
 S. Rieger & Additions to Sec.~\ref{sec:methods-tools}
 \\\hline
-00.05 & 24.07.2013 & A. Gracia, H. Hungar & Ch. 6: additions and
+00.05 & 24.07.2013 & A. Gracia, H. Hungar, I. de la Torre & Ch. 6: Additions and
 restructuring 
+\\\hline
+00.06 & 29.07.2013 & H. Hungar & Restructuring
 \\
 \hline
 \end{tabular}
@@ -673,50 +688,41 @@ modeling), design defects may get unveiled before the real validation.}
   \end{description}
 }
 
-\todo{detail}
-
 {\it
 Instantiate the generic \VV plan from the standard (and the draft) to
-openETCS. That is, provide the requirements, define the design steps,
-identify \vv activities to be performed and documents to be produced.}
+the EVC development in openETCS-style (FLOSS). This entails the organization,
+a definition of the requirements, 
+generic schedule covering all design steps, resources, responsibilities, 
+tools, techniques, and methodologies to be 
+deployed in order to perform the verification activities, and all the
+documents which are to be produced.
 
-
-
-{\it
- The plan details how to perform \vv for a complete development which
-  follows the process sketch from D2.3, so that the result conforms to
-  the requirements of the standards for a SIL~4 development. This
-  includes a definition of activities, the documentation to be
-  produced, the organisation structure, roles, a selection of methods
-  and tools, a format for describing design artifacts subject to V\&V,
-  and a feedback format for the findings during V\&V.
+The result must conform to
+  the requirements of the standards for a SIL~4 development. 
 
   As D2.3 gives only a rough description of the development steps and
   not yet a complete list of design artifacts, nor one of methods
   applied and formats to be used, this first version of the V\&V plan
   will also lack detail which will to be added in later revisions as
-  these informations become more concrete.
-
-  Besides the usual purpose of \vv activities, namely evaluating and
-  proving the suitability of design artifacts, V\&V in openETCS will
-  also generate information on the suitability of the methods and tools
-  employed. For that purpose, a format for describing methods
-  and tools to be used in V\&V and one for summarizing the findings
-  about the suitability are defined.
-
-  The plan also contains partial instantiations of V\&V which match
-  partial developments that are realised within openETCS.}
+  these informations become more concrete.}
 
 \section{\VV Plan Overview}
 \label{sec:plan-overview}
 
-\todo{A list of all steps, with input and output from Jagusch, adapted
-to D2.3 steps}
+This section gives an overview of the \vv plan for a full development. 
 
-A short overview of the activities (Verification or Validation) which
+\subsection{\VV Organisation}
+\label{sec:vv-organisation}
+
+\textit{Guidance: Define the relationship of verification and validation to other efforts such as development, project management, quality assurance, and configuration management. Define the lines of communication within the \vv, the authority for resolving issues, and the authority for approving \vv deliverables. Here, the \vv aspect of the ``openETCS-ecosystem'' should be outlined.}
+
+\subsection{\VV Activity Overview}
+\label{sec:vv-activ-overv}
+
+This section gives a short overview of the activities (Verification or Validation) which
 happen at the respective development steps, to be detailed in the
 subsequent sections. The numbering (e.g.\ 2e) refers to
-Fig.~\ref{fig:openETCSProcess}.
+Fig.~\ref{fig:openETCSProcess}. Abbreviations used are defined in the glossary, Sec.~\ref{sec:glossary}.
 
 \begin{description}
 \item[SSRS---Verification (1c):] verification that the SSRS the requirements
@@ -750,15 +756,58 @@ might look simpler / different.
   on sub-system test specification
 \end{description}
 
+\subsection{Schedule}
+\textit{Guidance: The schedule summarizes the various verification tasks
+and their relationship to the overall openETCS project.
+It describes the project life cycle and project milestones including completion dates.
+Summarize the schedule of verification tasks and how verification results provide feedback to the whole openETCS process to support overall project management functions.
+The objective of this section is to define an orderly flow of material between project activities and verification tasks.}
 
+\subsection{\VV Resources}
+\label{sec:vv-resources}
+
+\textit{Guidance: This section summarizes the resources needed to perform verification tasks, including staffing, facilities, tools, finances, and special procedural requirements such as security, access rights, and documentation control.}
+
+\subsection{Responsibilities}
+\label{sec:vv-responsibilities}
+\textit{Guidance: Identify the organization responsible for performing Verification tasks. There are two levels of responsibility--- 
+general responsibilities and specific responsibilities for the verification tasks to be performed should be assigned to individuals. Here, in the general \vv plan, only the first are to be defined.}
+
+\begin{center}
+\begin{longtable}{|m{2,5cm}|m{6cm}|m{2cm}|m{2cm}|}
+\caption{General \VV Responsabilities}
+\label{tab:gener-vv-respo}\\
+
+\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Role} & \multicolumn{1}{|c|}{Name of the person} & \multicolumn{1}{|c|}{Affiliation} & \multicolumn{1}{|c|}{Activity Code} \\ \hline 
+\endfirsthead
+
+\multicolumn{4}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\rowcolor{myblue} \multicolumn{1}{|c|}{Role} & \multicolumn{1}{|c|}{Name of the person} & \multicolumn{1}{|c|}{Company} & \multicolumn{1}{|c|}{Activity Code} \\ \hline
+\endhead
+
+\hline \multicolumn{4}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+
+\hline \hline
+\endlastfoot
+
+Verification Team Manager & & & \\\hline
+Verifier & & & \\\hline
+\end{longtable}
+\end{center}
 
 \section{Requirements Base}
 \label{sec:requirements-base}
 
+\textit{This section shall provide references to all requirements 
+against which the design is to be verified and validated. It does not include 
+process requirements. For the latter, see Sec.~\ref{sec:appendix}.}
+
 The requirements on the EVC software origin in the SS-026 and TSI
 specifications.
 
-\todo{detail this, add references}
+
 
 \section{\VV Methods and Tools }
 \label{sec:methods-tools}
@@ -767,6 +816,13 @@ specifications.
   and tools for doing \vv in a full development. Some will be
   suitable for both, \vv, tasks. Each proposal shall be labeled accordingly.}
 
+
+\subsection{On the Notion of ``Formal Methods''}
+\label{sec:notion-formal-method}
+
+As FLOSS relies to a large extent on the use of tools for generating, 
+verifying and validating a design, ``formal methods'' necessarily will
+play an important role in the openETCS activities.  
 
 In common language, the notion {\em ``formal''} is often used in a
 broad sense, meaning everything that can be described by rules, even
@@ -802,6 +858,95 @@ and robustness of a design.}
 \cite[Section~1.0, p.1]{DO-333}
 \end{quote}
 
+
+\subsection{Reviews and Inspections}
+\label{sec:reviews-inspec}
+
+Not everything can be done by formal methods. The introduction of reviews
+ in the openETCS project will enable the
+adherence to design specifications as well as ensuring that
+appropriate coding techniques---for automatic generation as well as 
+observation of relevant coding
+standards---have been used.  The use of an appropriate review technique
+will also help to ensure the consistency of approaches across development teams
+and may result in improved standards through the identification of
+best practice solutions.  Software reliability will be increased due
+to the removal of a larger percentage of the errors that would
+otherwise remain in the software. Specific analysis techniques
+exist for predicting the reliability of software.
+
+For verifying any product, whether it is a piece of
+software, a design specification, test script or anything else, it is 
+essential to carry out some sort of review or inspection process. 
+The introduction of formal review processes provides us with 
+definite points in time when we can carry out these essential 
+assessments.
+
+It is possible to review just about anything. In the openETCS project
+all written documents, specifications, models and code can be
+reviewed. It is also important to include all documents concerned with
+the creation and delivery of the openETCS product. This means that
+strategies, plans, approaches, operation and maintenance manual, user
+guides, the contract that will initiate the work should all be
+reviewed in a structured way.
+
+\paragraph{Inspection}
+On the other hand, an inspection is a visual examination of a software
+product to detect and identify software anomalies, including errors
+and deviations from standards and specifications \cite{inspection}. Inspections are peer
+examinations led by impartial facilitators who are trained in
+inspection techniques. Determination of remedial or investigative
+action for an anomaly is a mandatory element of a software inspection,
+although the solution should not be determined in the inspection
+meeting.
+
+Both review and inspection methods shall be used in different
+contexts during the execution of the Verification activities.
+
+More information about the reviews can be found in Quality Assurance Plan
+\cite{QAPlan}.
+
+\subsection{Software Architecture Analysis Method (SAAM)}
+
+SAAM \cite{SAAM} is one of the simpler methods for a scenario-based architecture 
+evaluation, and it was the first to be published. SAAM is suitable 
+for the testing of software architectures with regard to quality 
+attributes (qualitative requirements), such as
+%
+\begin{itemize}
+\item Modifiability,
+\item Portability,
+\item Growth Potential,
+\item Performance,
+\item Reliability,
+\end{itemize}
+%
+but also for the evaluation of the functionality (functional 
+requirements) of a software architecture. 
+
+In a SAAM evaluation basically scenarios are developed, 
+prioritized and assigned to those parts of the software 
+architecture to be tested that are affected by them. 
+This may be sufficient to indicate problems in the architecture.
+
+\subsection{Architecture Tradeoff Analysis Method (ATAM)}	
+\label{sec:atam}
+
+ATAM \cite{ATAM} is used to review the design decisions of the architecture. 
+It is checked whether the design decisions satisfactorily 
+support the requirements concerning quality. Risks and 
+compromises included in the architecture are identified 
+and documented.
+
+The process includes two phases. 
+\begin{itemize}
+\item In the first phase the necessary components 
+	are presented. Then the architecture is checked and analyzed. 
+\item In the second phase it is tested whether the analysis 
+	and the test were correct and complete. Then the 
+	results are summed up.
+\end{itemize}
+
 \subsection{Model Based Testing Method}
 \label{subsec:mbt}
 \subsubsection{Model Based Testing Strategy - generalities}
@@ -816,7 +961,7 @@ reveal about its correctness.
 This correctness is measured with respect to requirements. Model based
  testing is a particular kind of testing technique in which requirements are 
 described by models which are executable specifications. Their execution
- traces (or ”traces” for short) are sequences of stimulations of the SUT and
+ traces (or ``traces'' for short) are sequences of stimulations of the SUT and
  resulting observations of the SUT reactions. Test cases are sequences of 
 stimulations that are selected from the test model. A sequence corresponding
  to an input test data can be obtained by considering a trace of the model and
@@ -1687,12 +1832,12 @@ In addition, by creating an executable system model from SysML or UML, the (real
 
 \textcolor{magenta}{===== End URO =====}
 
-\section{Verification for a Full Development}
+\section{Verification Acitivities for a Full Development}
 \label{sec:verif-full-devel}
 
 \textit{for each of the verification steps identified in the plan
   overview, the following has to be instantiated: }
-\subsection{DASV Verification}
+\subsection{DAS2V Verification}
 \label{sec:dasv-verification}
 
 \subsubsection{Task}
@@ -1771,618 +1916,7 @@ nature of the SSRS, mainly manual techniques are to be applied.
 
 \todo{further verification phases}
 
-
-
-\section{Structure of the Verification Report}
-\label{sec:structure-vv-plan}
-
-\tbd{the following is a draft which is to be adapted to the }
-{\it
-The verification and validation plan covers the following central topics:
-\begin{description}\setlength{\parsep}{0pt}\setlength{\itemsep}{0pt}\setlength{\topsep}{0pt}
-%\reqfixed{04}{040}{x}
-%\subreqfixed{04}{040}{1}{x}
-\item[Header] containing all information to identify, this report, the
-  authors, the approbation and reviewing entities.
-\item[Executive Summary] giving an overview of the major elements from
-  all sections. 
-\item[Problem Statement] describing the challenges to be answered by
-  \VV as well as the decisions to be taken based on the V\&V results
-  as well as how to cope with potentially faulty output. It further
-  describes the accreditation scope based on the risk assessment done
-  on V\&V-level. 
-\item[V\&V Requirements Traceability Matrix] links every V\&V artifact
-  back to the requirements to measure e.g. test coverage and to
-  directly link V\&V results to the requirements. 
-\item[Acceptability Criteria,] describing the criteria for acceptance
-  of the artifact into the \VV process e.g. as the direct translation
-  of the requirements into metrics to measure success, are used
-  e.g.\ for burndown charts within the process. 
-\item[Assumptions] that are identified during the design of the
-  verification and validation strategy and how these assumptions have
-  an impact on the verdict by listing capabilities and limitations. 
-\item[Risks and Impacts] that come across the execution of V\&V tasks
-  together with the impacts foreseen. 
-\item[V\&V Design] states how the V\&V process builds up including
-  data preparation, execution and evaluation. 
-\item[V\&V Methodologies] giving a step-by-step walkthrough of all
-  possible V\&V activities including the assumptions, and
-  verdict-relevant limitations and criteria for, e.g.,  model
-  verification, model-to-code verification, unit testing, integration
-  testing and final validation (according to the standard, this
-  involves running the software on the target hardware).  
-\item[V\&V Issues] describing unsolved V\&V issues and their impact on
-  the affected proof or verdict. 
-\item[Peer Reviews] going into details on how the community can take
-  part and how official bodies and partners are integrated into the
-  development and review process. 
-\item[Test Plan Definition] going into the details of testing by
-  describing among other things: 
-
-\begin{description} 
-\item[Title] as a unique identifier to the test plan.
-\item[Description] of the test and the test-item giving information
-  about version and revision. 
-\item[Features] to be tested and not to be tested in combination are
-  listed together with information background.  
-\item[Entry Criteria] which have to be met by the EVC before a test
-  can be started, e.g. that the EVC has to be in level~3 limited
-  supervision with the order to switch to level~2. 
-\item[Suspension criteria and resumption requirements] are the central
-  key to a smooth automation of the tests covering topics like
-  \emph{when exiting this test before step 10, which entry criteria
-    does it comply to or which resumption sequence has to be executed
-    to continue testing}. 
-\item[Walkthrough] covering a step-by-step approach of the test plan.
-\item[Environmental requirements] going into the details of what is
-  needed concerning the test environment, e.g. tools, adapter, data
-  preparation. 
-\end{description}
-
-\item[Discrepancy Reports] identifying the defects.
-\item[Key Participants] describing the assignment and task for each
-  role involved.  
-
-\begin{description}
-\item[Accreditation of Participants] describing who was accredited to
-  which role during the \VV phase. 
-\item[V\&V Participants] listing the partners participating in V\&V activities,
-\item[Other participants] including other interest groups such as
-  reviewer by affiliate partners\footnote{affiliate partners are
-    non-funded companies who signed the project cooperation agreement
-    and with it get read access to the repositories starting from
-    incubation phase to contribute e.g. by reviewing}. 
-\end{description}
-
-\item[Timeline] giving the timeline for the baselines as input to the
-  V\&V process and identifying when each artifact should be created. 
-\end{description}
-}
-
-
-\section{Validation for a Full Development}
-\label{sec:valid-full-devel}
-
-\textit{for each of the validation steps identified in the plan
-  overview, the following has to be instantiated: }
-\subsection{DAS2V Validation}
-\label{sec:dasv-validation}
-
-\subsubsection{Task}
-\label{sec:dasv-valid-task}
-
-
-\subsubsection{Documents to Be Produced}
-\label{sec:dasv-valid-docum-be-prod}
-
-
-\subsubsection{Phase Specific Activities}
-\label{sec:dasv-valid-phase-spec-activ}
-
-\subsubsection{Techniques and Measures}
-\label{sec:dasv-valid-techniques-measures}
-
-
-
-\subsection{SFM Validation (3d)}
-\label{sec:sfm-validation}
-
-\subsubsection{Task}
-\label{sec:sfm-valid-task}
-
-The formalisation of the reqauirements in form of a semi-formal model
-enables a systematic check of the completeness and consistency of the
-system test specification.
-
-The model itself can perhaps be animated (depending on the concrete
-form which is not yet fixed). This offers the chance to an early
-(preliminary) validation of the design.
-
-\subsubsection{Documents to Be Produced}
-\label{sec:sfm-valid-docum-be-prod}
-
-\begin{enumerate}
-\item Revised System Test Specification
-\item SFM validation report
-\end{enumerate}
-
-\subsubsection{Phase Specific Activities}
-\label{sec:sfm-valid-phase-spec-activ}
-
-\tbd{}
-
-\subsubsection{Techniques and Measures}
-\label{sec:sfm-valid-techniques-measures}
-
-\tbd{}
-
-\subsection{Final Validation (tbd)}
-\label{sec:final-validation}
-
-\subsubsection{Task}
-\label{sec:final-valid-task}
-
-The final validation shall ascertain that the end result of the
-development---the EVC software in its specified environment---behaves
-as required. 
-
-\subsubsection{Documents to Be Produced}
-\label{sec:final-valid-docum-be-prod}
-
-\begin{enumerate}
-\item System Test Definition (based on System Test Specification)
-\item System Validation Report
-\end{enumerate}
-
-\subsubsection{Phase Specific Activities}
-\label{sec:final-valid-phase-spec-activ}
-
-Testing the software against the user requirements.
-
-\subsubsection{Techniques and Measures}
-\label{sec:final-valid-techniques-measures}
-
-\qq{Testing in a validated testbed (including API animation/simulation)}
-
-
-\section{Implementation of \VV}
-\label{sec:implementation-vv}
-
-The \vv has to be performed in cooperation with WP~3, which
-produces DAS2Vs (models and code), and with WP~7, where methods
-and tools are defined and developed. 
-
-To exchange information with WP~3, formats are needed for collecting
-information about DAS2Vs (V\&V tasks) and for giving back information
-about the results of V\&V activities. Similarly, with WP~7
-communication shall use formats to describe V\&V methods and tools
-(input from WP~7) and the results of evaluations of V\&V methods and
-tools.
-
-\todo{Formats, activity organisation}
-
-
-\chapter{\VV Plan for openETCS}
-
-\texttt{Contributions to this chapter
-  \begin{description}
-  \item[DLR] overall coherence, lab test description
-  \item[U Bremen] RT Tester application, \qq{more}
-  \item[Siemens] Application story (to be detailed)
-  \item[SQS] Contribution to chapter 6.1 Verification Plan for openETCS
-  \item[CEA] Application story (to be detailed)
-  \item[All4Tec] Application story (to be detailed)
-  \item[DB, SNCF, NS] Validation requirements
-  \end{description}
-}
-
-\todo{Describe how to proceed in openETCS to achieve the most. Include
-all partial V\&V instantiations with their relation/potential
-contribution to a full V\&V.}
-
-{\it
-  \begin{itemize}
-  \item \vv for partial developments
-  \item evaluation
-  \item demonstration story of capabilities
-  \end{itemize}
-}
-
-
-\section{Verification Plan for openETCS}
-\label{sec:verif-plan-open}
-
-\subsection{Verification Overview}
-\label{sec:verif-overv}
-\textit{Guidance: Describe the organization, schedule, resources, responsibilities, tools, techniques, and methodologies to be 
-deployed in order to perform the verification activities.}
-
-According to the Description of Work of WP~4 \cite{}, the verification
-activities will be structured into three main phases: 
-\begin{enumerate}
-\item First Level: Verification of prototypical system and API model and
-  prototypical code,
-\item Second Level: Verification of system model, functional API prototype model, code
-  architecture and system API prototype
-\item Third Level: Verification of final system and API model, final
-  code and the functional API model 
-\end{enumerate}
-
-\subsubsection{Organisation}
-\textit{Guidance: Define the relationship of verification to other efforts such as development, project management, quality assurance, and configuration management. Define the lines of communication within the verification effort, the authority for resolving issues, and the authority for approving verification deliverables.}
-
-\subsubsection{Schedule}
-\textit{Guidance: The schedule summarizes the various verification tasks
-and their relationship to the overall openETCS project.
-It Describes the project life cycle and project milestones including completion dates.
-Summarize the schedule of verification tasks and how verification results provide feedback to the whole openETCS process to support overall project management functions.
-The objective of this section is to define an orderly flow of material between project activities and verification tasks.}
-
-The schedule of Verification activities is summarized in Table \ref{tab:1}.
-
-\begin{center}
-\begin{longtable}{|m{2cm}|m{6cm}|m{2cm}|m{2cm}|}
-\caption{SW Verification Schedule}\label{tab:1}\\
-
-\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity Code} & \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Estimated Delivery} & \multicolumn{1}{|c|}{Real Delivery} \\ \hline 
-\endfirsthead
-
-\multicolumn{4}{c}%
-{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
-\rowcolor{myblue} \multicolumn{1}{|c|}{Activity Code} & \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Estimated Delivery} & \multicolumn{1}{|c|}{Real Delivery} \\ \hline
-\endhead
-
-\hline \multicolumn{4}{|r|}{{Continued on next page}} \\ \hline
-\endfoot
-
-\hline \hline
-\endlastfoot
-
-\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 0: SW Requirements Verification} \\\hline
-SWReq-Ver-Act1 & Compliance with SSRS verification & & \\\hline
-SWReq-Ver-Act2 & Accuracy, Consistency, Completeness, Correctness assurance & & \\\hline
-SWReq-Ver-Act3 & Testability assurance & & \\\hline 
-SWReq-Ver-Act4 & Verificability assurance & & \\\hline 
-SWReq-Ver-Act5 & Compliance with Standards & & \\\hline 
-SWReq-Ver-Act6 & Traceability with SSRS verification & & \\\hline
-SWReq-Ver-Act7 & Requirements modelling correctness & & \\\hline
-\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 1: SW Architecture and Design Verification} \\\hline
-SWArch-Ver-Act1 & software architecture design verification & & \\\hline
-SWArch-Ver-Act2 & Handle attributes verification & & \\\hline
-SWArch-Ver-Act3 & incompatibilities checking & & \\\hline
-SWArch-Ver-Act4 & Model coherency verification & & \\\hline
-SWArch-Ver-Act5 & Constraints analysis verification & & \\\hline
-SWArch-Ver-Act6 & Traceability verification & & \\\hline
-SWArch-Ver-Act7 & Compliance with Standards verification & & \\\hline
-\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 2: SW Component Design} \\\hline
- & & & \\\hline
-\end{longtable}
-\end{center}
-
-\begin{center}
-\begin{longtable}{|m{1cm}|m{6,5cm}|m{2cm}|m{2cm}|}
-\caption{Tool chain Verification Schedule}\\
-
-\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity Code} & \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Estimated Delivery} & \multicolumn{1}{|c|}{Real Delivery} \\ \hline 
-\endfirsthead
-
-\multicolumn{4}{c}%
-{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
-\rowcolor{myblue} \multicolumn{1}{|c|}{Activity Code} & \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Estimated Delivery} & \multicolumn{1}{|c|}{Real Delivery} \\ \hline
-\endhead
-
-\hline \multicolumn{4}{|r|}{{Continued on next page}} \\ \hline
-\endfoot
-
-\hline \hline
-\endlastfoot
-
-\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 0: Tool chain Requirements} \\\hline
- & & & \\\hline
-\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 1:} \\\hline
- & & & \\\hline
-\end{longtable}
-\end{center}
-
-\subsubsection{Resources}
-\textit{Guidance: This section summarizes the resources needed to perform verification tasks, including staffing, facilities, tools, finances, and special procedural requirements such as security, access rights, and documentation control.}
-
-\subsubsection{Responsibilities}
-\label{sec:Responsibilities}
-\textit{Guidance: Identify the organization responsible for performing Verification tasks. There are two levels of responsibility – 
-general responsibilities and specific responsibilities for the Verification tasks to be performed should be assigned to individuals. General responsibilities should be supplemented with specific 
-responsibility for each task in the verification plan.}
-
-\begin{center}
-\begin{longtable}{|m{2,5cm}|m{6cm}|m{2cm}|m{2cm}|}
-\caption{Responsabilities}\\
-
-\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Role} & \multicolumn{1}{|c|}{Name of the person} & \multicolumn{1}{|c|}{Company} & \multicolumn{1}{|c|}{Activity Code} \\ \hline 
-\endfirsthead
-
-\multicolumn{4}{c}%
-{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
-\rowcolor{myblue} \multicolumn{1}{|c|}{Role} & \multicolumn{1}{|c|}{Name of the person} & \multicolumn{1}{|c|}{Company} & \multicolumn{1}{|c|}{Activity Code} \\ \hline
-\endhead
-
-\hline \multicolumn{4}{|r|}{{Continued on next page}} \\ \hline
-\endfoot
-
-\hline \hline
-\endlastfoot
-
-Verification Team Manager & & & \\\hline
-Verifier & & & \\\hline
-\end{longtable}
-\end{center}
-
-\subsection{Verification Methods and Tools} 
-
-\textit{Guidance: Identify the special software tools, techniques, and
-methodologies to be employed by the verification team. The purpose of
-each should be defined and plans for the acquisition, training,
-support, and qualification of each shall be described in this
-section. 
-}
-
-\subsubsection{Reviews and Inspections}
-The introduction of reviews in the openETCS project will enable the
-adherence to design specifications as well as ensuring that
-appropriate coding generation techniques - including relevant coding
-standards have been used.  The use of an appropriate review technique
-will also help ensure consistency of approach across development teams
-and may result in improved standards through the identification of
-best practice solutions.  Software reliability will be increased due
-to the removal of a larger percentage of the errors that would
-otherwise have existed in the software. Specialist analysis techniques
-exist for predicting the reliability of software.
-
-The only way of verifying any product whether it is a piece of
-software, a design specification, test script or anything else is to
-carry out some sort of review or inspection process. The introduction
-of formal review processes provides us with definite points in time
-when we can carry out these essential assessments.
-
-It is possible to review just about anything. In the openETCS project
-all written documents, specifications, models and code can be
-reviewed. It is also important to include all documents concerned with
-the creation and delivery of the openETCS product. This means that
-strategies, plans, approaches, operation and maintenance manual, user
-guides, the contract that will initiate the work should all be
-reviewed in a structured way.
-
-On the other hand, an inspection is a visual examination of a software
-product to detect and identify software anomalies, including errors
-and deviations from standards and specifications. Inspections are peer
-examinations led by impartial facilitators who are trained in
-inspection techniques. Determination of remedial or investigative
-action for an anomaly is a mandatory element of a software inspection,
-although the solution should not be determined in the inspection
-meeting.
-
-Both Review and inspections methods shall be used in different
-contexts during the execution of the Verification activities.
-
-More information about the reviews can be found in Quality Assurance Plan [??].
-
-\subsubsection{Software Architecture Analysis Method (SAAM)}
-
-SAAM is one of the simpler methods for scenario-based architecture evaluation, which was the first to be published. SAAM is suitable for the testing of software architectures with regard to quality attributes (qualitative requirements), such as
-
-\begin{itemize}
-\item Modifiability,
-\item Portability,
-\item Growth Potential,
-\item Performance,
-\item Reliability,
-\end{itemize}
-
-but also for the evaluation of the functionality (functional requirements) of a software architecture. 
-
-In a SAAM evaluation basically scenarios are developed, prioritized and assigned to those parts of the software architecture to be tested that are affected by them. This may be sufficient to indicate problems in the architecture.
-
-\subsubsection{Architecture Tradeoff Analysis Method (ATAM)}	
-
-ATAM is used to review the design decisions of the architecture. It is checked whether the design decisions satisfactorily support the requirements concerning quality. Risks and compromises included in the architecture are identified and documented.
-
-The process includes two phases. 
-\begin{itemize}
-\item In the first phase the necessary components are presented. Then the architecture is checked and analyzed. 
-\item In the second phase it is tested whether the analysis and the test were correct and complete. Then the results are summed up.
-\end{itemize}
-
-
-
-\subsection{Verification Activities---User Sories}
-\label{sec:verif-activ-user}
-
-\emph{Guidance: The term ``User Story'' seems to be established in the
-project to stand for any kind application of tools, not just for the
-end user application of the system (EVC software) which is to be
-developed. This section is the place to describe in general where you
-want to apply which method or tool to what artifact(s) (DAS2Vs). I.e.,
-tell the \textbf{story} of your verification activities coherently. Later
-(sub)sections provide the organisational detail: \textbf{When} (Timeline,
-Sec.~\ref{sec:verif-activ-timel}) and 
-\textbf{Contribution} (which of the verification obligations from
-Sec.~\ref{sec:verif-full-devel} are tackled by your approach.}
-
-\subsubsection{Formal Verification of Real-Time Aspects based on Timed Automata (TWT)}
-
-This section describes our the plans regarding the verification of
-real-time aspects by employing timed automata and the UPPAAL tool
-within the project. In Section~\ref{sct:twt:descrTA} (page
-\pageref{sct:twt:descrTA}) we have given an introduction to and
-described the principles of verification based on timed automata.
-
-TWT's work will be based on the following action items:
-\begin{enumerate}
-  \item We will analyze whether/how UML/SysML statecharts\footnote{The
-statecharts in UML and SysML are actually the same.} can be
-transformed to timed automata in a sensible manner while retaining as
-much structural information as possible.
-  \item Parts of the ETCS specification where timing plays a vital
-role will be analysed and verified based on timed automata by employing
-the transformation mechanism. Here we assume that the corresponding
-parts of the specification have already been modelled in SysML as will
-be done within WP3. In the case that a direct, automatic
-transformation is not feasible for now, we will manually create timed
-automata models to conduct our analysis.
-  \item We will provide documentation and feedback to WP3 and WP4
-about our results to align our efforts with the other partners.
-  \item We will investigate, how our approach can be integrated in the
-Eclipse environment and develop such integration if feasible with our
-efforts.
-  \item We plan to publish our results on action item 1.
-\end{enumerate}
-
-Please note that the above list may be subject to future change.
-
-\subsubsection{Verification with Model-Based Simulation using SystemC (TWT, URO)}
-
-In Section~\ref{sct:uro:systemc} (page \pageref{sct:uro:systemc}) the
-basics of SystemC and the SysML/SystemC joint approach have been
-described. TWT and the University of Rostock (URO) will work on this
-concept based on the following action items:
-
-\begin{enumerate}
-  \item TWT will analyse methods for generating SystemC code from
-  SysML models. In first investigations the Acceleo tool (Eclipse
-  plugin, based on OMG standard) seems to be a promising candidate for
-  model-to-text transformation.
-  \item URO will build a modular and executable SystemC model for
-  braking curves that is suitable for real-time simulation. An
-  accompanying high-level SysML model will be constructed as well and
-  will be means to test the transformation methods to be developed in
-  the context of action item 1.
-  \item TWT and URO plan to investigate which other parts of the ETCS
-  specification can benefit from real-time simulation and build models
-  accordingly.
-  \item URO will investigate whether performance analysis based on the
-  underlying hardware system is feasible within the openETCS
-  project. This will allow to scale the hardware resources of the OBU
-  system accordingly.
-  \item In addition, using the results from action item 1, TWT and URO
-    plan to transform existing SysML models (to be developed in WP3)
-    to SystemC for real-time simulation.
-  \item Evaluation (and possibly implementation) of an Eclipse
-  integration
-\end{enumerate}
-
-Please note that the above list may be subject to future change.
-
-\subsubsection{System Integration  Testing (Uni Bremen/DLR)}
-Section \ref{subsec:mbt} describes the main objective of system
-integration testing. Uni Bremen will focus on the following items~:
-\begin{enumerate}
-\item Create a test model in SysML. From the model evaluation
-  activities, the management of the radio communication is already
-  available. To cover different aspect of the specification, the
-  ceiling speed monitoring model will be also provided.
-\item Generate test cases according to the defined interface given by
-  DLR. (RT-Tester) item Provide simulation environment for the
-  track-to-train simulation (including braking curves/speed
-  profiles)\footnote{ OpenETCS system testing for the EVC on-board
-    computer requires test execution in real physical time and also
-    track layout with realistic speed profiles.  We also want to
-    contribute to the track and Speed Simulation by automatically
-    generates ``relevant'' layout for OpenETCS.}  along routes used
-  for testing
-\item Study the automatic generation of these track layouts and speed
-  simulations; if feasible, implement a generator and integrated it in
-  the DLR laboratory environment
-\item Set up a test environments for
-  \begin{itemize}  
-  \item Hardware-in-the-loop Testing within DLR laboratory.
-  \item Software-in-loop testing with code provided by SCADE (Siemens)
-  \end{itemize}
-\end{enumerate}
-
-
-
-
-\paragraph{Test cases Generation}
-We also plan different activities to ensure the pertinence of our test cases.
-\begin{enumerate}
-\item Check the test model (SysML) : RTT-BMC
-\item Add relevant LTL properties if needed
-\item Test case analysis by 
-  \begin{itemize}
-    \item Structural coverage
-    \item Requirement coverage
-    \item Mutation coverage 
-    \item Data coverage
-  \end{itemize}
-\end{enumerate}
-
-
-\paragraph{Test cases analysis -- comparison to Subset 76}
-\begin{enumerate}
-\item Provide techniques and Howto describing how test cases from
-  Subset 76 can be executed in the RT-Tester environment, either as SW
-  integration test or as HiL test in the DLR simulation environment
-\item Create new set of test cases for the ceiling speed monitoring
-  (As far as we know,they do not yet exist in Subset 76)
-\item Compare new test cases created by RT-Tester to new test cases
-  for ceiling speed monitoring provided by ERTMS standardization
-  group, as soon as available; suggest improvements for the Subset 76
-  test cases. 
- \end{enumerate}
-
-%\paragraph{Object Code Verification}
-%---> please suggest something!!!
-
-\paragraph{Exchange Formats}
-Test models represented in XMI/Ecore are used as SysML test modeling
-standard. RT-Tester model parsers are extended to cope with this
-format.
-
-Test procedures will be represented in a general abstract syntax
-format, so that procedures generated by RT-tester can be run on any
-test execution platform.
-
-Test results (test execution logs) will be represented in a general
-format, so that exchange of test results between tools (for example,
-for simulation purposes) becomes possible.
-
-
-
-A first part of these activities have already been done for model of
-radio management communication (see the model-evaluation for
-\href{https://github.com/openETCS/model-evaluation/blob/master/model/EA-SysML/new_version/doc/ea_sysml_report.pdf}{EA/RT-tester}).
-
-
-\subsection{Verification Activities---Timeline}
-\label{sec:verif-activ-timel}
-
-This section lists per partner/activity in which of the project
-phases according to Sec.~\ref{sec:verif-activ-timel} (first, second or
-third level of verification) a particular activity is planned. In the
-first version of the V\&V plan, only the first level needs to be detailed.
-
-
-\subsubsection{First Level of Verification}
-\label{sec:first-level-verif}
-
-\emph{Guidance: A short description which may refer to an activity
-  detailed earlier. Most probably the material will be organised in a table.}
-
-\subsubsection{Second Level of Verification}
-\label{sec:secon-level-verif}
-
-\subsubsection{Third Level of Verification}
-\label{sec:third-level-verif}
-
-
-\subsection{Verification Activities---Process View}
-\label{sec:verif-activ-proce}
-This section provides the detailed plan for the verification tasks
-throughout the openETCS project life cycle. It summarizes the
-activities performed by the project partners in relating them to the
-overall definition of verification activities in
-Sec.~\ref{sec:verif-full-devel}. 
-
-\subsubsection{System Verification}
+\subsection{System Verification}
 \textcolor{red}{<Brief Introduction>}
 
 \paragraph{SSRS Verification(1c)}
@@ -2390,6 +1924,10 @@ The SSRS Verification phase refers to the task already defined in the \ref{sec:S
 For further details about the activities involved, please go to the mentioned section.
 
 \subsubsection{Software Verification}
+\label{sec:sw-verif}
+
+This section describes software verification activities in greater detail than the description above. This presentation of the material shall be unified in due course.
+
 The SW process is detailed in the D.2.3 OpenETCS process. Bearing in mind that the tasks described in this openETCS Verification plan are strongly linked to the Software process defined in that document, the following figure is included in order to have present the key points to be covered in the plan.
 
 \begin{figure}[h]
@@ -2403,7 +1941,7 @@ The SW process is detailed in the D.2.3 OpenETCS process. Bearing in mind that t
 
 \underline{Task} 
 
-In the SW Requirements Specification the SSRS shall be taken as starting point, redefining them to ensure the software constraints are considered. 
+In the SW Requirements Specification the SSRS shall be taken as starting point, redefining it to ensure the software constraints are considered. 
 The SW Requirements Verification phase then shall verify that the proposed Software Requirements cover as much as possible of the SSRS and provide a correct implementation of the System Requirements in the Software context.
 On the other hand, the Verification done in this phase shall include the assessment of the SW Requirements modelling, the objective is to ensure the representation of the requirements is coherent with their specification as well as complete, explicit and implementable, as well as traceable to the semi-formal and/or formal models defined in the system phase.
 
@@ -2813,12 +2351,682 @@ The following table summarizes the Techniques, methods, measures or tools propos
 \subsubsection{Tool chain Verification}
 \textit{Verification of the identified list of tools that have been collected in the tool chain.}
 
+
+\section{Verification Reporting}
+\label{sec:verif-report}
+\textit{This section describes how the results of implementing the Verification Plan will be documented.
+Verification reporting will occur throughout the software life cycle.
+The content, format, and timing of all verification reports shall be specified in this section.}
+
+The following reports will be generated during the verification process:
+\begin{itemize}
+\item \textbf{Anomaly reports:} 
+\item \textbf{Phase Summary Verification reports:} 
+\item \textbf{Final report:}
+\end{itemize}
+
+%The structure of the Verification report is already defined in the
+%\ref{sec:structure-vv-plan} section of this document 
+
+\subsection{Administrative procedures}
+This section identifies the existing administrative procedures that
+are to be implemented as part of the Verification Plan. 
+Verification efforts consist of both management and technical tasks.
+Furthermore, it is the task of the SQA team to monitor whether the
+procedures as defined in the management plans ([QAPlan], [SCMP],
+[Review and Revision processes]) are followed. 
+
+\subsubsection{Problem Report}
+The problem reporting procedure is described within the document Change/Problem Management Process.
+
+Any problem, failure and error encountered during the review activities (QA. Verification, Validation, Assessment) planned in the software development life-cycle, problems reported by users and customers as well as change requests initiated by any of the system stakeholders will be reported and managed following the Change/Problem Management Process detailed in \href{https://github.com/openETCS/governance/tree/master/Change-Problem%20Process}{[governance]} and through the Change/Problem Management Tool.
+
+\subsubsection{Task Iteration Process}
+Any change in the requirements (system, sub-systems, sw or components)
+require repeated verification and validation activities. 
+
+Once the change is accepted following the change/problem management
+procedure, the phases and items affected by it must be
+evaluated. These tests will be redesigned to reflect the change in the
+requirement and will be executed again. 
+
+In turn, a new analysis of the Software Integrity Level will involve
+the analysis of the activities requirements and documentation
+presented by the EN50128 standard and include such activities in the
+SVVP if necessary. 
+
+\subsubsection{Deviation Process}
+The Quality Manager will be informed in the case of detection of a
+deviation regarding Verification Plan. In addition, he/she also be
+informed if it is deemed necessary by an amendment to the Plan,
+whether or not motivated by a deviation 
+
+The Quality Manager will report such incidents to the Project Managers
+and with whom shall act appropriately. All persons listed in the
+\ref{sec:Responsibilities} Responsibilities section shall be informed
+of a change in the Verification Plan 
+
+\subsubsection{Control Procedure}
+Control procedures are specified in the Configuration Management Plan [SCMP]
+
+
+
+\tbd{the following is a draft which is to be adapted to the openETCS design flow.}
+{\it
+The verification and validation plan covers the following central topics:
+\begin{description}\setlength{\parsep}{0pt}\setlength{\itemsep}{0pt}\setlength{\topsep}{0pt}
+%\reqfixed{04}{040}{x}
+%\subreqfixed{04}{040}{1}{x}
+\item[Header] containing all information to identify, this report, the
+  authors, the approbation and reviewing entities.
+\item[Executive Summary] giving an overview of the major elements from
+  all sections. 
+\item[Problem Statement] describing the challenges to be answered by
+  \VV as well as the decisions to be taken based on the V\&V results
+  as well as how to cope with potentially faulty output. It further
+  describes the accreditation scope based on the risk assessment done
+  on V\&V-level. 
+\item[V\&V Requirements Traceability Matrix] links every V\&V artifact
+  back to the requirements to measure e.g. test coverage and to
+  directly link V\&V results to the requirements. 
+\item[Acceptability Criteria,] describing the criteria for acceptance
+  of the artifact into the \VV process e.g. as the direct translation
+  of the requirements into metrics to measure success, are used
+  e.g.\ for burndown charts within the process. 
+\item[Assumptions] that are identified during the design of the
+  verification and validation strategy and how these assumptions have
+  an impact on the verdict by listing capabilities and limitations. 
+\item[Risks and Impacts] that come across the execution of V\&V tasks
+  together with the impacts foreseen. 
+\item[V\&V Design] states how the V\&V process builds up including
+  data preparation, execution and evaluation. 
+\item[V\&V Methodologies] giving a step-by-step walkthrough of all
+  possible V\&V activities including the assumptions, and
+  verdict-relevant limitations and criteria for, e.g.,  model
+  verification, model-to-code verification, unit testing, integration
+  testing and final validation (according to the standard, this
+  involves running the software on the target hardware).  
+\item[V\&V Issues] describing unsolved V\&V issues and their impact on
+  the affected proof or verdict. 
+\item[Peer Reviews] going into details on how the community can take
+  part and how official bodies and partners are integrated into the
+  development and review process. 
+\item[Test Plan Definition] going into the details of testing by
+  describing among other things: 
+
+\begin{description} 
+\item[Title] as a unique identifier to the test plan.
+\item[Description] of the test and the test-item giving information
+  about version and revision. 
+\item[Features] to be tested and not to be tested in combination are
+  listed together with information background.  
+\item[Entry Criteria] which have to be met by the EVC before a test
+  can be started, e.g. that the EVC has to be in level~3 limited
+  supervision with the order to switch to level~2. 
+\item[Suspension criteria and resumption requirements] are the central
+  key to a smooth automation of the tests covering topics like
+  \emph{when exiting this test before step 10, which entry criteria
+    does it comply to or which resumption sequence has to be executed
+    to continue testing}. 
+\item[Walkthrough] covering a step-by-step approach of the test plan.
+\item[Environmental requirements] going into the details of what is
+  needed concerning the test environment, e.g. tools, adapter, data
+  preparation. 
+\end{description}
+
+<<<<<<< dd1adaf4560c1719d6ef4a512c4343fed2a7e246
+\subsubsection{System Integration  Testing (Uni Bremen/DLR)}
+Section \ref{subsec:mbt} describes the main objective of system
+integration testing. Uni Bremen will focus on the following items~:
+\begin{enumerate}
+\item Create a test model in SysML. From the model evaluation
+  activities, the management of the radio communication is already
+  available. To cover different aspect of the specification, the
+  ceiling speed monitoring model will be also provided.
+\item Generate test cases according to the defined interface given by
+  DLR. (RT-Tester) item Provide simulation environment for the
+  track-to-train simulation (including braking curves/speed
+  profiles)\footnote{ OpenETCS system testing for the EVC on-board
+    computer requires test execution in real physical time and also
+    track layout with realistic speed profiles.  We also want to
+    contribute to the track and Speed Simulation by automatically
+    generates ``relevant'' layout for OpenETCS.}  along routes used
+  for testing
+\item Study the automatic generation of these track layouts and speed
+  simulations; if feasible, implement a generator and integrated it in
+  the DLR laboratory environment
+\item Set up a test environments for
+  \begin{itemize}  
+  \item Hardware-in-the-loop Testing within DLR laboratory.
+  \item Software-in-loop testing with code provided by SCADE (Siemens)
+  \end{itemize}
+\end{enumerate}
+=======
+\item[Discrepancy Reports] identifying the defects.
+\item[Key Participants] describing the assignment and task for each
+  role involved.  
+>>>>>>> 041dbcaec7c5702ed182ef04f0a9ba8011bbb4e9
+
+\begin{description}
+\item[Accreditation of Participants] describing who was accredited to
+  which role during the \VV phase. 
+\item[V\&V Participants] listing the partners participating in V\&V activities,
+\item[Other participants] including other interest groups such as
+  reviewer by affiliate partners\footnote{affiliate partners are
+    non-funded companies who signed the project cooperation agreement
+    and with it get read access to the repositories starting from
+    incubation phase to contribute e.g. by reviewing}. 
+\end{description}
+
+<<<<<<< dd1adaf4560c1719d6ef4a512c4343fed2a7e246
+=======
+\item[Timeline] giving the timeline for the baselines as input to the
+  V\&V process and identifying when each artifact should be created. 
+\end{description}
+}
+>>>>>>> 041dbcaec7c5702ed182ef04f0a9ba8011bbb4e9
+
+An example of a summary table of verification activities performed is given in Table~\ref{tab:verif-activ-summary}. 
+Such a table should enter the verification report. 
+
+<<<<<<< dd1adaf4560c1719d6ef4a512c4343fed2a7e246
+\paragraph{Test cases Generation}
+We also plan different activities to ensure the pertinence of our test cases.
+\begin{enumerate}
+\item Check the test model (SysML) : RTT-BMC
+\item Add relevant LTL properties if needed
+\item Test case analysis by 
+  \begin{itemize}
+    \item Structural coverage
+    \item Requirement coverage
+    \item Mutation coverage 
+    \item Data coverage
+  \end{itemize}
+\end{enumerate}
+
+
+\paragraph{Test cases analysis -- comparison to Subset 76}
+\begin{enumerate}
+\item Provide techniques and Howto describing how test cases from
+  Subset 76 can be executed in the RT-Tester environment, either as SW
+  integration test or as HiL test in the DLR simulation environment
+\item Create new set of test cases for the ceiling speed monitoring
+  (As far as we know,they do not yet exist in Subset 76)
+\item Compare new test cases created by RT-Tester to new test cases
+  for ceiling speed monitoring provided by ERTMS standardization
+  group, as soon as available; suggest improvements for the Subset 76
+  test cases. 
+ \end{enumerate}
+
+%\paragraph{Object Code Verification}
+%---> please suggest something!!!
+
+\paragraph{Exchange Formats}
+Test models represented in XMI/Ecore are used as SysML test modeling
+standard. RT-Tester model parsers are extended to cope with this
+format.
+
+Test procedures will be represented in a general abstract syntax
+format, so that procedures generated by RT-tester can be run on any
+test execution platform.
+
+Test results (test execution logs) will be represented in a general
+format, so that exchange of test results between tools (for example,
+for simulation purposes) becomes possible.
+
+
+
+A first part of these activities have already been done for model of
+radio management communication (see the model-evaluation for
+\href{https://github.com/openETCS/model-evaluation/blob/master/model/EA-SysML/new_version/doc/ea_sysml_report.pdf}{EA/RT-tester}).
+=======
+\begin{center}
+\begin{longtable}{|m{2cm}|m{6cm}|m{2cm}|m{2cm}|}
+\caption{SW Verification Activities Breakdown}\label{tab:verif-activ-summary}\\
+
+\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity Code} & \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Responsibility} & \multicolumn{1}{|c|}{Status/Link}\\ \hline 
+\endfirsthead
+>>>>>>> 041dbcaec7c5702ed182ef04f0a9ba8011bbb4e9
+
+\multicolumn{4}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\rowcolor{myblue} \multicolumn{1}{|c|}{Activity Code} & \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Estimated Delivery} & \multicolumn{1}{|c|}{Real Delivery} \\ \hline
+\endhead
+
+\hline \multicolumn{4}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+
+\hline \hline
+\endlastfoot
+
+\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 0: SW Requirements Verification} \\\hline
+SWReq-Ver-Act1 & Compliance with SSRS verification & & \\\hline
+SWReq-Ver-Act2 & Accuracy, Consistency, Completeness, Correctness assurance & & \\\hline
+SWReq-Ver-Act3 & Testability assurance & & \\\hline 
+SWReq-Ver-Act4 & Verificability assurance & & \\\hline 
+SWReq-Ver-Act5 & Compliance with Standards & & \\\hline 
+SWReq-Ver-Act6 & Traceability with SSRS verification & & \\\hline
+SWReq-Ver-Act7 & Requirements modelling correctness & & \\\hline
+\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 1: SW Architecture and Design Verification} \\\hline
+SWArch-Ver-Act1 & software architecture design verification & & \\\hline
+SWArch-Ver-Act2 & Handle attributes verification & & \\\hline
+SWArch-Ver-Act3 & incompatibilities checking & & \\\hline
+SWArch-Ver-Act4 & Model coherency verification & & \\\hline
+SWArch-Ver-Act5 & Constraints analysis verification & & \\\hline
+SWArch-Ver-Act6 & Traceability verification & & \\\hline
+SWArch-Ver-Act7 & Compliance with Standards verification & & \\\hline
+\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 2: SW Component Design} \\\hline
+ & & & \\\hline
+\end{longtable}
+\end{center}
+
+
+Also a summary of the tool verification activities is to be included, as indicated in Table~\ref{tab:tool-verif-summary}.
+\begin{center}
+\begin{longtable}{|m{1cm}|m{6,5cm}|m{2cm}|m{2cm}|}
+\caption{Tool Chain Verification Summary}
+\label{tab:tool-verif-summary}\\
+
+\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity Code} & \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Estimated Delivery} & \multicolumn{1}{|c|}{Real Delivery} \\ \hline 
+\endfirsthead
+
+\multicolumn{4}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\rowcolor{myblue} \multicolumn{1}{|c|}{Activity Code} & \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Estimated Delivery} & \multicolumn{1}{|c|}{Real Delivery} \\ \hline
+\endhead
+
+\hline \multicolumn{4}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+
+\hline \hline
+\endlastfoot
+
+\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 0: Tool chain Requirements} \\\hline
+ & & & \\\hline
+\rowcolor{lightgray} \multicolumn{4}{|l|}{Phase 1:} \\\hline
+ & & & \\\hline
+\end{longtable}
+\end{center}
+
+
+
+\section{Validation for a Full Development}
+\label{sec:valid-full-devel}
+
+\textit{for each of the validation steps identified in the plan
+  overview, the following has to be instantiated: }
+\subsection{DAS2V Validation}
+\label{sec:dasv-validation}
+
+\subsubsection{Task}
+\label{sec:dasv-valid-task}
+
+
+\subsubsection{Documents to Be Produced}
+\label{sec:dasv-valid-docum-be-prod}
+
+
+\subsubsection{Phase Specific Activities}
+\label{sec:dasv-valid-phase-spec-activ}
+
+\subsubsection{Techniques and Measures}
+\label{sec:dasv-valid-techniques-measures}
+
+
+
+\subsection{SFM Validation (3d)}
+\label{sec:sfm-validation}
+
+\subsubsection{Task}
+\label{sec:sfm-valid-task}
+
+The formalisation of the reqauirements in form of a semi-formal model
+enables a systematic check of the completeness and consistency of the
+system test specification.
+
+The model itself can perhaps be animated (depending on the concrete
+form which is not yet fixed). This offers the chance to an early
+(preliminary) validation of the design.
+
+\subsubsection{Documents to Be Produced}
+\label{sec:sfm-valid-docum-be-prod}
+
+\begin{enumerate}
+\item Revised System Test Specification
+\item SFM validation report
+\end{enumerate}
+
+\subsubsection{Phase Specific Activities}
+\label{sec:sfm-valid-phase-spec-activ}
+
+\tbd{}
+
+\subsubsection{Techniques and Measures}
+\label{sec:sfm-valid-techniques-measures}
+
+\tbd{}
+
+\subsection{Final Validation (tbd)}
+\label{sec:final-validation}
+
+\subsubsection{Task}
+\label{sec:final-valid-task}
+
+The final validation shall ascertain that the end result of the
+development---the EVC software in its specified environment---behaves
+as required. 
+
+\subsubsection{Documents to Be Produced}
+\label{sec:final-valid-docum-be-prod}
+
+\begin{enumerate}
+\item System Test Definition (based on System Test Specification)
+\item System Validation Report
+\end{enumerate}
+
+\subsubsection{Phase Specific Activities}
+\label{sec:final-valid-phase-spec-activ}
+
+Testing the software against the user requirements.
+
+\subsubsection{Techniques and Measures}
+\label{sec:final-valid-techniques-measures}
+
+\qq{Testing in a validated testbed (including API animation/simulation)}
+
+
+\section{Implementation of \VV}
+\label{sec:implementation-vv}
+
+The \vv has to be performed in cooperation with WP~3, which
+produces DAS2Vs (models and code), and with WP~7, where methods
+and tools are defined and developed. 
+
+To exchange information with WP~3, formats are needed for collecting
+information about DAS2Vs (V\&V tasks) and for giving back information
+about the results of V\&V activities. Similarly, with WP~7
+communication shall use formats to describe V\&V methods and tools
+(input from WP~7) and the results of evaluations of V\&V methods and
+tools.
+
+\todo{Formats, activity organisation}
+
+
+\chapter{\VV Plan for openETCS}
+
+\texttt{Contributions to this chapter
+  \begin{description}
+  \item[DLR] overall coherence, lab test description
+  \item[U Bremen] RT Tester application, \qq{more}
+  \item[Siemens] Application story (to be detailed)
+  \item[SQS] Contribution to chapter 6.1 Verification Plan for openETCS
+  \item[CEA] Application story (to be detailed)
+  \item[All4Tec] Application story (to be detailed)
+  \item[DB, SNCF, NS] Validation requirements
+  \end{description}
+}
+
+\todo{Describe how to proceed in openETCS to achieve the most. Include
+all partial V\&V instantiations with their relation/potential
+contribution to a full V\&V. 
+
+Besides the usual purpose of \vv activities, namely evaluating and
+  proving the suitability of design artifacts, V\&V in openETCS will
+  also generate information on the suitability of the methods and tools
+  employed. For that purpose, a format for describing methods
+  and tools to be used in V\&V and one for summarizing the findings
+  about the suitability are defined.
+
+  The plan also contains partial instantiations of V\&V which match
+  partial developments that are realised within openETCS.}
+
+{\it
+  \begin{itemize}
+  \item \vv for partial developments
+  \item evaluation
+  \item demonstration story of capabilities
+  \end{itemize}
+}
+
+
+\section{Verification Plan for openETCS}
+\label{sec:verif-plan-open}
+
+
+
+\subsection{Verification Overview}
+\label{sec:verif-overv}
+\textit{Guidance: Describe the organization, schedule, resources, responsibilities, tools, techniques, and methodologies to be 
+deployed in order to perform the verification activities.}
+
+
+\subsubsection{Organisation}
+\textit{Guidance: Define the relationship of verification to other efforts such as development, project management, quality assurance, and configuration management. Define the lines of communication within the verification effort, the authority for resolving issues, and the authority for approving verification deliverables.}
+
+{\it Organisation: a format for describing design artifacts subject to V\&V,
+  and a feedback format for the findings during V\&V.}
+
+\subsubsection{Schedule}
+\textit{Guidance: The schedule summarizes the various verification tasks
+and their relationship to the overall openETCS project.
+It describes the project life cycle and project milestones including completion dates.
+Summarize the schedule of verification tasks and how verification results provide feedback to the whole openETCS process to support overall project management functions.
+The objective of this section is to define an orderly flow of material between project activities and verification tasks.}
+
+According to the Description of Work of WP~4 \cite{}, the verification
+activities will be structured into three main phases: 
+\begin{enumerate}
+\item First Level: Verification of prototypical system and API model and
+  prototypical code,
+\item Second Level: Verification of system model, functional API prototype model, code
+  architecture and system API prototype
+\item Third Level: Verification of final system and API model, final
+  code and the functional API model 
+\end{enumerate}
+
+
+
+
+
+
+
+\subsection{Verification Activities---User Sories}
+\label{sec:verif-activ-user}
+
+\emph{Guidance: The term ``User Story'' seems to be established in the
+project to stand for any kind application of tools, not just for the
+end user application of the system (EVC software) which is to be
+developed. This section is the place to describe in general where you
+want to apply which method or tool to what artifact(s) (DAS2Vs). I.e.,
+tell the \textbf{story} of your verification activities coherently. Later
+(sub)sections provide the organisational detail: \textbf{When} (Timeline,
+Sec.~\ref{sec:verif-activ-timel}) and 
+\textbf{Contribution} (which of the verification obligations from
+Sec.~\ref{sec:verif-full-devel} are tackled by your approach.}
+
+
+\subsubsection{Reviews and Inspections}
+\label{sec:reviews-inspec-openETCS}
+
+\paragraph{Reviews}
+In the openETCS project
+all written documents, specifications, models and code can be
+reviewed. It is also important to include all documents concerned with
+the creation and delivery of the openETCS product. This means that
+strategies, plans, approaches, operation and maintenance manual, user
+guides, the contract that will initiate the work should all be
+reviewed in a structured way. 
+
+Information about the reviews planned within openETCS is given in the
+QA plan \cite{QAplan}.
+
+\paragraph{Inspections}
+Inspection shall be applied to design artifacts whose correctness
+is important for the demonstration of the project results, and also
+to validate results of innovative \vv methods and/or tools.
+
+
+\subsubsection{Software Architecture Analysis Method (SAAM)}
+\label{sec:saam-openETCS}
+Potential targets for SAAM are parts and instances the SFM 
+(semi-formal model) of the software, to ascertain the 
+viability of the software architecture decision. The scenarios 
+with which the analysis shall be performed are to be developed
+from the operator requirements.
+
+\subsubsection{Architecture Tradeoff Analysis Method (ATAM)}	
+\label{sec:atam-openETCS}
+ATAM may be applied to the SW architecture.
+
+
+\subsubsection{Formal Verification of Real-Time Aspects based on Timed Automata (TWT)}
+\label{sec:real-time-TA-openETCS}
+
+This section describes TWT's plans regarding the verification of
+real-time aspects by employing timed automata and the UPPAAL tool
+within the project. In Section~\ref{sct:twt:descrTA} (page
+\pageref{sct:twt:descrTA}) we have given an introduction to and
+described the principles of verification based on timed automata.
+
+TWT's work will be based on the following action items:
+\begin{enumerate}
+  \item We will analyze whether/how UML/SysML statecharts\footnote{The
+statecharts in UML and SysML are actually the same.} can be
+transformed to timed automata in a sensible manner while retaining as
+much structural information as possible.
+  \item Parts of the ETCS specification where timing plays a vital
+role will be analysed and verified based on timed automata by employing
+the transformation mechanism. Here we assume that the corresponding
+parts of the specification have already been modelled in SysML as will
+be done within WP3. In the case that a direct, automatic
+transformation is not feasible for now, we will manually create timed
+automata models to conduct our analysis.
+  \item We will provide documentation and feedback to WP3 and WP4
+about our results to align our efforts with the other partners.
+  \item We will investigate, how our approach can be integrated in the
+Eclipse environment and develop such integration if feasible with our
+efforts.
+  \item We plan to publish our results on action item 1.
+\end{enumerate}
+
+Please note that the above list may be subject to future change.
+
+\subsubsection{Verification with Model-Based Simulation using SystemC (TWT, URO)}
+
+In Section~\ref{sct:uro:systemc} (page \pageref{sct:uro:systemc}) the
+basics of SystemC and the SysML/SystemC joint approach have been
+described. TWT and the University of Rostock (URO) will work on this
+concept based on the following action items:
+
+\begin{enumerate}
+  \item TWT will analyse methods for generating SystemC code from
+  SysML models. In first investigations the Acceleo tool (Eclipse
+  plugin, based on OMG standard) seems to be a promising candidate for
+  model-to-text transformation.
+  \item URO will build a modular and executable SystemC model for
+  braking curves that is suitable for real-time simulation. An
+  accompanying high-level SysML model will be constructed as well and
+  will be means to test the transformation methods to be developed in
+  the context of action item 1.
+  \item TWT and URO plan to investigate which other parts of the ETCS
+  specification can benefit from real-time simulation and build models
+  accordingly.
+  \item URO will investigate whether performance analysis based on the
+  underlying hardware system is feasible within the openETCS
+  project. This will allow to scale the hardware resources of the OBU
+  system accordingly.
+  \item In addition, using the results from action item 1, TWT and URO
+    plan to transform existing SysML models (to be developed in WP3)
+    to SystemC for real-time simulation.
+  \item Evaluation (and possibly implementation) of an Eclipse
+  integration
+\end{enumerate}
+
+Please note that the above list may be subject to future change.
+
+\subsubsection{System Integration  Testing (Uni Bremen/DLR)}
+Section \ref{subsec:mbt} describes the main objective of system
+integration testing. Uni Bremen will focus on the following items~:
+\begin{enumerate}
+\item Create a test model in SysML. From the model evaluation
+  activities, the management of the radio communication is already
+  available. To cover different aspect of the specification, the ceiling
+  speed monitoring model will be also provided.
+\item Generate test cases according to the defined interface given by
+  DLR. (RT-Tester)
+\item Study the automatic generation of the track layouts and speed simulations
+\item Set up a test environments for
+  \begin{itemize}
+    \item Software-in-loop testing with code provided by SCADE
+      (Siemens)
+    \item Testing within DLR laboratory.
+  \end{itemize}
+\end{enumerate}
+
+
+\paragraph{Track simulation}
+OpenETCS system testing for the EVC on-board computer requires test
+execution in real physical time and also track layout with realistic
+speed profiles.  We also want to contribute to the track and Speed
+Simulation by automatically generates ``relevant'' layout for OpenETCS.
+
+
+\paragraph{Test cases generation}
+We also plan different activities to ensure the pertinence of our test cases.
+\begin{enumerate}
+\item Check the test model (SysML) : RTT-BMC or other model checkers
+\item Add relevant LTL properties if needed
+\item Test case analysis by 
+  \begin{itemize}
+    \item Structural coverage
+    \item Requirement coverage
+    \item Mutation coverage 
+    \item Data coverage
+  \end{itemize}
+\end{enumerate}
+
+A first part of these activities have already been done for model of
+radio management communication (see the model-evaluation EA/RT-tester).
+
+
+\subsection{Verification Activities---Timeline}
+\label{sec:verif-activ-timel}
+
+This section lists per partner/activity in which of the project
+phases according to Sec.~\ref{sec:verif-activ-timel} (first, second or
+third level of verification) a particular activity is planned. In the
+first version of the V\&V plan, only the first level needs to be detailed.
+
+
+\subsubsection{First Level of Verification}
+\label{sec:first-level-verif}
+
+\emph{Guidance: A short description which may refer to an activity
+  detailed earlier. Most probably the material will be organised in a table.}
+
+\subsubsection{Second Level of Verification}
+\label{sec:secon-level-verif}
+
+\subsubsection{Third Level of Verification}
+\label{sec:third-level-verif}
+
+
+\subsection{Verification Activities---Process View}
+\label{sec:verif-activ-proce}
+This section provides the detailed plan for the verification tasks
+throughout the openETCS project life cycle. It summarizes the
+activities performed by the project partners in relating them to the
+overall definition of verification activities in
+Sec.~\ref{sec:verif-full-devel}. 
+
 \subsection{Verification Reporting}
 \textit{This section describes how the results of implementing the Verification Plan will be documented.
 Verification reporting will occur throughout the software life cycle.
 The content, format, and timing of all verification reports shall be specified in this section.}
 
-The following reports will be generated during the Verification process:
+\textit{This subsection has to be revised to fit the restrictions of implementability within the project.}
+
+The following reports will be generated during the verification process:
 \begin{itemize}
 \item \textbf{Anomaly reports:} 
 \item \textbf{Phase Summary Verification reports:} 
@@ -2930,6 +3138,7 @@ Sec.~\ref{sec:valid-full-devel}.
 
 \appendix
 \chapter{Requirements on \VV}
+\label{sec:appendix}
 
 \todo{Explain the requirement chapter.}
 {\it
@@ -3155,8 +3364,26 @@ activities.
 \label{sec:glossary}
 
 \begin{description}
-\item [DAS2V:] Design Artifact Subject to Verification or Validation
-\item[EVC] European Vital Computer
+\item[API:] Application Programming Interface. In the project, the API defines 
+the interface of the EVC software to the operating system and hardware. \textit{The
+exact nature of the API still needs to be defined, whether it should be seen as
+a specification or as an implementation has yet to be resolved.}
+\item[ATAM:] Architecture Tradeoff Analysis Method
+\item [DAS2V:] Design Artifact Subject to Verification or Validation, e.g.\ 
+some model or code fragment which has to be verified against its specification.
+\item[EVC:] European Vital Computer
+\item[FLOSS:] Free/Libre/Open Source Software
+\item[FFM:] Fully Formal Model. Sometimes called ``Strictly Formal Model''. 
+A model of a part of the design which has a
+fully formal semantics and can thus be subjeced to rigorous analysis methods 
+from the domain of mathematical or computational logic.
+\item[HW:] Hardware
+\item[SAAM:] Software Architecture Analysis Method 
+\item[SFM:] Semi Formal Model. A model of some part of the design whose semantical
+interpretation is either not fully fixed or is similar to that of a program. I.e., 
+the interpretation might depend on variations in the code generation or compilation, 
+or it does not resolve ``semantic variation points'' (UML).  
+\item[SW:] Software
 \end{description}
 
 

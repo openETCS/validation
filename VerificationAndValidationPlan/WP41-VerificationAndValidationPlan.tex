@@ -37,7 +37,7 @@
 %C++
 \newcommand{\cxx}{C\nolinebreak[4]\hspace{-.05em}\raisebox{.3ex}{\footnotesize\bf ++}\xspace}
 
-
+\renewcommand{\tbd}[1]{\nthng{#1}}
 
 
 \graphicspath{{./template/}{.}{./images/}}
@@ -50,7 +50,7 @@
 % The document metadata is defined below
 
 %assign a report number here
-\reportnum{OETCS/WP4/D4.1V00.06}
+\reportnum{OETCS/WP4/D4.1V00.08}
 
 %define your workpackage here
 \wp{Work Package 4: ``Validation \& Verification Strategy''}
@@ -59,10 +59,10 @@
 \title{openETCS Validation \& Verification Plan}
 
 %set a subtitle here
-\subtitle{Version 00.07}
+\subtitle{Version 00.08}
 
 %set the date of the report here
-\date{31 July 2013}
+\date{01 August 2013}
 
 %define a list of authors and their affiliation here
 
@@ -157,7 +157,7 @@ Izaskun de la Torre (SQS), Jan Welte(TU-BS)}
   Deliverable ID or doc.\ ref.\ & D4.1\\
   \hline
   Document title & openETCS Validation \& Verification Plan\\
-  Document version & 00.05 \\
+  Document version & 00.08 \\
   Document authors (org.)  &  Marc Behrens (DLR),
   Cecile Braunstein (U Bremen), Cyril Cornu (All4Tec), Christophe
   Gaston (CEA), Jens Gerlach 
@@ -184,7 +184,7 @@ Main reviewers & -- \\
 \hline
   &  Name & Role & Date   \\
 \hline  
-Written by    &  Hardi Hungar & WP4-T4.1 Task Leader  &  June 2013\\
+Written by    &  Hardi Hungar & WP4-T4.1 Task Leader  & August 2013\\
 \hline
 Approved by & -- & -- & \\
 \hline
@@ -213,7 +213,10 @@ restructuring
 \\\hline
 00.06 & 29.07.2013 & H. Hungar & Restructuring
 \\\hline
-00.07 & 31.07.2013 & J.Welte & Ch. 5: Description of Safety Interfaces
+00.07 & 31.07.2013 & J. Welte & Ch. 5: Description of Safety Interfaces
+\\
+00.08 & 01.08.2013 & H. Hungar & Streamlining, replacing placeholders
+by text
 \\
 \hline
 \end{tabular}
@@ -567,7 +570,7 @@ the EN~50128, where it is required that the plan shall be maintained
 throughout the development cycle.
 
 \begin{description}
-\item[V01, T0+13:] First version of the plan
+\item[V01, T0+13:] First version of the plan. 
 \item[V02, T0+17:] First revision, based on the 1st V\&V interim
   reports on applicability of the V\&V approach to model and
   implementation/code (D4.2.1, D4.2.2)
@@ -577,12 +580,19 @@ throughout the development cycle.
 \item[V04, T0+36:] Final version as part of the final V\&V report (D4.4) 
 \end{description}
 
+The first version of the plan is based on the available information of
+the design process. This is not yet very detailed as also the
+description in Chapter~\ref{cha:vv-design-process} of this report
+shows. In particular, the nature of the SSRS is yet to be defined
+precisely, and the architecture description including the HW/SW
+partitioning needs to be revised.
+
+Concrete plans of activities are thus still to be made, and methods
+and tools to be applied will have to be selected. Only the first phase
+of V\&V activities is described in Sec.~\ref{sec:first-level-verif}.
+
 \chapter{\VV in the Design Process}
 \label{cha:vv-design-process}
-
-\textit{Name the design stages and associated V\&V steps, both for the
-ideal development (openETCS vision) and project realisation (where we
-end with a demonstrator).}
 
 D2.3 defines the openETCS process on an abstract level. It already
 defines the main steps. A slightly more detailed picture than the one
@@ -594,17 +604,27 @@ given in D2.3 is given in Fig.~\ref{fig:openETCSProcess}.
   \caption{openETCS Process (rough view)}
   \label{fig:openETCSProcess}
 \end{figure}
-
+%
+As a basis for planning the V\&V activities, the process sketch
+permits to name the main phases. Planning will need a
+better definition of the stages (scope of the design artifacts,
+level of detail, respective system boundaries), detailed planning a
+specification of the artifacts to be produced. Version V01 of this
+document will in these respects be of an accordingly preliminary
+nature. 
+ 
+\nthng{
 \textit{The figure needs to be detailed to include all the main design
 steps. E.g., the integration activities are subsumed within ``3e) V\&V
 on code''. For instance, the integration into the demonstrator should
 be made visible. In the end, the figure shall define merely the
 ``full'' development, this will be of more help than ``openETCS
 implementation'' of it. }
-
+}
 
 \chapter{\VV Strategy}
 
+\nthng{
 \texttt{Contributors to this chapter:
   \begin{description}
   \item[DLR] Overall coherence, Safety interface
@@ -615,15 +635,20 @@ implementation'' of it. }
   \item[DB, SNCF, NS] Operator role (scenarios, validation goals)
   \end{description}
 }
+}
 
-{\it The overall strategy is to support the design process as
-  specified in D2.3 and its partial instantiations within openETCS. In
-  accordance with the project approach, V\&V shall be done in a FLOSS
-  style, and it has to suit a model-based development. A further main
-  consideration shall be to strive for conformance with the
-  requirements of the standards (EN~50128 and further). This means
-  that the contribution of all activities to a complete verification
-  and validation shall be defined.  }
+The overall strategy is to support the design process as specified in
+D2.3 and its partial instantiations within openETCS. In accordance
+with the project approach, V\&V shall be done in a FLOSS style, and it
+has to suit a model-based development. A further main consideration
+shall be to strive for conformance with the requirements of the
+standards (EN~50128 and further). Of particular importance in that
+respect is of course the interface to th safety consideration and the
+contribution of V\&V to the safety case.
+
+This means that the contribution of
+all activities to a complete verification and validation shall be
+defined.
 
 \section{\VV Strategy for a Full Development }
 \label{sec:vv-strategy-full}
@@ -649,7 +674,7 @@ interface }
 \subsection{Validation Strategy for a Full Development}
 \label{sec:valid-strategy-full}
 
-\textit{Classical validation starts after SW/HW integration. Sketch
+Validation, according to the standard, starts after SW/HW integration. Sketch
   how this should look like for the openETCS architecture approach
   (with SSRS and API). Ideal would be a description of how a full
   openETCS EVC software could be taken up by some manufacturer and
@@ -658,19 +683,32 @@ interface }
 Not-so-classical validation can start earlier when executable models
 become available. If a model can be animated to run an operational
 scenario (perhaps with some additional environment/rest-of-system
-modeling), design defects may get unveiled before the real validation.}
+modeling), design defects may get unveiled before the real validation.
+
+\subsection{Safety Interface}
+\label{sec:safety-interface}
+
+The safety activities in the software development process are closely connected to the \vv activities as these provide the overall system safety requirements, derive corresponding safety related design specifications and collect the \vv documentation to build the safety case. The safety activities are identifying unwanted accidents resulting in harm and analyses the potential hazards, which could lead to the harm. Resulting from this in depth  analysis certain requirements are derived, which provide the overall safety goals for the system. If the initial risk of a hazard resulting in harm has to be reduced or the possibility of harm shall be eliminated at all specific safety designs are developed to reach the required risk. The \vv process has to verify these specifications and validated that the requirements hold for the developed software. Respectively, a complete documentation is needed to show in the safety case that this steps have been done according to the overall \vv plan.
+
+Therefore three main interfaces to the safety activities have to be maintained in the \vv process:
+\begin{itemize}
+\item \textbf{Verification of safety design specification}: Based on risk control measures documented in the Hazard Log specific safety design specifications are derived and written in the backlogs for model and code development. As it is done for the overall model and code specification the verification activities have to demonstrate that all of the safety specifications have been implemented properly.
+\item \textbf{Validation of safety requirements}: The overall software validation has to demonstrated that the safety goals are met by the developed product. Therefore the safety requirements which have been stated based on potential accidents and accepted risk levels have to be validated. As these in many cases requires proof for the absence of certain conditions, it is important that \vv activities work in a close iterations with the safety activities to ensure that the safety requirements are stated in a way that can be validated. 
+\item \textbf{Creation of \vv documentation}: As the safe case has to provide the complete argumentation that all needed steps to ensure a qualified and safe development process have been performed properly, it is important that the \vv plan and all resulting \vv reports are coherent and allow to show a close chain of arguments. 
+\end{itemize}
 
 
 
 \section{\VV Strategy for openETCS}
 \label{sec:vv-strategy-project}
 
-{\it The project will only perform part of the development, and thus
+The project will only perform part of the development, and thus
   also only a part of the V\&V activities. These need to be defined
-  and planned, of course.  }
+  and planned, of course. 
 
 \chapter{\VV Plan for a Full Development}
 
+\nthng{
 \texttt{Contributors to this chapter:
   \begin{description}
   \item[DLR] Overall coherence, revise structure of the Verification Report
@@ -688,24 +726,24 @@ modeling), design defects may get unveiled before the real validation.}
   \item[Institut Telecom] Methods and Tools Sec.~\ref{sec:methods-tools})
   \end{description}
 }
+}
 
-{\it
-Instantiate the generic \VV plan from the standard (and the draft) to
-the EVC development in openETCS-style (FLOSS). This entails the organization,
+The section is going to instantiate the generic \VV plan from the standard to
+the EVC development in openETCS-style (FLOSS). This entails the organisation,
 a definition of the requirements, 
 generic schedule covering all design steps, resources, responsibilities, 
 tools, techniques, and methodologies to be 
 deployed in order to perform the verification activities, and all the
 documents which are to be produced.
 
-The result must conform to
-  the requirements of the standards for a SIL~4 development. 
+The result must conform to the requirements of the standards for a
+SIL~4 development.
 
   As D2.3 gives only a rough description of the development steps and
   not yet a complete list of design artifacts, nor one of methods
-  applied and formats to be used, this first version of the V\&V plan
+  applied and formats to be used, this first version (V01) of the V\&V plan
   will also lack detail which will to be added in later revisions as
-  these informations become more concrete.}
+  these informations become more concrete.
 
 \section{\VV Plan Overview}
 \label{sec:plan-overview}
@@ -715,16 +753,12 @@ This section gives an overview of the \vv plan for a full development.
 \subsection{\VV Organisation}
 \label{sec:vv-organisation}
 
-\textit{Guidance: Define the relationship of verification and validation to other efforts such as development, project management, quality assurance, and configuration management. Define the lines of communication within the \vv, the authority for resolving issues, and the authority for approving \vv deliverables. Here, the \vv aspect of the ``openETCS-ecosystem'' should be outlined.}
-
-The safety activities in the software development process are closely connected to the \vv activities as these provide the overall system safety requirements, derive corresponding safety related design specifications and collect the \vv documentation to build the safety case. The safety activities are identifying unwanted accidents resulting in harm and analyses the potential hazards, which could lead to the harm. Resulting from this in depth  analysis certain requirements are derived, which provide the overall safety goals for the system. If the initial risk of a hazard resulting in harm has to be reduced or the possibility of harm shall be eliminated at all specific safety designs are developed to reach the required risk. The \vv process has to verify these specifications and validated that the requirements hold for the developed software. Respectively, a complete documentation is needed to show in the safety case that this steps have been done according to the overall \vv plan.
-
-Therefore three main interfaces to the safety activities have to be maintained in the \vv process:
-\begin{itemize}
-\item \textbf{Verification of safety design specification}: Based on risk control measures documented in the Hazard Log specific safety design specifications are derived and written in the backlogs for model and code development. As it is done for the overall model and code specification the verification activities have to demonstrate that all of the safety specifications have been implemented properly.
-\item \textbf{Validation of safety requirements}: The overall software validation has to demonstrated that the safety goals are met by the developed product. Therefore the safety requirements which have been stated based on potential accidents and accepted risk levels have to be validated. As these in many cases requires proof for the absence of certain conditions, it is important that \vv activities work in a close iterations with the safety activities to ensure that the safety requirements are stated in a way that can be validated. 
-\item \textbf{Creation of \vv documentation}: As the safe case has to provide the complete argumentation that all needed steps to ensure a qualified and safe development process have been performed properly, it is important that the \vv plan and all resulting \vv reports are coherent and allow to show a close chain of arguments. 
-\end{itemize}
+This section defines the relationship of verification and validation
+to other efforts such as development, project management, quality
+assurance, and configuration management. It defines the lines of
+communication within the \vv, the authority for resolving issues, and
+the authority for approving \vv deliverables. Here, the \vv aspect of
+the ``openETCS-ecosystem'' should be outlined.
 
 
 
@@ -734,7 +768,8 @@ Therefore three main interfaces to the safety activities have to be maintained i
 This section gives a short overview of the activities (Verification or Validation) which
 happen at the respective development steps, to be detailed in the
 subsequent sections. The numbering (e.g.\ 2e) refers to
-Fig.~\ref{fig:openETCSProcess}. Abbreviations used are defined in the glossary, Sec.~\ref{sec:glossary}.
+Fig.~\ref{fig:openETCSProcess}. Abbreviations used are defined in the
+glossary, Sec.~\ref{sec:glossary}.
 
 \begin{description}
 \item[SSRS---Verification (1c):] verification that the SSRS the requirements
@@ -757,37 +792,54 @@ Fig.~\ref{fig:openETCSProcess}. Abbreviations used are defined in the glossary, 
 \item[Code---Validation (3e):] no specific activities foreseen
 \end{description}
 
-The following steps need some coherent concept. A viable solution
-might look simpler / different.  
+The following step descriptions are preliminary and shall serve as a
+concept which is to be detailed in later revisions (V02 and up).
+%
 \begin{description}
 \item[EVC Software---Verification (tbd):] Perform software system verification
 \item[EVC Software---Validation (tbd):] Validation against user
-  requirements/scenarios 
-\item[SW/HW integration (tbd):] \qq{Use the API}
-\item[Final Validation (tbd):] User requirements and scenarios (based
-  on sub-system test specification
+  requirements/scenarios, broken down to software functionality
+\item[SW/HW integration (tbd):] Use the API in a simulation
+  environment as a replacement of actual SW/HW integration
+\item[Final Validation (tbd):] Apply user (railway operator) requirements and scenarios (based
+  on the sub-system test specification)
 \end{description}
 
 \subsection{Schedule}
-\textit{Guidance: The schedule summarizes the various verification tasks
-and their relationship to the overall openETCS project.
-It describes the project life cycle and project milestones including completion dates.
+The overview of the activities given above shalle be detailed in this
+section. The objective here is to define an orderly flow of
+material between project activities and verification tasks. 
+\nthng{It describes the project life cycle and project milestones including completion dates.
 Summarize the schedule of verification tasks and how verification results provide feedback to the whole openETCS process to support overall project management functions.
 The objective of this section is to define an orderly flow of material between project activities and verification tasks.}
 
 \subsection{\VV Resources}
 \label{sec:vv-resources}
 
-\textit{Guidance: This section summarizes the resources needed to perform verification tasks, including staffing, facilities, tools, finances, and special procedural requirements such as security, access rights, and documentation control.}
+In a regular development project, resources needed to perform
+verification tasks, including staffing, facilities, tools, finances,
+and special procedural requirements such as security, access rights,
+and documentation control, have to be defined. Here, where we define
+merely a pattern of a V\&V plan, the emphasis will lie on spelling out
+requirements and proposing
+principal solutions.
+\nthng{  
+\textit{Guidance: This section summarizes the resources needed to
+  perform verification tasks, including staffing, facilities, tools,
+  finances, and special procedural requirements such as security,
+  access rights, and documentation control.}
+}
 
 \subsection{Responsibilities}
 \label{sec:vv-responsibilities}
+
+\nthng{
 \textit{Guidance: Identify the organization responsible for performing Verification tasks. There are two levels of responsibility--- 
 general responsibilities and specific responsibilities for the verification tasks to be performed should be assigned to individuals. Here, in the general \vv plan, only the first are to be defined.}
-
+}
 \begin{center}
 \begin{longtable}{|m{2,5cm}|m{6cm}|m{2cm}|m{2cm}|}
-\caption{General \VV Responsabilities}
+\caption{General \VV Responsibilities}
 \label{tab:gener-vv-respo}\\
 
 \hline \rowcolor{myblue} \multicolumn{1}{|c|}{Role} & \multicolumn{1}{|c|}{Name of the person} & \multicolumn{1}{|c|}{Affiliation} & \multicolumn{1}{|c|}{Activity Code} \\ \hline 
@@ -812,9 +864,9 @@ Verifier & & & \\\hline
 \section{Requirements Base}
 \label{sec:requirements-base}
 
-\textit{This section shall provide references to all requirements 
+This section shall provide references to all requirements 
 against which the design is to be verified and validated. It does not include 
-process requirements. For the latter, see Sec.~\ref{sec:appendix}.}
+process requirements. For the latter, see Sec.~\ref{sec:appendix}.
 
 The requirements on the EVC software origin in the SS-026 and TSI
 specifications.
@@ -824,10 +876,15 @@ specifications.
 \section{\VV Methods and Tools }
 \label{sec:methods-tools}
 
-{\it The project shall select / develop / describe a chain of methods
-  and tools for doing \vv in a full development. Some will be
-  suitable for both, \vv, tasks. Each proposal shall be labeled accordingly.}
+The project shall select / develop / describe a chain of methods and
+tools for doing \vv in a full development. In Version V01, this
+section collects proposals, which will be evaluated and from which
+those suitable for real-life
+development and maintenance of the open-source EVC software will be selected.
 
+Each proposal described here shall be classified for which tasks and
+activities in teh development it is intended, i.e., which role it
+should take.
 
 \subsection{On the Notion of ``Formal Methods''}
 \label{sec:notion-formal-method}
@@ -1738,7 +1795,7 @@ NuSMV's source code is available under an LGPL license from
 \subsubsection{Formal Verification of Real-Time Aspects based on Timed Automata}
 \label{sct:twt:descrTA}
 
-\textcolor{magenta}{===== Start TWT =====}
+%\textcolor{magenta}{===== Start TWT =====}
 
 Verifying system properties involving time is difficult with traditional model checking methods. Commonly used \emph{temporal logics}, such as LTL or CTL catch discrete and qualitative aspects of time and allow to formulate properties such as\footnote{The prefixes are the corresponding linear time operators.}
 \begin{itemize}
@@ -1817,12 +1874,12 @@ Timed automata and statecharts in SysML/UML are both based on the concept of fin
 \item Special statechart features, such as history nodes that have a partially undefined semantics according to the current SysML/UML standard \cite{fecher_29_2005}, introduce problems. As they are not used very often, they can possibly left out in a first iteration.
 \end{itemize}
 
-\textcolor{magenta}{===== End TWT =====}
+%\textcolor{magenta}{===== End TWT =====}
 
 \subsection{Verification with Model-Based Simulation}
 \label{sct:uro:systemc}
 
-\textcolor{magenta}{===== Start URO (first draft) =====}
+%\textcolor{magenta}{===== Start URO (first draft) =====}
 
 This section addresses verification based on simulation. By building an executable model of system components its real-time behaviour can by analysed and evaluated before actually building the entire system.
 
@@ -1842,7 +1899,9 @@ The aim of the execution of an SystemC model is to ensure that the working capac
 
 In addition, by creating an executable system model from SysML or UML, the (real time) behaviour of the system can be analysed which is not feasible at the SysML level.
 
-\textcolor{magenta}{===== End URO =====}
+%\textcolor{magenta}{===== End URO =====}
+
+
 
 \section{Verification Acitivities for a Full Development}
 \label{sec:verif-full-devel}
@@ -1887,7 +1946,7 @@ TSIs and is not intended to replace them. The verification has to
 check that a complete and consistent set of functionalities have been
 identified and that the architecture is adequate. 
 
-\todo{Verifiy hazard analysis too?}
+%\todo{Verifiy hazard analysis too?}
 
 
 \subsubsection{Documents to Be Produced}
@@ -1926,10 +1985,10 @@ nature of the SSRS, mainly manual techniques are to be applied.
 
 
 
-\todo{further verification phases}
+%\todo{further verification phases}
 
 \subsection{System Verification}
-\textcolor{red}{<Brief Introduction>}
+%\textcolor{red}{<Brief Introduction>}
 
 \paragraph{SSRS Verification(1c)}
 The SSRS Verification phase refers to the task already defined in the \ref{sec:SSRSVerification} section of this document that involves the full development. 
@@ -2020,11 +2079,11 @@ SWR-yyy
 
 \underline{Tools, Techniques, Methods and Measures} 
 
-\textit{Guidance: Identify the special software tools, techniques, and
+This section shall identify the special software tools, techniques, and
   methodologies to be employed by the verification team. 
 The purpose of each should be defined and plans for the acquisition,
 training, support, and qualification of each shall be described in
-this section.}
+this section.
 
 The following table summarizes the Techniques, methods, measures or
 tools proposed for the identified activities. 
@@ -2216,8 +2275,9 @@ The expected activities for this phase are the following:
 
 \underline{Tools, Techniques, Methods and Measures} 
 
-\textit{Guidance: Identify the special software tools, techniques, and methodologies to be employed by the verification team. 
-The purpose of each should be defined and plans for the acquisition, training, support, and qualification of each shall be described in this section.}
+The specific software tools, techniques, and methodologies to be
+employed by the verification team are to be identified here. 
+The purpose of each should be defined and plans for the acquisition, training, support, and qualification of each shall be described in this section.
 
 The following table summarizes the Techniques, methods, measures or tools proposed for the identified activities.
 
@@ -2300,8 +2360,11 @@ The activities that shall ensure these aspects are successfully met are the foll
 
 \underline{Tools, Techniques, Methods and Measures} 
 
-\textit{Guidance: Identify the special software tools, techniques, and methodologies to be employed by the verification team. 
-The purpose of each should be defined and plans for the acquisition, training, support, and qualification of each shall be described in this section.}
+The specific software tools, techniques, and methodologies to be
+employed by the verification team are to be identified here. 
+The purpose of each should be defined and plans for the acquisition,
+training, support, and qualification of each shall be described in
+this section. 
 
 The following table summarizes the Techniques, methods, measures or tools proposed for the identified activities.
 
@@ -2361,71 +2424,30 @@ The following table summarizes the Techniques, methods, measures or tools propos
 \textbf{Safety Verification}
 
 \subsubsection{Tool chain Verification}
-\textit{Verification of the identified list of tools that have been collected in the tool chain.}
+
+Verification of the identified list of tools that have been collected in the tool chain.
 
 
 \section{Verification Reporting}
 \label{sec:verif-report}
-\textit{This section describes how the results of implementing the Verification Plan will be documented.
-Verification reporting will occur throughout the software life cycle.
-The content, format, and timing of all verification reports shall be specified in this section.}
 
-The following reports will be generated during the verification process:
+
+This section describes how the verification activities have to be documented.
+Verification reporting will occur throughout the software life cycle.
+The content, format, and timing of all verification reports shall be specified in this section.
+
+The following kinds of reports will be generated during the verification process:
 \begin{itemize}
 \item \textbf{Anomaly reports:} 
 \item \textbf{Phase Summary Verification reports:} 
 \item \textbf{Final report:}
 \end{itemize}
 
-%The structure of the Verification report is already defined in the
-%\ref{sec:structure-vv-plan} section of this document 
+\subsection{Structure of the Verification Report}
+\label{sec:struct-verif-report}
 
-\subsection{Administrative procedures}
-This section identifies the existing administrative procedures that
-are to be implemented as part of the Verification Plan. 
-Verification efforts consist of both management and technical tasks.
-Furthermore, it is the task of the SQA team to monitor whether the
-procedures as defined in the management plans ([QAPlan], [SCMP],
-[Review and Revision processes]) are followed. 
-
-\subsubsection{Problem Report}
-The problem reporting procedure is described within the document Change/Problem Management Process.
-
-Any problem, failure and error encountered during the review activities (QA. Verification, Validation, Assessment) planned in the software development life-cycle, problems reported by users and customers as well as change requests initiated by any of the system stakeholders will be reported and managed following the Change/Problem Management Process detailed in \href{https://github.com/openETCS/governance/tree/master/Change-Problem%20Process}{[governance]} and through the Change/Problem Management Tool.
-
-\subsubsection{Task Iteration Process}
-Any change in the requirements (system, sub-systems, sw or components)
-require repeated verification and validation activities. 
-
-Once the change is accepted following the change/problem management
-procedure, the phases and items affected by it must be
-evaluated. These tests will be redesigned to reflect the change in the
-requirement and will be executed again. 
-
-In turn, a new analysis of the Software Integrity Level will involve
-the analysis of the activities requirements and documentation
-presented by the EN50128 standard and include such activities in the
-SVVP if necessary. 
-
-\subsubsection{Deviation Process}
-The Quality Manager will be informed in the case of detection of a
-deviation regarding Verification Plan. In addition, he/she also be
-informed if it is deemed necessary by an amendment to the Plan,
-whether or not motivated by a deviation 
-
-The Quality Manager will report such incidents to the Project Managers
-and with whom shall act appropriately. All persons listed in the
-\ref{sec:Responsibilities} Responsibilities section shall be informed
-of a change in the Verification Plan 
-
-\subsubsection{Control Procedure}
-Control procedures are specified in the Configuration Management Plan [SCMP]
-
-
-
-\tbd{the following is a draft which is to be adapted to the openETCS design flow.}
-{\it
-The verification and validation plan covers the following central topics:
+The following sketches the structure of the verification report. It
+shall cover the following central topics:
 \begin{description}\setlength{\parsep}{0pt}\setlength{\itemsep}{0pt}\setlength{\topsep}{0pt}
 %\reqfixed{04}{040}{x}
 %\subreqfixed{04}{040}{1}{x}
@@ -2504,7 +2526,7 @@ The verification and validation plan covers the following central topics:
 \item[Timeline] giving the timeline for the baselines as input to the
   V\&V process and identifying when each artifact should be created. 
 \end{description}
-}
+
 
 
 An example of a summary table of verification activities performed is given in Table~\ref{tab:verif-activ-summary}. 
@@ -2578,13 +2600,67 @@ Also a summary of the tool verification activities is to be included, as indicat
 \end{longtable}
 \end{center}
 
+%The structure of the Verification report is already defined in the
+%\ref{sec:structure-vv-plan} section of this document 
+
+\section{Administrative Procedures}
+This section identifies the existing administrative procedures that
+are to be implemented as part of the Verification Plan. 
+Verification efforts consist of both management and technical tasks.
+Furthermore, it is the task of the SQA team to monitor whether the
+procedures as defined in the management plans ([QAPlan], [SCMP],
+[Review and Revision processes]) are followed. 
+
+\subsection{Problem Report}
+The problem reporting procedure is described within the document
+Change/Problem Management Process.
+
+Any problem, failure and error encountered during the review
+activities (QA. Verification, Validation, Assessment) planned in the
+software development life-cycle, problems reported by users and
+customers as well as change requests initiated by any of the system
+stakeholders will be reported and managed following the Change/Problem
+Management Process detailed in
+\href{https://github.com/openETCS/governance/tree/master/Change-Problem%20Process}{[governance]} and through the Change/Problem Management Tool.
+
+\subsubsection{Task Iteration Process}
+Any change in the requirements (system, sub-systems, sw or components)
+require repeated verification and validation activities. 
+
+Once the change is accepted following the change/problem management
+procedure, the phases and items affected by it must be
+evaluated. These tests will be redesigned to reflect the change in the
+requirement and will be executed again. 
+
+In turn, a new analysis of the Software Integrity Level will involve
+the analysis of the activities requirements and documentation
+presented by the EN50128 standard and include such activities in the
+SVVP if necessary. 
+
+\subsubsection{Deviation Process}
+The Quality Manager will be informed in the case of detection of a
+deviation regarding Verification Plan. In addition, he/she also be
+informed if it is deemed necessary by an amendment to the Plan,
+whether or not motivated by a deviation 
+
+The Quality Manager will report such incidents to the Project Managers
+and with whom shall act appropriately. All persons listed in the
+\ref{sec:Responsibilities} Responsibilities section shall be informed
+of a change in the Verification Plan 
+
+\subsubsection{Control Procedure}
+Control procedures are specified in the Configuration Management Plan [SCMP]
+
+
+
+
 
 
 \section{Validation for a Full Development}
 \label{sec:valid-full-devel}
 
-\textit{for each of the validation steps identified in the plan
-  overview, the following has to be instantiated: }
+For each of the validation steps identified in the plan
+  overview, the following has to be instantiated:
 \subsection{DAS2V Validation}
 \label{sec:dasv-validation}
 
@@ -2662,7 +2738,7 @@ Testing the software against the user requirements.
 \subsubsection{Techniques and Measures}
 \label{sec:final-valid-techniques-measures}
 
-\qq{Testing in a validated testbed (including API animation/simulation)}
+A technique to be considered is testing in a validated testbed (including API animation/simulation)
 
 
 \section{Implementation of \VV}
@@ -2679,11 +2755,12 @@ communication shall use formats to describe V\&V methods and tools
 (input from WP~7) and the results of evaluations of V\&V methods and
 tools.
 
-\todo{Formats, activity organisation}
+%\todo{Formats, activity organisation}
 
 
 \chapter{\VV Plan for openETCS}
 
+\nthng{
 \texttt{Contributions to this chapter
   \begin{description}
   \item[DLR] overall coherence, lab test description
@@ -2695,10 +2772,11 @@ tools.
   \item[DB, SNCF, NS] Validation requirements
   \end{description}
 }
+}
 
-\todo{Describe how to proceed in openETCS to achieve the most. Include
-all partial V\&V instantiations with their relation/potential
-contribution to a full V\&V. 
+%\todo{Describe how to proceed in openETCS to achieve the most. Include
+%all partial V\&V instantiations with their relation/potential
+%contribution to a full V\&V.}
 
 Besides the usual purpose of \vv activities, namely evaluating and
   proving the suitability of design artifacts, V\&V in openETCS will
@@ -2708,7 +2786,7 @@ Besides the usual purpose of \vv activities, namely evaluating and
   about the suitability are defined.
 
   The plan also contains partial instantiations of V\&V which match
-  partial developments that are realised within openETCS.}
+  partial developments that are realised within openETCS.
 
 {\it
   \begin{itemize}
@@ -2726,22 +2804,22 @@ Besides the usual purpose of \vv activities, namely evaluating and
 
 \subsection{Verification Overview}
 \label{sec:verif-overv}
-\textit{Guidance: Describe the organization, schedule, resources, responsibilities, tools, techniques, and methodologies to be 
-deployed in order to perform the verification activities.}
+ Describe the organization, schedule, resources, responsibilities, tools, techniques, and methodologies to be 
+deployed in order to perform the verification activities.
 
 
 \subsubsection{Organisation}
-\textit{Guidance: Define the relationship of verification to other efforts such as development, project management, quality assurance, and configuration management. Define the lines of communication within the verification effort, the authority for resolving issues, and the authority for approving verification deliverables.}
+Define the relationship of verification to other efforts such as development, project management, quality assurance, and configuration management. Define the lines of communication within the verification effort, the authority for resolving issues, and the authority for approving verification deliverables.
 
-{\it Organisation: a format for describing design artifacts subject to V\&V,
-  and a feedback format for the findings during V\&V.}
+Organisation: a format for describing design artifacts subject to V\&V,
+  and a feedback format for the findings during V\&V.
 
 \subsubsection{Schedule}
-\textit{Guidance: The schedule summarizes the various verification tasks
+The schedule summarizes the various verification tasks
 and their relationship to the overall openETCS project.
 It describes the project life cycle and project milestones including completion dates.
 Summarize the schedule of verification tasks and how verification results provide feedback to the whole openETCS process to support overall project management functions.
-The objective of this section is to define an orderly flow of material between project activities and verification tasks.}
+The objective of this section is to define an orderly flow of material between project activities and verification tasks.
 
 According to the Description of Work of WP~4 \cite{}, the verification
 activities will be structured into three main phases: 
@@ -2763,16 +2841,17 @@ activities will be structured into three main phases:
 \subsection{Verification Activities---User Sories}
 \label{sec:verif-activ-user}
 
-\emph{Guidance: The term ``User Story'' seems to be established in the
-project to stand for any kind application of tools, not just for the
-end user application of the system (EVC software) which is to be
-developed. This section is the place to describe in general where you
-want to apply which method or tool to what artifact(s) (DAS2Vs). I.e.,
-tell the \textbf{story} of your verification activities coherently. Later
-(sub)sections provide the organisational detail: \textbf{When} (Timeline,
-Sec.~\ref{sec:verif-activ-timel}) and 
-\textbf{Contribution} (which of the verification obligations from
-Sec.~\ref{sec:verif-full-devel} are tackled by your approach.}
+The term ``User Story'' as used in openETCS stands for any kind
+application of tools, not just for the end user application of the
+system (EVC software) which is to be developed. This section shall
+describe such ``user stories'' of verifiers and validators, i.e., it
+shall describe where which method or tool is to going to be applied to
+what artifact(s) (DAS2Vs). It thus shall tell coherently the
+\textbf{story} of verification activities. Later (sub)sections provide
+the organisational detail: \textbf{When} (Timeline,
+Sec.~\ref{sec:verif-activ-timel}) and \textbf{Contribution} (which of
+the verification obligations from Sec.~\ref{sec:verif-full-devel} are
+tackled by what approach.
 
 
 \subsubsection{Reviews and Inspections}
@@ -2976,7 +3055,7 @@ for simulation purposes) becomes possible.
 
 A first part of these activities have already been done for model of
 radio management communication (see the model-evaluation for
-\href{https://github.com/openETCS/model-evaluation/blob/master/model/EA-SysML/new_version/doc/ea_sysml_report.pdf}{EA/RT-tester}).
+\href{https://github.com/openETCS/model-evaluation/blob/master/model/EA-SysML/new_version/doc/ea_sysml_report.pdf}{EA/RT-tester}). 
 
 \subsection{Verification Activities---Timeline}
 \label{sec:verif-activ-timel}
@@ -2997,7 +3076,8 @@ first version of the V\&V plan, only the first level needs to be detailed.
   TWT will continue with the analysis of methods for generating SystemC code from
   SysML models. In first investigations the Acceleo tool (Eclipse
   plugin, based on OMG standard) seems to be a promising candidate for
-  model-to-text transformation. The approach will be aligned with URO and their SystemC model of the braking curves. 
+  model-to-text transformation. The approach will be aligned with URO
+  and their SystemC model of the braking curves.  
   See also Sct.~\ref{sec:model-based-sim-openETCS}.
 
   In addition, TWT will start with the analysis on whether/how UML/SysML statecharts can be 
@@ -3008,7 +3088,8 @@ first version of the V\&V plan, only the first level needs to be detailed.
 \paragraph{URO}
   URO will continue their work on a  modular and executable SystemC model for
   braking curves suitable for real-time simulation. An accompanying high-level SysML model 
-  will be constructed as well and aligned with TWT's activities on SysML $\rightarrow$ SystemC code generation.
+  will be constructed as well and aligned with TWT's activities on
+  SysML $\rightarrow$ SystemC code generation. 
   See also Sct.~\ref{sec:model-based-sim-openETCS}.
 
 
@@ -3148,7 +3229,7 @@ Sec.~\ref{sec:valid-full-devel}.
 \chapter{Requirements on \VV}
 \label{sec:appendix}
 
-\todo{Explain the requirement chapter.}
+%\todo{Explain the requirement chapter.}
 {\it
   \begin{itemize}
   \item Requirements from D2.9.
@@ -3159,7 +3240,7 @@ Sec.~\ref{sec:valid-full-devel}.
 
 \section{Requirements on \VV from D2.9}
 \label{sec:requirements-vv-D29}
-\todo{Adapt the intro text} 
+%\todo{Adapt the intro text} 
 
 The already provided requirements require a
 safety plan compliant to the CENELEC EN~50126, 50128 and 50129.  This
@@ -3366,7 +3447,7 @@ activities.
     \hline
 \end{longtable}}
 
-\todo{Insert other tables.}
+%\todo{Insert other tables.}
 
 \section{Glossary}
 \label{sec:glossary}

@@ -214,9 +214,9 @@ restructuring
 00.06 & 29.07.2013 & H. Hungar & Restructuring
 \\\hline
 00.07 & 31.07.2013 & J. Welte & Ch. 5: Description of Safety Interfaces
-\\
-00.08 & 01.08.2013 & H. Hungar & Streamlining, replacing placeholders
-by text
+\\\hline
+00.08 & 01.08.2013 & H. Hungar & Streamlining, placeholders replaced
+by text, strategy detailed, several minor additions and changes
 \\
 \hline
 \end{tabular}
@@ -643,47 +643,56 @@ with the project approach, V\&V shall be done in a FLOSS style, and it
 has to suit a model-based development. A further main consideration
 shall be to strive for conformance with the requirements of the
 standards (EN~50128 and further). Of particular importance in that
-respect is of course the interface to th safety consideration and the
+respect is of course the interface to the safety consideration and the
 contribution of V\&V to the safety case.
 
-This means that the contribution of
-all activities to a complete verification and validation shall be
-defined.
+W.r.t.\ \vv, openETCS shall achieve two goals:
+\begin{enumerate}
+\item Design a tool-supported method with which the EVC software can
+  be developed and maintained so that it is suitable for integration
+  in (SIL-4) certified products. This will be described in
+  Sec.~\ref{sec:vv-strategy-full}, ``\VV Strategy for a Full Development''.
+\item Perform part of the development (including tool and method
+  evaluation and the study of tool qualification questions) on
+  representative parts of the design. The plans for that will be
+  detailed in Sec.~\ref{sec:vv-strategy-project}, ``\VV Strategy for openETCS''.
+\end{enumerate}
+
+
 
 \section{\VV Strategy for a Full Development }
 \label{sec:vv-strategy-full}
 
 
+Here, the ideal shall be described: How will the V\&V part of a FLOSS
+development of the open-source EVC software look like, what are its
+constituents, and how do they act together in developing and
+maintaining this software within the openETCS ecosystem.
 
-\textit{Here, the ideal shall be described: What we would like to do
-  in openETCS but cannot, because we do not know the right methods and
-tools yet }
 
 \subsection{Verification Strategy for a Full Development}
 \label{sec:verif-strategy-full}
 
-
-
-{\it 
 Define the strategy for verifying a full devlopment of the EVC software
 from the requirements source (ss~026+TSIs+\ldots). This ends with the
-verification of the software/hardware integration. The API is
-currently the best description of the
-interface }
+verification of the software/hardware integration. The API In current
+view, the API wil play an important role in defining how the end
+result is going to be taken up in a product design. 
 
 \subsection{Validation Strategy for a Full Development}
 \label{sec:valid-strategy-full}
 
-Validation, according to the standard, starts after SW/HW integration. Sketch
-  how this should look like for the openETCS architecture approach
-  (with SSRS and API). Ideal would be a description of how a full
-  openETCS EVC software could be taken up by some manufacturer and
-  brought to life in a product (validation aspect only, of
-  course). Validation will use tests covering operational scenarios.
-Not-so-classical validation can start earlier when executable models
-become available. If a model can be animated to run an operational
-scenario (perhaps with some additional environment/rest-of-system
-modeling), design defects may get unveiled before the real validation.
+Validation, according to the standard, starts after SW/HW
+integration. Sketch how this should look like for the openETCS
+architecture approach (with SSRS and API). Ideal would be a
+description of how a full openETCS EVC software could be taken up by
+some manufacturer and brought to life in a product (validation aspect
+only, of course). Validation will use tests covering operational
+scenarios.  Not-so-classical validation can start earlier when
+executable models become available. If a model can be animated to run
+an operational scenario (perhaps with some additional
+environment/rest-of-system modeling), design defects may get unveiled
+before the real validation.
 
 \subsection{Safety Interface}
 \label{sec:safety-interface}
@@ -702,9 +711,12 @@ Therefore three main interfaces to the safety activities have to be maintained i
 \section{\VV Strategy for openETCS}
 \label{sec:vv-strategy-project}
 
-The project will only perform part of the development, and thus
-  also only a part of the V\&V activities. These need to be defined
-  and planned, of course. 
+The project will only perform part of the development, and thus also
+only a part of the V\&V activities. These need to be defined and
+planned. The overall approach shall be to try out the different
+constituents on and in representative samples, so that the
+realisability of the \vv strategy for a full development can
+covincingly be demonstrated.
 
 \chapter{\VV Plan for a Full Development}
 
@@ -2844,7 +2856,7 @@ activities will be structured into three main phases:
 The term ``User Story'' as used in openETCS stands for any kind
 application of tools, not just for the end user application of the
 system (EVC software) which is to be developed. This section shall
-describe such ``user stories'' of verifiers and validators, i.e., it
+describe such ``user stories'' of verifiers, i.e., it
 shall describe where which method or tool is to going to be applied to
 what artifact(s) (DAS2Vs). It thus shall tell coherently the
 \textbf{story} of verification activities. Later (sub)sections provide
@@ -3069,8 +3081,8 @@ first version of the V\&V plan, only the first level needs to be detailed.
 \subsubsection{First Level of Verification}
 \label{sec:first-level-verif}
 
-\emph{Guidance: A short description which may refer to an activity
-  detailed earlier. Most probably the material will be organised in a table.}
+This section gives only a short description, which should refer to an activity
+  detailed earlier. Most probably the material will be organised in a table.
 
 \paragraph{TWT}   
   TWT will continue with the analysis of methods for generating SystemC code from
@@ -3109,11 +3121,11 @@ overall definition of verification activities in
 Sec.~\ref{sec:verif-full-devel}. 
 
 \subsection{Verification Reporting}
-\textit{This section describes how the results of implementing the Verification Plan will be documented.
+This section describes how the results of implementing the Verification Plan will be documented.
 Verification reporting will occur throughout the software life cycle.
-The content, format, and timing of all verification reports shall be specified in this section.}
+The content, format, and timing of all verification reports shall be specified in this section.
 
-\textit{This subsection has to be revised to fit the restrictions of implementability within the project.}
+\nthng{\textit{This subsection has to be revised to fit the restrictions of implementability within the project.}}
 
 The following reports will be generated during the verification process:
 \begin{itemize}
@@ -3171,8 +3183,8 @@ Control procedures are specified in the Configuration Management Plan [SCMP]
 
 \subsection{Validation Overview}
 \label{sec:valid-overv}
-\textit{Guidance: Description of the validation activities which are
-  planned to be performed within the porject. }
+This section describes the validation activities which are
+  planned to be performed within the project.
 
 The timeline of validation activities parallels that of the
 verfication. I.e., there are the same three levels as in
@@ -3182,16 +3194,13 @@ Sec.~\ref{sec:verif-overv}.
 \subsection{Validation Activities---User Sories}
 \label{sec:valid-activ-user}
 
-\emph{Guidance: The term ``User Story'' seems to be established in the
-project to stand for any kind application of tools, not just for the
-end user application of the system (EVC software) which is to be
-developed. This section is the place to describe in general where you
-want to apply which method or tool to what artifact(s) (DAS2Vs). I.e.,
-tell the \textbf{story} of your validation activities coherently. Later
-(sub)sections provide the organisational detail: \textbf{When} (Timeline,
-Sec.~\ref{sec:valid-activ-timel}) and 
+Like Sec.~\ref{sec:verif-activ-user}, this section describes the
+validation activities to be performed within the project. It shall
+tell coherently the \textbf{content} (method, tool, result quality) of
+validation activities. Later (sub)sections provide the organisational
+detail: \textbf{When} (Timeline, Sec.~\ref{sec:valid-activ-timel}) and
 \textbf{Contribution} (which of the validation obligations from
-Sec.~\ref{sec:valid-full-devel} are tackled by your approach.}
+Sec.~\ref{sec:valid-full-devel} are tackled by what approach.
 
 
 \subsection{Validation Activities---Timeline}
@@ -3206,8 +3215,8 @@ first version of the V\&V plan, only the first level needs to be detailed.
 \subsubsection{First Level of Validation}
 \label{sec:first-level-valid}
 
-\emph{Guidance: A short description which may refer to an activity
-  detailed earlier. Most probably the material will be organised in a table.}
+A short description which may refer to an activity
+  detailed earlier. Most probably the material will be organised in a table.
 
 \subsubsection{Second Level of Validation}
 \label{sec:secon-level-valid}

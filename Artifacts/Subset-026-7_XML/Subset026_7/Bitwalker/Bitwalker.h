@@ -22,14 +22,40 @@ which may cause harm to people, physical accidents or financial loss.
 THEREFORE, NO LIABILITY WILL BE GIVEN FOR SUCH AND ANY OTHER KIND OF USE. 
 */
 
+/*
+      Startposition: bit position form where is read
+      Length: number of bits that are read
+      Bitstream: byte array frome where is read
+      BitstreamSizeInBytes: length of raw telegram in bytes (length of Bitstream array)
+
+      \result : returns read bitstream as uint64_t
+*/
 uint64_t Bitwalker_Peek(unsigned int Startposition, unsigned int Length, uint8_t Bitstream[], unsigned int BitstreamSizeInBytes);
+
+
+/*
+      Startposition: bit position to where is written
+      Length: number of bits that are written
+      Bitstream: byte array to where is written
+      BitstreamSizeInBytes: length of raw telegram in bytes (length of Bitstream array)
+
+      Value: the value to be converted into a bitstream
+      \result : negative indicates error
+*/
 int 	 Bitwalker_Poke(unsigned int Startposition, unsigned int Length, uint8_t Bitstream[], unsigned int BitstreamSizeInBytes, uint64_t Value);
 
+/*
+     - put local variables in struct to ensure re-entrance of function
+     - simulates member variables of a class
+*/
 typedef struct	{	uint8_t *Bitstream;
 					unsigned int Length;
 					unsigned int CurrentBitposition;
 				} T_Bitwalker_Incremental_Locals;
 
+/*
+     "public" interface of T_Bitwalker_Incremental_Locals
+*/
 void	 Bitwalker_IncrementalWalker_Init(T_Bitwalker_Incremental_Locals *Locals, uint8_t Bitstream[], unsigned int Size, unsigned int FirstBitposition);
 
 uint64_t Bitwalker_IncrementalWalker_Peek_Next (T_Bitwalker_Incremental_Locals *Locals, unsigned int Length);

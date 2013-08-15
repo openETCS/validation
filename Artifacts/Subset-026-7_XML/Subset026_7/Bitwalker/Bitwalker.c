@@ -26,6 +26,7 @@ static const uint8_t BitwalkerBitMaskTable[] = {0x80, 0x40, 0x20, 0x10, 0x08, 0x
 uint64_t Bitwalker_Peek (unsigned int Startposition, unsigned int Length, uint8_t Bitstream[], unsigned int BitstreamSizeInBytes)
 {
 	// plausibility check: is last byte in range
+        // jg: division by 8
 	if (((Startposition + Length - 1) >> 3) >= BitstreamSizeInBytes)
 		return 0;	// error: index out of range
 
@@ -35,8 +36,11 @@ uint64_t Bitwalker_Peek (unsigned int Startposition, unsigned int Length, uint8_
 	unsigned int i;
 	for (i = Startposition; i < Startposition + Length; i++)
 	{
+                // jg: modulo 8
 		uint8_t CurrentValue = Bitstream[i >> 3] & BitwalkerBitMaskTable[i & 0x07];
 
+                // jg: multiplication by 2
+                // Frama-C shall be challenged here
 		retval = (retval << 1) + (uint8_t)(CurrentValue != 0);	// tricky conversion bool to int (Zero or One):
 																// false == 0, true == 1 ==> if bit is set, than 1, else 0
 	}
@@ -61,8 +65,8 @@ int Bitwalker_Poke (unsigned int Startposition, unsigned int Length, uint8_t Bit
 	for (i = Startposition + Length - 1; i >= (int)Startposition; i--)
 	{
 		if ((Value & 0x01) == 0)
-			 Bitstream[i >> 3] &= ~BitwalkerBitMaskTable[i & 0x07];
-		else Bitstream[i >> 3] |=  BitwalkerBitMaskTable[i & 0x07];
+			 Bitstream[i >> 3] &= ~BitwalkerBitMaskTable[i & 0x07]; //  jg: write zero at specified position
+		else Bitstream[i >> 3] |=  BitwalkerBitMaskTable[i & 0x07]; //  jg: write one at specified position
 
 		Value >>= 1;	//prepare next iteration with value without written bit
 	}

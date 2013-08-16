@@ -22,7 +22,7 @@ which may cause harm to people, physical accidents or financial loss.
 THEREFORE, NO LIABILITY WILL BE GIVEN FOR SUCH AND ANY OTHER KIND OF USE. 
 */
 
-static const unsigned int BITS_PER_BYTYE = 8;
+static const unsigned int BITS_PER_BYTE = 8;
 
 /*@
       //Startposition: bit position form where is read

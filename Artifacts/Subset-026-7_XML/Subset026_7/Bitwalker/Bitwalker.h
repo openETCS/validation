@@ -22,13 +22,29 @@ which may cause harm to people, physical accidents or financial loss.
 THEREFORE, NO LIABILITY WILL BE GIVEN FOR SUCH AND ANY OTHER KIND OF USE. 
 */
 
-/*
-      Startposition: bit position form where is read
-      Length: number of bits that are read
-      Bitstream: byte array frome where is read
-      BitstreamSizeInBytes: length of raw telegram in bytes (length of Bitstream array)
+static const unsigned int BITS_PER_BYTYE = 8;
 
-      \result : returns read bitstream as uint64_t
+/*@
+      //Startposition: bit position form where is read
+      //Length: number of bits that are read
+      //Bitstream: byte array frome where is read
+      //BitstreamSizeInBytes: length of raw telegram in bytes (length of Bitstream array)
+
+      requires \valid_read(Bitstream, BitstreamSizeInBytes);
+      assigns \nothing;
+
+      behavior outside_of_range:
+          assumes (Startposition + Length) >= BitstreamSizeInBytes * BITS_PER_BYTE;
+          assigns \nothing;
+          ensures \result == 0;
+
+      behavior inside_of_range:
+          assumes (Startposition + Length) < BitstreamSizeInBytes * BITS_PER_BYTE;
+          assigns \nothing;
+          ensures \result = "returns read bitstream as uint64_t" // ??
+
+      complete behaviors;
+      disjoint behaviors;
 */
 uint64_t Bitwalker_Peek(unsigned int Startposition, unsigned int Length, uint8_t Bitstream[], unsigned int BitstreamSizeInBytes);
 

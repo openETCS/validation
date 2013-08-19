@@ -1533,6 +1533,18 @@ If a property is unsatisfied, a counter-example can be generated
 automatically,
 showing a use case leading to property violation.
 
+Bounded Model checking \cite{biere_symbolic_1999} (BMC) is mainly used
+for finding bugs more than proving properties.  The basic idea of BMC
+is to find a counter-example-trace of a bounded length . The
+transition relation of the system is
+unrolled to a bounded length symbolically and check against a
+propositional formula with a SAT or a SMT-solver. If the formula is
+satisfiable, it exists a feasible path in the system that validate the
+formula, the SAT solver returns a satisfying assignment that is
+transformed into a counter-example. Otherwise the bound is increased
+and the process is repeated. Some  more recent works 
+\cite{bradley_sat-based_2011,McMillan-interpo-2003} add the use  of induction techniques and
+interpolant to prove the properties.
 
 \subsection{Correct by Construction Formal Methods}
 \label{sec:correctbyconstr}

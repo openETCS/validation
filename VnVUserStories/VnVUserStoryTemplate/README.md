@@ -1,5 +1,19 @@
 Guideline for Using the Folders in a V&V User Story
 
+Start: Copy the directory "VnVUserStoryTemplate" and rename the copy
+to reflect the object of the activity. E.g. to "VerificationSSRS", to
+contain all the verification activities concerning the SSRS. If there
+are very different activities concerning one design step (artifact),
+then there may be more than one folder hierarchy for that topic. E.g.,
+"VnVBrakingCurvesCEA" and "MCBrakingCurvesRoTWT". Names are defined in
+a "First-Act-First-Choose" way. Just make sure that the names are
+somewhat self explanatory, so that confusions are avoided.
+
+Then use the subdirectories as explained below. For s distributed
+effort like our project, it is important to have some accessible
+documentation defining and describing the activity. This is to be done
+in "00-Definition", see below.
+
 00-Definition
 
 This should contain a document describing the task and its current

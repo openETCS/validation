@@ -14,7 +14,7 @@ effort like our project, it is important to have some accessible
 documentation defining and describing the activity. This is to be done
 in "00-Definition", see below.
 
-00-Definition
+#### 00-Definition
 
 This should contain a document describing the task and its current
 state. The task desription defines the DAS2V, its position in the
@@ -26,31 +26,31 @@ explained.
 The state should be updated from time to time. 
 
 
-01-Requirements
+#### 01-Requirements
 
 Requirement documents or references to them are collected here. 
 
 
-02-DAS2V
+#### 02-DAS2V
 
 The folder to place all files which make up the object of verification
 (or validation). 
 
-03-ToolsAndUtilities
+#### 03-ToolsAndUtilities
 
 What the name says: For a FLOSS development, all tools should be
 open. If they are not available elsewhere, they should be collected
 here. If they are not open, they need not be placed here (the project
 will have to decide in the end how to cope with the situation).
 
-04-Results
+#### 04-Results
 
 Only final or important intermediate results shall be placed here. A
 summary shall list what has been proved, resp., established. This is
 to be supplemented by evidence or a description how to (re-)produce
 the evidence on demand, depending on the process and methods employed.
 
-05-Work
+#### 05-Work
 
 All other things which might be of interest to other participants in
 the project can be put here.

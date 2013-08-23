@@ -586,7 +586,7 @@ implementation'' of it. }
   accordance with the project approach, V\&V shall be done in a FLOSS
   style, and it has to suit a model-based development. A further main
   consideration shall be to strive for conformance with the
-  requirements of the standards (EN~50128 and further). This means
+  requirements of the standards (EN50128 and further). This means
   that the contribution of all activities to a complete verification
   and validation shall be defined.  }
 
@@ -594,15 +594,27 @@ implementation'' of it. }
 \label{sec:vv-strategy-full}
 
 
-
 \textit{Here, the ideal shall be described: What we would like to do
   in openETCS but cannot, because we do not know the right methods and
 tools yet }
 
+\subsection{V\&V objectives}
+The objectives are here commonly explained for both Verification and Validation.
+These objectives are top level and can be refined to characteristics that can be found in our system. 
+These characteristics have to be identified and traced, and they should encompass quantitative
+acceptance criteria. The possible objectives are related to 
+\begin{itemize}
+\item functionalities of the system and the sub-system,
+\item system and sub-system architecture,
+\item external and internal interfaces of the sub-system,
+\item Software components,
+\item Performance and Safety objectives and constraints,
+\item Functional properties,
+\item Safety properties,
+\end{itemize}
+
 \subsection{Verification Strategy for a Full Development}
 \label{sec:verif-strategy-full}
-
-
 
 {\it 
 Define the strategy for verifying a full devlopment of the EVC software
@@ -610,6 +622,90 @@ from the requirements source (ss~026+TSIs+\ldots). This ends with the
 verification of the software/hardware integration. The API is
 currently the best description of the
 interface }
+
+\subsubsection{System test campaigns}
+The 3 main features for the Verification campaign definition are: 
+\begin{itemize}
+\item Definition of the different campaigns for each design phase and their characteristics.
+\item Definition of the campaign objectives, and of the kind of test to be performed in order to fill these objectives.
+\item Traceability matrix between characteristics to check/ validate and test cases.
+\end{itemize}
+
+\subsubsection{V\&V actions criteria}
+These criteria shall define the acceptance of system or component modification, 
+and the interruption criteria shall define the condition under which a test campaign 
+should be stopped for instance. These criteria have to bet set during the V\&V plan
+redaction.
+During the verification phase, these items are verified thanks to the actions criteria list described
+in the subpart related to the Development phases and items verification.
+
+\subsubsection{Organization charts and responsibilities}
+The plan shall define the roles and responsibilities of people involved in the V\&V activities 
+(according to standards and project needs). Must also be defined the teams compositions, 
+and the deliverables product owners, as well as the group and committee for modification.
+These items are verified during the verification phase.
+
+\subsubsection{Internal means and tools}
+The plan shall list and define the means and tools needed for V\&V actions (also when they are needed).
+These items are verified during the verification phase.
+
+\subsubsection{External means and tools}
+The plan shall list and define the means and the tools used by the interfaces with the project, 
+and which company or structure is using them.
+These items are verified during the verification phase.
+
+\subsubsection{Development phases and items verification}
+The plan for the Development phases Verification is based on prescriptions
+ coverage at system and sub-system level. 
+The prescriptions are usually decomposed and gathered in a table, and this table constitutes
+ a road-map for Verification activities, and is closely followed
+ in order to figure out if the required items are covered, and if so, in which document.
+The following items are giving an overview of items checked during Verification phases,
+regarding the kind of prescriptions checked, and the appropriate related development phase.
+
+\begin{itemize}
+\item INTRODUCTION. This part gives an overview of Verification general purposes, of main 
+verification phases (Safety Specification of Software, architecture, and overall test campaign),
+ and verification support formalism (harmonized against different Verification activities, can be
+ a simple table).
+\item SOFTWARE SECURITY/SAFETY PRESCRIPTIONS SPECIFICATION PHASE. Gives a list of
+ prescriptions (specifications top level from a top level specification providing the customer needs),
+ and trace their coverage (justification and in which document this justification is provided).
+Here is an example: “Prescription specification related to Software safety should come out from
+ upper level system safety prescriptions and from prescriptions from Security schedule. 
+This information should be communicated to the Software developer.”
+\item DESIGN PHASES AND SOFTWARE DEVELOPMENT. This phase is based on 
+the same approach of the previous part, and prescriptions are gathered in a table.
+The different categories considered are defined in the following parts: (), ,  detailed design 
+and development prescriptions, coding prescriptions, Software modular tests and Software
+ integration tests prescriptions.
+\item GENERAL PRESCRIPTIONS. For instance: design representations shall be based on a clearly 
+defined notations, or limited to clearly stated characteristics
+\item SOFTWARE ARCHITECTURE RELATED PRESCRIPTIONS. For instance: Any System Safety 
+prescription modification related to security should be documented and acknowledged by the developer.
+\item SUPPORT TOOLS AND CODING LANGUAGES PRESCRIPTIONS. For instance: According to the type 
+of development, the compliance with the given prescriptions is under the software supplier responsibility.
+\item Detailed design and development prescriptions. For instance: “The Software shall be produced in 
+order to insure the required modularity, testability and modification ease.”
+\item CODING PRESCRIPTIONS. For instance : "Each Software code module shall be reviewed"
+\item SOFTWARE MODULAR TESTS PRESCRIPTIONS. For instance : "Modular tests shall be documented"
+\item SOFTWARE INTEGRATION TESTS PRESCRIPTIONS. For instance: “Integration test specification shall 
+encompass: integration groups easily manageable, test cases and test data, test kinds, environment, 
+tools configuration on test program, test acceptance criteria, corrective actions procedures”
+\item SOFTWARE SECURITY VALIDATION PLANIFICATION. The same formalism as previous parts can be 
+used, and this part sums up the different requirements/specification for the planning regarding
+ the safety activity. For instance: “planification shall be managed in order to specify technical and
+ process steps necessary to prove that the software is compliant with safety prescriptions”.
+\item PROGRAMMED ELECTRONIC COMPONENTS (Hardware and Software). This part is specifically 
+related to the integration conditions. This part is not supposed to be considered in Open ETCS, 
+as no integration is planned in the project so far.
+\item SOFTWARE SAFETY VALIDATION. For instance: "validation activities should be realized 
+as specified during the validation planning”.
+\item CONCLUSION, related to the prescriptions coverage. In our case, the prescriptions
+ are the requirements explained in the WP4 (these prescriptions have to be refined from
+ the different project inputs, such as CENELEC, SRS, FPP…).
+\end{itemize}
+
 
 \subsection{Validation Strategy for a Full Development}
 \label{sec:valid-strategy-full}
@@ -625,6 +721,37 @@ become available. If a model can be animated to run an operational
 scenario (perhaps with some additional environment/rest-of-system
 modeling), design defects may get unveiled before the real validation.}
 
+\subsubsection{Validation Case}
+The aim of the Validation Report is to verify that validation constraints emitted in the
+whole software design documentation are fulfilled, and that components and system 
+ behavior is compliant with the Software requirements.
+The inputs for validation at system level are:
+\begin{itemize}
+\item Software Requirement specification (design, architecture),
+\item Sub-System Requirement Specification (encompassing the architecture, 
+interface description and requirement allocation),
+\item Application Programming Interface,
+\item Internal and External constraints,
+\item Validation constraints list,
+\item Validation plan,
+\end{itemize}
+
+The inputs for validation at software level are:
+\begin{itemize}
+\item Components Requirements Specification,
+\item Integration Specification,
+\item Integration Report,
+\item Test Specifications,
+\item Test reports,
+\end{itemize}
+
+
+The outputs are:
+\begin{itemize}
+\item Software Validation Report (Position on Software ability to fulfill 
+the objectives and functionalities defined in the Requirement specification.),
+\item Software Validation Verification Report,
+\end{itemize}
 
 
 \section{\VV Strategy for openETCS}

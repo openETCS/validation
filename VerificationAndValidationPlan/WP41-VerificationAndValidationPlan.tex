@@ -218,6 +218,9 @@ restructuring
 \\\hline
 00.08 & 01.08.2013 & H. Hungar & Streamlining, placeholders replaced
 by text, strategy detailed, several minor additions and changes
+\\\hline
+00.09 & 04.09.2013 & C- Braunstein, C. Cornu, M. Petit-Doche & Elaboration of
+Sec.~\ref{sec:vv-strategy-full} (Cornu), BMC (Braunstein), B-method (Petit-Doche)
 \\
 \hline
 \end{tabular}
@@ -321,7 +324,7 @@ organised to contribute to such a task, and how to demonstrate that it
 can be realised.
 
 The document is only valid in conjunction with the Quality Assurance
-plan [1104G13-QA-plan]. It is supplemented by the safety plan, which
+plan \cite{QAplan}. It is supplemented by the safety plan, which
 focuses on the safety aspect. Verification and validation play an
 important role in the safety case. This document identifies the V\&V
 activities which do contribute and refers to the safety plan for
@@ -631,7 +634,8 @@ implementation'' of it. }
   \item[DLR] Overall coherence, Safety interface
   \item[All4Tec] aspects of model-based development, FLOSS,
     safety. Mainly in Sec.~\ref{sec:vv-strategy-full} (Full Development).
-  \item[SQS] {Review 4.1 V\&V Strategy for a full development and contribution to 4.2 V\&V Strategy for openETCS}
+  \item[SQS] {Review 4.1 V\&V Strategy for a full development and
+      contribution to 4.2 V\&V Strategy for openETCS}
   \item[TUBS] Safety interface
   \item[DB, SNCF, NS] Operator role (scenarios, validation goals)
   \end{description}
@@ -644,8 +648,8 @@ with the project approach, V\&V shall be done in a FLOSS style, and it
 has to suit a model-based development. A further main consideration
 shall be to strive for conformance with the requirements of the
 standards (EN~50128 and further). Of particular importance in that
-respect is of course the interface to the safety consideration and the
-contribution of V\&V to the safety case.
+respect is of course the interface to the safety considerations and
+the contribution of V\&V to the safety case.
 
 W.r.t.\ \vv, openETCS shall achieve two goals:
 \begin{enumerate}
@@ -659,7 +663,18 @@ W.r.t.\ \vv, openETCS shall achieve two goals:
   detailed in Sec.~\ref{sec:vv-strategy-project}, ``\VV Strategy for openETCS''.
 \end{enumerate}
 
-
+In more detail, the verification and validation have to consider the
+following aspects throughout the development process.
+%
+\begin{itemize}
+\item functionalities of the system and the sub-system,
+\item system and sub-system architecture,
+\item external and internal interfaces of the sub-system,
+\item software components,
+\item performance and Safety objectives and constraints,
+\item functional properties,
+\item safety properties.
+\end{itemize}
 
 \section{\VV Strategy for a Full Development }
 \label{sec:vv-strategy-full}
@@ -674,26 +689,176 @@ maintaining this software within the openETCS ecosystem.
 \subsection{Verification Strategy for a Full Development}
 \label{sec:verif-strategy-full}
 
-Define the strategy for verifying a full devlopment of the EVC software
-from the requirements source (ss~026+TSIs+\ldots). This ends with the
-verification of the software/hardware integration. The API In current
-view, the API wil play an important role in defining how the end
-result is going to be taken up in a product design. 
+This section defines the strategy for verifying a full development of
+the EVC software from the requirements source
+(ss~026+TSIs+\ldots). This ends with the verification of the
+software/hardware integration. In current view, the API defines the
+interface and relevant properties of the hardware. Thus, SW/HW
+integration for openETCS will most probably done virtually with an
+instantiation of the API playing the role of the hardware. 
+
+\subsubsection{System Test Campaigns}
+Testing is one of the main means for verification. The three main
+features of test campaigns which need to be specified are:
+\begin{itemize}
+\item Definition of the different campaigns for each design phase and
+  their characteristics.
+\item Definition of the campaign objectives, and of the kind of test
+  to be performed in order to achieve these objectives.
+\item Traceability matrix between characteristics to check/ validate
+  and test cases.
+\end{itemize}
+
+\subsubsection{V\&V Actions Criteria}
+These criteria shall define the acceptance of system or component
+modification, and the interruption criteria shall define the condition
+under which a test campaign should be stopped for instance. These
+criteria have to bet set during the V\&V plan redaction.  During the
+verification phase, these items are verified thanks to the actions
+criteria list described in the subpart related to the development
+phases and items verification.
+
+\subsubsection{Organization Charts and Responsibilities} 
+The plan shall define the roles and responsibilities of people
+involved in the V\&V activities (according to standards and project
+needs). Must also be defined the teams compositions, and the
+deliverables product owners, as well as the group and committee for
+modification.  These items are verified during the verification phase.
+
+\subsubsection{Internal Means and Tools} 
+The plan shall list and define the means and tools needed for V\&V
+actions (also when they are needed).  These items are verified during
+the verification phase.
+
+\subsubsection{External Means and Tools} 
+The plan shall list and define the means and the tools used by the
+interfaces with the project, and which company or structure is using
+them.  These items are verified during the verification phase.
+
+\subsubsection{Development Phases and Item Verification}
+The plan for the development phases verification is based on
+requiement coverage at system and sub-system level.  The requirements
+are usually decomposed and gathered in a table, and this table
+constitutes a road-map for verification activities, and is closely
+followed in order to figure out if the required items are covered, and
+if so, in which document.  The following items give an overview of
+items checked during verification phases, regarding the kind of
+prescriptions checked, and the appropriate related development phase.
+
+\begin{description}
+\item[Introduction:] This part gives an overview of Verification
+  general purposes, of main verification phases (Safety Specification
+  of Software, architecture, and overall test campaign), and
+  verification support formalism (harmonized against different
+  Verification activities, can be a simple table).
+\item[ Software Security/Safety Prescriptions Specification Phase:]
+  Gives a list of prescriptions (specifications top level from a top
+  level specification providing the customer needs), and trace their
+  coverage (justification and in which document this justification is
+  provided).  Here is an example: “Prescription specification related
+  to Software safety should come out from upper level system safety
+  prescriptions and from prescriptions from Security schedule.  This
+  information should be communicated to the Software developer.”
+\item[Design Phases and Software Development:] This phase is based on
+  the same approach of the previous part, and prescriptions are
+  gathered in a table.  The different categories considered are
+  defined in the following parts: (), , detailed design and
+  development prescriptions, coding prescriptions, Software modular
+  tests and Software integration tests prescriptions.
+\item[General Requiements:] For instance: design representations shall
+  be based on a clearly defined notations, or limited to clearly
+  stated characteristics
+\item[Software Architecture Related Requirements:]. For instance: Any
+  System Safety prescription modification related to security should
+  be documented and acknowledged by the developer.
+\item[Support Tools and Coding Languages Requirements:]. For instance:
+  According to the type of development, the compliance with the given
+  prescriptions is under the software supplier responsibility.
+\item[Detailed Design and Development Prescriptions:] For instance:
+  ``The Software shall be produced in order to insure the required
+  modularity, testability and modification ease.''
+\item[Coding Prescriptions:] For instance: ``Each Software code
+  module shall be reviewed''
+\item[Software Modular Tests Prescriptions:] For instance: ``Modular
+  tests shall be documented''
+\item[Software Integration Tests Requirements:] For instance:
+  ``Integration test specification shall encompass: integration groups
+  easily manageable, test cases and test data, test kinds,
+  environment, tools configuration on test program, test acceptance
+  criteria, corrective actions procedures''
+\item[Software Security Validation Planning:] The same formalism as
+  previous parts can be used, and this part sums up the different
+  requirements/specification for the planning regarding the safety
+  activity. For instance: ``Planning shall be managed in order to
+  specify technical and process steps necessary to prove that the
+  software is compliant with safety prescriptions''.
+\item[Programmed Electronic Components (Hardware and Software):] This
+  part is specifically related to the integration conditions. This
+  part is not supposed to be considered in openETCS, as no
+  integration is planned in the project so far.
+\item[Software Safety Validation:] For instance: ``Validation
+  activities shall be performed as specified in the validation plan''.
+\item[Conclusion:] (related to the requirements coverage). In our
+  case, the prescriptions are the requirements explained in the WP4
+  (these prescriptions have to be refined from the different project
+  inputs, such as CENELEC, SRS, FPP…).
+\end{description}
+
 
 \subsection{Validation Strategy for a Full Development}
 \label{sec:valid-strategy-full}
 
 Validation, according to the standard, starts after SW/HW
-integration. Sketch how this should look like for the openETCS
-architecture approach (with SSRS and API). Ideal would be a
-description of how a full openETCS EVC software could be taken up by
-some manufacturer and brought to life in a product (validation aspect
-only, of course). Validation will use tests covering operational
-scenarios.  Not-so-classical validation can start earlier when
-executable models become available. If a model can be animated to run
-an operational scenario (perhaps with some additional
-environment/rest-of-system modeling), design defects may get unveiled
-before the real validation.
+integration. In this section, it shall be detailed how this should
+look like for the openETCS architecture approach (with SSRS and
+API). Ideal would be a description of how a full openETCS EVC software
+could be taken up by some manufacturer and brought to life in a
+product (validation aspect only, of course). Validation will use tests
+covering operational scenarios.  
+
+Not-so-classical validation can start earlier when executable models
+become available. If a model can be animated to run an operational
+scenario (perhaps with some additional environment/rest-of-system
+modeling), design defects may get unveiled before the real
+validation. This is, however, not an activity which is mentioned as a
+development activity in the standard EN~50128. Thus, to use results of
+``early validation'' in a validation report requires a definition of
+its role and an argument for its usefulness.
+
+\subsubsection{Validation Case}
+The aim of the Validation Report is to demonstrate that the objectives
+of validation which have been set in the validation plan have been
+achieved. This concerns the adequacy of the software design
+documentation and that components and system behavior is compliant
+with the software requirements.
+
+The inputs for validation at system level are:
+\begin{itemize}
+\item Software Requirement Specification (design, architecture),
+\item Sub-System Requirement Specification (encompassing the architecture, 
+interface description and requirement allocation),
+\item Application Programming Interface,
+\item Internal and External constraints,
+\item Validation constraints list,
+\item Validation Plan,
+\end{itemize}
+
+The inputs for validation at software level are:
+\begin{itemize}
+\item Components Requirements Specification,
+\item Integration Specification,
+\item Integration Report,
+\item Test Specifications,
+\item Test reports.
+\end{itemize}
+
+
+The outputs are:
+\begin{itemize}
+\item Software Validation Report (Verdict on software ability to fulfill 
+the objectives and functionalities defined in the requirement specification.),
+\item Software Validation Verification Report,
+\end{itemize}
 
 \subsection{Safety Interface}
 \label{sec:safety-interface}
@@ -975,22 +1140,22 @@ reviewed in a structured way.
 \paragraph{Inspection}
 On the other hand, an inspection is a visual examination of a software
 product to detect and identify software anomalies, including errors
-and deviations from standards and specifications \cite{inspection}. Inspections are peer
-examinations led by impartial facilitators who are trained in
-inspection techniques. Determination of remedial or investigative
-action for an anomaly is a mandatory element of a software inspection,
-although the solution should not be determined in the inspection
-meeting.
+and deviations from standards and specifications
+\cite{Fag76-99}. Inspections are peer examinations led by impartial
+facilitators who are trained in inspection techniques. Determination
+of remedial or investigative action for an anomaly is a mandatory
+element of a software inspection, although the solution should not be
+determined in the inspection meeting.
 
 Both review and inspection methods shall be used in different
 contexts during the execution of the Verification activities.
 
 More information about the reviews can be found in Quality Assurance Plan
-\cite{QAPlan}.
+\cite{QAplan}.
 
 \subsection{Software Architecture Analysis Method (SAAM)}
 
-SAAM \cite{SAAM} is one of the simpler methods for a scenario-based architecture 
+SAAM \cite{KABC96} is one of the simpler methods for a scenario-based architecture 
 evaluation, and it was the first to be published. SAAM is suitable 
 for the testing of software architectures with regard to quality 
 attributes (qualitative requirements), such as
@@ -2051,8 +2216,10 @@ nature of the SSRS, mainly manual techniques are to be applied.
 %\textcolor{red}{<Brief Introduction>}
 
 \paragraph{SSRS Verification(1c)}
-The SSRS Verification phase refers to the task already defined in the \ref{sec:SSRSVerification} section of this document that involves the full development. 
-For further details about the activities involved, please go to the mentioned section.
+The SSRS Verification phase refers to the task already defined in the
+Sec.~\ref{sec:ssrs-verification} of this document that involves the
+full development.  For further details about the activities involved,
+please go to the mentioned section.
 
 \subsubsection{Software Verification}
 \label{sec:sw-verif}
@@ -2661,14 +2828,14 @@ Also a summary of the tool verification activities is to be included, as indicat
 \end{center}
 
 %The structure of the Verification report is already defined in the
-%\ref{sec:structure-vv-plan} section of this document 
+%\ref{sec:struct-verif-report} section of this document 
 
 \section{Administrative Procedures}
 This section identifies the existing administrative procedures that
 are to be implemented as part of the Verification Plan. 
 Verification efforts consist of both management and technical tasks.
 Furthermore, it is the task of the SQA team to monitor whether the
-procedures as defined in the management plans ([QAPlan], [SCMP],
+procedures as defined in the management plans (\cite{QAplan}, [SCMP],
 [Review and Revision processes]) are followed. 
 
 \subsection{Problem Report}
@@ -2705,8 +2872,8 @@ whether or not motivated by a deviation
 
 The Quality Manager will report such incidents to the Project Managers
 and with whom shall act appropriately. All persons listed in the
-\ref{sec:Responsibilities} Responsibilities section shall be informed
-of a change in the Verification Plan 
+responsibilities section (Sec.~\ref{sec:vv-responsibilities}) shall be
+informed of a change in the Verification Plan
 
 \subsubsection{Control Procedure}
 Control procedures are specified in the Configuration Management Plan [SCMP]
@@ -2746,7 +2913,7 @@ For each of the validation steps identified in the plan
 \subsubsection{Task}
 \label{sec:sfm-valid-task}
 
-The formalisation of the reqauirements in form of a semi-formal model
+The formalisation of the requirements in form of a semi-formal model
 enables a systematic check of the completeness and consistency of the
 system test specification.
 
@@ -2881,7 +3048,7 @@ It describes the project life cycle and project milestones including completion 
 Summarize the schedule of verification tasks and how verification results provide feedback to the whole openETCS process to support overall project management functions.
 The objective of this section is to define an orderly flow of material between project activities and verification tasks.
 
-According to the Description of Work of WP~4 \cite{}, the verification
+According to the Description of Work of WP~4 \cite{WP4DoW}, the verification
 activities will be structured into three main phases: 
 \begin{enumerate}
 \item First Level: Verification of prototypical system and API model and
@@ -2927,7 +3094,7 @@ guides, the contract that will initiate the work should all be
 reviewed in a structured way. 
 
 Information about the reviews planned within openETCS is given in the
-QA plan \cite{QAPlan}.
+QA plan \cite{QAplan}.
 
 \paragraph{Inspections}
 Inspection shall be applied to design artifacts whose correctness
@@ -3209,14 +3376,14 @@ The following reports will be generated during the verification process:
 \end{itemize}
 
 The structure of the Verification report is already defined in the
-\ref{sec:structure-vv-plan} section of this document 
+\ref{sec:struct-verif-report} section of this document 
 
 \subsection{Administrative procedures}
 This section identifies the existing administrative procedures that
 are to be implemented as part of the Verification Plan. 
 Verification efforts consist of both management and technical tasks.
 Furthermore, it is the task of the SQA team to monitor whether the
-procedures as defined in the management plans ([QAPlan], [SCMP],
+procedures as defined in the management plans ([QAplan], [SCMP],
 [Review and Revision processes]) are followed. 
 
 \subsubsection{Problem Report}
@@ -3246,7 +3413,7 @@ whether or not motivated by a deviation
 
 The Quality Manager will report such incidents to the Project Managers
 and with whom shall act appropriately. All persons listed in the
-\ref{sec:Responsibilities} Responsibilities section shall be informed
+ Responsibilities section (Sec.~\ref{sec:vv-responsibilities}) shall be informed
 of a change in the Verification Plan 
 
 \subsubsection{Control Procedure}

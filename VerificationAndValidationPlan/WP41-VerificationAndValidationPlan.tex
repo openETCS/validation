@@ -2318,7 +2318,7 @@ The following table summarizes the Techniques, methods, measures or
 tools proposed for the identified activities. 
 
 \begin{center}
-\begin{longtable}{|m{3cm}|m{7cm}|m{4cm}|}
+\begin{longtable}{|m{1,5cm}|m{8,5cm}|m{4cm}|}
 \caption{SW Requirements Verification Tools, Techniques, Methods and Measures}\\
 \hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Techniques/ Methods/ Measures} & \multicolumn{1}{|c|}{Tools}\\ \hline 
 \endfirsthead
@@ -2511,7 +2511,7 @@ The purpose of each should be defined and plans for the acquisition, training, s
 The following table summarizes the Techniques, methods, measures or tools proposed for the identified activities.
 
 \begin{center}
-\begin{longtable}{|m{3cm}|m{7cm}|m{4cm}|}
+\begin{longtable}{|m{1,5cm}|m{8,5cm}|m{4cm}|}
 \caption{SW Architecture, Design and Modelling Verification Tools, Techniques, Methods and Measures}\\
 \hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity} & \multicolumn{1}{|c|}{Techniques/ Methods/ Measures} & \multicolumn{1}{|c|}{Tools}\\ \hline 
 \endfirsthead
@@ -2550,9 +2550,8 @@ The following table summarizes the Techniques, methods, measures or tools propos
 
 \underline{Task} 
 
-This phase analyzes whether the SW components defined in the openETCS
-Software process are verifiable by design, with a focus on the formal
-verification of data aspects of components and components modelling. 
+This phase analyzes whether the SW components defined in the openETCS Software process are verifiable by design, with a focus on the formal verification of data aspects of components and components modelling. 
+This task requires a detailed understanding not only of the corresponding specification, but also the environments and methodology in which the verification component will be used.
 
 This phase delivers methods and tools to
 
@@ -2577,14 +2576,49 @@ This phase delivers methods and tools to
 
 This phase aims to assess whether the specification and modelling of components are reusable, configurable, and implementable in the expected code automatically generated environment. 
 
+\begin{itemize}
+\item Within the context of the models that contain the components identified for the SW phase, the verification of components within a control system model shall be required. 
+As standalone components — For a high level of confidence in the component algorithm, verify the component in isolation from the rest of the components and sub-systems identified. This approach is called component analysis.
+\item Verifying standalone components provides several advantages:
+\begin{itemize}
+\item The analysis can be be used to focus on portions of the design that cannot be tested because of the physical limitations of the system being controlled.
+\item This approach can be used for open-loop simulations to test the plant model without feedback control.
+\end{itemize}
+\end{itemize}
+
+The components shall be identified at the points of minimal coupling (minimal control and/or information exchange) and decompose the specification. The smaller components might be amenable to be verified and how to abstract these parts of the specification shall be analysed. 
+
+The rest of the specification could be exposed to formal analysis, such as model checking or theorem proving. The abstraction reduces the number of states that need to be checked by an automated verification technique and helps in avoiding the state explosion problem, which occurs in traditional model checking.
+
+An approach to specification decomposition is slicing the system specifications represented with Petri Nets. In this way, the specification shall improve the understanding of the complexity of the system and high-risk components can be identified earlier. 
+
 The activities that shall ensure these aspects are successfully met are the following:
 \begin{itemize}
-\item {\it SWComp-Ver-Act1.  }:  
-\item {\it SWComp-Ver-Act2.  }:  
-\item {\it SWComp-Ver-Act3.  }:  
-\item {\it SWComp-Ver-Act4.  }:  
-\item {\it SWComp-Ver-Act5.  }:  
-\item {\it SWComp-Ver-Act6.  }:   
+\item {\it SWComp-Ver-Act1. Verify components with minimal coupling independently of the model}: Within this activity a component analysis shall be performed to verify model blocks, atomic subsystems and statechart atomic subcharts. After extracting the blocks, or contents of the subsystems and subcharts, a harness model shall be created for the referenced model and the extracted model with the contents of the subsystem o subchart. A Test suite shall be prepared and executed to record coverage and output values. The Code Generation Verification (CGV) shall be invoked to execute the test cases on the generated code for the model that contains the component.
+\item {\it SWComp-Ver-Act2. Verify components with minimal coupling in the context of the model}: A similar process shall be conducted in this case but performing a system analysis to verify the model blocks in the context of the model.   
+\item {\it SWComp-Ver-Act3. Formal analysis of components}: Perform model checking of components against properties; the results obtained shall highlight that: the component satisfies the properties for the environment; the component violates the properties for
+the environment; characterization of those environments in which the components
+satisfied each property.
+\end{itemize}
+
+Regarding the Modeling Verification, the activities involved shall ensure that:
+\begin{itemize}
+\item The models have been designed correctly and covers all the parts involved in the openETCS project
+\item The algorithms have been implemented properly
+\item The models do not contain errors, oversights, or bugs
+\item The specification is complete and that mistakes have not been made in implementing the model
+\end{itemize}
+
+Each of the models defined in the full development context shall be developed for a specific purpose and its validity is determined with respect to that purpose. It shall be considered that a model that may be valid for one set of conditions, can be invalid in another; because of that, the model’s output variables of interest shall be clearly identified and their required amount of accuracy be specified. 
+
+It is costly and time consuming to determine whether a model is valid over the complete domain of the full development context. Instead, tests and evaluations are conducted until sufficient confidence and certainty is obtained that a model can be considered valid. In the model verification activities, tests are performed, errors are identified, and corrections are made to the underlying models while the models are exercised for the identified cases. Furthermore, the verification of the models can result in retesting requirements to ensure code integrity.
+
+If the verification process determines that a model does not have sufficient accuracy for any one of the sets of identified conditions, then the model is invalid. However, determining that a model has sufficient accuracy for numerous conditions does not guarantee that a model is valid everywhere in its applicable domain. 
+
+\begin{itemize}
+\item {\it SWModel-Ver-Act1.} 
+\item {\it SWModel-Ver-Act2. }  
+\item {\it SWModel-Ver-Act3. }
 \end{itemize}
 
 \underline{Tools, Techniques, Methods and Measures} 
@@ -2598,7 +2632,7 @@ this section.
 The following table summarizes the Techniques, methods, measures or tools proposed for the identified activities.
 
 \begin{center}
-\begin{longtable}{|m{3cm}|m{7cm}|m{4cm}|}
+\begin{longtable}{|m{1,5cm}|m{8,5cm}|m{4cm}|}
 \caption{SW Component and Modelling Verification Tools, Techniques, Methods and Measures}\\
 \hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity} &
 \multicolumn{1}{|c|}{Techniques/ Methods/ Measures} &
@@ -2626,15 +2660,15 @@ The following table summarizes the Techniques, methods, measures or tools propos
  &
  <To be defined>  
 \\\hline
-{\it SWComp-Ver-Act4} & 
+{\it SWModel-Ver-Act1} & 
  &
 <To be defined> 
 \\\hline
-{\it SWComp-Ver-Act5} & 
+{\it SWModel-Ver-Act2} & 
  &
 <To be defined>
 \\\hline
-{\it SWComp-Ver-Act6} & 
+{\it SWModel-Ver-Act3} & 
  & 
 <To be defined>
 \\\hline
@@ -2644,7 +2678,186 @@ The following table summarizes the Techniques, methods, measures or tools propos
 
 \textbf{SW code generation Verification}
 
+\underline{Task} 
+
+This phase analyzes whether the generated code from the model is correct, robust, complete, coherent and reliable, with a focus on the formal verification and on the equivalence of the model and the generated code. 
+
+This phase delivers methods and tools to
+
+\begin{itemize}
+\item Verify the equivalence between the model and the generated code by equivalence testing and dynamic testing techniques
+\item Verify the correctness of the translation algorithm and its implementation
+\item Verify the complexity, coding guidelines and syntax of the generated code by static analysis techniques
+\end{itemize}
+
+\underline{Documents to Be Produced} 
+
+\begin{itemize}
+\item SW Code Generation Verification Report
+\end{itemize}
+
+\underline{Activities}
+
+When in the other phase the confidence in the correctness of the model has been verified, it is necessary to have high confidence in the generated code.
+
+To achieve verified code generation, it is not sufficient
+to only verify the code generation algorithm due to the implementation of the algorithm might introduce errors as well. It is necessary to distinguish between the correctness of the translation algorithm itself and the
+correctness of its implementation.
+
+Within the context of the Code Generation Verification, the code generation verification approach shall utilize translation testing to demonstrate
+that the execution semantics of the model are preserved during production
+code generation, compilation and linking
+
+The validity of the translation process, i.e. whether or not the semantics
+of the model have been preserved during code generation, compilation and linking, shall be determined by comparing the system reactions
+
+The activities that shall ensure these aspects are successfully met are the following:
+\begin{itemize}
+\item {\it SWCode-Ver-Act1. Semantic Properties Verification}: For safety reasons, it is necessary that the generated code is semantically equivalent to the original model specification to ensure correct software and system behavior.
+
+
+\item {\it SWCode-Ver-Act2. Quality Properties (Complexity, Syntax, coding guidelines) Verification }:  
+\item {\it SWCode-Ver-Act3. Equivalence verification}: 
+\item {\it SWCode-Ver-Act4. }:  
+\item {\it SWCode-Ver-Act5.  }:  
+\item {\it SWCode-Ver-Act6.  }:   
+\end{itemize}
+
+\underline{Tools, Techniques, Methods and Measures} 
+
+The specific software tools, techniques, and methodologies to be
+employed by the verification team are to be identified here. 
+The purpose of each should be defined and plans for the acquisition,
+training, support, and qualification of each shall be described in
+this section. 
+
+The following table summarizes the Techniques, methods, measures or tools proposed for the identified activities.
+
+\begin{center}
+\begin{longtable}{|m{3cm}|m{7cm}|m{4cm}|}
+\caption{SW Code Generation Verification Tools, Techniques, Methods and Measures}\\
+\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity} &
+\multicolumn{1}{|c|}{Techniques/ Methods/ Measures} &
+\multicolumn{1}{|c|}{Tools}\\ \hline  
+\endfirsthead
+\multicolumn{3}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\rowcolor{myblue} \multicolumn{1}{|c|}{Activity} &
+\multicolumn{1}{|c|}{Techniques/ Methods/ Measures} &
+\multicolumn{1}{|c|}{Tools} \\\hline 
+\endhead
+\hline \multicolumn{3}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+\hline \hline
+\endlastfoot
+{\it SWCode-Ver-Act1} & 
+ & 
+<To be defined>  
+\\\hline
+{\it SWCode-Ver-Act2} & 
+& 
+<To be defined>  
+\\\hline
+{\it SWCode-Ver-Act3} &
+ &
+ <To be defined>  
+\\\hline
+{\it SWCode-Ver-Act4} & 
+ &
+<To be defined> 
+\\\hline
+{\it SWCode-Ver-Act5} & 
+ &
+<To be defined>
+\\\hline
+{\it SWCode-Ver-Act6} & 
+ & 
+<To be defined>
+\\\hline
+
+\end{longtable}
+\end{center}
+
 \textbf{Traceability matrix Verification}
+
+\underline{Task} 
+
+The Traceability Matrix is a resource to ensure that the project’s scope, requirements, modeling and generated code remain as are expected to be when compared to the objectives to be reached. The matrix traces the different elements by establishing a thread for each requirement to the corresponding model and component, the generated code that consists on its implementations and the test cases defined. 
+
+\begin{itemize}
+\item The specifications shall be verified following the traces between the elements defined in the matrix
+\item With the matrix verification it shall be ensured that all the required information is included in the specification, such as process models and data models
+\item Requirements that are not addressed by configuration items during design and code reviews can be identified; in a similar way, extra configuration items that are not required can be highlighted
+\item The verification of the matrix shall provide input to change requests and future project plans when missing elements are identified
+\end{itemize}
+
+\underline{Documents to Be Produced} 
+
+\begin{itemize}
+\item Traceability Matrix Verification Report
+\end{itemize}
+
+\underline{Activities}
+
+Taking the time to cross-reference each element involved in the project to another element ensures that the results obtained by each phase of the project are consistent with the requirements, the modeling and the code. 
+
+To accomplish this objective it shall be verified that the traceability matrix is in the following format:
+
+\begin{itemize}
+
+\item The matrix generated is a two‑dimensional table,
+\item There is one column per identified element (such as requirement, model, components, or code),
+\item A check mark at the end of the table shall be put if all the row is well traced, coherent and unambiguous
+\item Various traceability matrices may be utilized throughout the project life cycle.  \item At least the matrices shall contain the following elements:
+\begin{itemize}
+\item Formal specification of Requirements: It shows that each requirement (obtained from SSRS) has been covered in an appropriate section of the formal specification.
+\item Design specification through modeling to functional specification, this verifies that each function has been covered in the design.
+\item System test plan to functional specification ensures the test case or test scenario for each process, component and each requirement in the functional specification have been identified
+\end{itemize}
+\end{itemize}
+
+\underline{Tools, Techniques, Methods and Measures} 
+
+The specific software tools, techniques, and methodologies to be
+employed by the verification team are to be identified here. 
+The purpose of each should be defined and plans for the acquisition,
+training, support, and qualification of each shall be described in
+this section. 
+
+The following table summarizes the Techniques, methods, measures or tools proposed for the identified activities.
+
+\begin{center}
+\begin{longtable}{|m{1,5cm}|m{8,5cm}|m{4cm}|}
+\caption{Traceability Matrix Verification Tools, Techniques, Methods and Measures}\\
+\hline \rowcolor{myblue} \multicolumn{1}{|c|}{Activity} &
+\multicolumn{1}{|c|}{Techniques/ Methods/ Measures} &
+\multicolumn{1}{|c|}{Tools}\\ \hline  
+\endfirsthead
+\multicolumn{3}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\rowcolor{myblue} \multicolumn{1}{|c|}{Activity} &
+\multicolumn{1}{|c|}{Techniques/ Methods/ Measures} &
+\multicolumn{1}{|c|}{Tools} \\\hline 
+\endhead
+\hline \multicolumn{3}{|r|}{{Continued on next page}} \\ \hline
+\endfoot
+\hline \hline
+\endlastfoot
+{\it SWMatrix-Ver-Act1} & 
+ & 
+<To be defined>  
+\\\hline
+{\it SWMatrix-Ver-Act2} & 
+& 
+<To be defined>  
+\\\hline
+{\it SWMatrix-Ver-Act3} &
+ &
+ <To be defined>  
+\\\hline
+
+\end{longtable}
+\end{center}
 
 \textbf{Test Verification}
 

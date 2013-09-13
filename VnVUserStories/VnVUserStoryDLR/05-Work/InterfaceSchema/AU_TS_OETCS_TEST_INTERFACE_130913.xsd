@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2012 sp1 (x64) (http://www.altova.com) von DLR (DLR) bearbeitet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:altova="http://www.altova.com/xml-schema-extensions" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+	<!-- ___________________________________________________________________-->
+	<xs:include schemaLocation="../../../../Artifacts/Subset-026-7_XML/Subset026_7/SubsetFromWord/Subset_Att_26_7.xsd"/>
+	<xs:include schemaLocation="SUBSET-094/SUBSET-094_9_2.xsd"/>
+	<xs:include schemaLocation="SUBSET-094/SUBSET-094_10_2.xsd"/>
+	<xs:include schemaLocation="AU_TS_OETCS_TEST_COMMON_ATTRIBUTES_120913.xsd"/>
+	<!-- ___________________________________________________________________-->
+	<xs:element name="ETCS_TEST">
+		<xs:annotation>
+			<xs:documentation>SUT interface, Root Element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="TrainInterfaceOutput"/>
+				<xs:element ref="TrainInterfaceInput"/>
+				<xs:element ref="OdometrySerialInterface"/>
+				<xs:element ref="StaticSpeedProfile"/>
+				<xs:element ref="ControlSUTComand"/>
+				<xs:element ref="ControlSUTStatus"/>
+				<xs:element ref="Message"/>
+			</xs:choice>
+			<xs:attributeGroup ref="ETCSProtocolAttributes"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ___________________________________________________________________-->
+	<xs:attribute name="Version" type="T_Version">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.79 
+Main System Version describing Incompatible/ Compatible  Baselines - used as protocol attribute</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="ProcolVersion" type="xs:int">
+		<xs:annotation>
+			<xs:documentation>Fixed Protocol Version relating to this XSD Testinterface Definition</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="SUTCommand" type="T_SutCommand">
+		<xs:annotation>
+			<xs:documentation>Command for System Under Test</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="SUTStatus" type="T_SutStatus">
+		<xs:annotation>
+			<xs:documentation>Status of System Under Test</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<!-- ___________________________________________________________________-->
+	<xs:attributeGroup name="SystemVersion">
+		<xs:annotation>
+			<xs:documentation>ETCS System Version, default version according to SUBSET-026-7.5.1.79 SRS v3.3.0</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="Version" use="optional" fixed="127"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="ETCSProtocolAttributes">
+		<xs:annotation>
+			<xs:documentation>Protocol Attributes that are sent with a message</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="SystemVersion"/>
+		<xs:attribute ref="ProcolVersion" use="required" fixed="001"/>
+		<xs:attribute ref="Timestamp" use="required"/>
+	</xs:attributeGroup>
+	<!-- ___________________________________________________________________-->
+	<xs:simpleType name="T_SutCommand">
+		<xs:annotation>
+			<xs:documentation>Type of Commant for System Under Test</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="startSUT"/>
+			<xs:enumeration value="askForStatus"/>
+			<xs:enumeration value="stopSUT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_SutStatus">
+		<xs:annotation>
+			<xs:documentation>Type of Status of System Under Test</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="SUTSwitchedOff"/>
+			<xs:enumeration value="SUTStarting"/>
+			<xs:enumeration value="SUTSwitchedOn"/>
+			<xs:enumeration value="SUTInitialising"/>
+			<xs:enumeration value="SUTReady"/>
+			<xs:enumeration value="SUTStopped"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Version">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.79, Version of ETCS system</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:byte">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="127"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ___________________________________________________________________-->
+	<xs:element name="StaticSpeedProfile" type="T_SSP">
+		<xs:annotation>
+			<xs:documentation>Static Speed Profile</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Message">
+		<xs:annotation>
+			<xs:documentation>Message Definition - to be replaced by Subset026 Chapter 8 when formalized</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="Packets"/>
+			</xs:all>
+			<xs:attribute name="Number" type="xs:int" use="required"/>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+			<xs:attribute name="TransmissionMedia" type="T_TransmissionMedia" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ControlSUTComand" type="T_ControlSUTCommand">
+		<xs:annotation>
+			<xs:documentation>System Under Test Control Command from Testenvironment to SUT</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="ControlSUTStatus" type="T_ControlSUTStatus">
+		<xs:annotation>
+			<xs:documentation>System Under Test Status</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ___________________________________________________________________-->
+	<xs:complexType name="T_ControlSUTCommand">
+		<xs:annotation>
+			<xs:documentation>Command to SUT</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="SUT_StartingConditions" type="T_StartingConditions">
+				<xs:annotation>
+					<xs:documentation>System Under Test Control Command from Testenvironment to SUT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attributeGroup ref="DirectionTrackTeToSut"/>
+		<xs:attribute ref="SUTCommand"/>
+	</xs:complexType>
+	<xs:complexType name="T_ControlSUTStatus">
+		<xs:annotation>
+			<xs:documentation>System Under Test Status</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="DirectionSutToTrackTe"/>
+		<xs:attribute ref="SUTStatus" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="T_StartingConditions">
+		<xs:annotation>
+			<xs:documentation>StartingConditions of SUT</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element ref="Level"/>
+			<xs:element ref="Mode"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="T_SSP">
+		<xs:annotation>
+			<xs:documentation>Set of Static Speed Profile Parameters</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Position" type="xs:int"/>
+			<xs:element name="Speed" type="xs:int"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="DirectionParaToTrackTe"/>
+	</xs:complexType>
+	<!-- ___________________________________________________________________-->
+</xs:schema>

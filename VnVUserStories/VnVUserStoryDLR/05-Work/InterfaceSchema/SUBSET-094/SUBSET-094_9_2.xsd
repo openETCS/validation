@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2012 sp1 (x64) (http://www.altova.com) von DLR (DLR) bearbeitet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="../AU_TS_OETCS_TEST_COMMON_ATTRIBUTES_120913.xsd"/>
+	<xs:include schemaLocation="../SUBSET-026/SUBSET-026_7_5.xsd"/>
+	<!-- Message_Types______________________________________________________-->
+	<xs:complexType name="T_TrainInterfaceInput">
+		<xs:annotation>
+			<xs:documentation source="Subset-094-9.2.2.1">TII: Message transmitted from Test Environment to Train Interface </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NID_INTERFACE" type="T_Interface" default="TII"/>
+			<xs:element ref="Sleeping"/>
+			<xs:element ref="Isolation"/>
+			<xs:element ref="ServiceBrakeStatus"/>
+			<xs:element ref="EmergencyBrakeStatus"/>
+			<xs:element ref="PassengerEBStatus"/>
+			<xs:element ref="DoorControl"/>
+			<xs:element ref="DirectionController"/>
+			<xs:element ref="CABStatus"/>
+			<xs:element ref="TrainIntegrity"/>
+			<xs:element ref="NonLeading"/>
+			<xs:element ref="SystemFailure"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="Trigger"/>
+		<xs:attributeGroup ref="DirectionOnboardTeToSut"/>
+	</xs:complexType>
+	<xs:complexType name="T_TrainInterfaceOutput">
+		<xs:annotation>
+			<xs:documentation source="Subset-094-9.2.2.2">TIO: Message transmitted from Test Environment to Train Interface</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="NID_INTERFACE" type="T_Interface" fixed="TIO"/>
+			<xs:element ref="ServiceBrakeCommand"/>
+			<xs:element ref="EmergencyBrakeCommand"/>
+			<xs:element ref="RegenerativeBrakeCommand"/>
+			<xs:element ref="EddyCurrentBrakeCommand"/>
+			<xs:element ref="MagneticShoeBrakeCommand"/>
+			<xs:element ref="PassengerEBCommand"/>
+			<xs:element ref="Voltage"/>
+			<xs:element ref="PantographCommand"/>
+			<xs:element ref="AirTightness"/>
+			<xs:element ref="PlatformHeight"/>
+			<xs:element ref="PlatformPosition"/>
+			<xs:element ref="MainSwitchCommand"/>
+			<xs:element ref="TractionCutOff"/>
+			<xs:element ref="Current"/>
+		</xs:all>
+		<xs:attributeGroup ref="Trigger"/>
+		<xs:attributeGroup ref="DirectionSutToOnboardTe"/>
+	</xs:complexType>
+	<!-- TII_Message_Elements_________________________________________________-->
+	<xs:element name="TrainInterfaceInput" type="T_TrainInterfaceInput">
+		<xs:annotation>
+			<xs:documentation>TII message element</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Sleeping" type="T_Sleeping">
+		<xs:annotation>
+			<xs:documentation>Command Sleeping</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Isolation" type="T_Isolation">
+		<xs:annotation>
+			<xs:documentation>Command Isolation</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="ServiceBrakeStatus" type="T_ServiceBrakeSt">
+		<xs:annotation>
+			<xs:documentation>Status of Service Brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="EmergencyBrakeStatus" type="T_EmergencyBrakeSt">
+		<xs:annotation>
+			<xs:documentation>Status of Emergency Brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PassengerEBStatus" type="T_PassengerEBSt">
+		<xs:annotation>
+			<xs:documentation>Status of Passenger Emergency Brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="DoorControl" type="T_DoorControl">
+		<xs:annotation>
+			<xs:documentation>Status of Doors</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="DirectionController" type="T_DirectionController">
+		<xs:annotation>
+			<xs:documentation>Status of Direction Controller</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="CABStatus" type="T_CABStatus">
+		<xs:annotation>
+			<xs:documentation>Status CAB A and CAB B</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="TrainIntegrity" type="T_TrainIntegrity">
+		<xs:annotation>
+			<xs:documentation>Status of Train Integrity</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="NonLeading" type="T_NonLeading">
+		<xs:annotation>
+			<xs:documentation>Command NonLeading</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="SystemFailure" type="T_SystemFailure">
+		<xs:annotation>
+			<xs:documentation>Status of System Failure</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!--TIO_Message_Elements_________________________________________________-->
+	<xs:element name="TrainInterfaceOutput" type="T_TrainInterfaceOutput">
+		<xs:annotation>
+			<xs:documentation>TIO message element</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="ServiceBrakeCommand" type="T_ServiceBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the service brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="EmergencyBrakeCommand" type="T_EmergencyBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the emergency brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="RegenerativeBrakeCommand" type="T_RegenerativeBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the use of the regenerative brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="EddyCurrentBrakeCommand" type="T_EddyCurrentBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the use of the eddy current brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="MagneticShoeBrakeCommand" type="T_MagneticShoeBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the use of the magnetic shoe brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PassengerEBCommand" type="T_PassengerEBCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the use of the passenger emergency brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PantographCommand" type="T_PantographCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the pantograph</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="AirTightness" type="T_AirTightness">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the air tighness system</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="MainSwitchCommand" type="T_MainSwitchCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the actions on the main switch</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="TractionCutOff" type="T_TractionCutOff">
+		<xs:annotation>
+			<xs:documentation>Indicates the action of the traction cut-off system</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- Variable_Types_______________________________________________________-->
+	<xs:complexType name="T_AirTightness">
+		<xs:annotation>
+			<xs:documentation>Air Tightness command (Closing of Flaps)</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_AIRTIGHTNESS" default="0">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Tunnel condition active; 2 - Tunnel condition not active; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_CABStatus">
+		<xs:annotation>
+			<xs:documentation>Cabine (Desk) status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_CABSTATUS">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Both desks are closed; 2 - Desk A is open; 3 - Desk B is open; 4 - Both desks are open; 5 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="3"/>
+		<xs:attribute ref="BitCoding" default="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_DirectionController">
+		<xs:annotation>
+			<xs:documentation>Direction Controller status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_DIRECTIONCONTROLLER">
+				<xs:annotation>
+					<xs:documentation>0 - Information not availabel; 1- Direction controller neutral; 2 - direction controller forward; 3- direction controller backward; 4 - Fail state </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="3"/>
+		<xs:attribute ref="BitCoding" default="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_DoorControl">
+		<xs:annotation>
+			<xs:documentation>Door Control status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_DOORCONTROL">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Both sides doors closed; 2 - Left side doors open; 3- Ride side doors open; 4 - Both side doors open; 5- Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="3"/>
+		<xs:attribute ref="BitCoding" default="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_EddyCurrentBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Eddy Current Brake inhibition command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_EDDYCURRENTBRAKECM">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Inhibit eddy current brake for service brake; 2 - Use eddy current brake for service brake; 3 - Inhibit eddy current brake for emergency brake; 4 - Use eddy current brake for emergency brake; 5 -Use eddy current brake for both brakes; 6 -Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="6"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="3"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_EmergencyBrakeSt">
+		<xs:annotation>
+			<xs:documentation>Emergency Brake signal status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_EMERGENCYBRAKEST">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Emergency Brake applied; 2 - Emergency Brake not applied; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_EmergencyBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Emergency Brake command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_EMERGENCYBRAKECM">
+				<xs:annotation>
+					<xs:documentation>0 -Information not available; 1- Apply emergency brake; 2 - Release emergency brake; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" default="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_Isolation">
+		<xs:annotation>
+			<xs:documentation>Isolation signal status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_ISOLATION" default="2">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1- Signal active; 2 - Signal not active; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_MagneticShoeBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Magnetic Shoe Brake inhibition command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_MAGNETICSHOEBRAKECM">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Inhibit magnetic shoe brake; 2 - Use magnetic shoe brake; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_MainSwitchCm">
+		<xs:annotation>
+			<xs:documentation>Main Switch command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_MAINSWITCHCM">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Open main switch; 2 - Close main switch; 3 -Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_NonLeading">
+		<xs:annotation>
+			<xs:documentation>Non Leading signal</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_NONLEADING">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1- Signal active; 2 - Signal not active; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_PantographCm">
+		<xs:annotation>
+			<xs:documentation>Pantograph command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_PANTOGRAPHCM">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Lower pantograph; 2 - Raise pantograph; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_PassengerEBCm">
+		<xs:annotation>
+			<xs:documentation>Passenger Emergency Brake command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_PASSENGEREBCM">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Inhibit passenger emergency brake; 2 - Use passenger emergency brake; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_PassengerEBSt">
+		<xs:annotation>
+			<xs:documentation>Passenger Emergency Brake status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_PASSENGEREBST">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Passenger Emergency Brake applied; 2 - Passenger Emergency Brake not applied; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_RegenerativeBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Regerneative Brake command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_REGENERATIVEBRAKECM">
+				<xs:annotation>
+					<xs:documentation>0 -Information not available; 1- Inhibit regenerative brake; 2 - Use regenerative brake; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_ServiceBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Service Brake command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_SERVICEBRAKECM">
+				<xs:annotation>
+					<xs:documentation>0 - Indormation not available; 1- Apply service brake; 2 - Release service brake; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_ServiceBrakeSt">
+		<xs:annotation>
+			<xs:documentation>Service Brake signal status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_SERVICEBRAKEST">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Service Brake applied; 2 - Service Brake not applied; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_Sleeping">
+		<xs:annotation>
+			<xs:documentation>Sleeping signal status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_SLEEPING" default="2">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1- Signal active; 2 - Signal not active; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_SystemFailure">
+		<xs:annotation>
+			<xs:documentation>System Failure signal</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_SYSTEMFAILURE">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1- Signal active; 2 - Signal not active; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_TrainIntegrity">
+		<xs:annotation>
+			<xs:documentation>Train Integrity information</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_TRAININTEGRITY">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1- Train is not integer; 2 - Train is integer; 3- Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_TractionCutOff">
+		<xs:annotation>
+			<xs:documentation>Traction cut-off command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_TRACTIONCUTOFF">
+				<xs:annotation>
+					<xs:documentation>0 - Informatino not available; 1 - Aply traction cut-off; 2 - Release traction cut-off; 3 Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+</xs:schema>

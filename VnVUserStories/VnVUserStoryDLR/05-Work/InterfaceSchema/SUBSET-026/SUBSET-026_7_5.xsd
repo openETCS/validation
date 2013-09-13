@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2012 sp1 (x64) (http://www.altova.com) von DLR (DLR) bearbeitet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="../AU_TS_OETCS_TEST_COMMON_ATTRIBUTES_120913.xsd"/>
+	<!-- ___________________________________________________________________-->
+	<!-- ___________________________________________________________________-->
+	<xs:element name="Mode" type="T_Mode">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.72; Onboard operating mode</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Level" type="T_Level">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.65,Current Operating Level</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ___________________________________________________________________-->
+	<xs:element name="Current" type="T_Current">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.62.1, It defines the allowed current consumption to be used by the train</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PlatformHeight" type="T_PlatformHeigth">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.Nominal height of platform above rail level </xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PlatformPosition" type="T_PlatformPosition">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.126.2; Platform position (relative to direction of authorised movement)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Voltage" type="T_Voltage">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.78, It indicates the voltage of the traction system installed on a specific line or respectively that can be used by an engine</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ___________________________________________________________________-->
+	<xs:complexType name="T_Current">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.62.1, Allowed current consumption</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_CURRENT">
+				<xs:annotation>
+					<xs:documentation>See SUBSET-026-7.5.1.62.1 Allowed current consumption Resolution: 10A</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:unsignedShort">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="1000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="10"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_Level">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.65, Current Operating Level</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_LEVEL">
+				<xs:annotation>
+					<xs:documentation>See SUBSET-026-7.5.1.65, Current Operating Level</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="3"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_Mode">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.72, mode of SUT</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_MODE">
+				<xs:annotation>
+					<xs:documentation>See SUBSET-026-7.5.1.72, Onboard operating mode</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="15"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+		<xs:attribute ref="BitLength" fixed="4"/>
+	</xs:complexType>
+	<xs:complexType name="T_PlatformHeigth">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.75, Type of platform</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_PLATFORM">
+				<xs:annotation>
+					<xs:documentation>See SUBSET-026-7.5.1.75, Nominal height of platform above rail level </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="13"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="4"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_PlatformPosition">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.126.2, Platform position (relative to direction of authorised movement)</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Q_PLATFORM">
+				<xs:annotation>
+					<xs:documentation>See SUBSET-026-7.5.126.2 Platform position (relative to direction of authorised movement)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_Voltage">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.78, Traction System voltage</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_VOLTAGE">
+				<xs:annotation>
+					<xs:documentation>See SUBSET-026-7.5.1.78</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="4"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+</xs:schema>

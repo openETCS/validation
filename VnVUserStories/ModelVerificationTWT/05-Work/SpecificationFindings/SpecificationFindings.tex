@@ -99,6 +99,35 @@ What is the difference between the \emph{estimated train front end position} and
 \issue{5.4.2.2 Train Data}
 It is not clear what the train data consists of.
 
+\issue{5.4.3.2 State S1 - Driver-ID Validation}
+The specification states that the driver revalidates the Driver-ID. So it can be assumed that the system relies on correct validation by the driver. Is this true? When does the Driver-ID become invalid or unknown? At End of Mission? The same holds for the \emph{train running number}.
+
+\issue{5.4.3.2 State S1 - Virtual Balise Cover}
+Virtual balise cover is not properly specified. The same holds for the process of setting/removing virtual balise cover. For now this feature is omitted in the models.
+
+\issue{5.4.3.2 State S2 - Enter/Re-validate Level}
+The specification distinguishes the following three cases
+\begin{enumerate}
+   \item Entering level (if state \emph{unknown})
+   \item Re-validate level (if state \emph{invalid})
+   \item Re-enter level (if state \emph{invalid})
+\end{enumerate}
+The purpose of this distinction is not clear as entering the level suffices (the current setting is invalid or unknown and thus irrelevant).
+
+\issue{5.4.3.2 State S3 - Selection of Radio Network}
+It is not mentioned that a valid \emph{radio network ID} must stored in the onboard, but this is necessary because the driver may not select a new radio network. The type of the radio network IDs is not mentioned, for the modelling strings are assumed.
+
+\issue{5.4.3.2 State S3 - RBC-ID}
+What is the difference between the \emph{RBC-ID} that may be invalid and the \emph{last stored RBC-ID}? Why can the latter not be invalid?
+
+\issue{5.4.3.2 State S3 - EIRENE Short Number}
+Clarify \emph{EIRENE} short number and the \emph{trackside call routing function}.
+
+\issue{5.4.3.2 State D7 - Mobile Terminal registered}
+Definition of a mobile terminal missing. How many mobile terminals are there? Is this equivalent to radio network registration (see state S3)? The latter is assumed for the initial models.
+
+
+
 \bibliographystyle{unsrt}
 \bibliography{erdc}
 

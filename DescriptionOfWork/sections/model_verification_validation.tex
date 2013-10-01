@@ -2,6 +2,8 @@
 \section{\VV of the Formal Model}
 %-----------------------------------------------------------------------
 \tbc
+
+%old introduction
 To ensure the correctness and consistency of the model and its implementation, the validation and verification has to be performed alongside with the modelling process. Thus these tasks will be performed repeatedly during WP3 and will provide feedback to it.
 
 This task handles the verification and validation of the formal model. This will be accomplished by applying the methods chosen in WP4 Task 1 onto the formal model from WP3 using the tool chain developed in WP3. Depending on the chosen approach and applicable tools a variety of verification methods can be applied like:
@@ -13,11 +15,78 @@ This task handles the verification and validation of the formal model. This will
 As the verification and validation is part of the development chain, this task is being applied iteratively in parallel to the development of the formal model in WP3. The feedback given should focus on the consistency and correctness of the model and development process in WP3.
 The results of this task are the verification and validation specifications (how to perform the V\&V on the formal model), the basic materials (the actual tests cases, checklists, etc.) and the V\&V report on the formal model.
 
+%new introduction
+The main objective of this task is to guarantee the correctness and consistency of the semi-formal model (SysML) and the fully formal model (SCADE), by applying verification (concerned with building the model right) and validation (concerned with building the right model) techniques. To ensure this, the requirements described in D2.9 “Requirements for Verification \& Validation” for the Subset-026 ought to be met by the model. Also, following the standard Technical Specification for Interoperability is mandatory.
+
+As detailed in D2.9, a list of safety requirements will be collected and refined to create requirements and properties. Once these requirements are ready, there are a variety of techniques (described below) that can be used to verify and validate the formal model. 
+
+
 %-----------------------------------------------------------------------
 %\subsection{\tbd}
 %-----------------------------------------------------------------------
 %\tbd
 %Should Risk Assessment be done in parallel to the verification activities?
+
+%-----------------------------------------------------------------------
+\subsection{Proof Technique}
+%-----------------------------------------------------------------------
+A proof is a demonstration that if some fundamental statements (axioms) are assumed to be true, then some mathematical statement is necessarily true. As mentioned in the requirements document produced by WP2, as much as possible, formal proof would then be used to prove that the OpenETCS model never enter a Feared State, as long as the other subsystem (RBC, communication layer. . . ) fulfill their own safety properties (axiom describing the environment). Such theorem proving helps to increase our confidence on the specified model. The proof techniques should be integrated in the selected tool chain.
+
+In order to use formal proof to verify if the SFM (Semi-formal model) and FFM (fully formal model) comply with the safety and function requirements (cf. R-WP2/D2.6-02-058), the properties to be proven have to be identified and described. There will be a set of axioms that will describe both functional and/or safety properties of the system. The choice of axioms describing functional and/or safety properties will be provided by safety analysis in an independent way from approaches used to specify, design, validate or verify. It must be noted that the model obtained from the Subsystem Requirements Specification should be verified in this manner at a first stage.
+
+
+%-----------------------------------------------------------------------
+\subsection{Model Checking}
+%-----------------------------------------------------------------------
+Model checking is an automatic technique for verifying finite-state reactive systems. As such, one could automatically check if the model specifies most of the requirements of the system, such as the important safety properties described in Task 4.4.
+
+Similar to proof techniques, in order to use model checking to verify if the SFM (Semi-formal model) and FFM (fully formal model) comply with the safety and function requirements (cf. R-WP2/D2.6-02-058), the properties to be proven have to be identified and described. To implement the use model checking, it is mandatory to specify the model using finite-state reactive systems, and they should also provide an intuitive way to express the properties to be model checked. The set of critical requirements to be verified need to be clearly identified. The criteria for the model to be considered a representation of the standard is that all properties are checked. The proposed model checking techniques should be supported in the selected tool chain.
+
+%-----------------------------------------------------------------------
+\subsection{Simulation}
+%-----------------------------------------------------------------------
+As for simulation, the artifacts should provide means to execute the model. The simulator must be automatically generated, so that, when run against test scenarios (inputs/outputs for the model), we may conclude whether the model follows the specification or not. In particular, it is important to define test scenarios for the safety critical properties. Since, the development within openETCS has to the goal to reach the CENELEC EN 50128 SIL 4 standard, it is highly recommended (cf. SIL 4) that the simulation needs to cover all states, transitions, data-flow, and paths in the model. It would also be desirable to include graphical representation of the simulation/model and also provide a report of the visited components as specified by CENELEC EN 50128 SIL 4. 
+
+CENELEC EN 50128 SIL4 also advocates to perform tracing. Being able to trace the requirements that are met during a simulation is also advisable to allow simple requirement coverage. 
+
+
+%-----------------------------------------------------------------------
+\subsection{Testing Methods}
+%-----------------------------------------------------------------------
+Testing methods will be applied in order to check the correctness of the model with respect to the informal specification and safety requirements. Testing techniques will also be used to check properties that cannot be checked using the proof, model checking or simulation. These techniques will be complementary of the above mentioned techniques. In particular, if a safety requirement/property cannot be proven, testing covering all reasonable possible events/transitions must be used (cf. safety requirements R-WP2/D2.6-02-058.04 and R-WP2/D2.6-02-058.02).
+
+%-----------------------------------------------------------------------
+\subsection{Other Methods}
+%-----------------------------------------------------------------------
+Reviews, Inspections, static analysis and walkthroughs, mostly manual techniques, are also to be considered for the verification of models. 
+
+
+The inputs required by this task are
+\begin{itemize}
+\item[•] Requirements for the model provided by ERA, SSRS and safety analisys;
+\item[•] D2.9 - Set of requirements for V\&V;
+\item[•] D7.2 - Report on all aspects of secondary tooling;
+\item[•] D7.4 – Tool chain first release;
+\item[•] Model of the system (WP3).
+\end{itemize}	
+		
+As the goal of this task is the verification and validation of the formal model using the selected tool chain. We will also provide a sequence in which these tools should be executed to check the correctness of the model (e.g., simulation can be used to check properties that cannot be checked by model checking and/or proof techniques).
+
+We propose to start the procedure of tools validation by the application of the following process:
+
+\begin{enumerate}
+\item To check tools based on proof techniques in order to evaluate what requirements –properties of the model they are able to validate. This evaluation will be based on the work performed in WP7, Task 2; 
+\item To check what are the properties that can be evaluated using model checking, in particular we will verify what properties can checked by model checking and not by proof techniques;
+\item To check what are the properties that can be evaluated using simulation, in particular we will verify what properties can checked by simulation and not by model checking nor by proof techniques;
+\item For all tools:  to precise if the tools satisfy CENELEC requirements;
+\item We will provide a report on the applicability of the tools to check model correctness.
+\end{enumerate}
+
+We expect from the partners participating to T4.2, to send to us:
+-	a short description of the methods used for the model description;
+-	first description of the models elaborated by the partners.
+
+
 
 
 

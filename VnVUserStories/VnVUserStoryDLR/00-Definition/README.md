@@ -17,9 +17,9 @@
 
 ### 05-work
 - [AU_TS_DRAFT_INTERFACE_SETUP_130913.pdf](https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStoryDLR/05-Work/InterfaceArchitecture/AU_TS_DRAFT_INTERFACE_SETUP_130913.pdf?raw=true)
-  - draft of interface format setup
+  - draft of testing interface format setup
 - [AU_TS_OETCS_TEST_INTERFACE_130913.xsd](https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStoryDLR/05-Work/InterfaceSchema/AU_TS_OETCS_TEST_INTERFACE_130913.xsd)
-  - draft of interface format as XSD
+  - draft of testing interface format as XSD
 
 
 

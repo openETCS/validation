@@ -1,0 +1,68 @@
+IMPLEMENTATION
+	os_consist_1_i
+
+REFINES
+	os_consist_1
+
+IMPORTS
+	os_consist_2
+
+SEES
+	os_typ
+
+PROMOTES
+	write_level_etcs_prec,
+	write_train_position,
+	write_start_os_area,
+	write_mamode,
+	write_os_area_speed,
+	write_dist_ack_os_area
+
+INVARIANT
+	level_etcs_prec = level_etcs_prec_i &
+	train_position = train_position_i &
+	start_os_area = start_os_area_i &
+	mamode = mamode_i &
+	os_area_speed = os_area_speed_i &
+	dist_ack_os_area = dist_ack_os_area_i
+
+OPERATIONS
+
+	/* read operations */
+
+	p_res <-- read_level_etcs_prec =
+	BEGIN
+		p_res := level_etcs_prec_i
+	END
+	;
+
+	p_res <-- read_train_position =
+	BEGIN
+		p_res := train_position_i
+	END
+	;
+
+	p_res <-- read_start_os_area =
+	BEGIN
+		p_res := start_os_area_i
+	END
+	;
+
+	p_res <-- read_mamode =
+	BEGIN
+		p_res := mamode_i
+	END
+	;
+
+	p_res <-- read_os_area_speed =
+	BEGIN
+		p_res := os_area_speed_i
+	END
+	;
+
+	p_res <-- read_dist_ack_os_area =
+	BEGIN
+		p_res := dist_ack_os_area_i
+	END
+
+END

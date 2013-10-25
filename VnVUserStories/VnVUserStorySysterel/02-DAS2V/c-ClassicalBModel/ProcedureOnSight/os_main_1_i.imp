@@ -1,0 +1,92 @@
+/*?**********************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Main sequencer
+
+**********************************************?*/
+
+IMPLEMENTATION
+	os_main_1_i
+
+REFINES
+	os_main_1
+
+SEES
+	os_typ
+
+IMPORTS
+	os_in,
+	os_consist,
+	os_train_info,
+	os_mode_level,
+	os_out
+
+LOCAL_OPERATIONS
+
+	copy_level_etcs_prec =
+	BEGIN
+		level_etcs_prec :( level_etcs_prec : t_level )
+	END
+	
+OPERATIONS
+
+	/* local operations */
+
+	copy_level_etcs_prec =
+	VAR
+		l_etcs_level
+	IN
+		l_etcs_level <-- read_etcs_level ;
+
+		write_level_etcs_prec(l_etcs_level)
+	END
+	;
+
+	/* sequencer operations */
+
+	process_input =
+	BEGIN
+		skip
+	END
+	;
+
+	check_data_consistency =
+	BEGIN
+		elaborate_area_and_geopos
+	END
+	;
+
+	define_train_speed_and_position =
+	BEGIN
+		elaborate_train_location ;
+		elaborate_train_speed
+	END
+	;
+
+	elaborate_mode_level =
+	BEGIN
+		elaborate_level ;
+		elaborate_mode ;
+		gerer_tempo
+	END
+	;
+
+	process_output =
+	BEGIN
+		skip
+	END
+	;
+
+	copy_prec =
+	BEGIN
+		copy_level_etcs_prec ;
+		copy_train_info_prec ;
+		copy_mode_level_prec
+	END
+
+END

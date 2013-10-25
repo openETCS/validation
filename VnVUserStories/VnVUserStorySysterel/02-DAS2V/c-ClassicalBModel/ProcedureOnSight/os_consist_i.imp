@@ -1,0 +1,84 @@
+IMPLEMENTATION
+	os_consist_i
+
+REFINES
+	os_consist_r
+
+IMPORTS
+	os_consist_1
+
+SEES
+	os_typ,
+	os_in
+
+PROMOTES
+	read_level_etcs_prec,
+	read_train_position,
+	read_start_os_area,
+	read_mamode,
+	read_os_area_speed,
+	read_dist_ack_os_area,
+	write_level_etcs_prec,
+	write_train_position,
+	write_start_os_area,
+	write_mamode,
+	write_os_area_speed,
+	write_dist_ack_os_area
+
+OPERATIONS
+
+	elaborate_area_and_geopos =
+	VAR
+		l_level_etcs_prec,
+		l_btm_train_position,
+		l_btm_start_os_area,
+		l_btm_mamode,
+		l_btm_os_area_speed,
+		l_btm_dist_ack_os_area,
+		l_radio_train_position,
+		l_radio_start_os_area,
+		l_radio_mamode,
+		l_radio_os_area_speed,
+		l_radio_dist_ack_os_area
+	IN
+		l_level_etcs_prec <-- read_level_etcs_prec ;
+		l_btm_train_position <-- read_btm_train_position ;
+		l_btm_start_os_area <-- read_btm_start_os_area ;
+		l_btm_mamode <-- read_btm_mamode ;
+		l_btm_os_area_speed <-- read_btm_os_area_speed ;
+		l_btm_dist_ack_os_area <-- read_btm_dist_ack_os_area ;
+		l_radio_train_position <-- read_radio_train_position ;
+		l_radio_start_os_area <-- read_radio_start_os_area ;
+		l_radio_mamode <-- read_radio_mamode ;
+		l_radio_os_area_speed <-- read_radio_os_area_speed ;
+		l_radio_dist_ack_os_area <-- read_radio_dist_ack_os_area ;
+
+		IF
+			l_level_etcs_prec = c_level_ntc or
+			l_level_etcs_prec = c_level_0 or
+			l_level_etcs_prec = c_level_1
+		THEN
+			write_train_position(l_btm_train_position) ;
+			write_start_os_area(l_btm_start_os_area) ;
+			write_mamode(l_btm_mamode) ;
+			write_os_area_speed(l_btm_os_area_speed) ;
+			write_dist_ack_os_area(l_btm_dist_ack_os_area)
+		ELSIF
+			l_level_etcs_prec = c_level_2 or
+			l_level_etcs_prec = c_level_3
+		THEN
+			write_train_position(l_radio_train_position) ;
+			write_start_os_area(l_radio_start_os_area) ;
+			write_mamode(l_radio_mamode) ;
+			write_os_area_speed(l_radio_os_area_speed) ;
+			write_dist_ack_os_area(l_radio_dist_ack_os_area)
+		ELSE
+			write_train_position(k_train_position_def) ;
+			write_start_os_area(k_start_os_area_def) ;
+			write_mamode(k_mamode_def) ;
+			write_os_area_speed(k_os_area_speed_def) ;
+			write_dist_ack_os_area(k_dist_ack_os_area_def)
+		END
+	END
+
+END	

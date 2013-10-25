@@ -1,0 +1,57 @@
+IMPLEMENTATION
+	os_train_info_2_i
+
+REFINES
+	os_train_info_2
+
+SEES
+	os_typ
+
+INITIALISATION
+	train_position_prev_i := k_train_position_def ;
+	posoff_max_safe_front_i := 0 ;
+	posoff_min_safe_front_i := 0 ;
+	posoff_max_safe_front_prev_i := k_posoff_max_safe_front_def ;
+	posoff_min_safe_front_prev_i := k_posoff_min_safe_front_def ;
+	train_speed_i := 0
+
+OPERATIONS
+
+	/* write operations */
+
+	write_train_position_prev(p_dist) =
+	BEGIN
+		train_position_prev_i := p_dist
+	END
+	;
+
+	write_posoff_max_safe_front(p_dist) =
+	BEGIN
+		posoff_max_safe_front_i := p_dist
+	END
+	;
+
+	write_posoff_max_safe_front_prev(p_dist) =
+	BEGIN
+		posoff_max_safe_front_prev_i := p_dist
+	END
+	;
+
+	write_posoff_min_safe_front(p_dist) =
+	BEGIN
+		posoff_min_safe_front_i := p_dist
+	END
+	;
+
+	write_posoff_min_safe_front_prev(p_dist) =
+	BEGIN
+		posoff_min_safe_front_prev_i := p_dist
+	END
+	;
+
+	write_train_speed(p_speed) =
+	BEGIN
+		train_speed_i := p_speed
+	END
+	
+END

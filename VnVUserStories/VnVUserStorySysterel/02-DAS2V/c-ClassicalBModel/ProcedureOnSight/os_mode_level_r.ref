@@ -1,0 +1,101 @@
+REFINEMENT
+	os_mode_level_r
+
+REFINES
+	os_mode_level
+
+SEES
+	os_typ,
+	os_in,
+	os_consist,
+	os_train_info
+
+ABSTRACT_VARIABLES
+	etcs_level,
+	mamode_prec,
+	mode,
+	waiting_for_ack,
+	tempo,
+	service_brake_command
+
+INITIALISATION
+	etcs_level := c_level_0 ||
+	mamode_prec := c_profile_OS ||
+	mode := c_mode_NP ||
+	waiting_for_ack := FALSE ||
+	tempo := 0 ||
+	service_brake_command := FALSE
+
+OPERATIONS
+
+	elaborate_level =
+	BEGIN
+		// arbitrary
+		etcs_level := c_level_2
+	END
+	;
+
+	elaborate_mode =
+	IF /* request for OS mode and mode is ok */
+		mamode = c_profile_OS &
+		mamode /= mamode_prec &
+		mode : {c_mode_FS, c_mode_OS, c_mode_LS, c_mode_SR,
+				c_mode_SB, c_mode_PT, c_mode_UN, c_mode_SN}
+	THEN
+		IF /* train is inside OS area */
+			start_os_area <= posoff_max_safe_front &
+			mode /= c_mode_OS
+		THEN
+			IF /* mode is not SB nor PT */
+				mode /: {c_mode_SB, c_mode_PT}
+			THEN /* switch to OS mode */
+				mode := c_mode_OS
+			END ||
+
+			IF /* not already waiting for ACK*/
+				waiting_for_ack = FALSE
+			THEN /* start waitinf for ACK*/
+				waiting_for_ack := TRUE ||
+				tempo := k_delay_driver_ack
+			END
+		ELSE /* train is outside of OS area */
+			IF /* train is inside ACK zone */
+				start_os_area + dist_ack_os_area <= posoff_max_safe_front &
+				train_speed < os_area_speed &
+				waiting_for_ack = FALSE
+			THEN
+				waiting_for_ack := TRUE ||
+				tempo := k_delay_driver_ack
+			END
+		END
+	END
+	;
+			
+	gerer_tempo =
+	IF /* waiting for ack */
+		waiting_for_ack = TRUE
+	THEN
+		IF /* driver acks */
+			driver_ack_os_mode = TRUE
+		THEN /* stop couting, switch to os mode */
+			waiting_for_ack := FALSE ||
+			mode := c_mode_OS
+		ELSE /* driver did not ack */
+			IF /* tempo ran out */
+				tempo = 0
+			THEN /* emergency brake */
+				service_brake_command := TRUE
+			ELSE /* decrease tempo */
+				tempo := tempo - 1
+			END
+		END
+	END
+	;
+
+	copy_mode_level_prec =
+	BEGIN
+		mamode_prec := mamode
+	END
+
+END
+

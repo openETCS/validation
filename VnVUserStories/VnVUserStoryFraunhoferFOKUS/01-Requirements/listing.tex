@@ -1,0 +1,96 @@
+%Defining C-Code Environment
+
+\usepackage{courier} 
+\usepackage{listings}
+\usepackage{color} 
+
+% 1.3.10 jb:
+% commented-out unused colors and styles,
+% changed color names to logical ones
+
+%\definecolor{darkred}		{rgb}{0.60,0.00,0.00}
+\definecolor{coACSLBehavior}	{rgb}{0.30,0.00,0.00}
+\definecolor{coASCL}		{rgb}{0.00,0.10,0.00}
+\definecolor{coASCLKeyword}	{rgb}{0.00,0.10,0.10}
+\definecolor{darkgreen}		{rgb}{0.00,0.40,0.00}
+%\definecolor{red}		{rgb}{0.98,0.00,0.00}
+\definecolor{darkblue}		{rgb}{0.00,0.00,0.60}
+%\definecolor{lightblue}		{rgb}{0.60,0.80,1.00}
+%\definecolor{lightred}		{rgb}{1.00,0.60,0.60}
+\definecolor{coCKeyword}	{rgb}{0.00,0.00,0.60}
+
+\lstdefinestyle{acsl-block}
+{	emph=[1]{assert, assumes, assigns, axiom, axiomatic, decreases, ensures,
+                 ghost, invariant, lemma, logic, loop, predicate,
+		 reads, requires, variant},
+	emphstyle=[1]{\bfseries\color{coASCLKeyword}},
+	emph=[2]{behavior, behaviors, complete, disjoint, for:},
+	emphstyle=[2]{\bfseries\color{coACSLBehavior}},
+	emph=[3]{typedef, int, char, integer, real, bool, size_type, value_type, uint8_t,  uint64_t},
+	emphstyle=[3]{\bfseries\color{coCKeyword}},
+	escapeinside={//`}{`//},
+	morecomment=*[l][\color{coASCL}]{//@},
+	morecomment=*[s][\color{coASCL}]{/*@}{*/},
+	moredelim=*[is][\bfseries]{|*}{*|},
+	%emphstyle=[3]{\ttfamily}
+	}
+
+\lstdefinestyle{func-decl}
+{	emph=[1]{assert, assumes, assigns, axiom, axiomatic, decreases, ensures,
+                 ghost, invariant, lemma, logic, loop, predicate,
+		 reads, requires, variant},
+	emphstyle=[1]{\bfseries\color{coASCLKeyword}},
+	emph=[2]{behavior, behaviors, complete, disjoint, for:},
+	emphstyle=[2]{\bfseries\color{coACSLBehavior}},
+	emph=[3]{integer, real, size_type, value_type},
+	emphstyle=[3]{\bfseries\color{coCKeyword}},
+	escapeinside={//`}{`//},
+	morecomment=*[l][\color{coASCL}]{//@},
+	morecomment=*[s][\color{coASCL}]{/*@}{*/},
+	moredelim=*[is][\bfseries]{|*}{*|},
+    frame=none,
+    numbers=none
+	%emphstyle=[3]{\ttfamily}
+	}
+
+\lstdefinestyle{acsl-inline}
+{	emph=[1]{assert, assumes, axiom, axiomatic, decreases, ensures, ghost, invariant, lemma, logic, loop,
+             predicate, reads, requires, return, variant },
+	emphstyle=[1]{\bfseries\color{coASCLKeyword}},
+	emph=[2]{behavior, behaviors, complete, disjoint, for:},
+	emphstyle=[2]{\bfseries\color{coACSLBehavior}},
+	emph=[3]{typedef, int, char, integer, real, bool, size_type, value_type, uint8_t,  uint64_t},
+	emphstyle=[3]{\bfseries\color{coCKeyword}},
+	morecomment=*[l][\color{coASCL}]{//@},
+	morecomment=*[s][\color{coASCL}]{/*@}{*/},
+	moredelim=*[is][\bfseries]{|*}{*|}
+}
+
+\lstdefinestyle{inline}
+{ basicstyle = \ttfamily\small\color{coASCL},
+	keywordstyle = \ttfamily\small\color{coASCL},
+	stringstyle=\color{coASCL},
+	style=acsl-inline,
+	breaklines= false
+}
+
+\lstset{%
+  language=C++,
+  defaultdialect=ansi,
+  basicstyle=\small\ttfamily,
+  commentstyle=\small\color{darkgreen},
+  keywordstyle=\small\bfseries\color{darkblue},
+  stringstyle=\small\color{darkgreen},
+  tabsize = 2,
+  showspaces=false,
+  showtabs=false,
+  columns=fixed,  
+  frame=none,  
+  breaklines=true,
+  showstringspaces=false,
+  xleftmargin=0.2cm,
+  %rangeprefix=//label, % to specify a certain range from a file
+  %rangesuffix=;, % to be shown
+  %includerangemarker=false,
+	numbers=none
+}

@@ -1,0 +1,80 @@
+\subsection{The Function \poke}
+
+The function \poke converts an integer to a bit sequence and writes it
+into a bit stream.
+Its function signature reads as follows:
+\begin{lstlisting}[style = acsl-block]
+int      Bitwalker_Poke(unsigned int Startposition,
+                        unsigned int Length,
+                        uint8_t Bitstream[],
+                        unsigned int BitstreamSizeInBytes,
+                        uint64_t Value);
+\end{lstlisting}
+
+
+\subsubsection*{Arguments}
+
+\begin{itemize}
+    \item \texttt{Startposition} is the bit index in the bit stream 
+    where the bit sequence starts.
+    \item \texttt{Length} is the length of the bit sequence.
+    \item \texttt{Bitstream} is the array which provides the bit stream.
+    \item \texttt{BitstreamSizeInBytes} is the length of the array 
+    containing the bit stream. 
+    \item \texttt{Value} is the integer which shall be converted into a bit sequence.
+\end{itemize}
+
+
+\subsubsection*{Preconditions}
+
+The following preconditions shall hold for the function arguments:
+
+\begin{itemize}
+\item \texttt{Bitstream} is a valid array of length \verb"BitstreamSizeInBytes"
+
+\item \texttt{Startposition + Length} $\leq$ \verb"UINT_MAX".
+\end{itemize}
+
+Note that additional constraints are implicitly expressed by the use
+of \emph{unsigned} integer types.
+
+
+\subsubsection*{Description}
+
+The function \poke converts a 64-bit unsigned integer to a bit sequence and 
+writes it into a bit stream.
+
+For $0 \leq x$ exists a shortest sequence of~0 and~1
+$(b_0, b_1,\ldots,b_{n - 1})$
+such that
+\begin{align}
+    \sum_{i=0}^{n-1} b_i \cdot 2^{(n - 1) - i} = x.
+\end{align}
+
+The function \poke tries to store the sequence $(b_0, b_1,\ldots,b_{n - 1})$
+in the bit sequence of \texttt{Length} bits that starts
+at bit index \texttt{Startposition}.
+
+The return value of \poke depends on the following three cases:
+
+\begin{itemize}
+\item 
+If the bit sequence is valid, then there are two cases:
+
+\begin{itemize}
+\item
+If $\texttt{Length} \geq n$, then  the sequence
+$(\overbrace{0,\ldots,0}^{\texttt{Length}-n},b_0, b_1,\ldots,b_{n - 1})$
+is stored in the bit stream starting at \texttt{Startposition}.
+The return value of \poke is 0.
+
+\item
+If $\texttt{Length} < n$, then the
+sequence $(b_0, b_1,\ldots,b_{n - 1})$ cannot be stored and\\
+\poke returns~$-1$.
+\end{itemize}
+
+\item 
+If the bit sequence is not valid, then \poke returns~$-2$.
+\end{itemize}
+

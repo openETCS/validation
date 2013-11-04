@@ -1,3 +1,16 @@
+/************************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Checking data consistency
+Data refinement
+
+************************************************/
+
 IMPLEMENTATION
 	os_consist_2_i
 
@@ -5,15 +18,17 @@ REFINES
 	os_consist_2
 
 SEES
-	os_typ
+	os_typ         ,
+	os_cte_conf_bs
 
 INITIALISATION
-	level_etcs_prec_i := c_level_0 ;
-	train_position_i := 0 ;
-	start_os_area_i := 0 ;
-	mamode_i := c_profile_OS ;
-	os_area_speed_i := 0 ;
-	dist_ack_os_area_i := 0
+	level_etcs_prec_i     := c_level_0            ;
+	train_position_i      := 0                    ;
+	train_position_prev_i := k_train_position_def ;
+	start_os_area_i       := 0                    ;
+	mamode_i              := c_profile_OS         ;
+	os_area_speed_i       := 0                    ;
+	dist_ack_os_area_i    := 0
 
 OPERATIONS
 
@@ -25,15 +40,21 @@ OPERATIONS
 	END
 	;
 
-	write_train_position(p_dist) =
+	write_train_position(p_abs) =
 	BEGIN
-		train_position_i := p_dist
+		train_position_i := p_abs
 	END
 	;
 
-	write_start_os_area(p_dist) =
+	write_train_position_prev(p_abs) =
 	BEGIN
-		start_os_area_i := p_dist
+		train_position_prev_i := p_abs
+	END
+	;
+
+	write_start_os_area(p_abs) =
+	BEGIN
+		start_os_area_i := p_abs
 	END
 	;
 
@@ -43,9 +64,9 @@ OPERATIONS
 	END
 	;
 
-	write_os_area_speed(p_vit) =
+	write_os_area_speed(p_speed) =
 	BEGIN
-		os_area_speed_i := p_vit
+		os_area_speed_i := p_speed
 	END
 	;
 

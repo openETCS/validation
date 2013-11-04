@@ -1,32 +1,49 @@
+/************************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Checking data consistency
+Data refinement
+
+************************************************/
+
 MACHINE
 	os_consist_2
 
 SEES
-	os_typ
+	os_typ         ,
+	os_cte_conf_bs
 
 CONCRETE_VARIABLES
-	level_etcs_prec_i,
-	train_position_i,
-	start_os_area_i,
-	mamode_i,
-	os_area_speed_i,
+	level_etcs_prec_i     ,
+	train_position_i      ,
+	train_position_prev_i ,
+	start_os_area_i       ,
+	mamode_i              ,
+	os_area_speed_i       ,
 	dist_ack_os_area_i
 
 INVARIANT
-	level_etcs_prec_i : t_level &
-	train_position_i : NAT &
-	start_os_area_i : NAT &
-	mamode_i : t_mamode &
-	os_area_speed_i : NAT &
-	dist_ack_os_area_i : NAT
+	level_etcs_prec_i     : t_level   &
+	train_position_i      : t_abs_i   &
+	train_position_prev_i : t_abs_i   &
+	start_os_area_i       : t_abs_i   &
+	mamode_i              : t_mamode  &
+	os_area_speed_i       : t_speed_i &
+	dist_ack_os_area_i    : t_dist_i
 
 INITIALISATION
-	level_etcs_prec_i := c_level_0 ||
-	train_position_i := 0 ||
-	start_os_area_i := 0 ||
-	mamode_i := c_profile_OS ||
-	os_area_speed_i := 0 ||
-	dist_ack_os_area_i := 0
+	level_etcs_prec_i     := c_level_0            ||
+	train_position_i      := 0                    ||
+	train_position_prev_i := k_train_position_def ||
+	start_os_area_i       := 0                    ||
+	mamode_i              := c_profile_OS         ||
+	os_area_speed_i       := 0                    ||
+	dist_ack_os_area_i    := 0
 
 OPERATIONS
 
@@ -40,19 +57,30 @@ OPERATIONS
 	END
 	;
 
-	write_train_position(p_dist) =
+	write_train_position(p_abs) =
 	PRE
-		p_dist : NAT
+		p_abs : t_abs_i &
+		p_abs : t_abs
 	THEN
-		train_position_i := p_dist
+		train_position_i := p_abs
 	END
 	;
 
-	write_start_os_area(p_dist) =
+	write_train_position_prev(p_abs) =
 	PRE
-		p_dist : NAT
+		p_abs : t_abs_i &
+		p_abs : t_abs
 	THEN
-		start_os_area_i := p_dist
+		train_position_prev_i := p_abs
+	END
+	;
+
+	write_start_os_area(p_abs) =
+	PRE
+		p_abs : t_abs_i &
+		p_abs : t_abs
+	THEN
+		start_os_area_i := p_abs
 	END
 	;
 
@@ -64,19 +92,22 @@ OPERATIONS
 	END
 	;
 
-	write_os_area_speed(p_vit) =
+	write_os_area_speed(p_speed) =
 	PRE
-		p_vit : NAT
+		p_speed : t_speed_i &
+		p_speed : t_speed
 	THEN
-		os_area_speed_i := p_vit
+		os_area_speed_i := p_speed
 	END
 	;
 
 	write_dist_ack_os_area(p_dist) =
 	PRE
-		p_dist : NAT
+		p_dist : t_dist_i &
+		p_dist : t_dist
 	THEN
 		dist_ack_os_area_i := p_dist
 	END
 
 END
+

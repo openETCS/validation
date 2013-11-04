@@ -1,0 +1,37 @@
+THEORY th_rule IS
+    band(binhyp(c = a),
+        binhyp(c <= b))
+    =>
+    a <= b
+END
+
+&
+
+THEORY th_rule2 IS
+    binhyp(a <= c)
+    =>
+    a / b <= c
+END
+
+&
+
+THEORY th_rule3 IS
+    band(binhyp(a = b * c),
+     band(binhyp(0 <= b),
+      band(binhyp(0 <= c),
+            binhyp(0 <= d))))
+    =>
+    e <= a / d
+END
+
+&
+
+THEORY th_rule4 IS
+    band(binhyp(d = e + f),
+        band(binhyp(d : g),
+            band(binhyp(e = a),
+                binhyp(f = b)))) &
+    g <: c
+    =>
+    a + b : c
+END

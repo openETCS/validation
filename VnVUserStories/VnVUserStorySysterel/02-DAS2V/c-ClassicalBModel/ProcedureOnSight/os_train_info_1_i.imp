@@ -1,3 +1,16 @@
+/************************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Train information : location and speed
+Data refinement
+
+************************************************/
+
 IMPLEMENTATION
 	os_train_info_1_i
 
@@ -5,36 +18,25 @@ REFINES
 	os_train_info_1
 
 SEES
-	os_typ
+	os_typ         ,
+	os_cte_conf_bs
 
 IMPORTS
 	os_train_info_2
 
 PROMOTES
-	write_train_position_prev,
-	write_posoff_max_safe_front,
-	write_posoff_max_safe_front_prev,
-	write_posoff_min_safe_front,
-	write_posoff_min_safe_front_prev,
+	write_posoff_max_safe_front ,
+	write_posoff_min_safe_front ,
 	write_train_speed
 
 INVARIANT
-	train_position_prev = train_position_prev_i &
 	posoff_max_safe_front = posoff_max_safe_front_i &
 	posoff_min_safe_front = posoff_min_safe_front_i &
-	posoff_max_safe_front_prev = posoff_max_safe_front_prev_i &
-	posoff_min_safe_front_prev = posoff_min_safe_front_prev_i &
-	train_speed = train_speed_i
+	train_speed           = train_speed_i
 
 OPERATIONS
 
 	/* read operations */
-
-	p_res <-- read_train_position_prev =
-	BEGIN
-		p_res := train_position_prev_i
-	END
-	;
 
 	p_res <-- read_posoff_max_safe_front =
 	BEGIN
@@ -42,21 +44,9 @@ OPERATIONS
 	END
 	;
 
-	p_res <-- read_posoff_max_safe_front_prev =
-	BEGIN
-		p_res := posoff_max_safe_front_prev_i
-	END
-	;
-	
 	p_res <-- read_posoff_min_safe_front =
 	BEGIN
 		p_res := posoff_min_safe_front_i
-	END
-	;
-
-	p_res <-- read_posoff_min_safe_front_prev =
-	BEGIN
-		p_res := posoff_min_safe_front_prev_i
 	END
 	;
 
@@ -66,3 +56,4 @@ OPERATIONS
 	END
 
 END
+

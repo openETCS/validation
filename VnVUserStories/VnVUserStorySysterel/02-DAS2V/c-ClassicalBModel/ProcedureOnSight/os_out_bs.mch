@@ -1,3 +1,15 @@
+/*?**********************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Output data interface (basic machine)
+
+**********************************************?*/
+
 MACHINE
 	os_out_bs
 
@@ -21,7 +33,8 @@ INVARIANT
 	d_invariant
 
 INITIALISATION
-	d_variables :( d_invariant )
+	ack_request_os_mode_out_i := FALSE ||
+	service_brake_command_out_i := FALSE
 
 OPERATIONS
 

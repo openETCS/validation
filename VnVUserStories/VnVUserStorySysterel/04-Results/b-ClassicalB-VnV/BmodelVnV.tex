@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage{url}
 \usepackage{amsfonts}
+\usepackage{graphicx}
 
 \title{Verification and validation of B~models}
 \author{Benoît~Lucet\\Systerel}
@@ -13,9 +14,11 @@
 \maketitle
 
 \begin{abstract}
-This document describes the verification and validation processes applicable to B~models. It supports B as a promising method in the context of openETCS, given the maturity and level of rigour associated with it.\\
-After an introductory section where we discuss the subject of validation, section \ref{sec:processes} presents the different verification processes and discusses their advantages and drawbacks, while section \ref{sec:tools} presents the tools available to perform such verification.
+This document describes the verification and validation processes applicable to B~models. It supports B as a promising method in the context of openETCS, given the maturity and level of rigor associated with it.\\
+After an introductory section where we discuss the subject of validation, section \ref{sec:processes} presents the different verification processes and discusses their advantages and drawbacks, while section \ref{sec:tools} presents the tools available to perform such verification. Finally, appendix \ref{app:osproc} presents the application of the verification process to an existing B example: the procedure on-sight.
 \end{abstract}
+
+\newpage
 
 \tableofcontents
 
@@ -23,7 +26,7 @@ After an introductory section where we discuss the subject of validation, sectio
 
 \section{Introduction}
 \label{sec:intro}
-A B~model is a textual and formal specification covering the functional behaviour of a safety critical software. It is usually written based on a high-level specification (informal or formal specification, for example SysML or a natural language). It is gradually refined, starting at the top with an abstract notation and ending at the bottom with sequential instructions --- which are then automatically translated in a target language such as C or Ada.\\
+A B~model is a textual and formal specification covering the functional behaviour of a safety critical software. It is usually written based on a high-level specification (informal or formal specification, for example SysML or a natural language). It is gradually refined, starting at the top with an abstract notation and ending at the bottom with sequential instructions --- which are then auomatically translated in a target language such as C or Ada.\\
 Thus, we define three objects of verification and validation: the specification, the B~model and the generated source code.\\
 
 Validation consists of:
@@ -35,7 +38,7 @@ Hence, this document will mainly focus on verification, i.e.\ the methods and to
 
 \section{Verification processes applicable to a B~model}
 \label{sec:processes}
-In this section, we demonstrate the suitability of the B~method towards the problematic encountered in the openETCS project by introducing the different verification processes applicable to a B~model.\\
+In this section, we demonstrate the suitability of the B~method towards the problematics encountered in the openETCS project by introducing the different verification processes applicable to a B~model.\\
 Each of the verification process is presented and its contributions to the system security and consistency are discussed.
 
 \subsection{Type checking}
@@ -43,7 +46,7 @@ Static type checking (TC) is a basic form of program verification that ensures t
 Strong typing ensures a consistent use of data and is essential to writing correct formulae (predicates or expressions).\\
 
 The type checking process consists of two main activities: data typing and type verification.\\
-{\itshape Data typing} is the activity of assigning a type to newly-encountered data in a predicate or a substitution\footnote{In B, a substitution is comparable to a set of instructions that modify variables. For more information, see Abrial, Jean-Raymond. {\itshape The B-Book: Assigning Programs to Meanings}. Cambridge, 1996.}. It is based on an inference mechanism, which is able to deduce the type of a newly-encountered variable from the type of the other variables intervening in the predicate or the substitution, and specific inference rules.\\
+{\itshape Data typing} is the activity of assigning a type to newly-encountered data in a predicate or a substitution\footnote{In B, a substitution is comparable to a set of instructions that modify variables. For more information, see \cite{bbook}.}. It is based on an inference mechanism, which is able to deduce the type of a newly-encountered variable from the type of the other variables intervening in the predicate or the substitution, and specific inference rules.\\
 On the other hand, {\itshape type verification} is the activity of verifying typing rules between already-typed variables. These rules are specific to their applying predicates, expressions or substitutions.
 % In B, the base types consist of integers, booleans, strings, abstract sets and enumerated sets.\\
 % The construction of more complex types is achieved through the powerset operator $\mathbb{P}$ and the cartesian product $\times$.
@@ -190,4 +193,73 @@ ProB & ~ & ~ & \checkmark & \checkmark & ~ \\
 The B~method, along with its verification processes and tools, meets the goals and activities of the openETCS project in terms of quality, rigor, safety and credibility.\\
 There is yet to develop open-source POG and build a framework for proving, but this is compensated by the fact that work on the subject is ongoing, and ProB is an effective tool for verification.
 
+\newpage
+
+\appendix
+\section{Application: Procedure On-Sight}
+\label{app:osproc}
+The Procedure On-Sight, as described in {\itshape System Requirements Specification, Chapter 5}, has been modelled in B\footnote{The model is available at \url{github.com/openETCS/validation/tree/master/VnVUserStories/VnVUserStorySysterel/02-DAS2V/c-ClassicalBModel/ProcedureOnSight}.} to show the feasibility of the task and the credibility of the method. This appendix briefly presents the model, then applies the verification processes to this example.
+
+\subsection{Presentation of the B~model}
+As shown in figure \ref{fig:procos}, the model is split into three main processing modules, one of which corresponds to the actual on-sight procedure,
+and the two others being used as data conditioning:
+\begin{itemize}
+\item \verb+os_mode_level+: determines the ETCS level and the mode. Contains the on-sight procedure algorithm,
+\item \verb+os_consist+: checks data consistency, provides adaptation to the current ETCS level (BTM or radio),
+\item \verb+os_train_info+: elaborates the location and the speed of the train.
+\end{itemize}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=1\textwidth]{procedureos}
+\caption{Architecture of the B~model for the Procedure On-Sight example}
+\label{fig:procos}
+\end{figure}
+
+These three modules are imported by the main sequencer, \verb+os_main_1+, which calls their respective operations. The main sequencer also imports the input module \verb+os_in+, and the output module \verb+os_out+.\\
+The typing machine, \verb+os_typ+, and the constant machine, \verb+os_cte_conf_bs+, are both imported by \verb+os_main+, the entry point of the software, which also imports \verb+os_main_1+.\\
+ 
+This ``IMPORTS''-based vertical layout is complemented by a horizontal aspect: the ``SEES'' clause, which enables a component to access another component's data. It is possible for a component to see the components to its left, but not to its right. Thus, a cycle-free graph is maintained.
+ 
+\subsection{Model checking results}
+\label{subapp:mc}
+ProB has been used on the example model and has shown through model checking that no invariant was violated, and no deadlock state was found. However, for some machines, only a minority of states and nodes have been visited (because of infinite sets in particular) and thus no formal conclusion can be drawn.\\
+Additionally, constraint-based checking has also been run and stated, for every operation of every abstract machine, the non-violation of the invariant.
+
+\subsection{Formal proof results}
+\label{subapp:proof}
+\subsubsection{Project status}
+Project status illustrated in figure \ref{fig:atelierb} shows the fully-proved model in Atelier~B.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=1\textwidth]{atelierb}
+\caption{Overview of the B~model in Atelier~B, showing type check, B0 check and proof status}
+\label{fig:atelierb}
+\end{figure}
+
+This model was proved almost entirely automatically, using the provers with force 0 and force 1. Proving the model results in the certainty of its correctness. In this case, only typing invariants and constraints were expressed, because strong links between the variables do not exist in the example.
+
+\subsubsection{User-defined theories}
+When automatic proof fails, the user must provide a manual proof and uses theories for this purpose. Theories are rules that are used to discharge specific goals.\\
+In this example, the only module for which interactive proof was required is \verb+os_consist_i+. Below is presented a very simple theory (among several others) used for the proof of this component:
+
+\begin{equation}
+\tag{User theory 1}
+a < 0 \land 0 \leq b \land 0 < c \Rightarrow a \leq \frac{b}{c}
+\end{equation}
+
+This theory is automatically verified by Atelier~B and therefore ensures full consistency of the proof.
+
+\newpage
+
+\begin{thebibliography}{9}
+\bibitem{bbook}
+	Jean-Raymond Abrial,
+	{\itshape The B-Book: Assigning Programs to Meanings},
+	Cambridge,
+	2005.
+\end{thebibliography}
+
 \end{document}
+

@@ -27,36 +27,36 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-This document reports  the test generation of the management of the
-radio communication function. The produced tests are applied to a C
-code generated from a SCADE model. The tests are produces using Model
-based testing, hence a test model has been  created from the
-specification.
+  This document reports the tests generated for the management of the
+  radio communication function verification.  The tests are produced
+  using Model based testing, thus a test model has been created from
+  the specification.  Then, the produced tests are applied to a C code
+  generated from a SCADE model.
 
-Since SCADE uses a verified compiler, the verification objectives are
-to ensure the completeness of the model with regards to the
-specification (requirement coverage) and to track the possible
-ambiguities within the specification that leads to non uniform
-implementation of the system under test and the test model.
+  Since SCADE uses a verified compiler, the verification objectives
+  are to ensure the completeness of the model with regards to the
+  specification (requirement coverage) and to track the possible
+  ambiguities within the specification that leads to a non-uniform
+  implementation of the system under test and the test model.
 \end{abstract}
 
 
 \subsubsection{Verification of the  Management of the Radio Communication}
 
-This sections reports on the verification activities of
-SCADE-MoRC. The goal of the activity is, first, to establish the compliance of
-the SCADE model to the SRS description via testing. We also want to track the
-ambiguities within the specification. Finally we want to demonstrate
-the efficiency of model based testing using the RT-tester tool for
-system integration testing.
+This section reports the verification activity of SCADE-MoRC. The goal
+of this activity is, first, to establish the compliance of the SCADE
+model to the SRS description via testing. Secondly, we want to track
+the ambiguities within the specification. Finally we want to
+demonstrate the efficiency of model based testing using the RT-tester
+tool for system integration testing.
 
 The activity is described in the Verification and Validation Plan
 section {\em 6.1.2.7 System Integration Testing (Uni Bremen/DLR)} \cite{D4.1_2013}
-In short, we develop a test model from the specification, generate tests ans use
+In short, we develop a test model from the specification, generate tests and use
 the code generated from SCADE to perform software-in-loop testing.
 
 \paragraph{Object of verification}
- MorC ERTMS function baseline 3.
+ MoRC ERTMS function baseline 3.
 \nl
 
 
@@ -87,8 +87,8 @@ To achieve what has been defined previously a test model in SysML has
 been developed. The description of this verification artifact may be
 found here \url{https://github.com/openETCS/model-evaluation/blob/master/model/EA-SysML/new_version/doc/ea_sysml_report.pdf}
 
-Our main goal is to validate the SCADE model by  tests simulation. The
-test are produced by a model of the subset-026 chap 3.5 described as a
+Our main goal is to validate the SCADE model by test simulation. The
+tests are produced by a model of the subset-026 chap 3.5 described as a
 state machine.
 
 \subparagraph{Method/Approach}
@@ -98,37 +98,39 @@ state machine.
 \caption{\label{fig:method}SCADE/RT-Tester methodology}
 \end{figure}
 
-Figure \ref{fig:method} depicts our methodology. From the ERTMS
+Figure \ref{fig:method} depicts our methodology. From the SRS
 specification, two models are designed: one SCADE model that will
-be then  used to produce C code and one SYSML model for generating
+be then  used to produce C code and one SysML model for generating
 tests.
 
-Our test model contains the behavioral representation of the MoRC,
-the set of requirements of the chap 3.5, and the link between the
-behavior and the requirement.  Most of the requirement may be
-represented as single transition or state in the test model state
-machine. Nevertheless some of the requirements  may be only modeled as a path in the
-state machine, some LTL formula has be added as constraints of the
-test model. 
-For example the \verb+REQ-3.5.10+ describes the steps needed for the
-establishment of the radio communication order by the RBC. This
-requirement explicits a particular path of the test model, thus this
-path should exists in our test model and to ensure that this test will
-be generated a LTL formula has been added.
-See \cite{braunstein_MorC_2013} for more details.
+Our test model contains the behavioral representation of the MoRC, the
+set of requirements of the chap 3.5, and the link between the behavior
+and the requirement.  Most of the requirements may be represented as
+single transition or state in the test model state
+machine. Nevertheless, some of the requirements may be only modeled as
+a path of the state machine, we choose to represent those as LTL
+formula, added as constraints of the test model. For example the
+\verb+REQ-3.5.10+ describes the steps needed for the establishment of
+the radio communication order by the RBC. This requirement explicits a
+particular path of the test model, thus this path should exists in our
+test model. To ensure that this particular test will be generated a LTL
+formula has been added (See \cite{braunstein_MorC_2013} for more
+details).
 
-A common inputs/outputs interface of the function under test should be
-produced. The inputs drive the tests and the outputs are the
-observational points to state if a test pass or fail. Hence, the two
-models should respect the same interface.
+We need then to link the system under test and the test model.  A
+common inputs/outputs interface of the system under test has been
+made. The inputs drive the tests and the outputs are the observational
+points to state if a test pass or fail. Hence, the two models should
+respect the same interface.
 
+After the modeling phase, starts the test generation phase.
 Two strategies have been used for the tests generation. First, we
 generate a set of test following the common behavioral coverage
 strategies ensuring the following coverage :
 \begin{itemize}
 \item  Basic control state coverage (BCS)
 \item  Transition coverage (TC)
-\item  Modified condtion/decision coverage (MC/DC)
+\item  Modified condition/decision coverage (MC/DC)
 \item  Hierarchic transition coverage (HITR)
 \item  Basic Control states Pair coverage(BCPAIRS)
 \end{itemize}

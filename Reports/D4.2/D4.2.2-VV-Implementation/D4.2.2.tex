@@ -12,7 +12,10 @@
 \usepackage{datetime}
 \usepackage{listings}
 \usepackage{placeins}
+\usepackage{booktabs}
 
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
 \usepackage{float}
 \floatstyle{plain}
 \newfloat{listing}{thp}{lop1}[section]
@@ -104,6 +107,15 @@
 \section{Systerel}
 
 \section{Conlusions}
+
+
+% the "phantomsection" is a hack to fix the wrong reference to bibliography
+% see also http://sumanta679.wordpress.com/2009/05/15/latex-list-of-table-list-of-figures-and-bibliography-in-toc/
+\newpage
+\phantomsection \label{bib}
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{unsrt}
+\bibliography{bibliography}
 
 \nocite{*}
 %===================================================

@@ -1,3 +1,15 @@
+/************************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Train information : location and speed
+
+************************************************/
+
 IMPLEMENTATION
 	os_train_info_i
 
@@ -5,52 +17,47 @@ REFINES
 	os_train_info_r
 
 SEES
-	opel_bs,
-	os_typ,
-	os_in,
+	elop_bs        ,
+	os_typ         ,
+	os_cte_conf_bs ,
+	os_in          ,
 	os_consist
 
 IMPORTS
 	os_train_info_1
 
 PROMOTES
-	read_train_position_prev,
-	read_posoff_max_safe_front,
-	read_posoff_max_safe_front_prev,
-	read_posoff_min_safe_front,
-	read_posoff_min_safe_front_prev,
-	read_train_speed,
-	write_train_position_prev,
-	write_posoff_max_safe_front,
-	write_posoff_max_safe_front_prev,
-	write_posoff_min_safe_front,
-	write_posoff_min_safe_front_prev,
+	read_posoff_max_safe_front  ,
+	read_posoff_min_safe_front  ,
+	read_train_speed            ,
+	write_posoff_max_safe_front ,
+	write_posoff_min_safe_front ,
 	write_train_speed
 
 OPERATIONS
 
 	elaborate_train_location =
 	VAR
-		l_distance_odo,
-		l_train_position,
-		l_train_position_prev,
-		l_dist_antenna_max_safe_front,
-		l_dist_antenna_min_safe_front,
-		l_posoff_max_safe_front_prev,
-		l_posoff_min_safe_front_prev,
-		l_position_max_maj,
+		l_distance_odo                ,
+		l_train_position              ,
+		l_train_position_prev         ,
+		l_dist_antenna_max_safe_front ,
+		l_dist_antenna_min_safe_front ,
+		l_posoff_max_safe_front       ,
+		l_posoff_min_safe_front       ,
+		l_position_max_maj            ,
 		l_position_min_maj
 	IN
-		l_distance_odo <-- read_distance_odo ;
-		l_train_position <-- read_train_position ;
-		l_train_position_prev <-- read_train_position_prev ;
+		l_distance_odo                <-- read_distance_odo                ;
+		l_train_position              <-- read_train_position              ;
+		l_train_position_prev         <-- read_train_position_prev         ;
 		l_dist_antenna_max_safe_front <-- read_dist_antenna_max_safe_front ;
 		l_dist_antenna_min_safe_front <-- read_dist_antenna_min_safe_front ;
-		l_posoff_max_safe_front_prev <-- read_posoff_max_safe_front_prev ;
-		l_posoff_min_safe_front_prev <-- read_posoff_min_safe_front_prev ;
+		l_posoff_max_safe_front       <-- read_posoff_max_safe_front       ;
+		l_posoff_min_safe_front       <-- read_posoff_min_safe_front       ;
 
-		l_position_max_maj <-- add_int_int(l_distance_odo, l_posoff_max_safe_front_prev) ;
-		l_position_min_maj <-- add_int_int(l_distance_odo, l_posoff_min_safe_front_prev) ;
+		l_position_max_maj <-- add_int_int(l_distance_odo, l_posoff_max_safe_front) ;
+		l_position_min_maj <-- add_int_int(l_distance_odo, l_posoff_min_safe_front) ;
 
 		IF l_train_position /= l_train_position_prev THEN
 			write_posoff_max_safe_front(l_dist_antenna_max_safe_front) ;
@@ -64,31 +71,17 @@ OPERATIONS
 
 	elaborate_train_speed =
 	VAR
-		l_distance_odo,
-		l_dist_ms,
+		l_distance_odo ,
+		l_dist_ms      ,
 		l_train_speed
 	IN
-		l_distance_odo <-- read_distance_odo ;
-		l_dist_ms <-- mul_int_int(l_distance_odo, k_s_to_ms) ;
+		l_distance_odo <-- read_distance_odo                      ;
+		l_dist_ms      <-- mul_int_int(l_distance_odo, k_s_to_ms) ;
 
 		l_train_speed := l_dist_ms / k_period_appli ;
+
 		write_train_speed(l_train_speed)
 	END
-	;
 	
-	copy_train_info_prec =
-	VAR
-		l_train_position,
-		l_posoff_max_safe_front,
-		l_posoff_min_safe_front
-	IN
-		l_train_position <-- read_train_position ;
-		l_posoff_max_safe_front <-- read_posoff_max_safe_front ;
-		l_posoff_min_safe_front <-- read_posoff_min_safe_front ;
-
-		write_train_position_prev(l_train_position) ;
-		write_posoff_max_safe_front_prev(l_posoff_max_safe_front) ;
-		write_posoff_min_safe_front_prev(l_posoff_min_safe_front)
-	END
-		
 END
+

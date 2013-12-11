@@ -1,4 +1,4 @@
-/*?**********************************************
+/************************************************
 
 Procedure On-Sight : classical B example
 
@@ -8,7 +8,7 @@ Author : Benoît Lucet (benoit.lucet@systerel.fr)
 
 Main sequencer
 
-**********************************************?*/
+************************************************/
 
 IMPLEMENTATION
 	os_main_1_i
@@ -20,17 +20,23 @@ SEES
 	os_typ
 
 IMPORTS
-	os_in,
-	os_consist,
-	os_train_info,
-	os_mode_level,
+	os_in         ,
+	os_consist    ,
+	os_train_info ,
+	os_mode_level ,
 	os_out
 
 LOCAL_OPERATIONS
 
+	/* Operation copy_level_etcs_prec
+		Saves the established ETCS level for the next cycle.
+		As the ETCS level is elaborated further down the cycle (os_mode_level module)
+		than its first use (os_consist), this copy operation is placed in the
+		sequencer. */
 	copy_level_etcs_prec =
 	BEGIN
-		level_etcs_prec :( level_etcs_prec : t_level )
+		level_etcs_prec :(
+			level_etcs_prec : t_level)
 	END
 	
 OPERATIONS
@@ -47,8 +53,12 @@ OPERATIONS
 	END
 	;
 
-	/* sequencer operations */
+	/* global operations */
 
+	/* operation process_input
+		Input is not really processed as it is simply copied from the basic machine.
+		Thus, this operation is implemented by skip and the other modules access
+		the input variables by using the read operations defined in os_in. */
 	process_input =
 	BEGIN
 		skip
@@ -70,22 +80,27 @@ OPERATIONS
 
 	elaborate_mode_level =
 	BEGIN
-		elaborate_level ;
-		elaborate_mode ;
-		gerer_tempo
+		elaborate_level               ;
+		elaborate_os_mode_in_progress ;
+		elaborate_mode                ;
+		manage_delay                  ;
+		send_ack_request_driver
 	END
 	;
 
 	process_output =
 	BEGIN
-		skip
+		build_output
 	END
 	;
 
+	/* operation copy_prec
+		Saves values of the current cycle for use in the next cycle.
+		The variables referring to previous cycle values are suffixed with _prev. */
 	copy_prec =
 	BEGIN
 		copy_level_etcs_prec ;
-		copy_train_info_prec ;
+		copy_consist_prec    ;
 		copy_mode_level_prec
 	END
 

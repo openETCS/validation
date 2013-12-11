@@ -1,3 +1,15 @@
+/*?**********************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Output data processing
+
+**********************************************?*/
+
 MACHINE
 	os_out
 
@@ -28,7 +40,17 @@ INITIALISATION
 	d_variables :( d_invariant )
 
 OPERATIONS
-	
+
+	build_output =
+	BEGIN
+		ack_request_os_mode_out   ,
+		service_brake_command_out
+		:(
+			ack_request_os_mode_out   : BOOL &
+			service_brake_command_out : BOOL)
+	END
+	;
+
 	/* write operations */
 
 	write_ack_request_os_mode_out(p_bool) =
@@ -45,7 +67,6 @@ OPERATIONS
 	THEN
 		service_brake_command_out := p_bool
 	END
-
 
 END
 

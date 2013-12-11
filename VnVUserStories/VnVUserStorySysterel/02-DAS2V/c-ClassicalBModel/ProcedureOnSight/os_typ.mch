@@ -1,4 +1,4 @@
-/*?**********************************************
+/************************************************
 
 Procedure On-Sight : classical B example
 
@@ -8,7 +8,7 @@ Author : Benoît Lucet (benoit.lucet@systerel.fr)
 
 Types and scalar constants
 
-**********************************************?*/
+************************************************/
 
 MACHINE
 	os_typ
@@ -20,10 +20,10 @@ SETS
 	} ;
 
 	t_level = {
-		c_level_0     ,
-		c_level_1     ,
-		c_level_2     ,
-		c_level_3     ,
+		c_level_0   ,
+		c_level_1   ,
+		c_level_2   ,
+		c_level_3   ,
 		c_level_ntc
 	} ;
 
@@ -47,31 +47,64 @@ SETS
 		c_mode_RV
 	}
 	
-CONCRETE_CONSTANTS
-	k_train_position_def   ,
-	k_posoff_max_safe_front_def,
-	k_posoff_min_safe_front_def,
-	k_start_os_area_def    ,
-	k_mamode_def           ,
-	k_os_area_speed_def    ,
-	k_dist_ack_os_area_def ,
+ABSTRACT_CONSTANTS
+	t_abs   ,
+	t_dist  ,
+	t_speed
 
-	k_s_to_ms          ,
-	k_period_appli     ,
-	k_delay_driver_ack
+CONCRETE_CONSTANTS
+	t_abs_i   ,
+	t_dist_i  ,
+	t_speed_i ,
+
+	c_abs_indet   ,
+	c_dist_indet  ,
+	c_speed_indet
 
 PROPERTIES
-	k_train_position_def   : NAT &
-	k_posoff_max_safe_front_def : NAT &
-	k_posoff_min_safe_front_def : NAT &
-	k_start_os_area_def    : NAT &
-	k_mamode_def           : t_mamode &
-	k_os_area_speed_def    : NAT &
-	k_dist_ack_os_area_def : NAT &
 
-	k_s_to_ms          : NAT &
-	k_period_appli     : NAT1 &
-	k_delay_driver_ack : NAT
+	/* type t_abs */
+	t_abs        = NAT     &
+	t_abs_i      = INT     &
+	c_abs_indet  : t_abs_i &
+	c_abs_indet /: t_abs   &
+
+	/* type t_dist */
+	t_dist        = NAT      &
+	t_dist_i      = INT      &
+	c_dist_indet  : t_dist_i &
+	c_dist_indet /: t_dist   &
+
+	/* type t_speed */
+	t_speed        = NAT       &
+	t_speed_i      = INT       &
+	c_speed_indet  : t_speed_i &
+	c_speed_indet /: t_speed
+
+OPERATIONS
+
+	p_res <-- read_t_abs(p_abs) =
+	PRE
+		p_abs : t_abs_i
+	THEN
+		p_res := bool(p_abs : t_abs)
+	END
+	;
+
+	p_res <-- read_t_dist(p_dist) =
+	PRE
+		p_dist : t_dist_i
+	THEN
+		p_res := bool(p_dist : t_dist)
+	END
+	;
+
+	p_res <-- read_t_speed(p_speed) =
+	PRE
+		p_speed : t_speed_i
+	THEN
+		p_res := bool(p_speed : t_speed)
+	END
 
 END
 

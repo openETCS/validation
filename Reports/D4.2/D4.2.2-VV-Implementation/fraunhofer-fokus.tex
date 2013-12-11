@@ -603,29 +603,27 @@ of \poke are fulfilled when first calling \peek and then \poke.
 \label{issues}
 
 
-Previously, we have seen that \wpframac cannot yet deal very well with bit operations
-due to the fact that \wpframac's memory models do not provide 
+We have seen in this section that \wpframac currently does not deal very well with bit operations.
+This is due to the fact that \wpframac's memory models do not provide 
 much information about bit operations.
-Therefore, the provers have less options to manipulate the proof goal.
-This problem is known and \cealist is working on a solution for the next release.
+As a consequence, the provers have few options to manipulate the proof goal.
+This problem is known and \cealist is working on a solution for the next release of \wpframac.
 
-As a work around one could introduce axioms which provide
-additional informations about bit operations. 
-The problem by using axioms is that one can introduce wrong facts
-yielding contradictions which make the whole proof system unsound. 
-Thus, it is an approach one should be really careful with.
+As a workaround one could introduce axioms which provide
+additional facts about bit operations. 
+The problem with using axioms is that one can easily introduce wrong facts
+which lead to contradictions  that make the whole proof system unsound. 
+Thus, this approach requires a careful review of the added axioms.
 
 Moreover, the chosen automatic theorem provers are generally not very
 good when it comes to mixing arithmetic and bit operations.
-However, there is an automatic theorem prover namely \z
-which is stronger with this. 
-At the moment \framac does not provide an interface for \z
-but this will probably change with future releases. Thus, we can expect
-a better automatic verification rate here.
+There is, however, an automatic theorem prover, namely \z,
+which can handle arithmetic and bit operations.
+\framac does currently not provide an interface for \z but this may change in a future release.
+We therefore expect a better automatic verification rate for the verification of BitWalker.
 
-In addition, we can use the interactive theorem prover \coq to verify 
-unproven verification conditions.
-Herewith, we can search a proof for a verification condition
-on our own by using \coq's various support mechanisms.
-Nevertheless, \coq has only the informations provided by the memory
-model and the user like the other provers.
+Another approach to deal with unproven verification conditions consists in
+applying an \emph{interactive theorem prover} such as \coq.
+Using \coq's rich support for proof manipulation would certainly be very helpful
+for the discharge of more proof obligations.
+

@@ -13,11 +13,14 @@ FORCE:
 clean:
 	$(RM) *.aux
 	$(RM) *.bak
-	$(RM) *.lof
+	$(RM) *.bbl
+	$(RM) *.blg
 	$(RM) *.fdb_latexmk
-	$(RM) *.log
 	$(RM) *.fls
+	$(RM) *.lof
+	$(RM) *.log
 	$(RM) *.lot
+	$(RM) *.out
 	$(RM) *.toc
 
 

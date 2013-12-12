@@ -1,0 +1,120 @@
+<html><head><title>Bitwalker.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: C:\Users\idelatorre.BIO-SQS\Desktop\Bitwalker\Bitwalker.c</h3>
+<SCRIPT>
+defaultStatus = "File: C:\\Users\\idelatorre.BIO-SQS\\Desktop\\Bitwalker\\Bitwalker.c";
+top.document.title  = "Bitwalker.c";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="preproc">#include </span><span class="string">&quot;Bitwalker.h&quot;</span>
+<a name="2"><font size=-1>2     </font></a><span class="string"></span><span class="comment">/*</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">Formalization of Subset-026-7 (Chapter 7: ERTMS/ETCS language)</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment"></span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">- Name: Subset-026-7 / Bitwalker.c</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">- Description: UNISIG SUBSET-026-7, ISSUE : 3.3.0, 3.5 ERTMS/ETCS language) </span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">- Copyright Siemens AG, 2013</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">- Licensed under the EUPL V.1.1 ( http://joinup.ec.europa.eu/software/page/eupl/licence-eupl )</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">- Gist URL: none</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">- Cryptography: No</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">- Author(s): SiemensRailAutomation</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment"></span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">Disclaimer:</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment"></span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">The use of this software is limited to NON-vital applications. </span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">It has NOT been developed for vital operation purposes and MUST NOT be used for applications </span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">which may cause harm to people, physical accidents or financial loss. </span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"></span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">THEREFORE, NO LIABILITY WILL BE GIVEN FOR SUCH AND ANY OTHER KIND OF USE. </span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">*/</span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"></span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">// switch between easily debugable code and compact code with reduced number of local variables and intensified bit manipulation</span>
+<a name="23"><font size=-1>23     </font></a><span class="comment"></span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"></span><span class="keyword">static const <a href="dictionary_U.html#4">uint8_t</a> <a href="dictionary_B.html#3">BitwalkerBitMaskTable</a></span><span class="default">[] = {</span><span class="number">0x80</span><span class="default">, </span><span class="number">0x40</span><span class="default">, </span><span class="number">0x20</span><span class="default">, </span><span class="number">0x10</span><span class="default">, </span><span class="number">0x08</span><span class="default">, </span><span class="number">0x04</span><span class="default">, </span><span class="number">0x02</span><span class="default">, </span><span class="number">0x01</span><span class="default">};</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span>
+<a name="26"><font size=-1>26     </font></a><span class="default"><a href="dictionary_U.html#6">uint64_t</a> <a href="dictionary_B.html#5">Bitwalker_Peek</a> (</span><span class="keyword">unsigned int <a href="dictionary_S.html#7">Startposition</a></span><span class="default">, </span><span class="keyword">unsigned int <a href="dictionary_L.html#8">Length</a></span><span class="default">, <a href="dictionary_U.html#4">uint8_t</a> <a href="dictionary_B.html#9">Bitstream</a>[], </span><span class="keyword">unsigned int <a href="dictionary_B.html#10">BitstreamSizeInBytes</a></span><span class="default">)</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">{</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">	</span><span class="comment">// plausibility check: is last byte in range</span>
+<a name="29"><font size=-1>29     </font></a><span class="comment">	</span><span class="keyword">if </span><span class="default">(((<a href="dictionary_S.html#7">Startposition</a> + <a href="dictionary_L.html#8">Length</a> - </span><span class="number">1</span><span class="default">) &gt;&gt; </span><span class="number">3</span><span class="default">) &gt;= <a href="dictionary_B.html#10">BitstreamSizeInBytes</a>)</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">		</span><span class="keyword">return </span><span class="number">0</span><span class="default">;	</span><span class="comment">// error: index out of range</span>
+<a name="31"><font size=-1>31     </font></a><span class="comment"></span>
+<a name="32"><font size=-1>32     </font></a><span class="comment">	// Everything ok, we can iterate bitwise</span>
+<a name="33"><font size=-1>33     </font></a><span class="comment">	<a href="dictionary_U.html#6">uint64_t</a> <a href="dictionary_R.html#11">retval</a> </span><span class="default">= </span><span class="number">0</span><span class="default">;</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span>
+<a name="35"><font size=-1>35     </font></a><span class="default">	</span><span class="keyword">unsigned int <a href="dictionary_I.html#12">i</a></span><span class="default">;</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">	</span><span class="keyword">for </span><span class="default">(<a href="dictionary_I.html#12">i</a> = <a href="dictionary_S.html#7">Startposition</a>; <a href="dictionary_I.html#12">i</a> &lt; <a href="dictionary_S.html#7">Startposition</a> + <a href="dictionary_L.html#8">Length</a>; <a href="dictionary_I.html#12">i</a>++)</span>
+<a name="37"><font size=-1>37     </font></a><span class="default">	{</span>
+<a name="38"><font size=-1>38     </font></a><span class="default">		<a href="dictionary_U.html#4">uint8_t</a> <a href="dictionary_C.html#13">CurrentValue</a> = <a href="dictionary_B.html#9">Bitstream</a>[<a href="dictionary_I.html#12">i</a> &gt;&gt; </span><span class="number">3</span><span class="default">] &amp; <a href="dictionary_B.html#3">BitwalkerBitMaskTable</a>[<a href="dictionary_I.html#12">i</a> &amp; </span><span class="number">0x07</span><span class="default">];</span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span>
+<a name="40"><font size=-1>40     </font></a><span class="default">		<a href="dictionary_R.html#11">retval</a> = (<a href="dictionary_R.html#11">retval</a> &lt;&lt; </span><span class="number">1</span><span class="default">) + (<a href="dictionary_U.html#4">uint8_t</a>)(<a href="dictionary_C.html#13">CurrentValue</a> != </span><span class="number">0</span><span class="default">);	</span><span class="comment">// tricky conversion bool to int (Zero or One):</span>
+<a name="41"><font size=-1>41     </font></a><span class="comment">																// false == 0, true == 1 ==&gt; if bit is set, than 1, else 0</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment">	</span><span class="default">}</span>
+<a name="43"><font size=-1>43     </font></a><span class="default"></span>
+<a name="44"><font size=-1>44     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_R.html#11">retval</a></span><span class="default">;</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">}</span>
+<a name="46"><font size=-1>46     </font></a><span class="default"></span>
+<a name="47"><font size=-1>47     </font></a><span class="default"></span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_B.html#14">Bitwalker_Poke</a> </span><span class="default">(</span><span class="keyword">unsigned int <a href="dictionary_S.html#15">Startposition</a></span><span class="default">, </span><span class="keyword">unsigned int <a href="dictionary_L.html#16">Length</a></span><span class="default">, <a href="dictionary_U.html#4">uint8_t</a> <a href="dictionary_B.html#17">Bitstream</a>[], </span><span class="keyword">unsigned int <a href="dictionary_B.html#18">BitstreamSizeInBytes</a></span><span class="default">, <a href="dictionary_U.html#6">uint64_t</a> <a href="dictionary_V.html#19">Value</a>)</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">{</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">	</span><span class="comment">// plausibility check: is last byte in range</span>
+<a name="51"><font size=-1>51     </font></a><span class="comment">	</span><span class="keyword">if </span><span class="default">(((<a href="dictionary_S.html#15">Startposition</a> + <a href="dictionary_L.html#16">Length</a> - </span><span class="number">1</span><span class="default">) &gt;&gt; </span><span class="number">3</span><span class="default">) &gt;= <a href="dictionary_B.html#18">BitstreamSizeInBytes</a>)</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">		</span><span class="keyword">return </span><span class="default">-</span><span class="number">1</span><span class="default">;	</span><span class="comment">// error: index out of range</span>
+<a name="53"><font size=-1>53     </font></a><span class="comment"></span>
+<a name="54"><font size=-1>54     </font></a><span class="comment">	// plausibility check: is value in range</span>
+<a name="55"><font size=-1>55     </font></a><span class="comment">	<a href="dictionary_U.html#6">uint64_t</a> <a href="dictionary_M.html#20">MaxValue</a> </span><span class="default">= (((<a href="dictionary_U.html#6">uint64_t</a>)</span><span class="number">0x01</span><span class="default">) &lt;&lt; <a href="dictionary_L.html#16">Length</a>) - </span><span class="number">1</span><span class="default">;</span>
+<a name="56"><font size=-1>56     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">(<a href="dictionary_M.html#20">MaxValue</a> &lt; <a href="dictionary_V.html#19">Value</a>)</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">		</span><span class="keyword">return </span><span class="default">-</span><span class="number">2</span><span class="default">;		</span><span class="comment">// error: value to big for bit field</span>
+<a name="58"><font size=-1>58     </font></a><span class="comment"></span>
+<a name="59"><font size=-1>59     </font></a><span class="comment">	// Everything ok, we can iterate bitwise from left to right</span>
+<a name="60"><font size=-1>60     </font></a><span class="comment">	</span><span class="keyword">int <a href="dictionary_I.html#21">i</a></span><span class="default">;</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">	</span><span class="keyword">for </span><span class="default">(<a href="dictionary_I.html#21">i</a> = <a href="dictionary_S.html#15">Startposition</a> + <a href="dictionary_L.html#16">Length</a> - </span><span class="number">1</span><span class="default">; <a href="dictionary_I.html#21">i</a> &gt;= (</span><span class="keyword">int</span><span class="default">)<a href="dictionary_S.html#15">Startposition</a>; <a href="dictionary_I.html#21">i</a>--)</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">	{</span>
+<a name="63"><font size=-1>63     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">((<a href="dictionary_V.html#19">Value</a> &amp; </span><span class="number">0x01</span><span class="default">) == </span><span class="number">0</span><span class="default">)</span>
+<a name="64"><font size=-1>64     </font></a><span class="default">			 <a href="dictionary_B.html#17">Bitstream</a>[<a href="dictionary_I.html#21">i</a> &gt;&gt; </span><span class="number">3</span><span class="default">] &amp;= ~<a href="dictionary_B.html#3">BitwalkerBitMaskTable</a>[<a href="dictionary_I.html#21">i</a> &amp; </span><span class="number">0x07</span><span class="default">];</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">		</span><span class="keyword">else <a href="dictionary_B.html#17">Bitstream</a></span><span class="default">[<a href="dictionary_I.html#21">i</a> &gt;&gt; </span><span class="number">3</span><span class="default">] |=  <a href="dictionary_B.html#3">BitwalkerBitMaskTable</a>[<a href="dictionary_I.html#21">i</a> &amp; </span><span class="number">0x07</span><span class="default">];</span>
+<a name="66"><font size=-1>66     </font></a><span class="default"></span>
+<a name="67"><font size=-1>67     </font></a><span class="default">		<a href="dictionary_V.html#19">Value</a> &gt;&gt;= </span><span class="number">1</span><span class="default">;	</span><span class="comment">//prepare next iteration with value without written bit</span>
+<a name="68"><font size=-1>68     </font></a><span class="comment">	</span><span class="default">}</span>
+<a name="69"><font size=-1>69     </font></a><span class="default"></span>
+<a name="70"><font size=-1>70     </font></a><span class="default">	</span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">}</span>
+<a name="72"><font size=-1>72     </font></a><span class="default"></span>
+<a name="73"><font size=-1>73     </font></a><span class="default"></span>
+<a name="74"><font size=-1>74     </font></a><span class="default"></span><span class="keyword">void <a href="dictionary_B.html#22">Bitwalker_IncrementalWalker_Init</a> </span><span class="default">(<a href="dictionary_T.html#24">T_Bitwalker_Incremental_Locals</a> *<a href="dictionary_L.html#23">Locals</a>, <a href="dictionary_U.html#4">uint8_t</a> <a href="dictionary_B.html#25">Bitstream</a>[], </span><span class="keyword">unsigned int <a href="dictionary_S.html#26">Size</a></span><span class="default">, </span><span class="keyword">unsigned int <a href="dictionary_F.html#27">FirstBitposition</a></span><span class="default">)</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">{</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">	<a href="dictionary_L.html#23">Locals</a>-&gt;<a href="dictionary_B.html#29">Bitstream</a>			= <a href="dictionary_B.html#25">Bitstream</a>;</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">	<a href="dictionary_L.html#23">Locals</a>-&gt;<a href="dictionary_L.html#30">Length</a>				= <a href="dictionary_S.html#26">Size</a>;</span>
+<a name="78"><font size=-1>78     </font></a><span class="default">	<a href="dictionary_L.html#23">Locals</a>-&gt;<a href="dictionary_C.html#31">CurrentBitposition</a>	= <a href="dictionary_F.html#27">FirstBitposition</a>;</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">}</span>
+<a name="80"><font size=-1>80     </font></a><span class="default"></span>
+<a name="81"><font size=-1>81     </font></a><span class="default"></span>
+<a name="82"><font size=-1>82     </font></a><span class="default"><a href="dictionary_U.html#6">uint64_t</a> <a href="dictionary_B.html#32">Bitwalker_IncrementalWalker_Peek_Next</a> (<a href="dictionary_T.html#24">T_Bitwalker_Incremental_Locals</a> *<a href="dictionary_L.html#33">Locals</a>, </span><span class="keyword">unsigned int <a href="dictionary_L.html#34">Length</a></span><span class="default">)</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">{</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">	</span><span class="comment">// plausibility check is done when reading the bits</span>
+<a name="85"><font size=-1>85     </font></a><span class="comment">	<a href="dictionary_U.html#6">uint64_t</a> <a href="dictionary_R.html#35">retval</a> </span><span class="default">= <a href="dictionary_B.html#5">Bitwalker_Peek</a>(<a href="dictionary_L.html#33">Locals</a>-&gt;<a href="dictionary_C.html#31">CurrentBitposition</a>, <a href="dictionary_L.html#34">Length</a>, <a href="dictionary_L.html#33">Locals</a>-&gt;<a href="dictionary_B.html#29">Bitstream</a>, <a href="dictionary_L.html#33">Locals</a>-&gt;<a href="dictionary_L.html#30">Length</a>);</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">	<a href="dictionary_L.html#33">Locals</a>-&gt;<a href="dictionary_C.html#31">CurrentBitposition</a> += <a href="dictionary_L.html#34">Length</a>;</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_R.html#35">retval</a></span><span class="default">;</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">}</span>
+<a name="89"><font size=-1>89     </font></a><span class="default"></span>
+<a name="90"><font size=-1>90     </font></a><span class="default"></span>
+<a name="91"><font size=-1>91     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_B.html#36">Bitwalker_IncrementalWalker_Peek_Finish</a> </span><span class="default">(<a href="dictionary_T.html#24">T_Bitwalker_Incremental_Locals</a> *<a href="dictionary_L.html#37">Locals</a>)</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">{</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_L.html#37">Locals</a></span><span class="default">-&gt;<a href="dictionary_C.html#31">CurrentBitposition</a>;</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">}</span>
+<a name="95"><font size=-1>95     </font></a><span class="default"></span>
+<a name="96"><font size=-1>96     </font></a><span class="default"></span>
+<a name="97"><font size=-1>97     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_B.html#38">Bitwalker_IncrementalWalker_Poke_Next</a></span><span class="default">(<a href="dictionary_T.html#24">T_Bitwalker_Incremental_Locals</a> *<a href="dictionary_L.html#39">Locals</a>, </span><span class="keyword">unsigned int <a href="dictionary_L.html#40">Length</a></span><span class="default">, <a href="dictionary_U.html#6">uint64_t</a> <a href="dictionary_V.html#41">Value</a>)</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">{</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">	</span><span class="comment">// plausibility check is done when reading the bits</span>
+<a name="100"><font size=-1>100     </font></a><span class="comment">	</span><span class="keyword">int <a href="dictionary_R.html#42">retval</a> </span><span class="default">= <a href="dictionary_B.html#14">Bitwalker_Poke</a>(<a href="dictionary_L.html#39">Locals</a>-&gt;<a href="dictionary_C.html#31">CurrentBitposition</a>, <a href="dictionary_L.html#40">Length</a>, <a href="dictionary_L.html#39">Locals</a>-&gt;<a href="dictionary_B.html#29">Bitstream</a>, <a href="dictionary_L.html#39">Locals</a>-&gt;<a href="dictionary_L.html#30">Length</a>, <a href="dictionary_V.html#41">Value</a>);</span>
+<a name="101"><font size=-1>101     </font></a><span class="default">	<a href="dictionary_L.html#39">Locals</a>-&gt;<a href="dictionary_C.html#31">CurrentBitposition</a> += <a href="dictionary_L.html#40">Length</a>;</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_R.html#42">retval</a></span><span class="default">;</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">}</span>
+<a name="104"><font size=-1>104     </font></a><span class="default"></span>
+<a name="105"><font size=-1>105     </font></a><span class="default"></span>
+<a name="106"><font size=-1>106     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_B.html#43">Bitwalker_IncrementalWalker_Poke_Finish</a></span><span class="default">(<a href="dictionary_T.html#24">T_Bitwalker_Incremental_Locals</a> *<a href="dictionary_L.html#44">Locals</a>)</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">{</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_L.html#44">Locals</a></span><span class="default">-&gt;<a href="dictionary_C.html#31">CurrentBitposition</a>;</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">}</span>
+<a name="110"><font size=-1>110     </font></a><span class="default"></span>
+</pre></body></html>

@@ -4,7 +4,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \graphicspath{{schema/}}
-\title{Performance Estimation of the Speed And Distance Monitoring}
+\title{Performance Estimation of the Speed and Distance Monitoring}
 
 \author{Alexander Nitsch \and Benjamin Beichler}
 \date{\today}
@@ -27,20 +27,20 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-  This document reports the verification activities of the University of Rostock. SystemC (Performance Analysis), executable models: SysML modelling and code generation, Scade modeling and code generation.
+  This document reports the verification activities of the University of Rostock. SystemC (performance analysis), executable models: SysML modelling and code generation, Scade modeling and code generation.
 \end{abstract}
 
 
-\subsubsection{Verification of the  Speed And Distance Monitoring}
+\subsubsection{Verification of the  Speed and Distance Monitoring}
 
-This section reports the verification activities of the Speed And Distance Monitoring with Model based Simulation and Virtual Prototyping. The first activity pursues the goal of formalizing the specification in the form of an executable model. This model provides Performance Estimation at an early stage of Hardware System Design and adduces evidence what hardware resources will be needed for the future OBU. Secondly, finding and reporting of unclarities, inconsistencies, incompleteness and errors while implementing the specification by using tools of the openETCS toolchain (Papyrus/SysML, SCADE). Furthermore, we are developing a method of SystemC code generation from abstract and domain specific SysML models. Finally we want to demonstrate the efficiency of model based simulation after transformation from SysML to SystemC models.
+This section reports the verification activities of the \emph{Speed and Distance Monitoring} with model based simulation and virtual prototyping. The first activity pursues the goal of formalizing the specification in the form of an executable model. This model provides a performance estimation at an early stage of system level design and adduces evidence what hardware resources will be needed for the future OBU. Secondly, finding and reporting of unclarities, inconsistencies, incompleteness and errors while implementing the specification by using tools of the openETCS toolchain (Papyrus/SysML, SCADE). Furthermore, we are developing a method of SystemC code generation from abstract and domain specific SysML models. Finally we want to demonstrate the efficiency of model based simulation after transformation from SysML to SystemC models.
 
 The activity is described in the Verification and Validation Plan
 section {\em 5.3.10 Verification with Model-Based Simulation} \cite{???}
-In short, we develop application models from the specification, generate test scenarios and use the inherent simulation environment of SystemC to do performance and scheduling analysis.
+To sum up, we develop application models from the specification of the \emph{Speed and Distance Monitoring}, generate test scenarios and use the inherent simulation environment of SystemC to do performance and scheduling analysis.
 
 \paragraph{Object of verification}  Speed and Distance Monitoring ERTMS function baseline 3.
-The System under Test is the implemented SystemC Code which is described  here: \url{https://github.com/openETCS/model-evaluation/tree/master/model/SystemC_TWT_URO/3.13_Speed_and_distance_monitoring}. It describes the Speed and Distance Monitoring at the Software phase.
+The system under test is the implemented SystemC code which is described here: \url{https://github.com/openETCS/model-evaluation/tree/master/model/SystemC_TWT_URO/3.13_Speed_and_distance_monitoring}. It describes the Speed and Distance Monitoring at the Software phase.
 \nl
 
 \begin{figure}[h]
@@ -54,20 +54,20 @@ The System under Test is the implemented SystemC Code which is described  here: 
 \paragraph{Available specification}
 
 The specification is described in the
-SUBSET-026\cite{unisig_subset-026_2012} chap 3.13 \cite{chap3-13}. It describes the realization of both TI and DMI commands by calculating several modules with inputs form train side, track side an odometry. The University of Rostock focuses on the calculation of EBD (emergency brake deceleration) curves.
+SUBSET-026\cite{unisig_subset-026_2012} chap 3.13 \cite{chap3-13}. It describes the realization of both TI and DMI commands by calculating several modules with inputs form train side, track side an odometry. The University of Rostock focuses on the calculation of parts, which are used for safety critical cases using emergency brakes. This especially includes the EBD (emergency brake deceleration) curves.
 
 \paragraph{Detailed verification plan}
 
 \subparagraph{Goals}
 
-On the one hand we are testing non functional aspects such as performance and scheduling analyses to give evidence which hardware system is sufficient to meet the system requirements. We want to discover which  hardware resources (number of processor cores) will be needed for the OBU to avoid excessive delays to ensure adequate response times in critical situations. Therefore the University of Rostock will do Model based Simulation using the inherent simulation environment of SystemC.
+On the one hand we are testing extra-functional aspects such as performance and scheduling analyses to give evidence which hardware system is sufficient to meet the system requirements. We want to discover which hardware resources (e.g. number of processors) will be needed for the OBU. This is important to avoid excessive delays to ensure adequate response times in critical situations. Therefore the University of Rostock will do model based simulation using the inherent simulation environment of SystemC.
 
 On the other hand we use the existing SystemC model to check against a reference model, such as EFS braking curve model. Furthermore we use different tools and means to build additional system models for comparison and verifying behavior.
 
 \subparagraph{Method/Approach}
 
-Figure \ref{fig:University of Rostock VnV Approach} depicts our methodology. Because the work has not been finished yet, from the SRS
-specification, three models will be created: one SystemC model that is directly implemented into executable code (finished), one SysML model that will be used to produce SystemC code to be executable (not finished) and one SCADE model that will be used to produce C code (not finished). For model verification the ERA will provide test cases and data. The created test models will contain behavioral representation of the Speed and Distance Monitoring such as state machines, activity diagrams and sequence diagrams. There will be a link to the specification requirements to meet the needs of traceability in terms of verification activities.
+Figure \ref{fig:University of Rostock VnV Approach} depicts our methodology. Three models will be created from the SRS
+specification: one SystemC model that is directly implemented into executable code (finished), one SysML model that will be used to produce SystemC code to be executable (not finished) and one SCADE model that will be used to produce C code (not finished). For model verification we use test cases and data provided by WP4 and use the ERA excel datasheet as reference implementation. The created test models will contain behavioral representation of the \emph{Speed and Distance Monitoring} such as state machines, activity diagrams and sequence diagrams. There will be a link to the specification requirements to meet the needs of traceability in terms of verification activities.
 
 
 \subparagraph{Means}
@@ -76,15 +76,15 @@ The Artifacts are produced as follow:
 \begin{itemize}
 \item SystemC code which is directly implemented.
 \item One Test model is the SystemC model. It's code will be generated/transformed by Acceleo from abstract SysML models designed with Enterprise Architect and/or Papyrus.
-\item C code comes from Scade using Scade System.
-\item Executable code compile with gcc.
-\item Reference model comes from ERTMS Formal Specs.
-\item Testdata and Testcases are provided by ERA using the ERA Excel data sheet.
+\item C code is produced by Scade using Scade System.
+\item Executable code is compiled with GNU-C-Compiler \texttt{gcc}.
+\item Reference model delivered by ERTMS Formal Specs.
+\item Testdata and testcases are provided by ERTMS Formal Specs using the ERA excel data sheet.
 \end{itemize}
 
 \paragraph{Results}
 
-Verification of non functional aspects is finished. The provided results consist of recommendations on how hardware resources shall be allocated to the future OBU. The modeling activities are still in progress.
+Verification of extra-functional aspects is successfully done for the first iteration of application models. The provided results consist of recommendations on how hardware resources shall be allocated to the future OBU. The modeling activities are still in progress.
 
 \subparagraph{Summary}
 
@@ -92,9 +92,9 @@ What we have done:
 \begin{enumerate}
 \item Created an executable model in SystemC.
 \item Ran simulations on single, dual and multi core virtual prototypes.
-\item Architecture SysML model of the Speed and Distance Monitoring.
-\item Architecture Scade model of the Speed and Distance Monitoring.
-\item Defined a reduced set of parameters for calculating Braking Curves especially EBD curves.
+\item Architecture SysML model of the \emph{Speed and Distance Monitoring}.
+\item Architecture Scade model of the \emph{Speed and Distance Monitoring}.
+\item Defined a reduced set of parameters for calculating braking Curves especially EBD curves.
 \end{enumerate}
  
  The next step:
@@ -109,7 +109,7 @@ From the first results, we see that SysML is a very powerful graphical modeling 
 
 
 \paragraph{Future Activities}
-Simulink as modeling tool is in our interest because because there is a bridge to Scade. Simulink provides code generation for hardware description languages such as VHDL. That enables new hardware test scenarios.
+Simulink as modeling tool is in our interest because there is a bridge to Scade. Simulink provides code generation for hardware description languages such as VHDL. That enables new hardware test scenarios.
 
 \bibliographystyle{plain}
 \bibliography{biblio}

@@ -4,7 +4,7 @@ export ASPELL=aspell check --lang=en --encoding=utf-8
 
 
 all: FORCE
-	latexmk -pdf ValidationDescriptionOfWork
+	latexmk -pdf D4.2.1
 
 
 FORCE:

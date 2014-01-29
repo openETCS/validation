@@ -118,28 +118,59 @@ Version &  Date & Author(s) & Justification  \\
 \mainmatter
 
 \chapter{Introduction}
+\label{sec:introduction}
 
-
-
-As the movement characteristics of a train set specific limits in which a driver alone is able to avoid derailment or any kind of collisions railway signaling and protection systems have been developed to ensure safe train movements. Respectively, the mayor parts of a train control system like ETCS include safety relevant functionality. 
+During system development the system limits and components have to be established before the necessary steps can be taken to ensure that the system behavior is not unsafe. In this context safety is understood as protecting the environment from hazards coming from the system as distinguished from security which covers protecting the system itself from hazards coming from the outside. Respectively, safety and security are comparative terms which have to be specified in context of the system for which they shall be proven. The standards for system development like EN 50126, EN 50128 and EN 50129 provide only guidelines how safety for a system shall be determined and assured by providing certain management principles and methods for the respective system development. As the openETCS project is related to a number of different system definitions like the overall railway system, the on-board unit, the Kernel software and the development tool chain different safety aspects have to be taken in consideration. Only a small number of these can actually be determined in the openETCS context alone.
 
 \section{Purpose}
 \label{sec:purpose}
 
+The safety plan is part of the overall safety process which is "the series of procedures that are followed to enable all safety requirements of a product to be identified and met" \cite{EN50129}. To ensure that the safety process is implemented in a proper way the EN 50129 requires a safety management which is consistent process for RAMS presented in the EN 50126. 
 
+The purpose of the safety plan is to show in details how the safety requirements will be implemented over the development process. To do this the plan has to present the management structure, all related activities and documentations over the life-cycle, as well as the approval mile-stones and review requirements. As the product life-cycle is an ongoing process and, specifically in a project like openETCS, iterative changes are taking place, the safety plan has to be updated to assess the respective safety effects. Thereby, the safety plan will also include the plan for the safety case, which itself is the final assessment document to demonstrate the actual product compliance with all specified safety requirements which have been implemented according to the safety plan.
+
+As the movement characteristics of a train set specific limits in which a driver alone is able to avoid derailment or any kind of collisions railway signaling and protection systems have been developed to ensure safe train movements. Respectively, the mayor parts of a train control system like ETCS include functionalities which shall guarantee that the overall railway system does not get in a hazardous situation.
+
+Since the openETCS project does not produce a specific train borne on-board unit the openETCS safety plan, will not cover all specific software and hardware aspects. The focus is mainly on the EVC kernel functionality and only partially on further real time and hardware/software integration aspects. However, this safety plan shall at least cover the safety process needed to ensure that the openETCS software development can be extended to become the functional basis for a complete on-board unit development. 
 
 \section{Document Structure}
 \label{sec:document-structure}
 
-This document presents the safety plan, which is closely connected to the V\&V plan, as it presents basic safety activities as well as their specific V\&V activities.
+As the openETCS software development process and the respective tool chain a used in an iterative process this version of the safety plan is also only one iteration step. As the design selectivities and the use of tools proceed further more details concerning the hazard identification methods, safety verification and validation principals and their corresponding result documentation will be added to this document. So far the version 1.0 of the safety plan will only cover the overall safety process and it general activities as well as the safety management activities which will create the safety plan as the final documentation document. Details are only presented for the hazard identification and evaluation method, as well as for the argumentation structure management method. All detailed activities concerning verification and validation of different safety requirements are closely connected to the V\&V plan and all activities described there. 
 
-Added by Jan Welte
+As safety is a term which is used in different context and therefore interpreted differently depending on the used reference system, the following section \ref{sec:Background} presents the principal concept and terminology on which the following safety process is founded \cite{Schnieder 2013}. These section shall present and clarify the underlying understanding of safety as it in standards EN 50126, EN 50128 and EN 50129 for railway system development. Thereby, it is important to state more precisely the relation between quality and safety for software as this is the core aspect for the openETCS development.
+
+\section{Background Information}
+\label{sec:Background}
+
+In the context of railway system development the EN 5012X and the ISO 900X standards are closely connected. Respectively, the terms safety and quality and related terms as reliability, maintainability, availability, usability and security are often used together. For example the EN 50129 names evidence of quality and safety management as conditions for a safety acceptance. The following sections shall give a common definition for all this aspects, which are required in a CENELEC confirm development process. 
+
+\subsection{Quality}
+
+The ISO 9000 defines quality as "degree to which a set of inherent characteristics fulfills requirements" \cite{ISO9000}, which clearly shows a more objective view as the EN 50129, which defines quality as "a user perception of the attributes of a product" \cite{EN50129}. As for system development the given requirements always present the objective against which the system has to be measured this definition is consistent with the definition of verification and validation as it is presented in the EN 50128 and the openETCS V\&V plan.
+
+Depending on the respective field of application specific standards further specify the characteristics which shall be taken in account to establish quality. The EN 50126 as primary standard for railway applications gives RAMS as the major contributor for the quality of service. 
+
+\subsection{RAMS}
 
 
 
-\section{Safety and Quality}
-\label{sec:introduction}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\linewidth]{images/bld_RAMS-Railway-50126}
+\caption{RAMS for Railway elements and their relations \cite{Schnieder.2013}}
+\label{fig:RAMS-EN50126}
+\end{figure}
 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\linewidth]{images/bld_Reliability-system-characteristics}
+\caption{Systems Characteristics and their relations to RAMS in Railways \cite{Schnieder.2013}}
+\label{fig:Reliability-RAMS}
+\end{figure}
+
+\subsection{Software Quality}
 
 
 \subsection{Safety}
@@ -158,7 +189,7 @@ The EN50128 standard defines safety as the ``freedom from unacceptable levels of
 \caption{Risk-Genesis-Model showing the relations between the safety-related terms \cite{Schnieder.2010}}
 \label{fig:Risiko-Genese-Modell-eng}
 \end{figure}
-
+it
 This demonstrates that the first step is to define the system properties, specifically identifying the harms and their related hazardous situations. This has to be performed during a system hazard analysis. Afterwards the respective properties have to be determined by assessing the risk concerning the identified hazards. Based on this work safety integrity levels can be assigned to all system functionalities which are then allocated during the design to certain parts of the operational equipment. As this work is closely related to all design decisions, it has to be done iteratively for all abstraction levels during the system design. 
 
 \begin{figure}[htbp]
@@ -211,27 +242,35 @@ Concrete plans of activities are thus still to be made, and methods
 and tools to be applied will have to be selected. Only the first phase
 of V\&V activities is described in Sec.~\ref{sec:first-level-verif}.
 
-\chapter{Safety Strategy}
-
-\textit{This section shall present a short overview about the basic safety aspects apply, the collective strategy for the overall development and who these are applied in the openETCS project.}
-
-\section{Safety Requirements}
 
 
 
-\section{Safety Principals}
+
+\chapter{General ETCS Safety Principals}
 
 \textit{This section shall present as short description of all safety principals used for the overall safety strategy.}
 
-\section{Overall Safety Strategy}
+\section{Overall Safety}
 
 \textit{This section shall present as short description for the overall safety strategy.}
 
-\section{OpenETCS Safety Strategy}
+\section{Functional Safety}
 
 \textit{This section shall present the applied openETCS safety strategy.}
 
-\chapter{Safety Process}
+
+
+
+
+\chapter{OpenETCS Safety Process}
+
+
+
+
+
+
+\section{Safety-related Activities}
+
 
 \begin{figure}[h]
 \centering
@@ -242,85 +281,7 @@ of V\&V activities is described in Sec.~\ref{sec:first-level-verif}.
 
 \textit{Process description has to be updated with the latest work. Cooperation between Cyril, Merlin and Jan}
 
-\section{Safety artifacts}
-
-\textit{Process description has to be updated with the latest work. Cooperation between Cyril, Merlin and Jan}
-
-Since all safety design activities are based on the system development activities all system design artifacts are part of the safety design process. Therefore, the following design artifacts of the CENELEC standard development process build the basis for all safety artifacts:
-
-\begin{itemize}
-\item System Concept
-\item System Requirements Specification
-\item Software Requirement Specification
-\item Software Architecture Specification
-\item Software Design Specification
-\item Software Module Design Specification
-\item Software Source Code
-\end{itemize}
-
-The main safety artifacts are those which are set-up to build the reference for the safety-related aspect during the system development, which are continuously evolved during the design phases. Correspondingly the safety design process has to create artifacts to demonstrated that all safety and quality-related requirements included in the system design. Respectively the following artifacts are created during the safety design process:
-
-\begin{itemize}
-\item System Safety Plan
-\item Software Quality Assurance Plan
-\item Hazard Log
-\item System Safety Requirement Specification
-\item Safety Case
-\end{itemize} 
-
-This artifacts have to be managed over the development process. Since all safety requirement have to be verified and validated there is likewise a close to all Test and Validation Reports.
-
-\section{Safety design activities}
-\label{safetyactivities}
-
-\textit{Process description has to be updated with the latest work. Cooperation between Cyril, Merlin and Jan}
-
-
-The safety design activities set-up or evolve the safety artifacts in relation to the different design artifacts. The following safety design activities are required according to the EN 50128:
-
-\begin{itemize}
-\item Preliminary Hazard Analysis
-\item Establish Safety Plan
-\item System Hazard and Risk Analysis
-\item Risk Assessment
-\item Specification of System Safety Requirements
-\item Define Safety Related Functional Requirements
-\item Specify Sub-System and Component Safety requirements
-\item Implement Safety Plan
-\item Verify System, Sub-System and Component Safety requirements
-\item Validate System Safety Requirements
-\item Establish Safety Case
-\end{itemize}
-
-Overall the safety design activities have to be performed in close relation to the overall verification and validation activities as these have to verify and validate all safety requirements and their results become part of the safety plan.
-
-\section{Safety design process supporting tools}
-
-Supporting software tools are needed to handle the safety artifacts and to some degree to more efficiently perform the safety design activities. As some safety artifacts like the safety requirement specifications and the safety backlogs are closely related to design artifacts the same tools can be used. Especially all requirements should be handled by one tool to ensure full traceability and provide one main interface for the verification and validation activities.
-
-Depending on the methods used for hazard and risk analysis appropriate tools are needed to perform the analysis, collect the hazards and associated risks in the hazard log and to evaluated possible risk control measures. Thereby, traceability has to be guaranteed between all activities.
-
-Since the safety plan and safety case provide the basis for the safety approval the tools used to generated these artifacts should help to generate a consistent argumentation and efficiently collect the data needed to provide evidence. Respectively, interfaces to manage documents and automatically generate reports would be helpful functionalities.
-
-\section{Safety Interfaces}
-
-\textit{Clear description of the interfaces to the process providing inputs for safety and using the Safety results. Specific describing the applied iterations.}
-
-\subsection{Specific Interfaces to the Design Process}
-
-\subsection{Interface to Quality Management}
-
-\subsection{Interface to Verification}
-
-\subsection{Interface to Validation}
-
-\section{Safety Documentation}
-
-\textit{Short description for the needed documentation}
-
-\chapter{OpenETCS Safety Process}
-
-\section{OpenETCS safety design process}
+\subsection{OpenETCS safety design process}
 
 The presented CENELEC standard safety artifacts and activities are always related to the overall system development. Since the openETCS development process just describes the development of the on-board unit software for ETCS additional system informations are needed for the openETCS safety design process. These are mainly the following two parts of the CCS TSI:
 
@@ -424,7 +385,62 @@ Therefore the overall safety management process has to be followed during the op
   \label{tab:Safety Process Requirements}%
 \end{table}%
 
-\section{Safety Activities---User Sories}
+
+
+
+\subsection{Safety artifacts}
+
+\textit{Process description has to be updated with the latest work. Cooperation between Cyril, Merlin and Jan}
+
+Since all safety design activities are based on the system development activities all system design artifacts are part of the safety design process. Therefore, the following design artifacts of the CENELEC standard development process build the basis for all safety artifacts:
+
+\begin{itemize}
+\item System Concept
+\item System Requirements Specification
+\item Software Requirement Specification
+\item Software Architecture Specification
+\item Software Design Specification
+\item Software Module Design Specification
+\item Software Source Code
+\end{itemize}
+
+The main safety artifacts are those which are set-up to build the reference for the safety-related aspect during the system development, which are continuously evolved during the design phases. Correspondingly the safety design process has to create artifacts to demonstrated that all safety and quality-related requirements included in the system design. Respectively the following artifacts are created during the safety design process:
+
+\begin{itemize}
+\item System Safety Plan
+\item Software Quality Assurance Plan
+\item Hazard Log
+\item System Safety Requirement Specification
+\item Safety Case
+\end{itemize} 
+
+This artifacts have to be managed over the development process. Since all safety requirement have to be verified and validated there is likewise a close to all Test and Validation Reports.
+
+\subsection{Safety design activities}
+\label{safetyactivities}
+
+\textit{Process description has to be updated with the latest work. Cooperation between Cyril, Merlin and Jan}
+
+
+The safety design activities set-up or evolve the safety artifacts in relation to the different design artifacts. The following safety design activities are required according to the EN 50128:
+
+\begin{itemize}
+\item Preliminary Hazard Analysis
+\item Establish Safety Plan
+\item System Hazard and Risk Analysis
+\item Risk Assessment
+\item Specification of System Safety Requirements
+\item Define Safety Related Functional Requirements
+\item Specify Sub-System and Component Safety requirements
+\item Implement Safety Plan
+\item Verify System, Sub-System and Component Safety requirements
+\item Validate System Safety Requirements
+\item Establish Safety Case
+\end{itemize}
+
+Overall the safety design activities have to be performed in close relation to the overall verification and validation activities as these have to verify and validate all safety requirements and their results become part of the safety plan.
+
+\subsection{Safety Activities---User Sories}
 \label{sec:safety-activ-user}
 
 The VnV Level 1 activities try to implement the overall safety strategy on parts of the benchmark modelling results to establish details for artifact relations, traceability between different artifacts and tool use. Therefore the following benchmark models are used as exemplary design artifacts:
@@ -437,7 +453,7 @@ The VnV Level 1 activities try to implement the overall safety strategy on parts
 \item Scade model by Siemens
 \end{itemize}
 
-\subsection{Hazardous Events}
+\subsubsection{Hazardous Events}
 
 Based on the 
 \begin{itemize}
@@ -446,26 +462,36 @@ Based on the
 \item [c.] KERNEL-19  Failure of train trip supervision in OS, LS and FS - Related to model of Subset 26 §5.9 Procedure On-Sight
 \end{itemize}
 
-\section{Safety Activities View}
-\label{sec:safety-activ-proce}
+
+\subsection{Important mile-stones}
+
+\section{Safety Management}
+
+\section{Safety design process supporting tools}
+
+Supporting software tools are needed to handle the safety artifacts and to some degree to more efficiently perform the safety design activities. As some safety artifacts like the safety requirement specifications and the safety backlogs are closely related to design artifacts the same tools can be used. Especially all requirements should be handled by one tool to ensure full traceability and provide one main interface for the verification and validation activities.
+
+Depending on the methods used for hazard and risk analysis appropriate tools are needed to perform the analysis, collect the hazards and associated risks in the hazard log and to evaluated possible risk control measures. Thereby, traceability has to be guaranteed between all activities.
+
+Since the safety plan and safety case provide the basis for the safety approval the tools used to generated these artifacts should help to generate a consistent argumentation and efficiently collect the data needed to provide evidence. Respectively, interfaces to manage documents and automatically generate reports would be helpful functionalities.
+
+\section{Safety Interfaces}
+
+\textit{Clear description of the interfaces to the process providing inputs for safety and using the Safety results. Specific describing the applied iterations.}
+
+\subsection{Specific Interfaces to the Design Process}
+
+\subsection{Interface to Quality Management}
+
+\subsection{Interface to Verification}
+
+\subsection{Interface to Validation}
+
+\section{Safety Documentation}
+
+\textit{Short description for the needed documentation}
+
  
-
-\section{OpenETCS Reporting}
-\label{sec:safety-reports}
-
-\section{Safety Activities Schedule}
-\label{sec:safety-active-time}
-
-\section{Specific Safety Management Procedures}
- 
-  \textit{This section has to present in close conection with the QA plan how the important procedures, like change management for safety findings or safety evaluation has to be managed.
-  
-  
-  Darstellung der Nachweisführung:
-  - Zusammenhang der Argumentationsstruktur
-  - Dokumenten Kette
-  }
-  
 \chapter{Conclusion}
 
 

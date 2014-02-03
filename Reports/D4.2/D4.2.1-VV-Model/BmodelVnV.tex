@@ -1,20 +1,28 @@
-\subsection{Verification processes applicable to a B~model}
+\subsection{Verification and Validation on Classical B model}
+
+The first section \ref{sec:processes} describes usual verification and validation activities applied during the design of industrial critical software using the B method. Second section \ref{sec:tools} gives a description of tools available.
+
+Last section \ref{app:osproc} describes the results on an example.
+
+
+\subsubsection{Verification processes applicable to a B~model}
 \label{sec:processes}
 
 A B~model is a textual and formal specification covering the functional behaviour of a safety critical software. It is usually written based on a high-level specification (informal or formal specification, for example SysML or a natural language). It is gradually refined, starting at the top with an abstract notation and ending at the bottom with sequential instructions --- which are then auomatically translated in a target language such as C or Ada.\\
 Thus, we define three objects of verification and validation: the specification, the B~model and the generated source code.\\
+
 
 Validation consists of:
 \begin{itemize}
 \item guaranteeing the functional adequacy between the specification and the model (this can be achieved, for example, through review and proofreading),
 \item building a test environment around the generated source code and test it.
 \end{itemize}
-Hence, this document will mainly focus on verification, i.e.\ the methods and tools required to assure that B~method is a consistent way of producing critical software.
+Hence, this section will mainly focus on verification, i.e.\ the methods and tools required to assure that B~method is a consistent way of producing critical software.
 
 In this section, we demonstrate the suitability of the B~method towards the problematics encountered in the openETCS project by introducing the different verification processes applicable to a B~model.\\
 Each of the verification process is presented and its contributions to the system security and consistency are discussed.
 
-\subsubsection{Type checking}
+\paragraph{Type checking}
 Static type checking (TC) is a basic form of program verification that ensures type safety of the model. It is the first verification --- after lexical and syntactic analysis --- to be performed on a B~model, thus allowing an early detection of problems. It is also a pre-requisite for the higher-level verifications. \\
 Strong typing ensures a consistent use of data and is essential to writing correct formulae (predicates or expressions).\\
 
@@ -24,16 +32,16 @@ On the other hand, {\itshape type verification} is the activity of verifying typ
 % In B, the base types consist of integers, booleans, strings, abstract sets and enumerated sets.\\
 % The construction of more complex types is achieved through the powerset operator $\mathbb{P}$ and the cartesian product $\times$.
 
-\subsubsection{B0-check}
+\paragraph{B0-check}
 The B0 verification has the specific purpose of checking the respect of the rules that the B~model has to conform to in order to generate the translation to C or ADA. These rules are called implementability rules and must be respected in order for the translation to process properly. They also ensure that the resulting code is executable and respects a set of properties.
 
-\subsubsection{Well-definedness}
+\paragraph{Well-definedness}
 An expression is well-defined (WD) if its associated value or interpretation exists and is unique, thus avoiding ambiguity.\\
 Examples of ill-defined formulae include division by zero, function application to an argument out of the domain, function application of a relation etc.\\
 
 Well-definedness checking is thus an extra verification that helps strenghten the model.
 
-\subsubsection{Model checking}
+\paragraph{Model checking}
 Model checking is a static semantic check that searches for invariant or assertion violations and deadlock states.\\
 This type of verification animates the model, modifying the current state of the machine, starting from the initialization. Operation calls are simulated and modify the internal state which is then checked for various properties. Most of the time, an invariant or assertion violation is looked for.\\
 
@@ -44,12 +52,12 @@ This verification process, as opposed to the ones previously introduced, conside
 \end{itemize}
 This means that potential erroneous states can be missed, and that this verification process is not sufficient to ensure {\itshape correctness}, though satisfying as an additional verification tool.
 
-\subsubsection{Constraint-based checking}
+\paragraph{Constraint-based checking}
 
 Constraint-based checking (CBC) is the process of finding a given valid state, for which an operation call leads to an erroneous state. This is done by constraint solving instead of --- as seen for model checking --- running through states from the initialization.\\
 This technique will usually provide more counter-examples than model-checking, because it ignores the initialization constraints and can thus reach a wider range of states.
 
-\subsubsection{Formal proof}
+\paragraph{Formal proof}
 A proof obligation is a mathematical lemma generated by the proof obligation generator (POG). It corresponds to a consistency property of the model, that has to be demonstrated.
 A fully-proved model is said to be {\itshape correct}, in the sense that every property (invariant, assertion) expressed is proved to hold for every state of the program. If a proof obligation is not provable, it means that the B~model is inconsistent and must be corrected. In fact, the goal of any B development is to obtain a proved model.\\
 In contrast to model-checking, formal proof does not require to make assumptions about the size of the system (number of transitions). It is reliable and powerful, but it needs to be taken into account that:
@@ -59,10 +67,10 @@ In contrast to model-checking, formal proof does not require to make assumptions
 \end{itemize}
 A proved model will always meet the safety and security qualifications~; however that doesn't mean it will behave in regards to the specification! This is the domain of validation, as discussed in the introduction.
 
-\subsection{Tools for verification}
+\subsubsection{Tools for verification}
 \label{sec:tools}
 
-\subsubsection{Existing tools}
+%\subsubsection{Existing tools}
 In this section, we present the existing tools suitable for the verification processes defined in section \ref{sec:processes}.
 
 \paragraph{Atelier~B}
@@ -89,7 +97,7 @@ ProB is an animator and model checker for B~models distributed under the EPL lic
 It performs model checking as well as constraint-based checking and searches for a range of errors, with customizable search options and various graphical views. ProB also handles automatic coverage reports generation.\\
 ProB is a mature tool and is being used by several industrials such as Siemens and Alstom. This makes it a precious tool for the verification processes described above.
 
-\subsubsection{Tool qualification}
+\paragraph{Tool qualification}
 \label{subsec:qualif}
 Atelier~B has been used for many years to develop railway critical software. It is, for this exact reason, {\itshape qualified} by the main actors of the railway domain: SNCF, RATP, Alstom, Siemens etc.\\
 
@@ -140,7 +148,7 @@ A 5.10 & ~ & ~ & ~ & ~ & ~ & ~ & ~ \\
 \label{tab:cenelec}
 \end{table}
 
-\subsubsection{Conclusion on tools}
+\paragraph{Conclusion on tools}
 Table \ref{tab:comparison} summarizes the presentation of the tools in subsections \ref{subsec:atelierb} and \ref{subsec:prob}.\\
 Atelier~B and ProB are both mature tools that have proved their worth. They are the core tools for validation processes of B~models. However, key components of Atelier~B are not open source and this issue is not completely compensated by ProB's model checking and CBC.\\
 An ongoing research project named BWare\footnote{See \url{http://bware.lri.fr/index.php/BWare_project}} and conducted by ClearSy, Inria, LRI and others aims at providing a framework from proof obligation generation to proof discharge by the means of SMT solvers. This promising project started in September 2012 and is funded for a period of four years. It opens perspectives for the near future in terms of open source B~model verification.
@@ -162,18 +170,12 @@ ProB & ~ & ~ & \checkmark & \checkmark & ~ \\
 \label{tab:comparison}
 \end{table}
 
-\subsection{Conclusion}
-The B~method, along with its verification processes and tools, meets the goals and activities of the openETCS project in terms of quality, rigor, safety and credibility.\\
-There is yet to develop open-source POG and build a framework for proving, but this is compensated by the fact that work on the subject is ongoing, and ProB is an effective tool for verification.
-
-\newpage
-
 %\appendix
-\subsection{Application: Procedure On-Sight}
+\subsubsection{Application: Procedure On-Sight}
 \label{app:osproc}
 The Procedure On-Sight, as described in {\itshape System Requirements Specification, Chapter 5}, has been modelled in B\footnote{The model is available at \url{github.com/openETCS/validation/tree/master/VnVUserStories/VnVUserStorySysterel/02-DAS2V/c-ClassicalBModel/ProcedureOnSight}.} to show the feasibility of the task and the credibility of the method. This appendix briefly presents the model, then applies the verification processes to this example.
 
-\subsubsection{Presentation of the B~model}
+\paragraph{Presentation of the B~model}
 As shown in figure \ref{fig:procos}, the model is split into three main processing modules, one of which corresponds to the actual on-sight procedure,
 and the two others being used as data conditioning:
 \begin{itemize}
@@ -194,14 +196,14 @@ The typing machine, \verb+os_typ+, and the constant machine, \verb+os_cte_conf_b
  
 This ``IMPORTS''-based vertical layout is complemented by a horizontal aspect: the ``SEES'' clause, which enables a component to access another component's data. It is possible for a component to see the components to its left, but not to its right. Thus, a cycle-free graph is maintained.
  
-\subsubsection{Model checking results}
+\paragraph{Model checking results}
 \label{subapp:mc}
 ProB has been used on the example model and has shown through model checking that no invariant was violated, and no deadlock state was found. However, for some machines, only a minority of states and nodes have been visited (because of infinite sets in particular) and thus no formal conclusion can be drawn.\\
 Additionally, constraint-based checking has also been run and stated, for every operation of every abstract machine, the non-violation of the invariant.
 
-\subsubsection{Formal proof results}
+\paragraph{Formal proof results}
 \label{subapp:proof}
-\subsubsection{Project status}
+\subparagraph{Project status}
 Project status illustrated in figure \ref{fig:atelierb} shows the fully-proved model in Atelier~B.
 
 \begin{figure}[h!]
@@ -213,7 +215,7 @@ Project status illustrated in figure \ref{fig:atelierb} shows the fully-proved m
 
 This model was proved almost entirely automatically, using the provers with force 0 and force 1. Proving the model results in the certainty of its correctness. In this case, only typing invariants and constraints were expressed, because strong links between the variables do not exist in the example.
 
-\paragraph{User-defined theories}
+\subparagraph{User-defined theories}
 When automatic proof fails, the user must provide a manual proof and uses theories for this purpose. Theories are rules that are used to discharge specific goals.\\
 In this example, the only module for which interactive proof was required is \verb+os_consist_i+. Below is presented a very simple theory (among several others) used for the proof of this component:
 
@@ -223,3 +225,9 @@ a < 0 \land 0 \leq b \land 0 < c \Rightarrow a \leq \frac{b}{c}
 \end{equation}
 
 This theory is automatically verified by Atelier~B and therefore ensures full consistency of the proof.
+
+
+\subsubsection{Conclusion}
+The B~method, along with its verification processes and tools, meets the goals and activities of the openETCS project in terms of quality, rigor, safety and credibility.\\
+There is yet to develop open-source POG and build a framework for proving, but this is compensated by the fact that work on the subject is ongoing, and ProB is an effective tool for verification.
+

@@ -83,7 +83,7 @@ This is different for lemmas and assertions
 because \wpframac will generate additional verification conditions for them.
 
 In order to prove the absence of run time errors we use
-the \inl{rte} option of \wpframac that automatically introduce \acsl
+the \inl{rte} option of \wpframac that automatically introduces \acsl
 assertions. If all these assertions can be proven, then
 the absence of run time errors is guaranteed.
 
@@ -258,15 +258,16 @@ In addition, the \acsl language provides the \inl{assigns} clause to specify
 that a function is not allowed to change memory locations other than the ones 
 explicitly listed. 
 When no \inl{assigns} clauses are specified, 
-the function is allowed to modify every visible variable. 
+the function is allowed to modify every accessible memory location. 
 
 The three preconditions for the function arguments of the informal specification 
 are formalized straight forward in the function contract also by three preconditions.
 For the first one we use the predicate \inl{IsValidRange}
 which we specified in \acsl in order to state that the \inl{Bitstream}
 is a valid array of length \inl{BitstreamSizeInBytes}.
-Furthermore, we claim that \peek does not alter any memory locations
-apart from internal function variables via the \inl{assigns} clause.
+Furthermore, we claim {\it via} the \inl{assigns} clause 
+that \peek does not alter any memory location
+apart from local variables.
 
 Moreover, we use so-called behaviors in \acsl for a distinction of the two cases
 from the informal specification.
@@ -288,9 +289,9 @@ we need a loop specification containing a variant for the termination
 proof and some invariants to enable the automatic theorem provers
 to verify the postconditions.
 Although this loop specification is important for the verification,
-it is not in the sense to formalize the informal specification.
+it is not used for formalizing the informal specification.
 
-Since we verify the implementation in respect to the formal specification, 
+Since we verify the implementation with respect to the formal specification, 
 it is crucial that it matches the informal one. 
 Therefore, we reviewed the accordance of both specifications.
 
@@ -323,10 +324,10 @@ three different types of verification conditions (VCs).
 
 
 The first row contains the lemmas we used to ease the verification for the automatic theorem provers.
-While the second row contains the \inl{rte}-assertions 
+The second row contains the \inl{rte}-assertions 
 concerning the absence of run time errors.
 The third row shows all other verification conditions for \peek
-which are mainly about for correct functional behavior.
+which are mainly about functional behavior.
 However, they also contain the postconditions for the robustness cases
 and the loop specification.
 
@@ -441,7 +442,7 @@ Listing \ref{fig:impl-poke} shows the implementation of \poke
 which discriminates three cases. The first two are the robustness cases
 of the informal specification and the last one is
 the normal case where the function actually writes into the bit stream.
-Similar to \peek a lot of bit operations are used. 
+Similarly to \peek a lot of bit operations are used. 
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -468,7 +469,7 @@ can be altered by the function.
 
 We specify the three cases of \poke by using behaviors. 
 The first behavior \inl{out\_of\_range} occurs if the given bit sequence is not valid with respect to the \inl{Bitstream}. 
-The second behavior \inl{value\_too\_big} covers the case that the value \inl{Value} 
+The second behavior \inl{value\_too\_big} covers the case where the value \inl{Value} 
 is not representable with only \inl{Length} bits.
 
 Finally, the behavior \inl{normal} assumes 
@@ -497,7 +498,7 @@ In this section we present the current state of verification results of
 for \poke.
 The results are shown in Table~\ref{tab:results-poke}.
  We listed the different verification conditions 
- row by row like we did it for \peek.
+ row by row like we did for \peek.
 
 The function \poke has significantly more unproven verification conditions than \peek
 this is because it is more complex and alters memory locations via bit operations.
@@ -530,7 +531,7 @@ Therefore, we will verify the absence of run time errors separately as well.
 
 In this section we examine the interaction of 
 \peek and \poke. The functions shall be inverse to each other
-in respect to the normal cases of both functions.
+with respect to the normal cases of both functions.
 In the following we provide a formal specification and present
 our verification results.
 
@@ -541,11 +542,12 @@ For the specification of the interaction we have two auxiliary \isoc functions:
 The first one to call first \poke on a bit stream and then \peek
 and the second one to do it the other way around.
 
-Figure~\ref{fig:poke-peek} shows the straight forward implementation 
+Figure~\ref{fig:poke-peek} shows the straightforward implementation 
 of the first helper function along with its \acsl contract.
 The contract contains a lot of preconditions because we
-only specify an interaction for the case that both functions are in their normal
-cases. The reader can compare the preconditions with them from
+only specify an interaction for the case where both 
+functions are called in their normal
+cases. The reader can compare the preconditions with the ones from
 the contracts of \peek and \poke with respect to the \inl{normal} behaviors.
 As a postcondition we formulate that \peek reads exactly the value
 written by \poke.
@@ -557,7 +559,7 @@ written by \poke.
 \caption{\label{fig:poke-peek} Specification of interaction when first calling \poke.}
 \end{listing}
 
-Figure~\ref{fig:peek-poke} shows the straight forward implementation 
+Figure~\ref{fig:peek-poke} shows the straightforward implementation 
 of the second auxiliary function along with its \acsl contract.
 In contrast to the first function, we work with two bit streams.
 With \peek a certain bit sequence is read out from one bit stream
@@ -579,12 +581,12 @@ the two bit streams are equal in these certain ranges.
 All postconditions (and the assertion in figure~\ref{fig:peek-poke})
 are verified. Therefore, we succeeded to prove that the 
 functions \peek and \poke interact correctly
-in respect to their specifications.
+with respect to their specifications.
 
 Moreover, this verification result serves as a validation for the contracts
-of \peek and \poke because the verification of the interaction 
+of \peek and \poke because verification of the interaction 
 depends on these contracts. Since both functions are called,
-the caller has to assure that all preconditions hold
+the caller has to ensure that all preconditions hold
 and can then rely on the guarantees given by the postconditions.
 
 As a remark, we extended the contract of \peek by one postcondition 
@@ -592,7 +594,7 @@ to ease the verification of the interaction.
 The postcondition simply states that the read value is always representable 
 by \inl{Length} bits which is obviously always the case,
 since the value is the sum of \inl{Length} bits.
-The postcondition is needed to assure that the preconditions for the normal case
+The postcondition is needed to ensure that the preconditions for the normal case
 of \poke are fulfilled when first calling \peek and then \poke.
 
 \clearpage
@@ -610,14 +612,15 @@ This problem is known and \cealist is working on a solution for the next release
 As a workaround one could introduce axioms which provide
 additional facts about bit operations. 
 The problem with using axioms is that one can easily introduce wrong facts
-which lead to contradictions  that make the whole proof system unsound. 
+which lead to contradictions making the whole proof system unsound. 
 Thus, this approach requires a careful review of the added axioms.
 
 Moreover, the chosen automatic theorem provers are generally not very
 good when it comes to mixing arithmetic and bit operations.
 There is, however, an automatic theorem prover, namely \z,
-which can handle arithmetic and bit operations.
-\framac does currently not provide an interface for \z but this may change in a future release.
+which can handle arithmetic and bit operations, using a specific syntax.
+\framac's interface for \z does not currently takes advantage of this, 
+but this may change in a future release.
 We therefore expect a better automatic verification rate for the verification of BitWalker.
 
 Another approach to deal with unproven verification conditions consists in

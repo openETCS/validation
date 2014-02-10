@@ -726,8 +726,8 @@ Below the \underline{MISRA-C tested rules} are listed:
 \item \textbf{Language extensions}
 \begin{itemize}
 \item 2.1 (req): Assembly language shall be encapsulated and isolated.
-\item 2.2 (req): Source code shall only use /* ... */ style comments.
-\item 2.3 (req): The character sequence /* shall not be used within a comment.
+\item 2.2 (req): Source code shall only use \inl{/* ... */} style comments.
+\item 2.3 (req): The character sequence \inl{/*} shall not be used within a comment.
 \item 2.4 (adv-): Sections of code should not be 'commented out'.
 \end{itemize}
 \item \textbf{Character sets}
@@ -739,7 +739,7 @@ Below the \underline{MISRA-C tested rules} are listed:
 \begin{itemize}
 \item 5.1 (req): Identifiers (internal and external) shall not rely on the significance of more than 31 characters.
 \item 5.2 (req): Identifiers in an inner scope shall not use the same name as an identifier in an outer scope, and therefore hide that identifier.
-\item 5.3 (req-): A 'typedef' name shall be a unique identifier.
+\item 5.3 (req-): A \inl{typedef} name shall be a unique identifier.
 \item 5.4 (req): A tag name shall be a unique identifier.
 \item 5.5 (adv-): No object or function identifier with static storage duration should be reused.
 \item 5.6 (adv-): No identifier in one name space should have the same spelling as an identifier in another name space, with the exception of structure and union member names.
@@ -747,8 +747,8 @@ Below the \underline{MISRA-C tested rules} are listed:
 \end{itemize}
 \item \textbf{Types}
 \begin{itemize}
-\item 6.3 (adv): 'typedefs' that indicate size and signedness should be used in place of the basic types.
-\item 6.4 (req): Bit fields shall only be defined to be of type 'unsigned int' or 'signed int'.
+\item 6.3 (adv): \inl{typedef}s that indicate size and signedness should be used in place of the basic types.
+\item 6.4 (req): Bit fields shall only be defined to be of type \inl{unsigned int} or \inl{signed int}.
 \item 6.5 (req-): Bit fields of type signed int shall be at least 2 bits long.
 \end{itemize}
 \item \textbf{Constants}
@@ -767,7 +767,7 @@ Below the \underline{MISRA-C tested rules} are listed:
 \end{itemize}
 \item \textbf{Initialisation}
 \begin{itemize}
-\item 9.3 (req): In an enumerator list, the '=' construct shall not be used to explicitly initialise members other than the first, unless all items are explicitly initialised.
+\item 9.3 (req): In an enumerator list, the \inl{=} construct shall not be used to explicitly initialise members other than the first, unless all items are explicitly initialised.
 \end{itemize}
 \item \textbf{Control statement expressions}
 \begin{itemize}
@@ -776,15 +776,16 @@ Below the \underline{MISRA-C tested rules} are listed:
 \item \textbf{Control flow}
 \begin{itemize}
 \item 14.1 (req-): There shall be no unreachable code.
-\item 14.3 (req-): Before preprocessing, a null statement shall only occur on a line by itself;, it may be followed by a comment provided that the first character following the null statement is a white-space character.
-\item 14.4 (req): The 'goto' statement shall not be used.
-\item 14.5 (req): The 'continue' statement shall not be used.
+\item 14.3 (req-): Before preprocessing, a null statement shall only occur on a line by itself; it may be followed by a comment provided that the first character following the null statement is a white-space character.
+\item 14.4 (req): The \inl{goto} statement shall not be used.
+\item 14.5 (req): The \inl{continue} statement shall not be used.
 \item 14.7 (req): A function shall have a single point of exit at the end of the function.
-\item 14.10 (req): All 'if ... else if' constructs shall be terminated with an 'else' clause.
+\item 14.10 (req): All \inl{if ... else if} constructs shall be terminated with an 'else' clause.
 \end{itemize}
 \item \textbf{Switch statements}
 \begin{itemize}
-\item 15.3 (req): The final clause of a 'switch' statement shall be the 'default' clause.
+\item 15.3 (req): The final clause of a \inl{switch} statement shall be the 
+\inl{default} clause.
 \end{itemize}
 \item \textbf{Functions}
 \begin{itemize}
@@ -804,24 +805,24 @@ Below the \underline{MISRA-C tested rules} are listed:
 \end{itemize}
 \item \textbf{Preprocessing directives}
 \begin{itemize}
-\item 19.1 (adv-): '\#include' statements in a file should only be preceded by other preprocessor directives or comments.
+\item 19.1 (adv-): \inl{#include} statements in a file should only be preceded by other preprocessor directives or comments.
 \item 19.2 (adv): Non-standard characters should not occur in header file names in include directives.
-\item 19.3 (req): The '\#include' directive shall be followed by either a <filename> or a <filename> sequence.
+\item 19.3 (req): The \inl{#include} directive shall be followed by either a \inl{<filename>} or a \inl{<filename>} sequence.
 \item 19.4 (req-): C macros shall only expand to a braced initializer, a constant, a parenthesised expression, a type qualifier, a storage class specifier, or a do-while-zero construct.
-\item 19.5 (req): Macros shall not be '\#define'd or '\#undef'd within a block.
-\item 19.6 (req): '\#undef' shall not be used.
+\item 19.5 (req): Macros shall not be \inl{#define}d or \inl{#undef}d within a block.
+\item 19.6 (req): \inl{#undef} shall not be used.
 \end{itemize}
 \item \textbf{Standard libraries}
 \begin{itemize}
 \item 20.4 (req): Dynamic heap memory allocation shall not be used.
-\item 20.5 (req): The error indicator 'errno' shall not be used.
-\item 20.6 (req): The macro 'offsetof', in library <stddef.h>, shall not be used.
-\item 20.7 (req): The 'setjmp' macro and the 'longjmp' function shall not be used.
-\item 20.8 (req): The signal handling facilities of <signal.h> shall not be used.
-\item 20.9 (req): The input/output library <stdio.h> shall not be used in production code.
-\item 20.10 (req): The library functions 'atof', 'atoi' and 'atol' from library <stdlib.h> shall not be used.
-\item 20.11 (req): The library functions 'abort', 'exit', 'getenv' and 'system' from library <stdlib.h> shall not be used.
-\item 20.12 (req): The time handling functions of library <time.h> shall not be used.
+\item 20.5 (req): The error indicator \inl{errno} shall not be used.
+\item 20.6 (req): The macro inl{offsetof}, in library \inl{<stddef.h>}, shall not be used.
+\item 20.7 (req): The \inl{setjmp} macro and the \inl{longjmp} function shall not be used.
+\item 20.8 (req): The signal handling facilities of \inl{<signal.h>} shall not be used.
+\item 20.9 (req): The input/output library \inl{<stdio.h>} shall not be used in production code.
+\item 20.10 (req): The library functions \inl{atof}, \inl{atoi} and \inl{atol} from library \inl{<stdlib.h>} shall not be used.
+\item 20.11 (req): The library functions \inl{abort}, \inl{exit}, \inl{getenv} and \inl{system} from library \inl{<stdlib.h>} shall not be used.
+\item 20.12 (req): The time handling functions of library \inl{<time.h>} shall not be used.
 \end{itemize}
 \item \textbf{Run-time failures}
 \begin{itemize}

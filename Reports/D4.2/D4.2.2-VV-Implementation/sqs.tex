@@ -33,7 +33,7 @@ Furthermore, RSM tool is mapped to the \href{http://msquaredtechnologies.com/m2r
 
 Besides, RSM has intrinsic quality notices and can be extended by the end user with User Defined Quality Notices using regular expressions to analyze code lines. 
 
-The following table shows the intrinsic Quality Notices for language c that RSM tool checks.
+The following table shows the intrinsic Quality Notices for C language that RSM tool checks.
 
 {\footnotesize\sffamily\centering
   \begin{longtable}{||p{.45\textwidth}|p{.5\textwidth}||}
@@ -122,14 +122,14 @@ Rationale:  \textcolor{red}{A "switch" statement must always have a default cond
  
 Emit a quality notice when there are more 'case' conditions than 'break', 'return' or 'fall through' comments.
 
-Rationale:  \textcolor{red}{Many tools, including RSM, watch the use of "case" and "break" to insure that there is not an inadvertent fall through to the next case statement.  RSM requires the programmer to explicitly indicate in the source code via a "fall through" comment that the case was designed to fall through to the next statement.}
+Rationale:  \textcolor{red}{Many tools, including RSM, watch the use of "case" and "break" to ensure that there is not an inadvertent fall through to the next case statement.  RSM requires the programmer to explicitly indicate in the source code via a "fall through" comment that the case was designed to fall through to the next statement.}
     \\
     \hline \textbf{Quality Notice No. 16}
     
 Emit a quality notice when function white space
 percentage is less than the specified minimum.
 
-Rational:  \textcolor{red}{Source code must be easily read.  A low percentage of white space indicates that the source code is crammed together thus compromising the readability of the code.  Typically white space less than 10 percent is considered crammed  code. }
+Rationale:  \textcolor{red}{Source code must be easily read.  A low percentage of white space indicates that the source code is crammed together thus compromising the readability of the code.  Typically white space less than 10 percent is considered crammed  code. }
  & \textbf{Quality Notice No. 17}
  
 Emit a quality notice when function comment
@@ -257,7 +257,7 @@ Rationale:  \textcolor{red}{A function should always specify the actual paramete
          
 Emit a quality notice when a variable is assigned to a literal value. Configurable for literal 0 in rsm.cfg. 
 
-Rationale: \textcolor{red}{A symbolic constant is the preferred method for variable assignment as this creates maintainable and understandable.}
+Rationale: \textcolor{red}{A symbolic constant is the preferred method for variable assignment as this creates maintainable and understandable code.}
  & \textbf{Quality Notice No. 51}
  
 Emit a quality notice when there is no comment before a function block. 
@@ -405,11 +405,11 @@ The following table shows some code metrics by file.
     \hline
    \end{longtable}
 
-Below table provide information regarding standard functional metrics as cyclomatic complexity and others.
+Below table provide information regarding standard functional metrics such as cyclomatic complexity and others.
 
 The result obtained in the calculation of the cyclomatic complexity defines the number of independent paths within a piece of code and determines the upper bound on the number of tests that must be performed to ensure that each statement is executed at least once.
 
-Taking into account the obtained cyclomatic complexity, the risk can be determined due to McCabe found that a value of 10 is a practical upper limit to the size of a module. When the complexity exceeds this value becomes very difficult to prove, understand and modify it. However, in some circumstances, it may be appropriate to relax the restriction and permit modules with a complexity as high as 15.
+According to McCabe a value of 10 is a practical upper limit for the cyclomatic complexity of a given module. When the complexity exceeds this value, it becomes very difficult to prove, understand and modify the module. However, in some circumstances, it may be appropriate to relax the restriction and permit modules with a complexity as high as 15.
 
 \begin{longtable}{||p{.275\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.075\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
   \caption{Functional Summary}\\
@@ -734,12 +734,11 @@ Below the \underline{MISRA-C tested rules} are listed:
 \begin{itemize}
 \item 4.1 (req): Only those escape sequences that are defined in the ISO C standard shall be used.
 \item 4.2 (req): Trigraphs shall not be used.
-Identifiers
 \end{itemize}
 \item \textbf{Identifiers}
 \begin{itemize}
 \item 5.1 (req): Identifiers (internal and external) shall not rely on the significance of more than 31 characters.
-\item 5.2 (req): \%s: Identifiers in an inner scope shall not use the same name as an identifier in an outer scope, and therefore hide that identifier.
+\item 5.2 (req): Identifiers in an inner scope shall not use the same name as an identifier in an outer scope, and therefore hide that identifier.
 \item 5.3 (req-): A 'typedef' name shall be a unique identifier.
 \item 5.4 (req): A tag name shall be a unique identifier.
 \item 5.5 (adv-): No object or function identifier with static storage duration should be reused.
@@ -760,10 +759,10 @@ Identifiers
 \begin{itemize}
 \item 8.5 (req-): There shall be no definitions of objects or functions in a header file.
 \item 8.6 (adv): Functions shall be declared at file scope.
-\item 8.7 (req): Objects \%s shall be defined at block scope if they are only accessed from within a single function \%s.
-\item 8.8 (req): \%s: An external object or function shall be declared in one and only one file.
-\item 8.9 (req): \%s: An identifier with external linkage shall have exactly one external definition.
-\item 8.10 (req): \%s: All declarations and definitions of objects or functions at file scope shall have internal linkage unless external linkage is required.
+\item 8.7 (req): Objects shall be defined at block scope if they are only accessed from within a single function.
+\item 8.8 (req): An external object or function shall be declared in one and only one file.
+\item 8.9 (req): An identifier with external linkage shall have exactly one external definition.
+\item 8.10 (req): All declarations and definitions of objects or functions at file scope shall have internal linkage unless external linkage is required.
 \item 8.11 (req): The static storage class specifier shall be used in definitions and declarations of objects and functions that have internal linkage.
 \end{itemize}
 \item \textbf{Initialisation}
@@ -807,8 +806,8 @@ Identifiers
 \begin{itemize}
 \item 19.1 (adv-): '\#include' statements in a file should only be preceded by other preprocessor directives or comments.
 \item 19.2 (adv): Non-standard characters should not occur in header file names in include directives.
-\item 19.3 (req): The '\#include' directive shall be followed by either a <filename> or \"filename\" sequence.
-\item 19.4 (req-): C macros shall only expand to a braced initialised, a constant, a parenthesised expression, a type qualifier, a storage class specifier, or a do-while-zero construct.
+\item 19.3 (req): The '\#include' directive shall be followed by either a <filename> or a <filename> sequence.
+\item 19.4 (req-): C macros shall only expand to a braced initializer, a constant, a parenthesised expression, a type qualifier, a storage class specifier, or a do-while-zero construct.
 \item 19.5 (req): Macros shall not be '\#define'd or '\#undef'd within a block.
 \item 19.6 (req): '\#undef' shall not be used.
 \end{itemize}
@@ -846,7 +845,7 @@ The files into the violations are found are listed in the below table.
 
 {\footnotesize\sffamily\centering
   \begin{longtable}{||p{.15\textwidth}|p{.8\textwidth}||}
-  \caption{Ubication of MISRA Violations}\\
+  \caption{Summary of detected MISRA Violations}\\
     \hline\hline
     \textbf{MISRA Rule} & \textbf{Files} \\
     \hline\hline
@@ -1555,7 +1554,7 @@ With this analysis SQS has checked the following:
     \hline
 \end{longtable}}
 
-After run this analysis no violations have been found.
+After run this analysis no violation has been found.
 
 \begin{figure}[H]
 \centering
@@ -1579,11 +1578,11 @@ The results of the tool are the following:
 
 Static analysis tools are very good due to the detection of several problem/errors at code level that are usually difficult to detect by manual inspection. Furthermore, they help enforce coding standards and keep code complexity low.
 
-However, these tools sometimes report false positives so it is necessary review them and decide if they are related with problems or not. Nonetheless, it is recomended to complement the static analysis tools with manual code inspections (not thought of by the original coder) and dynamic analysis.
+However, these tools sometimes report false positives so it is necessary review them and decide if they are related with problems or not. Nonetheless, it is recommended to complement the static analysis tools with manual code inspections (not thought of by the original coder) and dynamic analysis.
 
-In order to ensure the correctness of the obtained results mentioned in the previous sections, a comparation of them was executed.
+In order to ensure the correctness of the obtained results mentioned in the previous sections, a comparison of them was executed.
 
-As a result of this comparation we obtain that between the tools there is a little deviation regarding to some code metrics like eLOC or comments so it was necessary to check how each aspect/metric is defined and taking into each tool. In relation to the MISRA-C rules, as each tool verifies subset of rules defined in this standard, the results are different. However, the violations relationed with rules that are included in both RMS and Understand tool have been detected by both tools.
+As a result of this comparison we obtain that between the tools there are some small deviations regarding some code metrics like eLOC or comments. Thus it was necessary to check how each aspect/metric is defined into each tool. In relation to the MISRA-C rules, as each tool verifies a subset of the rules defined in this standard, the results are different. However, the violations relationed with rules that are included in both RMS and Understand tool have been detected by both tools.
 
 For example, the table below shows that there is a minimun deviation regarding to the cyclomatic complexity obtained with the RSM or Understand and LocMetrics tools
 
@@ -1639,8 +1638,8 @@ For example, the table below shows that there is a minimun deviation regarding t
 
 Taking into account the obtained resutls, we can concluded that:
 \begin{itemize}
-\item the complexity of bitwalker.c file is 13 that exceeds the 10 value so the bitwalker code has moderate risk. So, we can split them into smaller modules whenever the cyclomatic complexity of the module exceeded 10 or as, in some circumstances, we can permit modules with a complexity as high as 15.
-\item there are some misra-c rules violations and quality notice. It woulb be recommendable to modify the specific line if it is possible in order to improve the code quality.
+\item the complexity of bitwalker.c file is 13 that exceeds the 10 value so the bitwalker code has moderate risk. Thus, we might split it into smaller modules.
+\item there are some misra-c rules violations and quality notice. It would be recommendable to modify the specific lines if it is possible in order to improve code quality.
 \end{itemize}
 
-In addition to these, as each existing static analisys tool implements different and very specific techniques (code metrics analysis, semantic analysis, context analysis -interactions between multiple functions calls-, creation of new rules, support coding rules/standard rules, ...) to achieve the required assessment or verification objectives, it is recommended to select different static analysis to cover all the commom areas where problems can occur.
+In addition to these, as each existing static analysis tool implements different and very specific techniques (code metrics analysis, semantic analysis, context analysis -interactions between multiple functions calls-, creation of new rules, support coding rules/standard rules, ...) to achieve the required assessment or verification objectives, it is recommended to select different static analysis to cover all the commom areas where problems can occur.

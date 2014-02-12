@@ -157,8 +157,13 @@ Table \ref{tbl:test_summary} resumes the set of automatically
 generated tests.
 The set of tests cover 40 of the requirements from the chap3.5.
 
-The simulation result of the C code is not yet finished. The analysis
-of the failed test is a work in progress.
+
+The simulation result of the C code is not yet finished and for the
+moment, all test failed. The main reason was that the two
+models did not share the same starting condition.
+Hence, we  need to refined our test model to be able to handle SCADE
+modeling style correctly and be able to have interesting result.
+
 
 
 \subparagraph{Summary}
@@ -172,12 +177,18 @@ What we have done:
  
  The next step:
  \begin{enumerate}
+ \item Refined test model
  \item Analyze the result of the test procedure.
  \item Coordinate DLR/SIEMENS/Uni Bremen interfaces.
  \item Run the test on the DLR lab.
  \end{enumerate}
+
 \subparagraph{Conclusions/Lessons learned}
-From the first result, we could see that one chapter of
+
+Our first attempt to simulate the tests was not a success. All tests
+except the one covering the initial states failed. Our two models
+have, at least, the same initial state.
+From  our first investigation, we could see that one chapter of
 the specification is not self-contained. This leads to different
 interpretation in the modeling and thus some non equivalent behaviors.
 
@@ -186,7 +197,6 @@ under constraints test model. It affects the test generation by
 providing some non realistic test cases. Some variable behavior that
 were not mentioned in the spec are considered as free and may have any
 possible value in their definition range.
- 
 
 
 \paragraph{Future Activities}

@@ -1,0 +1,432 @@
+\documentclass[a4paper,german]{article}
+%%BeginIpePreamble
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+% % Deutsche Silbentrennung
+% \usepackage[ngerman]{babel}
+% % Deutsche Umlaute
+% \usepackage[ansinew]{inputenc}
+% %\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{xspace}
+\usepackage{eurosym}
+%Binds \euro to some version of the Euro Symbol
+
+ 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+
+% editing
+\newcommand{\itbox}[1]{\mbox{\it #1\/}}
+%\newcommand{\itbox}[1]{\mathit{#1}}
+\newcommand{\abbrev}[1]{{\small #1}}
+% Starts a new line nearly everywhere
+\newcommand{\nl}{\mbox{}\\}
+\newcommand{\nlskip}[1]{\mbox{}\\[#1]}
+\newcommand{\eod}{\rule{\textwidth}{1pt}\nl \textit{End of Document}}
+
+%Uncertain items
+\newcommand{\qq}[1]{?`#1?}
+
+%
+%Comments
+\newcommand{\cncpt}[1]{\framebox{#1}}
+\newcommand{\bgcncpt}[1]{\nl\framebox{\parbox{.95\textwidth}{#1}}\nl[2mm]}
+%\renewcommand{\bigconcept}[1]{}
+%
+%Around formulas
+\newcommand{\punctsep}{\hspace{.5ex}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Date of writing
+\newcommand{\creationDateA}{140218}
+% \newcommand{\creationDateB}{JJMMTT}
+% \newcommand{\creationDateC}{JJMMTT}
+
+% event name (part of file name)
+\newcommand{\eventDescription}{IntrnlAssssmnt}
+
+% Version number (part of file name)
+\newcommand{\versionNumber}{01}
+
+% Start date of meeting
+\newcommand{\meetingStartDate}{\creationDateA}
+\newcommand{\meetingStartTime}{13:00}
+% End date of meeting
+\newcommand{\meetingEndDate}{140219}
+\newcommand{\meetingEndTime}{15:00}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\title{Protocol openETCS Internal Assessment Workshop}
+\author{Hardi Hungar}
+\date{Version \versionNumber, 20\creationDateA}
+
+%\pagestyle{empty}
+
+\maketitle
+%
+\begin{abstract} 
+
+\end{abstract}
+
+\section*{Document Control}
+
+\begin{tabular}{|l|r|*{2}{p{.3\textwidth}|}}
+\hline
+\multicolumn{4}{|l|}{\texttt{PR\_TS\_\eventDescription\_\creationDateA\_\versionNumber.tex}}
+\\\hline
+\textbf{Version} & \textbf{Date} & \textbf{Changes} & \textbf{Comment}
+\\\hline
+01 & \creationDateA & All sections & Initial 
+\\\hline
+\end{tabular}
+
+\section*{Meeting Data}
+\label{sec:rahmendaten}
+
+\begin{tabular}{|l|r|r|}
+\hline
+ \textbf{Start} & \meetingStartDate & \meetingStartTime
+\\\hline
+ \textbf{End} & \meetingEndDate & \meetingEndTime
+\\\hline
+\end{tabular}
+
+\medskip\noindent%
+
+\begin{tabular}{|l|r|r|l|}
+  \hline
+\textbf{Participant} & \textbf{Initials} & \textbf{Institution} & \textbf{Position}
+\\\hline
+% Name & Initials & Institution %& Position/Role
+%\\\hline
+Jan Welte & JW &TU-BS &
+\\\hline
+Hansjörg Manz & HM & TU-BS &
+\\\hline
+Hardi Hungar & HH & DLR &
+\\\hline
+Izaskun de la Torre & IT & SQS & 
+\\\hline
+Marc Behrens & MB & DLR &
+\\\hline
+Norbert Schäfer& NS & AEbt &
+\\\hline
+Stefan Jagusch & SJ & AEbt &
+\\\hline
+Jens Gerlach & JG & Fraunhofer &
+\\\hline
+Ralf Pinger & RP & Siemens &
+\\\hline
+Luca Macchi & LM & RINA &
+\\\hline
+Fr\'ed\'erique Vall\'ee & FV & All4TEC &
+\\\hline
+Anthony Faucogney & AF &All4TEC &
+\\\hline
+Bernd Hekele & BH & DB &
+\\\hline 
+Klaus-Rüdiger Hase & KRH & DB &
+\\\hline
+\end{tabular}
+
+\section*{Day 1 (18.02.2014)}
+\label{sec:day-1-18.02.2014}
+
+\section{Safety and Process}
+\label{sec:safety-process}
+
+\subsection{Safety Activities (JW)}
+\label{sec:safety-activ-jan}
+
+\begin{itemize}
+\item Safety is a system property---the SW itself cannot be declared
+  ``safe'' unless put into relation with the HW.
+\item The hazard list plays an important role in all safety activities 
+\item The safety activities are tied to the artefacts produced---the
+  parts of the design, their verification and validation.
+\item The safety case shall be written in Goal Structure Notation
+  (GSN), linking the evidence.
+\item 
+\end{itemize}
+
+\subsection{Current State SSRS (System Analysis---JW)}
+\label{sec:current-state-ssrs}
+
+\begin{itemize}
+\item Table of System Functions
+\item Evaluation of function description in Subset~026---is it
+  sufficient to start modeling (usually not)
+\item Two functions selected: Within train location functionality
+  \begin{itemize}
+  \item read balise message
+  \item \qq{which}
+  \end{itemize}
+\item Detail by sketching a SysML (Papyrus) model
+\end{itemize}
+
+
+\subsection{Safety Analysis Approach}
+\label{sec:safety-analysis}
+
+\begin{itemize}
+\item Demonstration on Siemens design part (Management of Radio Communication)
+\item Hazard Identification performed
+\item FMEA performed, 18 safety criteria defined (text table),
+  established tracing to Subsert~026
+\item \textbf{Preliminary conlcusion}:  This approach will take up
+  more ressources than available if pursued.
+\end{itemize}
+
+\subsection{The openETCS Process (Bernd Hekele)}
+\label{sec:open-proc-bernd}
+
+\begin{itemize}
+\item Important Links
+  \begin{itemize}
+  \item Development Process (aligned with Eclipse
+  \item Quality plan
+  \item \ldots
+  \item \ldots
+  \end{itemize}
+\item Make use and unify several different skills and approaches in openETCS
+\item Whole process: A standard V development process, but:
+  \begin{itemize}
+  \item It defines an ideal final outcome of the development activities
+    (which cannot be achieved with the project resources)
+  \item it does not (and cannot, as it defines the final outcome) the
+    way to get there. This can be roughly seen from the WP~3 backlog.
+  \item First, the process will be instantiated for some small part of
+    the funcitonality, from SSRS down to the SCADE model and including V\&V
+  \item Then, this willbe iterated for a larger functionality chunk
+  \item There will be by mid 2014 a detailed version of the modeling
+    work plan (building on Alstom's legacy)
+  \end{itemize}
+\item Agile/SCRUM work organisation---this is not in line with the
+  ``usual'' CENELEC development approaches. But it is faster in
+  progress and permits retargeting during development (which by chance
+  fits well the needs of the project which has not got the time to
+  first stabilize requirements)
+\item \textbf{FV:} We have a problem in the project, because
+  Subset~026 does not suffice as a specification and more or less
+  everybody in the project is waiting on the SSRS. At the moment, the
+  internal assessment cannot progress any further.
+\item \textbf{NS:} There are too many processes in openETCS, and they
+  are not consistent. \textbf{BH:} Quality is maybe more of a concern,
+  with a highly diverse project team. \textbf{SJ:} AeBt did not
+  encounter any agile development in practice. \textbf{LM:} In the
+  end, one has to demonstrate that the requirements are
+  met. \textbf{AF:} There was already some successful agile
+  development (DO178). 
+
+\end{itemize}
+
+\section{Documents Assessed}
+\label{sec:documents-assessed}
+
+\subsection{QA Plan (IdlT)}
+\label{sec:qa-plan}
+
+\begin{itemize}
+\item In the current (2014-02-18) version of the QA plan, five issues raised
+in the internal assessment have been fixed. The other issues cannot be
+fixed at the current state of the project.
+\item The life cycle description needs some refinement
+  lateron.
+\item Roles and independence too.
+\item As methods and tools are not yet selected, the choice can
+  currently not be justified (what would need to be done in the QA plan)
+\item The same applies to many other issues
+\end{itemize}
+
+
+\textbf{NS:} There is just one standard to observe:
+CENELEC~50128:2011. This standard is rather general, According to the
+CENELEC, several plans need to be written. Each one should name the
+documents to produce, later the authors. These plans should be
+specific, clear in stating what has to be done and by whom, and very
+detailed.  
+
+\section{Internal Assessment (FV)}
+\label{sec:intern-assessm-fred}
+
+\begin{itemize}
+\item The main problem was that there was no project to assess
+\item Five documents were assessed. For each, the quality was assessed
+  and recommendations wrt.\ achieve CENELEC conformance
+\item Doceument control process ok
+\item Revision and review process considered out of scope
+\item QA plan considered insufficient.
+  \begin{itemize}
+  \item It does not include the
+  lifecycle (the V lifecycle which is to be considered as the end
+  result, just produced in an agile way).
+  \item The safety plan should be included/referenced by the QA plan,
+  but there was none at that time.
+  \item The tools, even if no final decision has been taken, can be described.
+  \item The models built and verification attempts are interesting,
+    but it is not clear how they will ever grow to something coherent
+  \end{itemize}
+\item The SCMP and the CPMP have been written by different
+  organisations without the necessary coordination
+  \begin{itemize}
+  \item The SCMP is generally acceptable, but needs to be reconciled
+    with the CENELEC in some places, and it needs to be instantiated
+    to the project. 
+  \end{itemize}
+\item \textbf{JW:} How to proceed with the safety plan? \textbf{FV:}
+  The documents should be defined in the QA plan. How to produce them
+  is part of the safety plan.
+\item In the QA plan, the methods and techniques chosen for design and V\&V
+  activities are to be listed. The justification for the selection has
+  to be elsewhere (eg, the safet. Currently, one could try to name the
+  ones responsible for the selection. 
+\end{itemize}
+
+\subsection{Internal Assessment Summary (SJ, MB)}
+\label{sec:intern-assessm-summ}
+
+\begin{itemize}
+\item \textbf{SJ:} The planning documents need input from the WPs, and
+  the WPs need guidance from someone to plan the project.
+\item \textbf{HH:} Usually, there should be a small group of informed
+  people taking the main decision and detail the plan to a degree that
+  different approaches roughly fit in (bottom-up).
+\item \textbf{FV:} It is not possible to assess many different approaches.
+\item There is the Papyrus/SCADE toolchain, and there are other
+  approaches (B, ETFMS, ERTMS spec model). How ``official'' is the
+  Papyrus/SCADE one?
+\item The overall project management needs to find a solution to
+  install a coherent approach. Eg.:  A lot of participants working in
+  the official approach, with a few exploring the alternatives. This
+  would emphasize the development aspect of openETCS as opposed to the
+  research aspect (without completely abandoning the latter).
+\item \textbf{JW:} There are named responsibilities in the project for
+  some tasks, and these should be acted upon. Some are missing
+  (according to JW, \qq{which---not named}).
+\item There is a problem with managing openETCS, as it is difficult to
+  get all involved contributors in line.
+\item \textbf{FV:} The QA plan should include the life cycle as
+  presented by JW. Methods and techniques should go in there, the
+  perimeter of the project (what will be considered as demonstrating
+  the openETCS devlopment process, methods and tools).
+\item The goal for the assessment should be to classify in which
+  respect the project approach achieved compliance.
+\item \textbf{RP:} As an example: The Bitwalker could be formally verified, and the
+  assessor should say eg.\ that it would be ok if the tools were T2
+  qualified.
+\item \textbf{SJ:} Merlin has already put checklists on github
+  detailing what needs to be checked during an assessment. Roughly,
+  first the process documentation is looked at, then an audit of open questions . This would
+  be very expensive to perform for openETCS. One could simplify this
+  to an assessment of (explained) documentation.
+\item \textbf{HH:} It would help to have the process definition of an
+  assessment, and a version to be applied in openETCS.
+\item \textbf{MB:} The material to be assessed should be organized in
+  a process-oriented way. 
+\end{itemize}
+ 
+An assessment (SJ) works like that:
+\begin{enumerate}
+\item Assessment of the process. If there are open points, the process
+  is stopped
+\item An aufit of the process is done.
+\item The manufacturer sends in the full documentation. The
+  phase-specific measures an techniques are assessed.
+\item An audit of techniques and measures is performed.
+\end{enumerate}
+Along the way, the checklists are filled. Observations can have the
+form of asking for an reiteration of everything (severe
+omissions/violations), some improvement obligations, guidelines of how
+to improve or proceed. 
+
+\section*{Day 2 (19.02.2014)}
+\label{sec:day-1-18.02.2014}
+
+\section{Round Table (FV)}
+\label{sec:round-table-fred}
+
+\subsection{Methods and Techniques (FV)}
+\label{sec:methods-techniques}
+
+To be considered are the tables of the 50128 (in partivular A.13 and
+A.14), and we have to define what goes into the quality plan and the
+safety plan. 
+
+\subsection{Interface Between WPs  (HH)}
+\label{sec:interf-betw-wps}
+
+Assign a contact person, visit the grooming meetings.
+
+\subsection{Implementing a CENELEC Process with SCRUM (KRH)}
+\label{sec:impl-cenel-proc}
+
+
+\subsection{Traceability down to Goal Structuring Notation (JW)}
+\label{sec:trac-down-goal}
+
+\subsection{Safety of Code (JG)}
+\label{sec:safety-code-jens}
+
+\subsection{Train Localisation per Satellite (HM)}
+\label{sec:train-local-per}
+
+\textbf{KRH:} This is out of scope of the current project. 
+
+\section{External Feedback (LM)}
+\label{sec:external-feedback-lm}
+
+\begin{itemize}
+\item WP4 should lead the project, the V\&V has to guide the
+project for it not go into wrong directions.
+\item There are many different organisations working on the project.
+\item \textbf{KRH:} So far, the project has been mainly concerned with
+  selecting methods and tools. There is now some decision (7.1) on
+  these, based on open formats. In the followup project, the
+  transition to fully open-source shall be made. We have to learn the
+  agile procedure. There will be just one backlog for the project for
+  everybody to work on.
+\item \textbf{LM:} The Subset 026 is not usable by non-experts. If the
+  participants doing the modeling are not trained to expert level,
+  then a requirements analysis (translating the SS~026 to a readable
+  and usable form (\textbf{KRH:} Currently, it is swiss cheese with
+  very big holes)) is necessary. This will be a very effort intensive
+  acitivity.
+\item \textbf{KRH:} With the ERSA simulator, some form of reference is
+  available, for good use in the project.
+\item \textbf{LM:} The tracing has to be done while constructing the
+  model, this cannot be done after modeling.
+\item \textbf{LM:} Personal qualification and CENELEC compliance of
+  the agile model have to be assured. 
+\end{itemize}
+
+\section{Outlook Internal Assessment and Workshop Roundup (MB)}
+\label{sec:outl-intern-assessm}
+
+\begin{itemize}
+\item \textbf{MB:} Next workshop in one year. \textbf{KRH:} Too
+  late. make a followup workshop in the same week as the ITEA
+  review (June 12). By that time, the work shall have been organized and
+  progressed to some extent. Friday, June 13, 
+\item \textbf{SJ, FV:} All the process documents will have to be
+  prepared, and technical documentations will have to be written based
+  on these documents. \textbf{KRH:} This must have been done by then,
+  otherwise the project cannot work.
+\item \textbf{KRH:} Is there a list of issues to be addressed or a plan?
+\item \textbf{MB:} There is a high-level list of problems and
+  approaches, but many details have to be added. Eg., the QA plan
+  shall list all documents and activities, but its author cannot
+  define the process and methods and tools---these have to be provided
+  by others. In some cases, we do not even know who can provide the
+  answers. 
+\end{itemize}
+
+
+
+
+\eod
+\end{document}

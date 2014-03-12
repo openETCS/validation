@@ -15,7 +15,7 @@ Five different static analysis tools have been used during the code verification
 Finally, according to the results obtained by using the tools, we will present some conclusions.
 
 \subsection{Resource Standard Metrics -RSM- Results}
-In this section we provide the results obtained with the RSM tool.
+In this section we provide the results obtained with the \href{http://msquaredtechnologies.com/m2rsm/}{[RSM]} tool.
 
 Resource Standard Metrics (RSM) is a source code metrics and quality analysis tool.
 
@@ -28,10 +28,18 @@ RSM provides standard metrics and a combination of features that allow to:
 \item Analyze Cyclomatic Complexity
 \end{itemize}
 
-Furthermore, RSM tool is mapped to the \href{http://msquaredtechnologies.com/m2rsm/docs/QualityStandards/MISRA_C_Mapping.htm}{[MISRA C]} Industry Standards which coverage is 40.16\% 
+The cyclomatic complexity metric measures the complexity of the code by counting the number of independent paths through a piece of code-by counting the number of decision points. The decision point is where a choice can be made during execution; this gives rise to different paths through the code. Decision points arise through if statements and through while, do while and for loops. A single switch or try statement can also add many more decision points. This metric can either be determined by counting the regions, nodes and edges or number of predicate nodes (branching points) with a flow graph.
 
+The following equations defined McCabe Cyclomatic Complexity: 
+\begin{itemize}
+\item The number of regions in a flow graph.
+\item V(g) = E - N + 2, where E are the edges and N are the nodes.
+\item V(g) = P + 1, where P are the predicate nodes.
+\end{itemize}
 
 Besides, RSM has intrinsic quality notices and can be extended by the end user with User Defined Quality Notices using regular expressions to analyze code lines. 
+
+Furthermore, RSM tool is mapped to the MISRA C Industry Standard. Taking into account the intrisic quality notice and the user defined quality notices the RSM tool covers 40.16\% of \href{http://msquaredtechnologies.com/m2rsm/docs/QualityStandards/MISRA_C_Mapping.htm}{[MISRA C]} rules
 
 The following table shows the intrinsic Quality Notices for C language that RSM tool checks.
 
@@ -291,7 +299,48 @@ Rationale: \textcolor{red}{Repetitive and sequential breaks can be used to fool 
     \hline
 \end{longtable}}
 
-In addition to this, RSM allows to customize the desired output providing standard metrics and a combination of features.
+In addition to this, some user defined quality notices are included in the rsm\_udqn.cfg file. The table below shows those that are active and defined for C language.
+
+{\footnotesize\sffamily\centering
+  \begin{longtable}{||p{.45\textwidth}|p{.5\textwidth}||}
+  \caption{User Defined Quality Notices}\\
+    \hline\hline
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    \textbf{User Defined Quality Notice No. 102}
+
+Emit a quality notice when dynamic memory using malloc is not initialized.
+& \textbf{User Defined Quality Notice No. 103}
+
+Emit a quality notice when the realloc function has been identified.  
+    \\
+    \hline \textbf{User Defined Quality Notice No. 104}
+    
+Emit a quality notice when a line containing just a semicolon has been identified.  
+& \textbf{User Defined Quality Notice No. 105}
+ 
+Emit a quality notice when a symbolic constant using \#define has been identified
+    \\
+    \hline \textbf{User Defined Quality Notice No. 107}
+    
+Emit a quality notice when a double ;; has been identified.  
+& \textbf{User Defined Quality Notice No. 109}
+ 
+Emit a quality notice when a double pointer indirection has been identified
+    \\
+    \hline \textbf{User Defined Quality Notice No. 116}
+    
+Emit a quality notice if Pointer variable uninitialized.  
+& \textbf{User Defined Quality Notice No. 125}
+ 
+Emit a quality notice when a data member in the header file is not of the form m\_*
+    \\
+    \hline
+\end{longtable}}
+
+RSM also allows to customize the desired output providing standard metrics and a combination of features.
 
 RSM has been customized to obtain the below metrics and analysis and the corresponding reports that are available into the \href{https://github.com/openETCS/validation/tree/master/VnVUserStories/VnVUserStorySQS/04-Results}{[VnVUserStories folder]}
 
@@ -378,17 +427,17 @@ The following table shows some code metrics by file.
     \endhead
     \hline\hline
     \endfoot
-    \ LOC & 15
+    \ LOC\footnote{Lines of Code}. & 15
 & 58
 & 45 & 884 & 62
     \\
     \hline
-    \ eLOC & 15
+    \ eLOC\footnote{Effective Lines of Code} & 15
 & 40
 & 40 & 823 & 62
     \\
     \hline
-    \ lLOC & 11
+    \ lLOC\footnote{Logical Statements Lines of Code} & 11
 & 28
 & 23 & 760 & 61
     \\
@@ -405,7 +454,7 @@ The following table shows some code metrics by file.
     \hline
    \end{longtable}
 
-Below table provide information regarding standard functional metrics such as cyclomatic complexity and others.
+The table below provides information regarding standard functional metrics such as cyclomatic complexity and others.
 
 The result obtained in the calculation of the cyclomatic complexity defines the number of independent paths within a piece of code and determines the upper bound on the number of tests that must be performed to ensure that each statement is executed at least once.
 
@@ -681,7 +730,7 @@ Lines: 101
 
 \subsection{LocMetrics tool Results}
 
-LocMetrics counts total lines of code (LOC), blank lines of code (BLOC), comment lines of code (CLOC), lines with both code and comments (C\&SLOC), logical source lines of code (SLOC-L), McCabe VG complexity (MVG), Header Comments (HCLOC), Header Words (HCWORD) and number of comment words (CWORDS). Physical executable source lines of code (SLOC-P) is calculated as the total lines of source code minus blank lines and comment lines. Counts are calculated on a per file basis and accumulated for the entire project. LocMetrics also generates a comment word histogram.
+\href{http://www.locmetrics.com/}{[LocMetrics]} tool counts total lines of code (LOC), blank lines of code (BLOC), comment lines of code (CLOC), lines with both code and comments (C\&SLOC), logical source lines of code (SLOC-L), McCabe VG complexity (MVG), Header Comments (HCLOC), Header Words (HCWORD) and number of comment words (CWORDS). Physical executable source lines of code (SLOC-P) is calculated as the total lines of source code minus blank lines and comment lines. Counts are calculated on a per file basis and accumulated for the entire project. LocMetrics also generates a comment word histogram.
 
 About the results obtained by LocMetrics tool are the following ones:
 
@@ -717,7 +766,7 @@ About the results obtained by LocMetrics tool are the following ones:
 \end{longtable}
 
 \subsection{Understand tool Results}
-Understand is a cross-platform, multi-language, maintenance-oriented IDE (Interactive Development Environment). It is designed to help maintain and understand large amounts of legacy or newly created source code. With this tool SQS has checked MISRA-C:2004 and code metrics (lines of code, complexity, object cross reference, invocation tree, Unused Items and others)
+\href{http://www.scitools.com/}{[Understand]} is a cross-platform, multi-language, maintenance-oriented IDE (Interactive Development Environment). It is designed to help maintain and understand large amounts of legacy or newly created source code. With this tool SQS has checked MISRA-C:2004 and code metrics (lines of code, complexity, object cross reference, invocation tree, Unused Items and others)
 
 The detailed static analysis report is available in the \href{https://github.com/openETCS/validation/tree/master/VnVUserStories/VnVUserStorySQS/04-Results}{[VnVUserStories folder]}
 
@@ -1343,7 +1392,7 @@ Below tables shows some different metrics per file and function.
 \end{longtable}
 
 \subsection{Clang Static Analyzer tool Results}
-The Clang Static Analyzer is a source code analysis tool that finds bugs in C, C++, and Objective-C programs.
+The \href{http://clang-analyzer.llvm.org/}{[Clang Static Analyzer]} is a source code analysis tool that finds bugs in C, C++, and Objective-C programs.
 
 The analyzer is 100\% open source and is part of the Clang project. Like the rest of Clang, the analyzer is implemented as a C++ library that can be used by other tools and applications.
 
@@ -1417,80 +1466,8 @@ With this analysis SQS has checked the following:
 & Check for uninitialized values being returned to the caller.
     \\
     \hline
-    \textbf{cplusplus.NewDelete}
-& Check for double-free and use-after-free problems involving C++ delete.
-    \\
-    \hline
     \textbf{deadcode.DeadStores}
 & Check for values stored to variables that are never read afterwards.
-    \\
-    \hline
-    \textbf{osx.API}
-& Check for proper uses of various Apple APIs.
-    \\
-    \hline
-    \textbf{osx.SecKeychainAPI}
-& Check for proper uses of Secure Keychain APIs.
-    \\
-    \hline
-    \textbf{osx.cocoa.AtSync}
-& Check for nil pointers used as mutexes for @synchronized.
-    \\
-    \hline
-    \textbf{osx.cocoa.ClassRelease}
-& Check for sending 'retain', 'release', or 'autorelease' directly to a Class.
-    \\
-    \hline
-    \textbf{osx.cocoa.IncompatibleMethodTypes}
-& Warn about Objective-C method signatures with type incompatibilities.
-    \\
-    \hline
-    \textbf{osx.cocoa.NSAutoreleasePool}
-& Warn for suboptimal uses of NSAutoreleasePool in Objective-C GC mode.
-    \\
-    \hline
-    \textbf{osx.cocoa.NSError}
-& Check usage of NSError** parameters.
-    \\
-    \hline
-    \textbf{osx.cocoa.NilArg}
-& Check for prohibited nil arguments to ObjC method calls.
-    \\
-    \hline
-    \textbf{osx.cocoa.RetainCount}
-& Check for leaks and improper reference count management.
-    \\
-    \hline
-    \textbf{osx.cocoa.SelfInit}
-& Check that 'self' is properly initialized inside an initializer method.
-    \\
-    \hline
-    \textbf{osx.cocoa.UnusedIvars}
-& Warn about private ivars that are never used.
-    \\
-    \hline
-    \textbf{osx.cocoa.VariadicMethodTypes}
-& Check for passing non-Objective-C types to variadic methods that expect only Objective-C types.
-    \\
-    \hline
-    \textbf{osx.coreFoundation.CFError}
-& Check usage of CFErrorRef* parameters.
-    \\
-    \hline
-    \textbf{osx.coreFoundation.CFNumber}
-& Check for proper uses of CFNumberCreate.
-    \\
-    \hline
-    \textbf{osx.coreFoundation.CFRetainRelease}
-& Check for null arguments to CFRetain/CFRelease/CFMakeCollectable.
-    \\
-    \hline
-    \textbf{osx.coreFoundation.containers.OutOfBounds}
-& Checks for index out-of-bounds when using 'CFArray' API.
-    \\
-    \hline
-    \textbf{osx.coreFoundation.containers.PointerSizedValues}
-& Warns if 'CFArray', 'CFDictionary', 'CFSet' are created with non-pointer-size values.
     \\
     \hline
     \textbf{security.FloatLoopCounter}
@@ -1565,7 +1542,7 @@ After run this analysis no violation has been found.
 
 \subsection{CPPcheck tool Results}
 
-Bitwalker folder has been analyzed statically by CPPcheck tool (Complying with the standard C11).
+Bitwalker folder has been analyzed statically by \href{http://cppcheck.sourceforge.net/}{[CPPcheck]} tool (Complying with the standard C11).
  C11 (formerly C1X) is an informal name for ISO/IEC 9899:2011, the current standard for the C programming language. It replaces the previous C standard, informally known as C99. This new version mainly standardizes features that have already been supported by common contemporary compilers, and includes a detailed memory model to better support multiple threads of execution. Due to delayed availability of conforming C99 implementations, C11 makes certain features optional, to make it easier to comply with the core language standard.
  
 The results of the tool are the following:
@@ -1637,7 +1614,7 @@ For example, the table below shows that there is a minimun deviation regarding t
     \hline
 \end{longtable}
 
-Taking into account the obtained resutls, we can concluded that:
+Taking into account the obtained results, we can concluded that:
 \begin{itemize}
 \item the complexity of bitwalker.c file is 13 that exceeds the 10 value so the bitwalker code has moderate risk. Thus, we might split it into smaller modules.
 \item there are some misra-c rules violations and quality notice. It would be recommendable to modify the specific lines if it is possible in order to improve code quality.

@@ -19,13 +19,13 @@
 \wp{Work-Package 4: ``Validation \& Verification Strategy''}
 
 %set a title here
-\title{openETCS Safety Plan}
+\title{openETCS Hazard and Risk Analysis Methodology}
 
 %set a subtitle here
 \subtitle{Guideline for the safety related activities in an openETCS Onboard Unit development}
 
 %set the date of the report here
-\date{October 2013} %\\ Revised March 2013}
+\date{March 2014} %\\ Revised March 2013}
 
 %define a list of authors and their affiliation here
 
@@ -37,7 +37,6 @@
   38106 Braunschweig, Germany\\
   eMail: openetcs@iva.ing.tu-bs.de \\
   WebSite: www.iva.ing.tu-bs.de}
-
 
 %add yourself as author, if you contributed to the document
 
@@ -51,7 +50,7 @@
 
 
 \begin{abstract}
-The safety plan presents an overview about the main safety activities performed during the OpenETCS development process. Thereby, a consistent safety guideline is shown, which combines the functional safety analysis for the system and subsystems from which safety properties will be derived with verification and validation techniques to ensure the overall quality during the design of all safety related parts of the system. Overall, the safety plan will guarantee that the safety design activities required in D2.6 are covered and all safety requirements are fulfilled. 
+This document presents an overview about the main activities performed during the OpenETCS development process to identify hazards inside the openETCS software and to assess the risk resulting from these hazards. Thereby, a consistent methodology is derived, which connects the hazard and risk analysis for the system and subsystems from which potential hazards and corresponding risks will be derived with methods to identify and enforce  to ensure the overall quality during the design of all safety related parts of the system. Overall, the safety plan will guarantee that the safety design activities required in D2.6 are covered and all safety requirements are fulfilled. 
 \end{abstract}
 
 %=============================
@@ -72,7 +71,7 @@ Work Package &  WP4  \\
 Deliverable ID or doc. ref. & D4.2\\
 \hline
 Document title & openETCS Safety Plan\\
-Document version & 00.01 \\
+Document version & 00.20 \\
 Document authors (org.)  & Jan Welte (TU-BS)\\
 \hline
 \end{tabular}
@@ -107,7 +106,8 @@ Approved by & -- & -- & \\
 \hline
 Version &  Date & Author(s) & Justification  \\
 \hline  
-0.10 & 28/01/2014 & Jan Welte &  Extended Introduction  \\
+00.1 & 28/01/2014 & Jan Welte &  Extended Introduction  \\
+00.2 & 14/03/2014 & Jan Welte &  Reword document structure to incorporate review comments from internal assessment \\
 \hline  
 \end{tabular}
 \newpage
@@ -189,7 +189,7 @@ The EN50128 standard defines safety as the ``freedom from unacceptable levels of
 \caption{Risk-Genesis-Model showing the relations between the safety-related terms \cite{Schnieder.2010}}
 \label{fig:Risiko-Genese-Modell-eng}
 \end{figure}
-it
+
 This demonstrates that the first step is to define the system properties, specifically identifying the harms and their related hazardous situations. This has to be performed during a system hazard analysis. Afterwards the respective properties have to be determined by assessing the risk concerning the identified hazards. Based on this work safety integrity levels can be assigned to all system functionalities which are then allocated during the design to certain parts of the operational equipment. As this work is closely related to all design decisions, it has to be done iteratively for all abstraction levels during the system design. 
 
 \begin{figure}[htbp]
@@ -205,29 +205,18 @@ The safety integrity level represented the acceptable risk for every part of the
 
 Since software itself does not fails in the way technical equipment does the specific software safety integrity level represent a qualitative measure with respect to the required degree of correctness for the software functionality than a qualitative value for the likelihood of failing. To reach the needed degree of correctness for the software various design, verification and validation methods are required corresponding to the assigned software safety integrity level. This process leads to safety requirements which have to be implemented in the software design as well as verified and validated. Respectively the EN50126 describes the safety design process as a series of safety tasks for each life cycle phase. This task are related to a number of safety artifacts which are created, used and adapted over time through the different safety design activities.
 
-\textit{Addition topics shall be proposed by every participant.
-Section will be managed by Jan Welte}
-
 
 \subsection{Safety Case}
 
 
 
-\subsection{Safety Glossary}
+%\subsection{Safety Glossary}
 
-\textbf{Added via the glossary documentation process for openETCS}
+%\textbf{Added via the glossary documentation process for openETCS}
 
 \chapter{Document Evolution}
 
 The safety plan will be further specified with the progress of the design process. This specifically reference to the refinement of safety properties on different modeling levels and their corresponding verification and validation methods. All resulting changes and additional safety activities have to be maintained according to the EN~50128.
-
-\begin{description}
-\item[V01, T0+16:] First version of the plan. 
-\item[V02, T0+17:] First revision, based on the openETCS development process and the preliminary SSRS results. Also the first iteration of V\&V activities will be considered. (D4.2.3)
-\item[V03, T0+25:] Second revision, based on the internal reports of modeling and V\&V activities. (D4.3.3)
-\item[V04, T0+36:] Final version as part of the final V\&V report (D4.4) 
-\end{description}
-
 
 
 
@@ -242,34 +231,38 @@ Concrete plans of activities are thus still to be made, and methods
 and tools to be applied will have to be selected. Only the first phase
 of V\&V activities is described in Sec.~\ref{sec:first-level-verif}.
 
+\chapter{OpenETCS Software Development process}
+
+\section{Overall process}
+
+\section{Safety Interfaces}
+
+\textit{Clear description of the interfaces to the process providing inputs for safety and using the Safety results. Specific describing the applied iterations.}
+
+\subsection{Specific Interfaces to the Design Process}
+
+\subsection{Interface to Quality Management}
+
+\subsection{Interface to Verification}
+
+\subsection{Interface to Validation}
+
+
+\textit{Short description for the needed documentation}
 
 
 
+\chapter{Hazard and Risk Analysis}
 
-\chapter{General ETCS Safety Principals}
+
+
+\section{General ETCS Safety Principals}
 
 \textit{This section shall present as short description of all safety principals used for the overall safety strategy.}
 
-\section{Overall Safety}
-
-\textit{This section shall present as short description for the overall safety strategy.}
-
-\section{Functional Safety}
-
-\textit{This section shall present the applied openETCS safety strategy.}
 
 
-
-
-
-\chapter{OpenETCS Safety Process}
-
-
-
-
-
-
-\section{Safety-related Activities}
+\section{OpenETCS Activities}
 
 
 \begin{figure}[h]
@@ -440,8 +433,18 @@ The safety design activities set-up or evolve the safety artifacts in relation t
 
 Overall the safety design activities have to be performed in close relation to the overall verification and validation activities as these have to verify and validate all safety requirements and their results become part of the safety plan.
 
-\subsection{Safety Activities---User Sories}
-\label{sec:safety-activ-user}
+
+\section{Safety design process supporting tools}
+
+Supporting software tools are needed to handle the safety artifacts and to some degree to more efficiently perform the safety design activities. As some safety artifacts like the safety requirement specifications and the safety backlogs are closely related to design artifacts the same tools can be used. Especially all requirements should be handled by one tool to ensure full traceability and provide one main interface for the verification and validation activities.
+
+Depending on the methods used for hazard and risk analysis appropriate tools are needed to perform the analysis, collect the hazards and associated risks in the hazard log and to evaluated possible risk control measures. Thereby, traceability has to be guaranteed between all activities.
+
+Since the safety plan and safety case provide the basis for the safety approval the tools used to generated these artifacts should help to generate a consistent argumentation and efficiently collect the data needed to provide evidence. Respectively, interfaces to manage documents and automatically generate reports would be helpful functionalities.
+
+
+\section{Proof of concept}
+\label{sec:Proofofconcept}
 
 The VnV Level 1 activities try to implement the overall safety strategy on parts of the benchmark modelling results to establish details for artifact relations, traceability between different artifacts and tool use. Therefore the following benchmark models are used as exemplary design artifacts:
 
@@ -453,6 +456,8 @@ The VnV Level 1 activities try to implement the overall safety strategy on parts
 \item Scade model by Siemens
 \end{itemize}
 
+
+
 \subsubsection{Hazardous Events}
 
 Based on the 
@@ -463,33 +468,25 @@ Based on the
 \end{itemize}
 
 
-\subsection{Important mile-stones}
 
-\section{Safety Management}
+\chapter{OpenETCS Safety Case}
 
-\section{Safety design process supporting tools}
+\section{Structure}
 
-Supporting software tools are needed to handle the safety artifacts and to some degree to more efficiently perform the safety design activities. As some safety artifacts like the safety requirement specifications and the safety backlogs are closely related to design artifacts the same tools can be used. Especially all requirements should be handled by one tool to ensure full traceability and provide one main interface for the verification and validation activities.
+\subsection{Quality Management Evidence}
 
-Depending on the methods used for hazard and risk analysis appropriate tools are needed to perform the analysis, collect the hazards and associated risks in the hazard log and to evaluated possible risk control measures. Thereby, traceability has to be guaranteed between all activities.
+\subsection{Safety Management Evidence}
 
-Since the safety plan and safety case provide the basis for the safety approval the tools used to generated these artifacts should help to generate a consistent argumentation and efficiently collect the data needed to provide evidence. Respectively, interfaces to manage documents and automatically generate reports would be helpful functionalities.
+\subsection{Functional and Technical Safety Evidence}
 
-\section{Safety Interfaces}
 
-\textit{Clear description of the interfaces to the process providing inputs for safety and using the Safety results. Specific describing the applied iterations.}
+\section{Model-based Argumentation}
+\subsection{Goal Structured Notation}
+\subsection{ACedit}
 
-\subsection{Specific Interfaces to the Design Process}
 
-\subsection{Interface to Quality Management}
 
-\subsection{Interface to Verification}
 
-\subsection{Interface to Validation}
-
-\section{Safety Documentation}
-
-\textit{Short description for the needed documentation}
 
  
 \chapter{Conclusion}

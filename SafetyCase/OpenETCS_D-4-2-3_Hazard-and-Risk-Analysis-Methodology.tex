@@ -265,61 +265,45 @@ Although the phase represent different working steps in the life cycle according
 
 \section{Interfaces to Safety Activities}
 
+As safety is a system property the software development has to be performed according to the safety functionalities allocated to the software. Thereby, the resulting Software SIL defines the combination of quality methods to be performed to ensure that all requirements including the allocated system safety requirements are implemented correctly. To provide all needed justification that the required Software SIL is reached, the development has provide complete documentation for the safety case. As the openETCS software development is not part of a specific system development, but has the objective to specify and implement the overall ETCS functionality, it has to interact with a respective generic safety management process and take the overall safety requirements for a train control system into account. As show in figure \ref{fig:SafetyProcess} the over all development is determined by a number of interactions between design, verification and validation and the general quality and safety management.
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{./images/openETCS-Software-Safety-Development}
-\caption{OpenETCS development relations between design, Verification and Validation and safety activities}
+\caption{OpenETCS development relations between design, verification and validation and safety activities}
 \label{fig:SafetyProcess}
 \end{figure}
 
 
-\textit{Clear description of the interfaces to the process providing inputs for safety and using the Safety results. Specific describing the applied iterations.}
+\subsection{Interface to Quality and Safety Management}
+
+In parallel to the design process the safety management process has to perform hazard and risk analysis methods for the software design to ensure that the design concept can reach the expected safety integrity level for the overall system. Thereby, potential hazards resulting from the software functionality and its design have to be identified and their risk has to be assess in the system context. To control the risk respective measures have to be taken, which be realized through additional safety requirements to which the design has to be conform. The hazard log represents the central element of this safety management as it collects the hazards and manages the respective risk control.
+
+As the Software SIL determines the development methods which have to be applied to ensure a correct development, the quality management has to ensure that these methods are chosen according to the standard and are applied correctly. This has to be specified in the Quality Assurance Plan and to be documented in the overall safety case.
 
 \subsection{Specific Interfaces to the Design Process}
 
-\subsection{Interface to Quality Management}
+To be able to respect the system safety requirement these have to be apportioned to the different software components. This has to be done for all abstraction levels during the during the system design. 
 
-\subsection{Interface to Verification}
+\subsection{Interface to Verification and Validation}
 
-\subsection{Interface to Validation}
+The verification activities have to ensure that all system safety requirements have been apportioned and implemented correctly at the respective software component.
 
+The validation activities have to ensure that the overall software implementation matches the actual requirements. Therefore, it has to be ensured specifically that the Software in it system context respects the overall system safety requirements.
 
-\textit{Short description for the needed documentation}
-
+The verification and validation plan do specify the appropriate methods used. The verification and validation reports as evidence for the qualified software development become part of the safety case.
 
 
 \chapter{Hazard and Risk Analysis}
 
-
-
-\section{General ETCS Safety Principals}
-
-\textit{This section shall present as short description of all safety principals used for the overall safety strategy.}
-
-
-
-\section{OpenETCS Activities}
-
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.7\linewidth]{./images/WholeSafetyProcess}
-\caption[Overall safety process]{Overall safety process}
-\label{fig:SafetyProcess}
-\end{figure}
-
-\textit{Process description has to be updated with the latest work. Cooperation between Cyril, Merlin and Jan}
-
-\subsection{OpenETCS safety design process}
-
-The presented CENELEC standard safety artifacts and activities are always related to the overall system development. Since the openETCS development process just describes the development of the on-board unit software for ETCS additional system informations are needed for the openETCS safety design process. These are mainly the following two parts of the CCS TSI:
+Since the ETCS system specification for the on-board unit shall be formalized and implemented in the software during the openETCS software development, the specific safety requirements for the on-board unit have to been determined according to the overall system requirements. These are mainly given by the following two parts of the CCS TSI:
 
 \begin{itemize}
 \item UNISIG SUBSET-026	System Requirements Specification 	(Version 3.3.0)
 \item UNISIG SUBSET-091 Safety Requirements for the Technical Interoperability of ETCS in Levels 1 and 2 	(Version 3.2.0)
 \end{itemize}
 
-In relation to SUBSET-91 further documents should be considered:
+In relation to SUBSET-91 further documents should be take into account to derive specify safety aspect:
 
 \begin{itemize}
 \item Part of TSI Annex A
@@ -342,6 +326,16 @@ In relation to SUBSET-91 further documents should be considered:
 	\end{itemize}
 \end{itemize}
 
+Based on these overall safety goals as specific hazard and risk analysis for the software subsystem has to be performed to allocate the requirements and derive specific safety requirements for the onboard unit and its verification and validation.
+
+\section{General ETCS Safety Principals}
+
+
+
+
+
+
+
 From these documents the Preliminary Hazard Analysis and the System Safety Goals have to be derived which are needed as the starting point for the openETCS safety design process. Based on these information a subsystem hazard and risk analysis for the openETCS scope can be performed which set-up the openETCS hazard log. Based on these results the openETCS safety requirements will be specified, which are then further developed to functional requirements. During the development these requirements are adopted if necessary for the different abstraction levels from the high level model down to the source code. This is done using corresponding safety backlogs, which are the reference for the safety requirement verification. Altogether the source code has to be validated against all safety requirements to demonstrated, that software faults can not cause any harm. The safety case has to present all needed documentation.
  
 The main task of the openETCS safety design process and the interactions with the design process are shown in figure \ref{fig:WholeSafetyProcess}.
@@ -355,7 +349,7 @@ The main task of the openETCS safety design process and the interactions with th
 
 The openETCS safety design process will be specified more detailed in the safety plan. Correspondingly, the main safety artifacts and safety design activities which have to be handled during the openETCS safety design process are shown in table \ref{tab:openETCS-Safety-artifacts} and \ref{tab:openETCS-Safety-activities}.
 
-% Table generated by Excel2LaTeX from sheet 'Artifact Categorization'
+
 \begin{table}[htbp]
   \centering
   \caption{Main openETCS safety design process artifacts}

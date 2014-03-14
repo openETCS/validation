@@ -232,20 +232,46 @@ The safety related activities
 
 The software development in the OpenETCS project shall be performed as an open, model-based, agile Software development. The respective combination of methods used during the development process shall comply with a SIL 4 development process according to EN 50128 for which the requirements are analyzed and shown in detail in D2.2. The overall openETCS Software development process presenting the development principals how the on-board unit requirements for ETCS shall be formalized first in a semi-formal SysML architecture model and afterwards in a detail formal SCADE behavior model, which is the basis for the automatic source code generation, are outlined in WP 2 D2.3 and D2.4. 
 
-The detailed principals and phases of this development process are presented in the Quality Assurance Plan. As this development process and the supporting tools are still evolves the detailed development description has to be updated as the project continues. 
+The detailed principals and phases of this development process are presented in the Quality Assurance Plan. As this development process and the supporting tools are still evolves the detailed development description has to be updated as the project continues.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\linewidth]{./images/openETCS-Software-Development}
+\caption{Overall openETCS software development process}
+\label{fig:DevopmentProcess}
+\end{figure}
 
-\begin{tabular}{|p{1cm}|p{2cm}|p{8cm}|p{3cm}|}
+Figure \ref{fig:DevopmentProcess} shows the general artifacts for the openETCS Software development mapped to the EN 50128 V model development life cycle. As the Verification and Validation activities are specific to the design artifacts further details are not available at this point. The Verification and Validation plan describes a number of methods which can be applied for different properties in the context of the openETCS development principals.
+
+Corresponding to the development artifacts the openETCS development process has 5 main distinguishable phase show in table \ref{tab:DevelopmentPhases}. Every phase besides the validation phase is mostly supported by one means of description and one corresponding tool, but the overall traceability of the development requires linking requirements and design elements between all phases. 
+
+\begin{table}[htbp]
+  \centering
+  
+  \caption{Phases openETCS software development process}
+\begin{tabular}{|p{1cm}|p{2cm}|p{7.5cm}|p{2.5cm}|}
 \hline \textbf{Phase} & \textbf{Name} & \textbf{Description} & \textbf{Main Tool component} \\ 
 \hline P1 & Software Requirement Phase & Requirement input documents converted to a ReqIF format and informally analyses. The analysis specifies relationships between requirements and revises parts of the requirements to obtain a detail and atomic abstraction level usable for moralization. To support thus the requirements are categorized and grouped. & ProR \\ 
 \hline P2 & Software Architecture Modeling Phase & Building a SysML based on the informal analysis using the categorization of requirements. The architecture model focuses on functional blocks and data flows. & SysML Papyrus \\ 
-\hline P3 & Software Behavior Modeling Phase & Building the SCADE model for the separated basic functional blocks. The SCADE model describes the detailed behavior for the function using the data flows. & SCADE \\ 
-\hline P4 & Formal Validation phase & Using test models and model checking techniques, to validate the correct model behavior.  & Various \\ 
+\hline P3 & Software Behavior Modeling Phase & Building the SCADE model for the separated basic functional blocks. The SCADE model describes the detailed behavior for the function using the data flows. & SCADE Suite \\ 
+\hline P4 & Code Generation Phase & Based on the SCADE Behavior Model C code will be automatically generated. This C code is than compiled to executable code which runs on the EVC. & SCADE Suite + C Code compiler\\
+\hline P5 & Formal Validation phase & Using test models and model checking techniques, to validate the correct model behavior.  & Various tools \\ 
 \hline 
 \end{tabular} 
+\label{tab:DevelopmentPhases}
+\end{table}
 
+Although the phase represent different working steps in the life cycle according to EN 50128 the agile development process applied in openETCS induces that the phases are performed iterative during the development process. Respectively, the traceability linking in combination with the verification methods has to ensure that changes in one phase of the development are adopted for all linked artifacts up- and downwards in the development process.
 
-\section{Safety Interfaces}
+\section{Interfaces to Safety Activities}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1\linewidth]{./images/openETCS-Software-Safety-Development}
+\caption{OpenETCS development relations between design, Verification and Validation and safety activities}
+\label{fig:SafetyProcess}
+\end{figure}
+
 
 \textit{Clear description of the interfaces to the process providing inputs for safety and using the Safety results. Specific describing the applied iterations.}
 

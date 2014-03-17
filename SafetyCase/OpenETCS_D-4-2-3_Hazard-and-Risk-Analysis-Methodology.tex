@@ -296,6 +296,10 @@ The verification and validation plan do specify the appropriate methods used. Th
 
 \chapter{Hazard and Risk Analysis}
 
+The safety design process and the resulting documentation constitute the main documents for the system approval, as it is required by European and national law to do everything reasonable expectable to prevent harm. Accordingly the CENELEC standards build the common technical rules for the development process. The Common Safety Methods present a concept based on the EN50126 how the risk evaluation and management has to be performed. 
+
+Therefore the main references concerning the safety design process are the CENELEC standards, mainly the EN50126 on how the safety aspects have to be handled as part of the RAMS management over the development process. The overall risk evaluation concept is also defined at this point. The specific concerning the safety case preparations are defined in the EN50129 including the Safety Integrity Level concept. 
+
 Since the ETCS system specification for the on-board unit shall be formalized and implemented in the software during the openETCS software development, the specific safety requirements for the on-board unit have to been determined according to the overall system requirements. These are mainly given by the following two parts of the CCS TSI:
 
 \begin{itemize}
@@ -326,185 +330,120 @@ In relation to SUBSET-91 further documents should be take into account to derive
 	\end{itemize}
 \end{itemize}
 
-Based on these overall safety goals as specific hazard and risk analysis for the software subsystem has to be performed to allocate the requirements and derive specific safety requirements for the onboard unit and its verification and validation.
+Based on these overall safety goals as specific hazard and risk analysis for the software subsystem has to be performed to allocate the requirements and set-up the openETCS hazard log as shown in figure \ref{fig:SafetyProcess}. Cased on the principal software architecture the risk can be assess, which then leads to the definition of risk control measures. These are the basis for specific safety requirements for the on-board unit software design and its verification and validation. During the development these requirements are adopted if necessary for the different abstraction levels from the high level model down to the source code. The safety case, which shall be supported by a GSN model as presented in chapter ref{safetycase} has to present all needed documentation to show that these leads to the required risk level.
 
 \section{General ETCS Safety Principals}
 
+Based on the ETCS reference architecture Subset 91 gives the role of ETCS as train protection as the following:
 
+\begin{center}
+\textbf{"To provide the Driver with information to allow  him to drive the train safely and to enforce respect of this information, to the extent advised to ETCS."}
+\end{center}
 
+Respectively, the Core Hazard for the ETCS reference architecture is defined as the following in Subset 91:
+\begin{center}
+\textbf{"Exceedance of the safe speed or distance as advised to ETCS."}
+\end{center}
 
+Based on the role of ETCS and its respective SIL 4 quantification the maximum allowed rate of occurrence (Tolerable hazard rate) of the ETCS Core Hazard for ETCS on-board is
+\[1.0\times10^{-9} hour^{-1} train^{-1}.\]
+The same value is specified for the corresponding track-side.
 
-
-
-From these documents the Preliminary Hazard Analysis and the System Safety Goals have to be derived which are needed as the starting point for the openETCS safety design process. Based on these information a subsystem hazard and risk analysis for the openETCS scope can be performed which set-up the openETCS hazard log. Based on these results the openETCS safety requirements will be specified, which are then further developed to functional requirements. During the development these requirements are adopted if necessary for the different abstraction levels from the high level model down to the source code. This is done using corresponding safety backlogs, which are the reference for the safety requirement verification. Altogether the source code has to be validated against all safety requirements to demonstrated, that software faults can not cause any harm. The safety case has to present all needed documentation.
- 
-The main task of the openETCS safety design process and the interactions with the design process are shown in figure \ref{fig:WholeSafetyProcess}.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.8\linewidth]{WholeSafetyProcess}
-\caption{OpenETCS Safety Design Process}
-\label{fig:WholeSafetyProcess}
-\end{figure}
-
-The openETCS safety design process will be specified more detailed in the safety plan. Correspondingly, the main safety artifacts and safety design activities which have to be handled during the openETCS safety design process are shown in table \ref{tab:openETCS-Safety-artifacts} and \ref{tab:openETCS-Safety-activities}.
-
-
-\begin{table}[htbp]
-  \centering
-  \caption{Main openETCS safety design process artifacts}
-    \begin{tabular}{r|p{8cm}|p{4cm}}
-    \textbf{Abbreviation} & \textbf{Safety Artifact} & \textbf{Degree of Formalisation}\\
-    \hline
-    Safety Req & Safety Requirements: list of all requirements which have to be respected during the system development to reach the safety goals & Informal/ Semi-Formal / Formal \\
-    HL    & Hazard Log: List of identified hazards and its associated risk classification as well as information concerning the risk control & Informal \\
-    SP    & Safety Plan: Document which specifies all activities, resources and events to ensure that the source code will satisfy all relevant safety requirements & Informal \\
-    SC    & Safety Case: Documentation which demonstrates that the used development process and the resulting source code fulfil all safety requirements & Informal \\
-    CSB   & Code Safety Backlog: list of requirements/ properties to be implemented inside the dM derived from  the HL (and the dMSB) & Semi-Formal/ Strictly-Formal \\
-    dMSB  & Detailed Model Safety Backlog: list of requirements/ properties to be implemented inside the dM derived from the HL (and  the hLSB) & Semi-Formal/ Strictly-Formal \\
-    hLSB  & High Level Safety Backlog: list of requirements/ properties to be implemented inside the hM derived from the HL & Informal/ Semi-Formal \\
-    \end{tabular}%
-  \label{tab:openETCS-Safety-artifacts}%
-\end{table}%
-
-\begin{table}[htbp]
-  \centering
-  \caption{Main openETCS safety design process activities}
-    \begin{tabular}{p{4cm}|p{6cm}|p{4cm}} 
- \textbf{Safety Design Activity} & \textbf{Input Artifact(s)} & \textbf{Output Artifact(s)}  \\ \hline
- Establish Safety Plan & QA-Plan + Project documentation (FPP, …) & Safety Plan \\
- Preliminary Hazard Analysis (PHA) & Mainly SUBSET-91(+SUBSET-88) &  Safety Goals + Safety Acceptance Criteria +  PHA report\\ 
- Sub-System Hazard and Risk Analysis (SSHA) & Safety Goals and Acceptance Criteria + SSRS + additional design and architecture specification + additional user constraints  & Hazard Log (incl. Hazards and Safety Functions) \\ 
-  Specification of Sub-System Safety Requirements & SUBSET-26 + SUBSET-91 + Hazard Log  & Safety Requirement Specifications \\ 
- Update Hazard Log and corresponding Sub-System Safety Requirements & Verification Reports + Test Cases & Hazard Log + Sub-System Safety Requirements \\
- Specify model specific Requirements & SSRS + Safety Requirement Specification & Safety Plan + Model Backlogs\\
- Verify Safety Requirements & Models + Safety Requirements + Model Backlogs & Verification Report + Verification report \\
- Validate Safety Requirements & Source Code + Safety Requirements & Validation Report + Validation report \\
- Establish Safety Case & V and V Plan + Safety Plan + all requirements and specifications + V and V Reports & Safety Case \\ 
- 
-\end{tabular}  
-  \label{tab:openETCS-Safety-activities}%
-\end{table}%
-
-The safety design process and the resulting documentation constitute the main documents for the system approval, as it is required by European and national law to do everything reasonable expectable to prevent harm. Accordingly the CENELEC standards build the common technical rules for the development process. The Common Safety Methods present a concept based on the EN50126 how the risk evaluation and management has to be performed. 
-
-Therefore the main references concerning the safety design process are the CENELEC standards, mainly the EN50126 on how the safety aspects have to be handled as part of the RAMS management over the development process. The overall risk evaluation concept is also defined at this point. The specific concerning the safety case preparations are defined in the EN50129 including the Safety Integrity Level concept. 
-
-Therefore the overall safety management process has to be followed during the openETCS project, as far as it is concerning the scope of openETCS. Therefore the following table \ref{tab:Safety Process Requirements} presents a first list of relevant requirements:
-
-\begin{table}[htbp]
-  \centering
-  \caption{CENELEC Safety Process Requirements}
-    \begin{tabular}{r|r|r}
-    Standard & Section & Titel \\
-    \hline
-     EN 50126 & 4 & Railway RAMS  \\ 
-    EN 50126 & 6 & RAMS lifecycle \\
-     EN 50128 & Table A.3 & Software Error Effect Analysis\\
-    EN 50129 & 5.3 & Evidence of safety management \\
-    EN 50129 & Annex A & Safety Integrity Levels \\
-    EN 50129 & Annex B & Detailed technical requirements \\
-    \end{tabular}%
-  \label{tab:Safety Process Requirements}%
-\end{table}%
-
-
-
-
-\subsection{Safety artifacts}
-
-\textit{Process description has to be updated with the latest work. Cooperation between Cyril, Merlin and Jan}
-
-Since all safety design activities are based on the system development activities all system design artifacts are part of the safety design process. Therefore, the following design artifacts of the CENELEC standard development process build the basis for all safety artifacts:
-
-\begin{itemize}
-\item System Concept
-\item System Requirements Specification
-\item Software Requirement Specification
-\item Software Architecture Specification
-\item Software Design Specification
-\item Software Module Design Specification
-\item Software Source Code
-\end{itemize}
-
-The main safety artifacts are those which are set-up to build the reference for the safety-related aspect during the system development, which are continuously evolved during the design phases. Correspondingly the safety design process has to create artifacts to demonstrated that all safety and quality-related requirements included in the system design. Respectively the following artifacts are created during the safety design process:
-
-\begin{itemize}
-\item System Safety Plan
-\item Software Quality Assurance Plan
-\item Hazard Log
-\item System Safety Requirement Specification
-\item Safety Case
-\end{itemize} 
-
-This artifacts have to be managed over the development process. Since all safety requirement have to be verified and validated there is likewise a close to all Test and Validation Reports.
-
-\subsection{Safety design activities}
-\label{safetyactivities}
-
-\textit{Process description has to be updated with the latest work. Cooperation between Cyril, Merlin and Jan}
-
-
-The safety design activities set-up or evolve the safety artifacts in relation to the different design artifacts. The following safety design activities are required according to the EN 50128:
-
-\begin{itemize}
-\item Preliminary Hazard Analysis
-\item Establish Safety Plan
-\item System Hazard and Risk Analysis
-\item Risk Assessment
-\item Specification of System Safety Requirements
-\item Define Safety Related Functional Requirements
-\item Specify Sub-System and Component Safety requirements
-\item Implement Safety Plan
-\item Verify System, Sub-System and Component Safety requirements
-\item Validate System Safety Requirements
-\item Establish Safety Case
-\end{itemize}
-
-Overall the safety design activities have to be performed in close relation to the overall verification and validation activities as these have to verify and validate all safety requirements and their results become part of the safety plan.
-
-
-\section{Safety design process supporting tools}
-
-Supporting software tools are needed to handle the safety artifacts and to some degree to more efficiently perform the safety design activities. As some safety artifacts like the safety requirement specifications and the safety backlogs are closely related to design artifacts the same tools can be used. Especially all requirements should be handled by one tool to ensure full traceability and provide one main interface for the verification and validation activities.
-
-Depending on the methods used for hazard and risk analysis appropriate tools are needed to perform the analysis, collect the hazards and associated risks in the hazard log and to evaluated possible risk control measures. Thereby, traceability has to be guaranteed between all activities.
-
-Since the safety plan and safety case provide the basis for the safety approval the tools used to generated these artifacts should help to generate a consistent argumentation and efficiently collect the data needed to provide evidence. Respectively, interfaces to manage documents and automatically generate reports would be helpful functionalities.
+Adapted form the ETCS system safety analysis presented in Subset 88 the Annex A of Subset 91 presents the List of Hazardous Events inside ETCS that might cause the ETCS Core Hazard to occur, either alone or in combination with other failures. These are the events not eliminated by the operational analysis. 34 of these hazardous events are allocated to the Kernel, which make them the basis for the on-board software hazard and risk analysis. 
 
 
 \section{Proof of concept}
 \label{sec:Proofofconcept}
 
-The VnV Level 1 activities try to implement the overall safety strategy on parts of the benchmark modelling results to establish details for artifact relations, traceability between different artifacts and tool use. Therefore the following benchmark models are used as exemplary design artifacts:
+To evaluate the hazard and risk analysis process in the openETCS development environment a proof of concept has been performed during the VnV Level 1 activities in WP 4 by project partners Systerel, All4Tec and AEbt. As the respective design artifact for the proof of concept a SysML modeled formalizing one part of Subset 26 has been chosen: 
 
-\begin{itemize}
-\item SysML model Papyrus by CEA and All4tec
+\begin{center}
+\textbf{"\§3.5 Management of Radio Communication (MoRC)."}
+\end{center}
 
-\item Fraunhofer
+This model has been created by the project partner Siemens during the design process first in SCADE and then extended to a SysML model. The Model can be found under \url{https://github.com/openETCS/model-evaluation/tree/master/model/SCADE_Siemens/MoRC_System/MoRC_System/SysML_Model}. For the Proof of Concept only the SysML model has been used as the scope was on the hazard and risk analysis for the SysML architecture allocation.
 
-\item Scade model by Siemens
-\end{itemize}
+To do so the following hazardous event given in Subset 91 has been identified as the event mainly related to this part of the specification:
+\begin{center}
+\textbf{“KERNEL-6 Manage communication session failure” which results an “RADIO (INFILL) Transmission data consistency failure (safety related transmission function)”.}
+\end{center}
 
+The following task have been performed during the Proof of Concept as examples for the activities during a hazard and risk analysis. 
+ 
+ 
+\begin{enumerate}
+\item Conformity comparison for the MoRC
+	\begin{itemize}
+	\item Conformity comparison regarding sub functions between Subset 26 and SysML model
+	\item Conformity comparison regarding Input & Output data between Subset 26 and SysML model
+	\end{itemize}
+	
+\item Safety Analysis for the MoRC
+	\begin{itemize}
+	\item Hazard \& Risk analysis for each sub functions
+	\item Derivation of safety Target (SIL) for each sub functions
+	\item Derivation of safety requirements for each sub functions
+	\end{itemize}
+	
+\item Safety Assessment for the MoRC
+	\begin{itemize}
+	\item Derivation of the safety requirements
+	\item Assessment of the model against these safety requirements
+	\end{itemize}
+\end{enumerate} 
+ 
 
+The first task conformity comparison has been performed to verify the model, as no formal verification process has already been performed on the chosen preliminary model. The conformity was passed, as all sub function of the subset 026 function (MoRC) and those of the model match together and all Input \& Output data for each sub function of the subset 026 function and those of the model also match together. 
 
-\subsubsection{Hazardous Events}
+ 
+The second task Safety Analysis was performed using methods for three different safety activities as defined in the EN 50129 standard: hazard identification,
+risk estimation and evaluation, derivation of the Safety requirements. In general hazard identification and risk analysis are performed using traditional approaches like FMECA or HAZOP. In the case of openETCS since models are available a model-based, computer supported approach (based on the Tool “Safety Architect” from the company ALL4TEC) for hazard identification has been used in addition.
+Both results have been compared at the end to validate the results.
+ 
+For functions coming from the Subset 026 a hazard and rick analysis has been already performed, including a SIL allocation as presented in Subset 091. All these functions have a SIL 4 safety requirement; therefore sub function from these functions shall have also a SIL 4 safety requirement. For functions and corresponding sub function coming from others sources than the Subset 26 a SIL allocation on the basis of techniques described in the standards EN 50126, 50129 or IEC 61508-5 shall be performed.
+ 
+The third Task of the process consists in performing a Safety Assessment, which implies derivation of safety requirements and the following assessment of the model against these safety requirements. The derivation of the Safety requirements required knowledge in the function being analyzed, the interfaced components, the ETCS in general and CENELEC standard.
+ 
+ 
+The details results for the Proof of Concept can be found at \url{https://github.com/openETCS/validation/tree/master/VnVUserStories/VnVUserStoryAll4Tec-AEbt}. 
 
-Based on the 
-\begin{itemize}
-\item [a.] KERNEL-6  Manage communication session failure - Related to model of Subset 26 §3.5.3 Establishing a communication session
-\item [b.] KERNEL-9  Speed calculation underestimates train speed (or KERNEL-25  Incorrect traction/braking model (Acceleration only)) - Related to model of Subset 26 §3.13 Braking curves
-\item [c.] KERNEL-19  Failure of train trip supervision in OS, LS and FS - Related to model of Subset 26 §5.9 Procedure On-Sight
-\end{itemize}
+Overall the Proof of Concept has confirmed the correctness of the model as far as this has been possible in the limited scope. 
 
+The FMEA has identified 23 hazardous events in the subsystem which could lead to the Kernel 6 event. As measure to prevent this occurrence of these events 18 safety criteria have been derived.  
 
+The model-based safety analysis showed 12 safety assumptions related to over 40 granular function events. These are related to the assumed unwanted behavior in different subfunction blocks. Overall both methods seam to create comparable results, but due to the status of the model and the complexity of the mathematical model-based analysis both results are difficult to match. Respectively, the model-based analysis has to be specified further to fit the modeling process. But due to the size of Subset 26 on-board function, the model-based analysis is in the focus to lower the amount of manual work.
+ 
+As the proof of concept has clear shown that the process is able to derive Safety requirements, which can be allocated to different specification based on the software architecture, the results can be used to define the openETCS hazard and risk analysis process.
+ 
+\section{Hazard and risk analysis supporting tools}
+
+Supporting software tools are needed to handle the safety artifacts and to some degree to more efficiently perform the safety design activities. As some safety artifacts like the safety requirement specifications and the safety backlogs are closely related to design artifacts the same tools can be used. Especially all requirements should be handled by one tool to ensure full traceability and provide one main interface for the verification and validation activities.
+
+Depending on the methods used for hazard and risk analysis appropriate tools are needed to perform the analysis, collect the hazards and associated risks in the hazard log and to evaluated possible risk control measures. Thereby, traceability has to be guaranteed between all activities. As the main architecture will be designed in SysML, safety analysis tools like the Safety Architect Tool will be used to analyze the hazard propagation in the functional decomposition and to derive the resulting risk level. In this way short feedback iterations to the design process can be realized.
 
 \chapter{OpenETCS Safety Case}
+\label{safetycase}
+
+In general the safety case has to present to the assessing authority that the development has be done according to the required standards and that the product confirms to the quality and safety level corresponding to the aspired utilization. 
+To do so the present chain of argumentation has to state the requirements for the product development, its derived specifications and the evidence that the work has been done accordingly. To do this the safety case has to collect and combine documents from many different activities during the work process. As these documents are usually produced and stored in different places and formats studies have shown that a large amount of time to produce the safety case is spent on searching for document, maintaining document contents and maintaining document references \cite{Müller.2010}. 
+
+As the openETCS development has the objective to produce a reference formalization and implementation for the ETCS on-board unit, which can be used by interested parties during further development, it is highly important to collect all relevant documents in a way, that the can directly be used even for safety relevant system development.
+
+If this distinction between basic assumptions, safety argumentation and evidences is presented properly in the safety case the discussions with the legal authorities is improved and 	reusability is made easier.
+
+
+In general 
+During the interviews it became obvious, 
+
+
+Starting from a set of requirements, the strategy to demonstrate the safety of a product is to be developed and graphically described (see figure 1). In general, the fulfilment of each requirement will be shown by a tree of argumentation. The leaves of these trees specify the corresponding evidences (e.g. test results or analysis results). These evidences have to be documented and the corresponding documents accrue during the corresponding phases of the CENELEC development process described in the EN 50126.
+It turned out that such graphical argumentation structures ease the discussions with legal authorities as they understand the essence of the argumentation strategy in a very short time. In addition, through referencing the corresponding documents in the leaves of these trees, information retrieval is strongly supported.
+
 
 If the openETCS specification model and the generated on-board software shall be used in operation sufficient documentation is needed to demonstrate the used quality and safety management and their methods according to CENELEC standards, so that all potential implementers know which steps have to be performed by them to provide a safe product. 
 One of the resulting objectives of the openETCS project is to identify an efficient way for the safety case process and to develop improvement strategies to reach certification at various National Safety Authorities thus reducing time and money  in industry for the ETCS development by avoiding unnecessary or redundant procedures. 
 
-
+Since the safety plan and safety case provide the basis for the safety approval the tools used to generated these artifacts should help to generate a consistent argumentation and efficiently collect the data needed to provide evidence. Respectively, interfaces to manage documents and automatically generate reports would be helpful functionalities. 
 
 \section{Structure}
 

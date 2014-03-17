@@ -454,8 +454,11 @@ The following table shows some code metrics by file.
     \hline
    \end{longtable}
 
-The table below provides information regarding standard functional metrics such as cyclomatic complexity and others.
+The table below provides information regarding standard functional metrics such as cyclomatic complexity and others. 
 
+The interface complexity is defined by RSM as the number of input parameters to a function plus the number of return states from that function. Class interface complexity is the sum of all function interface complexity metrics within that class. 
+
+As it was shown previously the cyclomatic complexity metric measures the complexity of the code and it is calculated as V(g) = P + 1, where P are the predicate nodes. 
 The result obtained in the calculation of the cyclomatic complexity defines the number of independent paths within a piece of code and determines the upper bound on the number of tests that must be performed to ensure that each statement is executed at least once.
 
 According to McCabe a value of 10 is a practical upper limit for the cyclomatic complexity of a given module. When the complexity exceeds this value, it becomes very difficult to prove, understand and modify the module. However, in some circumstances, it may be appropriate to relax the restriction and permit modules with a complexity as high as 15.
@@ -605,7 +608,7 @@ According to McCabe a value of 10 is a practical upper limit for the cyclomatic 
     \hline
 \end{longtable}
 
-We continue with a more detailed Complexity analysis per function.
+The Maximun total complexity is the addition of Maximun Interface and Cyclomatic complexities and the total Cyclomatic complexity is calculated as the sumn of the cyclomatic complexity of each function of the file. Due to this, a more detailed Complexity analysis per function is provided at following.
 
 \begin{longtable}{||p{.125\textwidth}|p{.125\textwidth}|p{.175\textwidth}|p{.175\textwidth}||}
   \caption{Function Metrics}\\
@@ -727,6 +730,23 @@ Lines: 101
  \\\hline
 \end{longtable}
 
+
+Now, an example of the cyclomatic complexity calculation for the bitwalker\_Poke function is shown to compare the correctness of these results .
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block, frame=single]{./figures/poke.impl}
+\end{minipage}
+\caption{\label{fig:impl-poke} Bitwalker\_Poke}
+\end{listing}
+
+\begin{figure}[H]
+\centering
+\includegraphics{./figures/flow.png}
+\caption{Bitwalker\_Poke Flow}
+\end{figure}
+
+In this flow, 4 predicated nodes are displayed so, taking into account the equation V(g) = P + 1, where P are the predicate nodes, we see that the cyclomatic complexity of this function is V(g)=5.
 
 \subsection{LocMetrics tool Results}
 

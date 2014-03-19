@@ -1563,9 +1563,17 @@ After run this analysis no violation has been found.
 \subsection{CPPcheck tool Results}
 
 Bitwalker folder has been analyzed statically by \href{http://cppcheck.sourceforge.net/}{[CPPcheck]} tool (Complying with the standard C11).
- C11 (formerly C1X) is an informal name for ISO/IEC 9899:2011, the current standard for the C programming language. It replaces the previous C standard, informally known as C99. This new version mainly standardizes features that have already been supported by common contemporary compilers, and includes a detailed memory model to better support multiple threads of execution. Due to delayed availability of conforming C99 implementations, C11 makes certain features optional, to make it easier to comply with the core language standard.
+
+C11 (formerly C1X) is an informal name for ISO/IEC 9899:2011, the current standard for the C programming language. It replaces the previous C standard, informally known as C99. This new version mainly standardizes features that have already been supported by common contemporary compilers, and includes a detailed memory model to better support multiple threads of execution. Due to delayed availability of conforming C99 implementations, C11 makes certain features optional, to make it easier to comply with the core language standard.
  
-The results of the tool are the following:
+The results of the tool show that there are some verbose errors in the main file.
+
+\begin{itemize}
+\item repetitive verbose error regarding to Testwort variable is reassigned value before the old one has been used (lines 119, 120 and 121)
+\item one error about the Testwort variable is assigned a value that is never used (line 122).
+\end{itemize}  
+
+The below figure shows the results commented previously:
 \begin{figure}[H]
 \centering
 \includegraphics{./figures/cppcheck.png}

@@ -116,7 +116,7 @@ Approved by & -- & -- & \\
 Version &  Date & Author(s) & Justification  \\
 \hline  
 00.1 & 28/01/2014 & Jan Welte &  Extended Introduction  \\
-00.2 & 14/03/2014 & Jan Welte &  Reword document structure to incorporate review comments from internal assessment \\
+00.2 & 19/03/2014 & Jan Welte &  Reword document structure to incorporate review comments from internal assessment \\
 \hline  
 \end{tabular}
 \newpage
@@ -146,9 +146,58 @@ Since the openETCS project does not produce a specific train borne on-board unit
 \section{Document Structure}
 \label{sec:document-structure}
 
-As the openETCS software development process and the respective tool chain a used in an iterative process this version of the safety plan is also only one iteration step. As the design selectivities and the use of tools proceed further more details concerning the hazard identification methods, safety verification and validation principals and their corresponding result documentation will be added to this document. So far the version 1.0 of the safety plan will only cover the overall safety process and it general activities as well as the safety management activities which will create the safety plan as the final documentation document. Details are only presented for the hazard identification and evaluation method, as well as for the argumentation structure management method. All detailed activities concerning verification and validation of different safety requirements are closely connected to the Verification and Validation plan and all activities described there. 
+As the openETCS software development process and the respective tool chain are used in an iterative process this document only presents the current state of the openETCS safety related activities as it is also only one iteration step. So far this version of D.4.2.3 covers an introduction to the openETCS development process, the high-level safety principals defined by the ETCS system documentation and the basic plans for hazard and risk analysis and th safety case development in openETCS. 
 
-As safety is a term which is used in different context and therefore interpreted differently depending on the used reference system, the following section \ref{sec:Background} presents the principal concept and terminology on which the following safety process is founded \cite{Schnieder.2013}. These section shall present and clarify the underlying understanding of safety as it in standards EN 50126, EN 50128 and EN 50129 for railway system development. Thereby, it is important to state more precisely the relation between quality and safety for software as this is the core aspect for the openETCS development.
+As safety is a term which is used in different context and therefore interpreted differently depending on the used reference system, the following section \ref{sec:Background} presents the principal concept and terminology on which the following safety process is founded. These section shall present and clarify the underlying understanding of safety as it in standards EN 50126, EN 50128 and EN 50129 for railway system development. Thereby, it is important to state more precisely the relation between quality and safety for software as this is the core aspect for the openETCS development. The basic open ETCS software develpment phases are shown in chapter \ref{sec:development-process} on which the following methodology for hazard and risk analysis is based. A more detailed process for the hazard and risk analysis is presented in chapter \ref{sec:hazardandrisk}  and evaluated in a first proof of concept. Furthermore chapter \ref{sec:safetycase} describs the principal requirements for the openETCS safety case and specifies the model-based documentation process pursued for the openETCS argumentation structure management which will be the basis for the safety case. 
+
+
+
+\section{Reference documents}
+\label{sec:refdoc}
+
+This document essentially refers to the following standards, ETCS specification documents and openETCS project documents.
+
+\begin{itemize}
+\item ISO 9000 --- 12/2005 --- \emph{Quality management}
+\item ISO 9001 --- 12/2008 --- \emph{Quality management systems — Requirements}
+\item ISO 25010 --- 03/2011 --- \emph{Systems and software engineering -- Systems and software Quality Requirements and Evaluation (SQuaRE) -- System and software quality models}
+\item CENELEC EN 50126-1 --- 01/2000 --- \emph{Railways applications –- The specification and 
+demonstration of Reliability, Availability, Maintenability and Safety (RAMS) –- Part 1: 
+Basic requirements and generic process}
+\item CENELEC EN 50128 --- 10/2011 --- \emph{Railway applications -- Communication, signalling and 
+processing systems -- Software for railway control and protection systems}
+\item CENELEC EN 50129 --- 05/2003 --- \emph{Railway applications –- Communication, signalling and 
+processing systems –- Safety related electronic systems for signalling}
+\item CCS TSI --- \emph{ CCS TSI for HS and CR transeuropean rail has been adopted by a Commission Decision 2012/88/EU on the 25th January 2012}
+\item SUBSET-026 3.3.0 --- \emph{System Requirement Specification}
+\item SUBSET-091 3.2.0 --- \emph{Safety Requirements for the Technical Interoperability
+of ETCS in Levels 1 \& 2}
+\item SUBSET-088 2.3.0 --- \emph{ETCS Application Levels 1 \& 2 - Safety Analysis}
+\item FPP --- \emph{Project Outline Full Project Proposal Annex OpenETCS} -- v2.2
+\item D2.2 -- Report on CENELEC standard
+\item D2.3 -- Definition of the overall process for the formal description of ETCS and the rail system it works in 
+\item D2.4 -- Definition of the methods used to perform the formal description
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Glossary}
+\label{sec:glossary}
+
+\begin{description}
+
+\item [ACedit] Assurance Case Editor
+\item [ARM] Argumentation  Metamodel
+\item[FMEA] Failure Mode Effect Analysis
+\item[GSN] Goal Structured Notation
+\item[MoRC] Management of Radio Communication
+\item[SIL] Safety Integrity Level
+\item[SRS] System Requirement Specification
+\item[THR] Tolerable Hazard Rate
+\item[V\&V] Verification \& Validation
+
+\end{description}
 
 \section{Background Information}
 \label{sec:Background}
@@ -193,12 +242,6 @@ These depenences between the local and global system charcteristics and the stat
 \end{figure}
 
 
-
-
-
-
-
-
 \subsection{Probabilistic Safety Concept}
 
 The EN 50128 standard defines safety as the ``freedom from unacceptable levels of risk of harm to people", which shows that the safety approach required by the CENELEC standards is risk-based.
@@ -225,9 +268,9 @@ This demonstrates that the first step is to define the system properties, specif
 
 \paragraph{Safety Integrity Level}
 
-The safety integrity level represented the acceptable risk for every part of the system. The risk control process as it is presented in figure \ref{fig:Risk-control-modell-eng} is then performed to ensure that the safety integrity levels are reach by every part of the system.
+The safety integrity level (SIL) represented the acceptable risk for every part of the system. The risk control process as it is presented in figure \ref{fig:Risk-control-modell-eng} is then performed to ensure that the safety integrity levels are reach by every part of the system.
 
-Since software itself does not fails in the way technical equipment does the specific software safety integrity level represent a qualitative measure with respect to the required degree of correctness for the software functionality than a qualitative value for the likelihood of failing. To reach the needed degree of correctness for the software various design, verification and validation methods are required corresponding to the assigned software safety integrity level. This process leads to safety requirements which have to be implemented in the software design as well as verified and validated. Respectively the EN50126 describes the safety design process as a series of safety tasks for each life cycle phase. This task are related to a number of safety artifacts which are created, used and adapted over time through the different safety design activities.
+Since software itself does not fails in the way technical equipment does the specific software safety integrity level represent a qualitative measure with respect to the required degree of correctness for the software functionality than a qualitative value for the likelihood of failing. To reach the needed degree of correctness for the software various design, verification and validation methods are required corresponding to the assigned software safety integrity level. This process leads to safety requirements which have to be implemented in the software design as well as verified and validated. Respectively the EN 50126 describes the safety design process as a series of safety tasks for each life cycle phase. This task are related to a number of safety artifacts which are created, used and adapted over time through the different safety design activities.
 
 
 \subsection{Safety Case}
@@ -250,7 +293,7 @@ Concrete methods to verify and validate safety relevant properties derived from 
 \chapter{OpenETCS Development process}
 \label{sec:development-process}
 
-The main products of the openETCS project will be the OpenETCS specification model used to generate the OpenETCs on-board software and the OpenETCS tools chain development, which is used to formalizes the ERA Specifications for ETCS, generate the Software Code and perform verification and validation activities. Both parts have their own development process, but the focus focus hazard and risk analysis and the safety case shall be on the software development process. The openETCS tool chain shall only be considered with respect to its role in the software development process as the tool qualification is mainly out of this project.
+The main products of the openETCS project will be the OpenETCS specification model used to generate the OpenETCS on-board software and the OpenETCS tools chain development, which is used to formalizes the ERA Specifications for ETCS, generate the Software Code and perform verification and validation activities. Both parts have their own development process, but the focus focus hazard and risk analysis and the safety case shall be on the software development process. The openETCS tool chain shall only be considered with respect to its role in the software development process as the tool qualification is mainly out of this project.
 The safety related activities 
 
 \section{Formalization and software development}
@@ -359,13 +402,13 @@ Based on these overall safety goals as specific hazard and risk analysis for the
 
 \section{General ETCS Safety Principals}
 
-Based on the ETCS reference architecture Subset 91 gives the role of ETCS as train protection as the following:
+Based on the ETCS reference architecture SUBSET-91 gives the role of ETCS as train protection as the following:
 
 \begin{center}
 \textbf{"To provide the Driver with information to allow  him to drive the train safely and to enforce respect of this information, to the extent advised to ETCS."}
 \end{center}
 
-Respectively, the Core Hazard for the ETCS reference architecture is defined as the following in Subset 91:
+Respectively, the Core Hazard for the ETCS reference architecture is defined as the following in SUBSET-91:
 \begin{center}
 \textbf{"Exceedance of the safe speed or distance as advised to ETCS."}
 \end{center}
@@ -374,13 +417,13 @@ Based on the role of ETCS and its respective SIL 4 quantification the maximum al
 \[1.0\times10^{-9} hour^{-1} train^{-1}.\]
 The same value is specified for the corresponding track-side.
 
-Adapted form the ETCS system safety analysis presented in Subset 88 the Annex A of Subset 91 presents the List of Hazardous Events inside ETCS that might cause the ETCS Core Hazard to occur, either alone or in combination with other failures. These are the events not eliminated by the operational analysis. 34 of these hazardous events are allocated to the Kernel, which make them the basis for the on-board software hazard and risk analysis. 
+Adapted form the ETCS system safety analysis presented in SUBSET-88 the Annex A of SUBSET-91 presents the List of Hazardous Events inside ETCS that might cause the ETCS Core Hazard to occur, either alone or in combination with other failures. These are the events not eliminated by the operational analysis. 34 of these hazardous events are allocated to the Kernel, which make them the basis for the on-board software hazard and risk analysis. 
 
 
 \section{Proof of concept}
 \label{sec:Proofofconcept}
 
-To evaluate the hazard and risk analysis process in the openETCS development environment a proof of concept has been performed during the VnV Level 1 activities in WP 4 by project partners Systerel, All4Tec and AEbt. As the respective design artifact for the proof of concept a SysML modeled formalizing one part of Subset 26 has been chosen: 
+To evaluate the hazard and risk analysis process in the openETCS development environment a proof of concept has been performed during the VnV Level 1 activities in WP 4 by project partners Systerel, All4Tec and AEbt. As the respective design artifact for the proof of concept a SysML modeled formalizing one part of SUBSET-26 has been chosen: 
 
 \begin{center}
 \textbf{"\S 3.5 Management of Radio Communication (MoRC)."}
@@ -388,7 +431,7 @@ To evaluate the hazard and risk analysis process in the openETCS development env
 
 This model has been created by the project partner Siemens during the design process first in SCADE and then extended to a SysML model. The Model can be found under \url{https://github.com/openETCS/model-evaluation/tree/master/model/SCADE_Siemens/MoRC_System/MoRC_System/SysML_Model}. For the Proof of Concept only the SysML model has been used as the scope was on the hazard and risk analysis for the SysML architecture allocation.
 
-To do so the following hazardous event given in Subset 91 has been identified as the event mainly related to this part of the specification:
+To do so the following hazardous event given in SUBSET-91 has been identified as the event mainly related to this part of the specification:
 \begin{center}
 \textbf{“KERNEL-6 Manage communication session failure” which results an “RADIO (INFILL) Transmission data consistency failure (safety related transmission function)”.}
 \end{center}
@@ -399,8 +442,8 @@ The following task have been performed during the Proof of Concept as examples f
 \begin{enumerate}
 \item Conformity comparison for the MoRC
 	\begin{itemize}
-	\item Conformity comparison regarding sub functions between Subset 26 and SysML model
-	\item Conformity comparison regarding Input and Output data between Subset 26 and SysML model
+	\item Conformity comparison regarding sub functions between SUBSET-26 and SysML model
+	\item Conformity comparison regarding Input and Output data between SUBSET-26 and SysML model
 	\end{itemize}
 	
 \item Safety Analysis for the MoRC
@@ -425,7 +468,7 @@ The second task Safety Analysis was performed using methods for three different 
 risk estimation and evaluation, derivation of the Safety requirements. In general hazard identification and risk analysis are performed using traditional approaches like FMECA or HAZOP. In the case of openETCS since models are available a model-based, computer supported approach (based on the Tool “Safety Architect” from the company ALL4TEC) for hazard identification has been used in addition.
 Both results have been compared at the end to validate the results.
  
-For functions coming from the Subset 026 a hazard and rick analysis has been already performed, including a SIL allocation as presented in Subset 091. All these functions have a SIL 4 safety requirement; therefore sub function from these functions shall have also a SIL 4 safety requirement. For functions and corresponding sub function coming from others sources than the Subset 26 a SIL allocation on the basis of techniques described in the standards EN 50126, 50129 or IEC 61508-5 shall be performed.
+For functions coming from the Subset 026 a hazard and rick analysis has been already performed, including a SIL allocation as presented in Subset 091. All these functions have a SIL 4 safety requirement; therefore sub function from these functions shall have also a SIL 4 safety requirement. For functions and corresponding sub function coming from others sources than the SUBSET-26 a SIL allocation on the basis of techniques described in the standards EN 50126, 50129 or IEC 61508-5 shall be performed.
  
 The third Task of the process consists in performing a Safety Assessment, which implies derivation of safety requirements and the following assessment of the model against these safety requirements. The derivation of the Safety requirements required knowledge in the function being analyzed, the interfaced components, the ETCS in general and CENELEC standard.
  
@@ -436,7 +479,7 @@ Overall the Proof of Concept has confirmed the correctness of the model as far a
 
 The FMEA has identified 23 hazardous events in the subsystem which could lead to the Kernel 6 event. As measure to prevent this occurrence of these events 18 safety criteria have been derived.  
 
-The model-based safety analysis showed 12 safety assumptions related to over 40 granular function events. These are related to the assumed unwanted behavior in different subfunction blocks. Overall both methods seam to create comparable results, but due to the status of the model and the complexity of the mathematical model-based analysis both results are difficult to match. Respectively, the model-based analysis has to be specified further to fit the modeling process. But due to the size of Subset 26 on-board function, the model-based analysis is in the focus to lower the amount of manual work.
+The model-based safety analysis showed 12 safety assumptions related to over 40 granular function events. These are related to the assumed unwanted behavior in different subfunction blocks. Overall both methods seam to create comparable results, but due to the status of the model and the complexity of the mathematical model-based analysis both results are difficult to match. Respectively, the model-based analysis has to be specified further to fit the modeling process. But due to the size of SUBSET-26 on-board function, the model-based analysis is in the focus to lower the amount of manual work.
  
 As the proof of concept has clear shown that the process is able to derive Safety requirements, which can be allocated to different specification based on the software architecture, the results can be used to define the openETCS hazard and risk analysis process.
  
@@ -496,22 +539,22 @@ To support the proposed model-based safety case a safety case editor to model GS
 
 Since the openETCS development uses the eclipse tool platform and the github document management system as the backbones for the tool integration and the artifact management, the tool supporting this model-based safety case approach shall be able to interact with these two. 
 
-The Assurance Case Editor (ACedit) \cite{aceditwebsite} is a tool implementation of GSN \cite{GSNwebsite} and the OMG  Argumentation  Metamodel  (ARM) \cite{ARMwebsite} to graphically construct argumentation structures to which this tool refers as assurance cases. In addition the tool supports a number of model management techniques including model checking methods that apply to GSN and ARM. As ACedit is eclipse based the evaluation done during the verification and validation level one has determined this tool as the most promising GSN editor. Since the eclipse framework provides an interface to github via the EGit plug-in the document management system integration shall be realized through the eclipse model base.
+The Assurance Case Editor (ACedit) \cite{aceditwebsite} is a tool implementation of GSN \cite{GSNwebsite} and the OMG Argumentation  Metamodel  (ARM) \cite{ARMwebsite} to graphically construct argumentation structures to which this tool refers as assurance cases. In addition the tool supports a number of model management techniques including model checking methods that apply to GSN and ARM. As ACedit is eclipse based the evaluation done during the verification and validation level one has determined this tool as the most promising GSN editor. Since the eclipse framework provides an interface to github via the EGit plug-in the document management system integration shall be realized through the eclipse model base.
 
 The GSN editor developed during the INESS project has been dismissed as it is only java based. The effort needed to connect this tool to eclipse and github during the openETCS projet was sat as to high. 
  
 \chapter{Conclusion}
-\label{(sec:conclusion)}
+\label{sec:conclusion}
 
 This document has presents the basic concept for the main safety related activities in the openETCS development as they have been determined during the first verification and validation iteration level of WP 4. As these have been set in respect to a still evolving development methodology and tool chain, the overall process as to be detailed and adopted as the project continues. 
 
-As the openETCS development presented in chapter \ref{sec:development-process} formalizes the Subset 26 requirements using SysML and later SCADE models, the hazard and risk analysis methodology applied at the openETCS development has to be able to allocate all hazardous events relevant for the kernel of the on-board unit to subsystems of the openETCS software architecture. Based on this allocation the resulting risk will be determined leading to safety requirements to control the overall system risk allowed level. 
+As the openETCS development presented in chapter \ref{sec:development-process} formalizes the SUBSET-26 requirements using SysML and later SCADE models, the hazard and risk analysis methodology applied at the openETCS development has to be able to allocate all hazardous events relevant for the kernel of the on-board unit to subsystems of the openETCS software architecture. Based on this allocation the resulting risk will be determined leading to safety requirements to control the overall system risk allowed level. 
 
-The results for the proof of this concept conducted during the first verification and validation level by Systerel, All4Tec and AEbt using the benchmark SysML model for Management of Radio Communication and one allocated hazardous event has show that the proposed methodology for hazard and risk analysis provides sufficient safety requirements for the design process. Further specification of the methodology has to be done to support or even replace the manual FMEA or HAZOP with an automatic analysis of the SysML model by the Safety Architect tool. However, the proof of concept has demonstrated that this could be sufficient and the best option to work in short design iterations as the openETCS project plans to do. 
+The results for the proof of this concept conducted during the first verification and validation level by Systerel, All4Tec and AEbt using the benchmark SysML model for Management of Radio Communication and one allocated hazardous event has show that the proposed methodology for hazard and risk analysis provides sufficient safety requirements for the design process. Further specification of the methodology has to be done to support or even replace the manual FMECA or HAZOP with an automatic analysis of the SysML model by the Safety Architect tool. However, the proof of concept has demonstrated that this could be sufficient and the best option to work in short design iterations as the openETCS project plans to do. 
 
 In general the verification and validation activities have to ensure that the safety principal apportioned to the on-board functionality are satisfied. Hence, the main objective for the openETCS safety case as presented in chapter \ref{sec:safetycase} is to provide the fundamental quality and safety principals for the openETCS development as these have to be completed by adopters of the openETCS results for their assessment. Therefore, the general safety argumentation and the concrete evidences shall be clear distinguished to ease applicability and support discussions with different legal authorities.
 
-Modeling the generic argumentation structure and connecting the individual elements to the respective artifacts created during the openETCS development has been identified during the first level iteration as a promising approach to show the relations between requirements, safety strategy and provides evidence. A GSN model combined with direct links to the actual artifacts in the document management system should also help the internal and external discussions concerning the safety strategy. To efficiently use this approach for the safety case preparation the  chosen Acedit editor for GSN has to be interfaced with the github document management system. 
+Modeling the generic argumentation structure and connecting the individual elements to the respective artifacts created during the openETCS development has been identified during the first level iteration as a promising approach to show the relations between requirements, safety strategy and provides evidence. A GSN model combined with direct links to the actual artifacts in the document management system should also help the internal and external discussions concerning the safety strategy. To efficiently use this approach for the safety case preparation the  chosen ACedit editor for GSN has to be interfaced with the github document management system. 
 
 Overall the main methodology for the hazard and risk analysis as well as the safety case work has been defined during the first level iteration but these concepts have to be further refined over the next iterations with the evolving development process.
 

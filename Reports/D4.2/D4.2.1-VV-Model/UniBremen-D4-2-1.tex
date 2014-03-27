@@ -15,7 +15,7 @@
 \newcommand{\eod}{\nl\rule{.95\textwidth}{1pt}\nl\textit{End of Document}}
 
 
-\subsubsection{Verification of the  Management of the Radio Communication}
+\subsection{Verification of the  Management of the Radio Communication}
 
 This section reports the verification activity of SCADE-MoRC. The goal
 of this activity is, first, to establish the compliance of the SCADE
@@ -30,7 +30,7 @@ In short, we develop a test model from the specification, generate tests and use
 the code generated from SCADE to perform software-in-loop testing.
 
 \paragraph{Object of verification}
- MoRC ERTMS function baseline 3.
+ Management of radio communication (MoRC) ERTMS function baseline 3.
 \nl
 
 
@@ -91,6 +91,17 @@ test model. To ensure that this particular test will be generated a LTL
 formula has been added (See \cite{braunstein_MorC_2013} for more
 details).
 
+\begin{description}
+\item[REQ-3.5.3.10] "If the establishment of a communication session is
+initiated by the RBC, it shall be performed according to the following steps
+..."
+\vspace{-1em}
+\begin{verbatim}
+Finally (MessageIn == INIT_SESSION_TRACK && setUp == 1 -> 
+Next (MessageOut == SESSION_ESTABLISHED && radioComSession == ESTABLISHED)
+\end{verbatim}
+\end{description}
+
 We need then to link the system under test and the test model.  A
 common inputs/outputs interface of the system under test has been
 made. The inputs drive the tests and the outputs are the observational
@@ -102,12 +113,17 @@ Two strategies have been used for the tests generation. First, we
 generate a set of test following the common behavioral coverage
 strategies ensuring the following coverage :
 \begin{itemize}
-\item  Basic control state coverage (BCS)
-\item  Transition coverage (TC)
-\item  Modified condition/decision coverage (MC/DC)
-\item  Hierarchic transition coverage (HITR)
-\item  Basic Control states Pair coverage(BCPAIRS)
+\item  Basic control state coverage (BCS): All state locations are covered.
+\item  Transition coverage (TC): All transition of the statecharts are covered.
+\item  Modified condition/decision coverage (MC/DC): Modified condtion/decision coverage.
+\item  Hierarchic transition coverage (HITR): High-level transition of
+  nested statecharts are covered.
+\item  Basic Control states Pair coverage(BCPAIRS): For concurrent state
+  machines pair states of two different state machines. 
 \end{itemize}
+
+More detailled explaination on the coverage may be found here \cite{huang_test_2013}.
+
 We then apply a requirement coverage strategy that consists of
 generating tests that covers all the requirements. As each requirement
 are linked to an artifact of the test model, part of the test cases
@@ -133,7 +149,7 @@ The Artifacts are produced as follow:
 SCADE is EN 50128 certified at SIL 3/4, RT-tester is also certifiable
 SIL3 as shown in \cite{peleska_efficient_2012}.
 
-\paragraph{Results}
+\subsection{Results}
 
 \begin{table}[htbp]
 \centering
@@ -166,7 +182,7 @@ modeling style correctly and be able to have interesting result.
 
 
 
-\subparagraph{Summary}
+\paragraph{Summary}
 
 What we have done:
 \begin{enumerate}
@@ -183,7 +199,7 @@ What we have done:
  \item Run the test on the DLR lab.
  \end{enumerate}
 
-\subparagraph{Conclusions/Lessons learned}
+\paragraph{Conclusions/Lessons learned}
 
 Our first attempt to simulate the tests was not a success. All tests
 except the one covering the initial states failed. Our two models

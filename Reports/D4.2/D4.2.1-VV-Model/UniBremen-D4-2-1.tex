@@ -29,7 +29,7 @@ section {\em 6.1.2.7 System Integration Testing (Uni Bremen/DLR)} \cite{D4.1_201
 In short, we develop a test model from the specification, generate tests and use
 the code generated from SCADE to perform software-in-loop testing.
 The test model and the SCADE model used to generate code have been
-done independently to each other.
+done independently to each other. The generated tests w
 
 \paragraph{Object of verification}
  Management of radio communication (MoRC) ERTMS function baseline 3.
@@ -152,8 +152,8 @@ The Artifacts are produced as follow:
 \item Code run within the RT-Tester engine.
 \end{itemize}
 
-SCADE is EN 50128 certified at SIL 3/4, RT-tester is also certifiable
-SIL3 as shown in \cite{peleska_efficient_2012}.
+SCADE is EN 50128 qualified at SIL 3/4, RT-tester is also certifiable
+T3 as shown in \cite{peleska_efficient_2012}.
 
 \subsection{Results}
 
@@ -217,11 +217,30 @@ interpretation in the modeling and thus some non equivalent behaviors.
 Moreover some missing information in the specification leads to a
 under constraints test model. It affects the test generation by
 providing some non realistic test cases. Some variable behavior that
-were not mentioned in the spec are considered as free and may have any
-possible value in their definition range.
+were not mentioned in the specification are considered as free and may have any
+possible value in their definition range. This can be solved by adding
+information into the test model. 
+
+More precisely, the test model is composed with a system under test
+and a test environment. In our first model the test environment is
+empty, meaning that all inputs of the SUT are free. The test
+enviroment may be described (and constrainted) by statecharts or
+LTL formula that restricts the behaviors of the inputs. The test
+generator should then find  test suites that realize the given
+coverage and that respect the constraints given in the test environment.
+
 
 
 \paragraph{Future Activities}
+\subparagraph{Refine the test model}
+\begin{enumerate}
+\item Analyze the test results of the SCADE C code
+\item Enumerates specification ambiguitites: where the two parties did
+  not undestand the specification in the same way.
+\item Refine the test model by adding a better test environment with
+  the help of domain experts
+\end{enumerate}
+\subparagraph{New activities}
 We will also provide the ceiling speed monitoring function to enrich
 the test model and apply new model based testing approach.
 

@@ -5,7 +5,9 @@ clean::
 include Makefile.template
 
 SRC := $(wildcard *.c)
-OBJ := $(SRC:.cpp=*.o)
+OBJ := $(SRC:.c=*.o)
+
+obj : $(OBJ)
 
 
 test_abs: test_abs.o abs.o

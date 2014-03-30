@@ -51,17 +51,20 @@ export WP=frama-c.byte
 export WPGUI=frama-c-gui.byte
 export WPREPORT=$(WP) $(WP_FLAGS) $(WP_PROVER_FLAGS)
 
+
 # start WP on command line and run provers
 %.wp:%.c FORCE
 	@$(WP) $(WP_FLAGS) $(WP_PROVER_FLAGS) -wp-out $(patsubst %.c,%.wp, $<)  $<
 
 wp: $(FILE).wp
 
+
 # start WP on command line but do not run provers
 %.check:%.c FORCE
 	@($(WP) $(WP_FLAGS) -wp-prover none -wp-out $(patsubst %.c,%.wp, $<)  $< &)
 
 check: $(FILE).check
+
 
 # start WP GUI and run provers
 %.wpgui:%.c FORCE
@@ -99,7 +102,6 @@ clean:: FORCE
 
 format: FORCE
 	@astyle -A1 -f -p -Y -z2 --indent=spaces -s2 *.c *.spec *.impl *.cpp *.h 
-
 
 
 FORCE:

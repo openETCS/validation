@@ -22,7 +22,7 @@ void use_2(int x)
 void use_3(int x)
 {
   int a = abs_int(x);
-  //@ assert a >= 10;
+  //@ assert 10 <= a < 200;
 }
 
 

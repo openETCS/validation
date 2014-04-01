@@ -1,3 +1,106 @@
 
 \section{An Introduction to Formal Verification with Frama-C\slash\ WP}
 \label{sec:frama-c}
+
+
+\subsection{First steps}
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs.c}
+\end{minipage}
+\caption{\label{fig:abs} An implementation of the absolute value function}
+\end{listing}
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs1.c}
+\end{minipage}
+\caption{\label{fig:abs1} A first attempt to formally specify \inl{abs_int}}
+\end{listing}
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/test_abs.c}
+\end{minipage}
+\caption{\label{fig:test_abs} Some simple test cases}
+\end{listing}
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs1a.c}
+\end{minipage}
+\caption{\label{fig:abs1a} Taking integer overflows into account}
+\end{listing}
+
+\FloatBarrier
+
+\subsection{Separating specification and implementation}
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs2.h}
+\end{minipage}
+\caption{\label{fig:abs2-h} Specifying a function prototype}
+\end{listing}
+
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs2.c}
+\end{minipage}
+\caption{\label{fig:abs2-c} Implementation at a different location than the specification}
+\end{listing}
+
+\FloatBarrier
+
+\subsection{Modular verification}
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/use_abs2_1.c}
+\end{minipage}
+\caption{\label{fig:use_abs2-1} A simple example of modular verification}
+\end{listing}
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/use_abs2_2.c}
+\end{minipage}
+\caption{\label{fig:use_abs2-2} Another example of modular verification}
+\end{listing}
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/use_abs2_3.c}
+\end{minipage}
+\caption{\label{fig:use_abs2-3} A more complex example of modular verification}
+\end{listing}
+
+\FloatBarrier
+
+\subsection{Dealing with side effects}
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs3a.c}
+\end{minipage}
+\caption{\label{fig:abs3a} An implementation with side effects}
+\end{listing}
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs3b.c}
+\end{minipage}
+\caption{\label{fig:abs3b} Specifying the absence of side effects}
+\end{listing}
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs3c.c}
+\end{minipage}
+\caption{\label{fig:abs3c} Finer control of side effects}
+\end{listing}
+
+
+\FloatBarrier

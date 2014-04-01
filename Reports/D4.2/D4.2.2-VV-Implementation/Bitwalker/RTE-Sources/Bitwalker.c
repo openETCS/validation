@@ -13,12 +13,6 @@ uint64_t Bitwalker_Peek (unsigned int Startposition, unsigned int Length,
 
     unsigned int i;
 
-    /*@
-        loop invariant Startposition <= i <= Startposition + Length;
-        loop invariant retval == BitSum(Startposition, i - Startposition, Bitstream);
-        loop assigns i, retval;
-        loop variant Startposition + Length - i;
-    */
     for (i = Startposition; i < Startposition + Length; i++)
     {
         uint8_t CurrentValue = Bitstream[i >> 3] & BitwalkerBitMaskTable[i & 0x07];
@@ -46,25 +40,6 @@ int Bitwalker_Poke (unsigned int Startposition, unsigned int Length, uint8_t Bit
     // everything ok, we can iterate bitwise from right to left
     int i;
 
-    /*@
-         loop invariant -1 <= i < Startposition + Length;
-
-         loop invariant (\at(Value, Pre) & (PowerBase2(Startposition+ Length-i))-1)
-            == BitSum(i, Startposition+Length-1,Bitstream);
-
-         loop invariant BitSum(0, Startposition, \at(Bitstream, Here))
-            == BitSum(0, Startposition, \at(Bitstream, Pre));
-
-         loop invariant BitSum(Startposition + Length, BitstreamSizeInBytes, \at(Bitstream, Here))
-            == BitSum(Startposition,Startposition +Length, \at(Bitstream, Pre));
-
-        loop invariant  \at(Value, Here) == (\at(Value, Pre)  >> (Startposition+Length-1-i));
-
-         loop assigns i, Value,  Bitstream[StreamIndex(Startposition)..StreamIndex(Startposition + Length - 1)];
-
-         loop variant i-Startposition;
-     */
-
     for (i = Startposition + Length - 1; i >= (int)Startposition; i--)
     {
         // distinction between even and odd number
@@ -79,40 +54,3 @@ int Bitwalker_Poke (unsigned int Startposition, unsigned int Length, uint8_t Bit
     return 0;
 }
 
-
-void Bitwalker_IncrementalWalker_Init (T_Bitwalker_Incremental_Locals *Locals, uint8_t Bitstream[], unsigned int Size, unsigned int FirstBitposition)
-{
-    Locals->Bitstream           = Bitstream;
-    Locals->Length              = Size;
-    Locals->CurrentBitposition  = FirstBitposition;
-}
-
-
-uint64_t Bitwalker_IncrementalWalker_Peek_Next (T_Bitwalker_Incremental_Locals *Locals, unsigned int Length)
-{
-    // plausibility check is done when reading the bits
-    uint64_t retval = Bitwalker_Peek(Locals->CurrentBitposition, Length, Locals->Bitstream, Locals->Length);
-    Locals->CurrentBitposition += Length;
-    return retval;
-}
-
-
-int Bitwalker_IncrementalWalker_Peek_Finish (T_Bitwalker_Incremental_Locals *Locals)
-{
-    return Locals->CurrentBitposition;
-}
-
-
-int Bitwalker_IncrementalWalker_Poke_Next(T_Bitwalker_Incremental_Locals *Locals, unsigned int Length, uint64_t Value)
-{
-    // plausibility check is done when reading the bits
-    int retval = Bitwalker_Poke(Locals->CurrentBitposition, Length, Locals->Bitstream, Locals->Length, Value);
-    Locals->CurrentBitposition += Length;
-    return retval;
-}
-
-
-int Bitwalker_IncrementalWalker_Poke_Finish(T_Bitwalker_Incremental_Locals *Locals)
-{
-    return Locals->CurrentBitposition;
-}

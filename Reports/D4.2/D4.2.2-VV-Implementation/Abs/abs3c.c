@@ -1,5 +1,5 @@
 
-// Forbid side effects with assigns \nothing.
+// Side effects can be controlled on an individual basis.
 
 #include <limits.h>
 
@@ -8,7 +8,7 @@ extern int a;
 /*@
     requires x > INT_MIN;
 
-    assigns \nothing;
+    assigns a; // allow assignemt to a (but only to a).
 
     ensures 0 <= x ==> \result ==  x;
     ensures 0 >  x ==> \result == -x;

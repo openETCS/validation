@@ -114,12 +114,53 @@ satisfies the contract in Listing~\ref{fig:abs1}.
 
 \subsection{Sharpening the contract of \inl{abs_int}}
 
+It is of course well known that the operation \inl{-x} can overflow
+and it is the fact that Frama-C can detect such overflows that 
+prevents incorrect verification results.
+
+The GNU Standard C Library clearly states that the absolute value of
+\inl{INT_MIN} is undefined.\footnote{%
+  See \url{http://www.gnu.org/software/libc/manual/html_node/Absolute-Value.html}
+}
+Under \textsf{OSX}, the manual page of \inl{abs} mentions under the field of ``Bugs'':
+%
+\begin{small}
+\begin{verbatim}
+    The absolute value of the most negative integer remains negative.
+\end{verbatim}
+\end{small}
+
+Thus, our formal specification should exclude the value \inl{INT_MIN}
+from the set of admissable value on which \inl{abs_int} can be applied.
+In ACSL, we can use the \inl{requires} clause to express \emph{preconditions}
+of a specification.
+Listing~\ref{fig:abs1a} shows an extended specification of \inl{abs_int}
+that takes the limitations of the type \inl{int} into account.
+
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/abs1a.c}
 \end{minipage}
 \caption{\label{fig:abs1a} Taking integer overflows into account}
 \end{listing}
+
+Frama-C\slash WP is now capable to verify that the implementation of
+\inl{abs_int} satisfies the specification of Listing~\ref{fig:abs1a}.
+
+There is an important lesson that can be learned here:
+
+\begin{framed}
+Sometimes developers provide source code and imagine that a tool
+like Frama-C\slash WP can verify the correctness of their implementation.
+In order to fulfill its task, however, Frama-C\slash WP needs an ACSL specification. 
+Such a specification, with a reasonably precise description of the admissable inputs
+and exptected behavior, must be derived from the \emph{requirements} of the software
+and are not magically discovered from the source code by Frama-C\slash WP.
+The code does what it does. 
+In order to verify that the code does what someone expects, these expectations
+must be clearly expressed, that is, they must be specified.
+\end{framed}
+
 
 \FloatBarrier
 

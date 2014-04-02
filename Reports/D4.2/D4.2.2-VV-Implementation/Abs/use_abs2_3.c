@@ -8,5 +8,7 @@ void use_3(int x)
 {
   int a = abs_int(x);
   //@ assert 10 <= a < 200;
+
+  // ...
 }
 

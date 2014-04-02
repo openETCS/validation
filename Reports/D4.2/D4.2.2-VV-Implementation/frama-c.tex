@@ -162,16 +162,32 @@ must be clearly expressed, that is, they must be specified.
 \end{framed}
 
 
-\FloatBarrier
+\clearpage
 
 \subsection{Separating specification and implementation}
+
+Before we continue exploring more advanced specification and verification
+capabilities of Frama-C\slash WP we turn to a simple software engineering question.
+
+It is common practice to put function prototype into ``\inl{.h}'' files and
+keep the implementation in files ending in~``\inl{.c}''.
+Frama-C\slash WP support this separatation of specification of and implementation.
+
+Listing~\ref{fig:abs2-h} shows the file \inl{abs2.h} which contains
+a declaration of \inl{abs_int} together with an attached ACSL specification.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/abs2.h}
 \end{minipage}
-\caption{\label{fig:abs2-h} Specifying a function prototype}
+\caption{\label{fig:abs2-h} Specifying a function prototype in a header file}
 \end{listing}
+
+Listing~\ref{fig:abs2-c} shows the specification of \inl{abs_int} in a~\inl{.c} file.
+Note that the file \inl{abs2.h} with the specification is included by this file.
+Frama-C\slash WP can verify that this implementation satisfies the contract in
+Listing~\ref{fig:abs2-h}.
+
 
 
 \begin{listing}[hbt]
@@ -184,6 +200,8 @@ must be clearly expressed, that is, they must be specified.
 \FloatBarrier
 
 \subsection{Modular verification}
+
+
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -216,6 +234,8 @@ must be clearly expressed, that is, they must be specified.
 \end{minipage}
 \caption{\label{fig:abs3a} An implementation with side effects}
 \end{listing}
+
+\FloatBarrier
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}

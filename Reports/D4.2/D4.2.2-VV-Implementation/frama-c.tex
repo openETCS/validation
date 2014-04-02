@@ -152,15 +152,14 @@ There is an important lesson that can be learned here:
 \begin{framed}
 Sometimes developers provide source code and imagine that a tool
 like Frama-C\slash WP can verify the correctness of their implementation.
-In order to fulfill its task, however, Frama-C\slash WP needs an ACSL specification. 
-Such a specification, with a reasonably precise description of the admissible inputs
-and expected behavior, must be derived from the \emph{requirements} of the software
-and are not magically discovered from the source code by Frama-C\slash WP.
+However, in order to fulfill its task Frama-C\slash WP needs an ACSL specification. 
+Such a specification---which must be based on a reasonably precise description of the
+admissible inputs and expected behavior---has to come from the \emph{requirements}
+of the software and are not magically discovered from the source code by Frama-C\slash WP.
 The code does what it does. 
 In order to verify that the code does what someone expects, these expectations
 must be clearly expressed, that is, they must be specified.
 \end{framed}
-
 
 \clearpage
 
@@ -171,7 +170,7 @@ capabilities of Frama-C\slash WP we turn to a simple software engineering questi
 
 It is common practice to put function prototype into ``\inl{.h}'' files and
 keep the implementation in files ending in~``\inl{.c}''.
-Frama-C\slash WP support this separatation of specification of and implementation.
+Frama-C\slash WP support this separation of specification of and implementation.
 
 Listing~\ref{fig:abs2-h} shows the file \inl{abs2.h} which contains
 a declaration of \inl{abs_int} together with an attached ACSL specification.
@@ -197,11 +196,13 @@ Listing~\ref{fig:abs2-h}.
 \caption{\label{fig:abs2-c} Implementation at a different location than the specification}
 \end{listing}
 
-\FloatBarrier
+\clearpage
 
 \subsection{Modular verification}
 
-
+We now look at a simple example in which our function \inl{abs_int} is used.
+More precisely, we include in Listing~\ref{fig:use_abs2-1} the
+header file from Listing~\ref{fig:abs2-h} which contains an ACSL specification of \inl{abs_int}.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -210,12 +211,44 @@ Listing~\ref{fig:abs2-h}.
 \caption{\label{fig:use_abs2-1} A simple example of modular verification}
 \end{listing}
 
+\FloatBarrier
+
+When Frama-C\slash WP tries to verify the code in Listing~\ref{fig:use_abs2-1},
+then it actually tries to establish whether at the program locations where \inl{abs_int} 
+is called the \emph{preconditions} of \inl{abs_int} are satisfied.
+Based on the specification of \inl{abs_int},
+Frama-C\slash WP can indeed verify that for the first three calls 
+the preconditions are indeed fulfilled.
+For the last call this verification fails because the value \inl{INT_MIN}
+is explicitly excluded by the specification in Listing~\ref{fig:abs2-h}.
+
+Note that the implementation of \inl{abs_int} does not play any role in determining
+whether it is safe to call the function in a particular context.
+This is what we call \emph{modular verification}: a function can be verified in
+isolation whereas code that uses the function only uses the the pre- and postconditions
+of the ACSL specification.
+
+This also means that in a situation as in Listing~\ref{fig:use_abs2-2},
+where nothing is known about the argument of \inl{abs_int}, 
+Frama-C\slash WP cannot establish that the precondition of \inl{abs_int} is satisfied
+or, in other words, that \inl{x > INT_MIN} holds.
+
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/use_abs2_2.c}
 \end{minipage}
 \caption{\label{fig:use_abs2-2} Another example of modular verification}
 \end{listing}
+
+\clearpage
+
+If on the other hand we have precise information on the potential
+arguments, then Frama-C\slash WP can exploit the specification of 
+\inl{abs_int} in order derive some interesting properties.
+As an example, we consider the code fragment in Listing~\ref{fig:use_abs2-3}.
+Here, Frama-C\slash WP can verify that the assertion after 
+the call of \inl{abs_int} is correct.
+
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -224,7 +257,9 @@ Listing~\ref{fig:abs2-h}.
 \caption{\label{fig:use_abs2-3} A more complex example of modular verification}
 \end{listing}
 
-\FloatBarrier
+Note that this assertion is a \emph{static}, that is, it is
+an ACSL annotation that resides in a comment and does not effect
+the execution of the code in Listing~\ref{fig:use_abs2-3}.
 
 \subsection{Dealing with side effects}
 

@@ -55,7 +55,7 @@ is based on the mathematical definition of $|\cdot|$ in Equation~\ref{eq:abs}.
 
 The first thing to note is that ACSL specifications are placed in special C comments
 (they start with \inl{/*@}).
-Thus, they do not interfer with the execution of the code.
+Thus, they do not interfere with the execution of the code.
 The \inl{ensures} clause in the specification 
 expresses a \emph{postcondition}.
 The ACSL reserved word \inl{\\result} is used to refer to the return value of a C function.
@@ -104,7 +104,7 @@ The problem is that the type \inl{int} only present a
 finite subset of the (mathematical) integers.
 Many computers use a two's-complement representation of integers
 which cover the range $[-2^{31}\ldots 2^{31}-1]$ on a 32-Bit machine.
-On such a machine \inl{-INT_MIN} cannot be  representated by a value
+On such a machine \inl{-INT_MIN} cannot be  represented by a value
 of the type~\inl{int}.
 
 In a specification, Frama-C\slash WP interprets integers as mathematical entities
@@ -131,7 +131,7 @@ Under \textsf{OSX}, the manual page of \inl{abs} mentions under the field of ``B
 \end{small}
 
 Thus, our formal specification should exclude the value \inl{INT_MIN}
-from the set of admissable value on which \inl{abs_int} can be applied.
+from the set of admissible value on which \inl{abs_int} can be applied.
 In ACSL, we can use the \inl{requires} clause to express \emph{preconditions}
 of a specification.
 Listing~\ref{fig:abs1a} shows an extended specification of \inl{abs_int}
@@ -153,8 +153,8 @@ There is an important lesson that can be learned here:
 Sometimes developers provide source code and imagine that a tool
 like Frama-C\slash WP can verify the correctness of their implementation.
 In order to fulfill its task, however, Frama-C\slash WP needs an ACSL specification. 
-Such a specification, with a reasonably precise description of the admissable inputs
-and exptected behavior, must be derived from the \emph{requirements} of the software
+Such a specification, with a reasonably precise description of the admissible inputs
+and expected behavior, must be derived from the \emph{requirements} of the software
 and are not magically discovered from the source code by Frama-C\slash WP.
 The code does what it does. 
 In order to verify that the code does what someone expects, these expectations

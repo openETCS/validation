@@ -1,5 +1,5 @@
 
-\section{An Introduction to Formal Verification with Frama-C\slash\ WP}
+\section{An Introduction to Formal Verification with Frama-C\slash WP}
 \label{sec:frama-c}
 
 Frama-C is platform dedicated to source-code analysis of C software.
@@ -10,11 +10,29 @@ C code satisfies its specification.
 This implies, of course, that the user provides a \emph{formal specification}
 of what the implementation is supposed to do.
 Frama-C comes with its own specification language ACSL which stands for
-\emph{ANSI\slash\ ISO Specification Language}.
+\emph{ANSI\slash ISO C Specification Language}.
 In order to help potential users to master ACSL we discuss in this section 
 a very simple C function and explain various aspects of ACSL.
 
 \subsection{First steps}
+
+We will consider the function that computes the absolute value $|x|$
+of an integer $x$.
+In order to avoid name clashes with the function \inl{abs} in C standard library
+we use the name \inl{abs_int}.
+
+The mathematical definition of absolute value is very simple
+\begin{align}
+\label{eq:abs}
+   |x| &= \left\{
+            \begin{array}{rl}
+               x  & \text{if $x \geq 0$} \\
+               -x & \text{if $x < 0$}
+            \end{array}
+          \right.
+\end{align}
+
+A straightforward implementation of \inl{abs_int} is shown in Listing~\ref{fig:abs}.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -23,12 +41,27 @@ a very simple C function and explain various aspects of ACSL.
 \caption{\label{fig:abs} An implementation of the absolute value function}
 \end{listing}
 
+In order to demonstrate that this implementation is correct we have to provide
+a formal specification.
+Listing~\ref{fig:abs1} shows our first attempt for an ACSL specification of \inl{abs_int} that
+is based on the mathematical definition of $|\cdot|$ in Equation~\ref{eq:abs}.
+
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/abs1.c}
 \end{minipage}
 \caption{\label{fig:abs1} A first attempt to formally specify \inl{abs_int}}
 \end{listing}
+
+The first thing to not is that ACSL specifications are placed in special C comments
+(they start with \inl{/*@}).
+Thus, they do not interfer with the execution of the code.
+The \inl{ensures} clause in the specification 
+expresses a \emph{postcondition}.
+The ACSL reserved word \inl{\\result} is used to refer to the return value of a C function.
+Note that we use the usual C operators to express equalities and inequalities
+in the specification.
+There is, however, an additional operator \inl{==>} which expresses logical implication.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}

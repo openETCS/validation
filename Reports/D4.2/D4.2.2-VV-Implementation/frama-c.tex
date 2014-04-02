@@ -53,22 +53,66 @@ is based on the mathematical definition of $|\cdot|$ in Equation~\ref{eq:abs}.
 \caption{\label{fig:abs1} A first attempt to formally specify \inl{abs_int}}
 \end{listing}
 
-The first thing to not is that ACSL specifications are placed in special C comments
+The first thing to note is that ACSL specifications are placed in special C comments
 (they start with \inl{/*@}).
 Thus, they do not interfer with the execution of the code.
 The \inl{ensures} clause in the specification 
 expresses a \emph{postcondition}.
 The ACSL reserved word \inl{\\result} is used to refer to the return value of a C function.
-Note that we use the usual C operators to express equalities and inequalities
+Note that we use the usual C operators \inl{==} and {<=} to express equalities and inequalities
 in the specification.
-There is, however, an additional operator \inl{==>} which expresses logical implication.
+There is, however, also an additional operator \inl{==>} which expresses logical implication.
+
+\subsection{Why can Frama-C\slash WP not verify such a simple function?}
+
+Although the specification and implementation in Listing~\ref{fig:abs1} look perfectly right, 
+Frama-C\slash WP cannot verify that the implementation actually satisfies its specification.
+
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/test_abs.c}
 \end{minipage}
-\caption{\label{fig:test_abs} Some simple test cases}
+\caption{\label{fig:test_abs} Some simple test cases for \inl{abs_int}}
 \end{listing}
+
+The reason becomes clear if we look at some actual return values of \inl{abs_int}.
+Listing~\ref{fig:test_abs} shows our test code whose output is shown
+in Table~\ref{tbl:test_abs_output}
+
+\begin{table}[hbt]
+\begin{center}
+\begin{tabular}{|r|r|}
+\hline
+\inl{x} &  \inl{abs_int(x)} \\ \hline\hline
+0	&	0 \\ \hline
+1	&	1 \\ \hline
+10	&	10 \\ \hline
+2147483647	&	2147483647 \\ \hline
+-1	&	1 \\ \hline
+-10	&	10 \\ \hline
+-2147483648	&	-2147483648 \\ \hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:test_abs_output} Test results for \inl{abs_int}}
+\end{table}
+
+The offending value is in the last line of Table~\ref{tbl:test_abs_output}
+which basically states that \inl{abs_int(INT_MIN)} equals \inl{INT_MIN}
+whereas it should equal \inl{-INT_MIN}.
+The problem is that the type \inl{int} only present a 
+finite subset of the (mathematical) integers.
+Many computers use a two's-complement representation of integers
+which cover the range $[-2^{31}\ldots 2^{31}-1]$ on a 32-Bit machine.
+On such a machine \inl{-INT_MIN} cannot be  representated by a value
+of the type~\inl{int}.
+
+In a specification, Frama-C\slash WP interprets integers as mathematical entities
+for which there is no such thing as an \emph{overflow}.
+Thus, Frama-C\slash WP is perfectly right not being able to verify that \inl{abs_int}
+satisfies the contract in Listing~\ref{fig:abs1}.
+
+\subsection{Sharpening the contract of \inl{abs_int}}
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}

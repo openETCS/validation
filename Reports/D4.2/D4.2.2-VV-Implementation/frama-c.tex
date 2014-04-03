@@ -261,7 +261,14 @@ Note that this assertion is a \emph{static}, that is, it is
 an ACSL annotation that resides in a comment and does not effect
 the execution of the code in Listing~\ref{fig:use_abs2-3}.
 
+\clearpage
+
 \subsection{Dealing with side effects}
+
+Listing~\ref{fig:abs3a} shows an implementation of \inl{abs_int}
+that writes as a side effect the argument~\inl{x} to a global variable~\inl{a}.
+A natural question is to ask whether this implementation with
+also satisfies the specification.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -272,12 +279,64 @@ the execution of the code in Listing~\ref{fig:use_abs2-3}.
 
 \FloatBarrier
 
+Before we answer this question we consider various uses for side effects.
+There are of course legitimate use for side effects.
+The assignment to a memory location outside the scope of the function
+might be meaningful because an error condition is reported or because
+some data are logged.
+There are, on the other hand, also good reasons to minimize or even forbid side 
+effects:
+
+\begin{itemize}
+\item
+Imagine a malicious password checking function that writes the password to
+a global variable.
+
+\item
+Another reason is that side effects can make it harder to understand what 
+the real consequences of a function call are.
+In particular, one must be concerned about unintended consequences that
+are caused by side effects
+The norm IEC 61508 therefore requests in the context of software module testing
+and integration testing:\footnote{%
+   See IEC 61508-3 Table 1
+}
+
+\begin{quote}
+To show that all software modules,
+elements and subsystems interact correctly
+to perform their intended function and do not perform unintended functions
+\end{quote}
+
+It is quite difficult to ensure by testing alone that something does \emph{not}
+happen.
+\end{itemize}
+
+To come back to our question about Listing~\ref{fig:abs3a} it is important
+to understand that Frama-C\slash WP verifies that the implementation shown there
+satisfies the specification.
+
+\clearpage 
+
+If one wishes to forbid that a function changes global variables
+one can use an \inl{assigns \\nothing} clause as shown in Listing~\ref{fig:abs3b}.
+Frama-C\slash WP will then point out that this implementation prevents
+the verification of the assigns clause.
+
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/abs3b.c}
 \end{minipage}
 \caption{\label{fig:abs3b} Specifying the absence of side effects}
 \end{listing}
+
+\clearpage
+
+Of course, an all-or-nothing-approach to side effects is not very helpful
+for the verification of real-life software.
+Listing~\ref{fig:abs3c} shows how the \inl{assigns} clause of a
+specification can name the exact memory location that the
+function is allowed to modify.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -287,4 +346,3 @@ the execution of the code in Listing~\ref{fig:use_abs2-3}.
 \end{listing}
 
 
-\FloatBarrier

@@ -155,13 +155,20 @@ and its \emph{length}, that is, the number of bits it contains.
      \end{align*}
 
 \item 
-We assume that the C-types \texttt{unsigned int} and \texttt{int}
+We assume that the C-types \inl{unsigned int} and \inl{int}, which
+are used in the implementation to represent indices, counting and error codes,
 have a width of~32~bits.
+We point this out here because we conducted the verification on a platform with
+these characteristics.
+
+As an aside, MISRA-C discourages the use of ``generic'' integer types
+such as \inl{int} and \inl{unsigned int} and recommends the use of integer types whose names
+contain the exact width.
 
 \end{itemize}
 
 Now we specify \peek with the introduced auxiliary concepts.
-The function \texttt{Bitwalker\_Peek} reads a bit sequence from a bit stream
+The function \peek reads a bit sequence from a bit stream
 and converts it to an integer.
 
 Its function signature reads as follows:
@@ -182,7 +189,6 @@ The arguments have the following purpose:
     \item \texttt{BitstreamSizeInBytes} is the length of the array 
     containing the bit stream. 
 \end{itemize}
-
 
 The following preconditions shall hold for the function arguments:
 \begin{itemize}

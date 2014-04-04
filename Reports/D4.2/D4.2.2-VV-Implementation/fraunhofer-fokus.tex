@@ -92,17 +92,29 @@ the absence of run time errors is guaranteed.
 The verifiers received the source code without sufficiently clear explanation
 about how the inputs and outputs of bitwalker functions are related.
 In particular, no information about error conditions were provided.
-On such a basis it is, as pointed out on Page~\pageref{lesson}, not possible
-to (formally) verify the functionality of the bitwalker functions.
+On such a basis it is, as pointed out on Page~\pageref{lesson},
+not possible to write meaningful test cases;
+let alone to formally verify the functionality of the bitwalker functions.
 
-In a first step, we therefore analyzed the source code and 
+In a first step, we therefore inspected the source code and 
 derived from this an \emph{informal specification}.
 This informal specification is to be understood
 as a requirements document for the bitwalker functions as it should have been
 available for both the programmer and the verifier.
 
-In order to avoid the problem of ``verifying that the code works as implemented''
-we put our informal specification up to review by the providers of the source code.
+There are several problems with this approach:
+\begin{itemize}
+\item
+The verifier could make an error while analysing the source code
+and end up with a wrong specification.
+
+\item
+There could also be an error in the implementation which would then be present also
+in the specification, thus leading to the claim ``the code works as implemented''.
+\end{itemize}
+
+In order to avoid these problems we submitted our informal specification
+for review by the domain experts.
 \end{framed}
 
 \clearpage

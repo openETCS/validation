@@ -186,25 +186,33 @@ uint64_t  Bitwalker_Peek(unsigned int Startposition,
 
 The arguments have the following purpose:
 \begin{itemize}
-    \item \texttt{Startposition} is the bit index in the bit stream 
+    \item \inl{Startposition} is the bit index in the bit stream 
     where the bit sequence starts.
-    \item \texttt{Length} is the length of the bit sequence.
-    \item \texttt{Bitstream} is the array which provides the bit stream.
-    \item \texttt{BitstreamSizeInBytes} is the length of the array 
+    \item \inl{Length} is the length of the bit sequence.
+    \item \inl{Bitstream} is the array which provides the bit stream.
+    \item \inl{BitstreamSizeInBytes} is the length of the array 
     containing the bit stream. 
 \end{itemize}
 
-The following preconditions shall hold for the function arguments:
-\begin{itemize}
-\item \texttt{Bitstream} is a valid array of length \verb"BitstreamSizeInBytes"
-
-\item \texttt{Length} $\leq$ \texttt{64} and
-
-\item \texttt{Startposition + Length} $\leq$ \verb"UINT_MAX".
-\end{itemize}
-
+The following preconditions shall hold for the function arguments.
 Note that additional constraints are implicitly expressed by the use
 of \emph{unsigned} integer types.
+
+\begin{itemize}
+\item \inl{Bitstream} is a valid array of length \verb"BitstreamSizeInBytes"
+
+\item \inl{Length} $\leq$ \inl{64} and
+
+\item \inl{Startposition + Length} $\leq$ \inl{UINT_MAX}.\footnote{%
+      One of the reviewer had difficulties to understand this requirement.
+      If \inl{Startposition + Length} were (as an integer value) greater
+      than \inl{UINT_MAX}, then the result would be represented as a value of
+      \inl{unsigned int} that might be less than \inl{Startposition}.
+      Thus, the range \inl{Startposition ... Startposition + Length} would be
+      empty which is in most cases not what the programmer wanted.
+      This is a common mistake in programs and sometimes exploited by attackers.
+}
+\end{itemize}
 
 We continue with a more precise description of the desired behavior of \peek.
 As mentioned, the function \texttt{Bitwalker\_Peek} reads a bit sequence from a bit stream

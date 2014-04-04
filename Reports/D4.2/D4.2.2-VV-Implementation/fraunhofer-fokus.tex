@@ -101,12 +101,15 @@ derived from this an \emph{informal specification}.
 This informal specification is to be understood
 as a requirements document for the bitwalker functions as it should have been
 available for both the programmer and the verifier.
+This also the reason why we show the informal specification
+before the implementation although they were developed the other way round.
 
 There are several problems with this approach:
 \begin{itemize}
 \item
 The verifier could make an error while analysing the source code
-and end up with a wrong specification.
+and end up with a wrong specification. 
+In fact, this happened in a first version.
 
 \item
 There could also be an error in the implementation which would then be present also
@@ -257,7 +260,11 @@ returns the sum
 \end{align}
 
 If the bit sequence is not valid, then the function returns \texttt{0}.
-This increases the robustness of the function.
+We were wondering why the implementation maps an illegal input to a legitimate output.
+The code providers argued along the lines that this error condition was not
+considered important enough to be properly reported.
+One can interpret this design decision as an attempt
+to increase the robustness of the function against illegal values.
 
 \clearpage
 \subsubsection{Implementation}

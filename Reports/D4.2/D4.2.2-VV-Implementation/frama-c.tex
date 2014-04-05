@@ -107,9 +107,11 @@ which cover the range $[-2^{31}\ldots 2^{31}-1]$ on a 32-Bit machine.
 On such a machine \inl{-INT_MIN} cannot be  represented by a value
 of the type~\inl{int}.
 
-In a specification, Frama-C\slash WP interprets integers as mathematical entities
-for which there is no such thing as an \emph{overflow}.
-Thus, Frama-C\slash WP is perfectly right not being able to verify that \inl{abs_int}
+In a specification, Frama-C\slash WP interprets integers as mathematical entities.
+Consequently, there is no such thing as an \emph{arithmetic overflow} when adding or multiplying
+integers.
+In other words,
+Frama-C\slash WP is perfectly right not being able to verify that \inl{abs_int}
 satisfies the contract in Listing~\ref{fig:abs1}.
 
 \subsection{Sharpening the contract of \inl{abs_int}}
@@ -148,12 +150,11 @@ Frama-C\slash WP is now capable to verify that the implementation of
 \inl{abs_int} satisfies the specification of Listing~\ref{fig:abs1a}.
 
 There is an important lesson that can be learned here:
-
 \begin{framed}
 \label{lesson}
 Sometimes developers provide source code and imagine that a tool
 like Frama-C\slash WP can verify the correctness of their implementation.
-However, in order to fulfill its task Frama-C\slash WP needs an ACSL specification. 
+In order to fulfill its task, however, Frama-C\slash WP needs an ACSL specification. 
 Such a specification---which must be based on a reasonably precise description of the
 admissible inputs and expected behavior---has to come from the \emph{requirements}
 of the software and are not magically discovered from the source code by Frama-C\slash WP.
@@ -172,7 +173,6 @@ capabilities of Frama-C\slash WP we turn to a simple software engineering questi
 It is common practice to put function prototype into ``\inl{.h}'' files and
 keep the implementation in files ending in~``\inl{.c}''.
 Frama-C\slash WP support this separation of specification of and implementation.
-
 Listing~\ref{fig:abs2-h} shows the file \inl{abs2.h} which contains
 a declaration of \inl{abs_int} together with an attached ACSL specification.
 
@@ -196,6 +196,10 @@ Listing~\ref{fig:abs2-h}.
 \end{minipage}
 \caption{\label{fig:abs2-c} Implementation at a different location than the specification}
 \end{listing}
+
+Of course, the definition of a very small function like \inl{abs_int} would normally
+be placed in a header file so that a compiler can inline the function definition
+at the call side.
 
 \clearpage
 

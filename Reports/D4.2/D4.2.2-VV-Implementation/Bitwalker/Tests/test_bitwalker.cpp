@@ -1,9 +1,11 @@
-#include <algorithm>
-#include <string>
-#include <iostream>
-#include <vector>
 #include <cassert>
 #include <cmath>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include <exception>
 #include "boost/dynamic_bitset.hpp"
 
 extern "C"
@@ -31,12 +33,13 @@ void test_peek_general(unsigned int start,
 
     if (value != expected_value)
     {
-        std::cout << "ERROR" <<  std::endl;
-        std::cout << "value = " << value << "\tdoes not match"
+        std::stringstream msg;
+        msg << "ERROR" <<  std::endl;
+        msg << "value = " << value << "\tdoes not match"
                   << "\texpected_value =\t" << expected_value << std::endl;
-        std::cout << "\tstart\t= " << start << std::endl;
-        std::cout << "\tlength\t= " << length << std::endl;
-        assert(false);
+        msg << "\tstart\t= " << start << std::endl;
+        msg << "\tlength\t= " << length << std::endl;
+        throw std::runtime_error(msg.str());
     }
 
     if (start + length > original.size())

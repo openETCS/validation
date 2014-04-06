@@ -77,6 +77,8 @@ Frama-C\slash WP cannot verify that the implementation actually satisfies its sp
 \end{listing}
 
 The reason becomes clear if we look at some actual return values of \inl{abs_int}.
+\clearpage
+
 Listing~\ref{lst:test_abs} shows our test code whose output is listed in Table~\ref{tbl:test_abs_output}.
 
 \begin{table}[hbt]
@@ -112,6 +114,8 @@ integers.
 In other words,
 Frama-C\slash WP is perfectly right not being able to verify that \inl{abs_int}
 satisfies the contract in Listing~\ref{lst:abs1}.
+
+\clearpage
 
 \subsection{Sharpening the contract of \inl{abs_int}}
 
@@ -161,6 +165,23 @@ The code does what it does.
 In order to verify that the code does what someone expects, these expectations
 must be clearly expressed, that is, they must be specified.
 \end{framed}
+
+\clearpage 
+
+Of course, it might not always be the goal to verify the complete functionality of a
+piece of software.
+Sometimes, it is enough to ensure that individual software components
+cause no runtime errors, that is, arithmetic overflows or invalid pointer accesses.
+Frama-C\slash WP can used in this situation, too.
+Under the terms of the follwing minimal specification in 
+Listing~\ref{lst:abs1b}, Frama-C\slash WP can verify that no runtime errors will occur.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs1b.c}
+\end{minipage}
+\caption{\label{lst:abs1b} Minimal contract to ensure the absence of runtime errors in \inl{abs_int}}
+\end{listing}
 
 \clearpage
 

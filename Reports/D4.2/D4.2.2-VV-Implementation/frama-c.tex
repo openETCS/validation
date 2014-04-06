@@ -270,16 +270,16 @@ the execution of the code in Listing~\ref{fig:use_abs2-3}.
 
 \subsection{Dealing with side effects}
 
-Listing~\ref{fig:abs3a} shows an implementation of \inl{abs_int}
+Listing~\ref{fig:abs3a1} shows an implementation of \inl{abs_int}
 that writes as a side effect the argument~\inl{x} to a global variable~\inl{a}.
-A natural question is to ask whether this implementation with
+A natural question is to ask whether this implementation with a side effect
 also satisfies the specification.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block ]{./Abs/abs3a.c}
+\lstinputlisting[style=acsl-block ]{./Abs/abs3a1.c}
 \end{minipage}
-\caption{\label{fig:abs3a} An implementation with side effects}
+\caption{\label{fig:abs3a1} An implementation with side effects}
 \end{listing}
 
 \FloatBarrier
@@ -317,37 +317,37 @@ It is quite difficult to ensure by testing alone that something does \emph{not}
 happen.
 \end{itemize}
 
-To come back to our question about Listing~\ref{fig:abs3a} it is important
+To come back to our question about Listing~\ref{fig:abs3a1} it is important
 to understand that Frama-C\slash WP verifies that the implementation shown there
 satisfies the specification.
 
 \clearpage 
 
 If one wishes to forbid that a function changes global variables
-one can use an \inl{assigns \\nothing} clause as shown in Listing~\ref{fig:abs3b}.
+one can use an \inl{assigns \\nothing} clause as shown in Listing~\ref{fig:abs3a2}.
 Frama-C\slash WP will then point out that this implementation prevents
 the verification of the assigns clause.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block ]{./Abs/abs3b.c}
+\lstinputlisting[style=acsl-block ]{./Abs/abs3a2.c}
 \end{minipage}
-\caption{\label{fig:abs3b} Specifying the absence of side effects}
+\caption{\label{fig:abs3a2} Specifying the absence of side effects}
 \end{listing}
 
 \clearpage
 
 Of course, an all-or-nothing-approach to side effects is not very helpful
 for the verification of real-life software.
-Listing~\ref{fig:abs3c} shows how the \inl{assigns} clause of a
+Listing~\ref{fig:abs3a3} shows how the \inl{assigns} clause of a
 specification can name the exact memory location that the
 function is allowed to modify.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block ]{./Abs/abs3c.c}
+\lstinputlisting[style=acsl-block ]{./Abs/abs3a3.c}
 \end{minipage}
-\caption{\label{fig:abs3c} Finer control of side effects}
+\caption{\label{fig:abs3a3} Finer control of side effects}
 \end{listing}
 
 

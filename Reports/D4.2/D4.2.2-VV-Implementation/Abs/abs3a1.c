@@ -1,7 +1,4 @@
 
-// Question: does this implementation with side effects
-// satisfies the contract?
-
 #include <limits.h>
 
 extern int a;
@@ -14,9 +11,7 @@ extern int a;
 */
 int abs_int(int x)
 {
-  a = x;
+  a = x; // Is this side effect covered by the specification?
   return (x >= 0) ? x : -x;
 }
-
-
 

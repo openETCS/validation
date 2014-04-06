@@ -288,7 +288,30 @@ Before we answer this question we consider various uses for side effects.
 There are of course legitimate use for side effects.
 The assignment to a memory location outside the scope of the function
 might be meaningful because an error condition is reported or because
-some data are logged.
+some data are logged as in Listing~\ref{fig:abs3logging1}.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs3logging1.c}
+\end{minipage}
+\caption{\label{fig:abs3logging1} Calling a logging function from \inl{abs_int}}
+\end{listing}
+
+If Frama-C\slash WP attempts to verify the code in Listing~\ref{fig:abs3logging1},
+then it issues the following warning:
+%
+\begin{small}
+\begin{verbatim}
+    Neither code nor specification for function logging,
+    generating default assigns from the prototype
+\end{verbatim}
+\end{small}
+%
+Thus, it points out that the called function \inl{logging} should have a proper
+specification that specifies an side effects.
+
+\clearpage
+
 There are, on the other hand, also good reasons to minimize or even forbid side 
 effects:
 
@@ -313,15 +336,12 @@ elements and subsystems interact correctly
 to perform their intended function and do not perform unintended functions
 \end{quote}
 
-It is quite difficult to ensure by testing alone that something does \emph{not}
-happen.
+Of course, it is quite difficult to ensure by testing alone that something does \emph{not} happen.
 \end{itemize}
 
 To come back to our question about Listing~\ref{fig:abs3a1} it is important
 to understand that Frama-C\slash WP verifies that the implementation shown there
 satisfies the specification.
-
-\clearpage 
 
 If one wishes to forbid that a function changes global variables
 one can use an \inl{assigns \\nothing} clause as shown in Listing~\ref{fig:abs3a2}.
@@ -334,6 +354,7 @@ the verification of the assigns clause.
 \end{minipage}
 \caption{\label{fig:abs3a2} Specifying the absence of side effects}
 \end{listing}
+
 
 \clearpage
 

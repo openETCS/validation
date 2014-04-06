@@ -1,4 +1,6 @@
 
+#include <stdint.h>
+#include "BitMaskTable.h"
 
 int Bitwalker_Poke (unsigned int Startposition, unsigned int Length, uint8_t Bitstream[], unsigned int BitstreamSizeInBytes, uint64_t Value)
 {
@@ -10,7 +12,7 @@ int Bitwalker_Poke (unsigned int Startposition, unsigned int Length, uint8_t Bit
   uint64_t MaxValue = (((uint64_t)0x01) << Length) - 1;
 
   if (MaxValue < Value)
-    return -2;		// error: value to big for bit field
+    return -2;  // error: value to big for bit field
 
   // Everything ok, we can iterate bitwise from left to right
   int i;
@@ -19,9 +21,10 @@ int Bitwalker_Poke (unsigned int Startposition, unsigned int Length, uint8_t Bit
   {
     if ((Value & 0x01) == 0)
       Bitstream[i >> 3] &= ~BitwalkerBitMaskTable[i & 0x07];
-    else Bitstream[i >> 3] |=  BitwalkerBitMaskTable[i & 0x07];
+    else
+      Bitstream[i >> 3] |=  BitwalkerBitMaskTable[i & 0x07];
 
-    Value >>= 1;	//prepare next iteration with value without written bit
+    Value >>= 1;
   }
 
   return 0;

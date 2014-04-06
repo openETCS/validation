@@ -77,21 +77,20 @@ Frama-C\slash WP cannot verify that the implementation actually satisfies its sp
 \end{listing}
 
 The reason becomes clear if we look at some actual return values of \inl{abs_int}.
-Listing~\ref{fig:test_abs} shows our test code whose output is shown
-in Table~\ref{tbl:test_abs_output}
+Listing~\ref{fig:test_abs} shows our test code whose output is listed in Table~\ref{tbl:test_abs_output}.
 
 \begin{table}[hbt]
 \begin{center}
-\begin{tabular}{|r|r|}
+\begin{tabular}{|r|r|c|}
 \hline
-\inl{x} &  \inl{abs_int(x)} \\ \hline\hline
-0	&	0 \\ \hline
-1	&	1 \\ \hline
-10	&	10 \\ \hline
-2147483647	&	2147483647 \\ \hline
--1	&	1 \\ \hline
--10	&	10 \\ \hline
--2147483648	&	-2147483648 \\ \hline
+\inl{x} &  \inl{abs_int(x)} & Remark \\ \hline\hline
+0	&	0 & \checkmark \\ \hline
+1	&	1 & \checkmark \\ \hline
+10	&	10 & \checkmark \\ \hline
+2147483647	&	2147483647 & \checkmark \\ \hline
+-1	&	1 & \checkmark \\ \hline
+-10	&	10 & \checkmark \\ \hline
+-2147483648	&	-2147483648 & result is negative\\ \hline
 \end{tabular}
 \end{center}
 \caption{\label{tbl:test_abs_output} Test results for \inl{abs_int}}
@@ -308,7 +307,7 @@ then it issues the following warning:
 \end{small}
 %
 Thus, it points out that the called function \inl{logging} should have a proper
-specification that specifies an side effects.
+specification that clearly indicates its side effects.
 
 \clearpage
 

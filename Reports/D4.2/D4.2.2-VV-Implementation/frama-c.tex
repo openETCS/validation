@@ -1,5 +1,5 @@
 
-\section{An Introduction to Formal Verification with Frama-C\slash WP}
+\section{An Introduction to Formal Verification with \framacwp}
 \label{sec:frama-c}
 
 Frama-C is platform dedicated to source-code analysis of C software.
@@ -63,10 +63,10 @@ Note that we use the usual C operators \inl{==} and {<=} to express equalities a
 in the specification.
 There is, however, also an additional operator \inl{==>} which expresses logical implication.
 
-\subsection{Why can Frama-C\slash WP not verify such a simple function?}
+\subsection{Why can \framacwp not verify such a simple function?}
 
 Although the specification and implementation in Listing~\ref{lst:abs1} look perfectly right, 
-Frama-C\slash WP cannot verify that the implementation actually satisfies its specification.
+\framacwp cannot verify that the implementation actually satisfies its specification.
 
 
 \begin{listing}[hbt]
@@ -108,11 +108,11 @@ which cover the range $[-2^{31}\ldots 2^{31}-1]$ on a 32-Bit machine.
 On such a machine \inl{-INT_MIN} cannot be  represented by a value
 of the type~\inl{int}.
 
-In a specification, Frama-C\slash WP interprets integers as mathematical entities.
+In a specification, \framacwp interprets integers as mathematical entities.
 Consequently, there is no such thing as an \emph{arithmetic overflow} when adding or multiplying
 integers.
 In other words,
-Frama-C\slash WP is perfectly right not being able to verify that \inl{abs_int}
+\framacwp is perfectly right not being able to verify that \inl{abs_int}
 satisfies the contract in Listing~\ref{lst:abs1}.
 
 \clearpage
@@ -120,7 +120,7 @@ satisfies the contract in Listing~\ref{lst:abs1}.
 \subsection{Sharpening the contract of \inl{abs_int}}
 
 It is of course well known that the operation \inl{-x} can overflow
-and it is the fact that Frama-C can detect such overflows that 
+and it is the fact that \framacwp can detect such overflows that 
 prevents incorrect verification results.
 
 The GNU Standard C Library clearly states that the absolute value of
@@ -149,18 +149,18 @@ that takes the limitations of the type \inl{int} into account.
 \caption{\label{lst:abs1a} Taking integer overflows into account}
 \end{listing}
 
-Frama-C\slash WP is now capable to verify that the implementation of
+\framacwp is now capable to verify that the implementation of
 \inl{abs_int} satisfies the specification of Listing~\ref{lst:abs1a}.
 
 There is an important lesson that can be learned here:
 \begin{framed}
 \label{lesson}
 Sometimes developers provide source code and imagine that a tool
-like Frama-C\slash WP can verify the correctness of their implementation.
-In order to fulfill its task, however, Frama-C\slash WP needs an ACSL specification. 
+like \framacwp can verify the correctness of their implementation.
+In order to fulfill its task, however, \framacwp needs an ACSL specification. 
 Such a specification---which must be based on a reasonably precise description of the
 admissible inputs and expected behavior---has to come from the \emph{requirements}
-of the software and is not magically discovered from the source code by Frama-C\slash WP.
+of the software and is not magically discovered from the source code by \framacwp.
 The code does what it does. 
 In order to verify that the code does what someone expects, these expectations
 must be clearly expressed, that is, they must be specified.
@@ -172,9 +172,9 @@ Of course, it might not always be the goal to verify the complete functionality 
 piece of software.
 Sometimes, it is enough to ensure that individual software components
 cause no runtime errors, that is, arithmetic overflows or invalid pointer accesses.
-Frama-C\slash WP can used in this situation, too.
+\framacwp can used in this situation, too.
 Under the terms of the follwing minimal specification in 
-Listing~\ref{lst:abs1b}, Frama-C\slash WP can verify that no runtime errors will occur.
+Listing~\ref{lst:abs1b}, \framacwp can verify that no runtime errors will occur.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -188,11 +188,11 @@ Listing~\ref{lst:abs1b}, Frama-C\slash WP can verify that no runtime errors will
 \subsection{Separating specification and implementation}
 
 Before we continue exploring more advanced specification and verification
-capabilities of Frama-C\slash WP we turn to a simple software engineering question.
+capabilities of \framacwp we turn to a simple software engineering question.
 
 It is common practice to put function prototype into ``\inl{.h}'' files and
 keep the implementation in files ending in~``\inl{.c}''.
-Frama-C\slash WP support this separation of specification of and implementation.
+\framacwp support this separation of specification of and implementation.
 Listing~\ref{lst:abs2-h} shows the file \inl{abs2.h} which contains
 a declaration of \inl{abs_int} together with an attached ACSL specification.
 
@@ -205,7 +205,7 @@ a declaration of \inl{abs_int} together with an attached ACSL specification.
 
 Listing~\ref{lst:abs2-c} shows the specification of \inl{abs_int} in a~\inl{.c} file.
 Note that the file \inl{abs2.h} with the specification is included by this file.
-Frama-C\slash WP can verify that this implementation satisfies the contract in
+\framacwp can verify that this implementation satisfies the contract in
 Listing~\ref{lst:abs2-h}.
 
 
@@ -238,11 +238,11 @@ header file from Listing~\ref{lst:abs2-h} which contains an ACSL specification o
 
 \FloatBarrier
 
-When Frama-C\slash WP tries to verify the code in Listing~\ref{lst:use_abs2-1},
+When \framacwp tries to verify the code in Listing~\ref{lst:use_abs2-1},
 then it actually tries to establish whether at the program locations where \inl{abs_int} 
 is called the \emph{preconditions} of \inl{abs_int} are satisfied.
 Based on the specification of \inl{abs_int},
-Frama-C\slash WP can indeed verify that for the first three calls 
+\framacwp can indeed verify that for the first three calls 
 the preconditions are indeed fulfilled.
 For the last call this verification fails because the value \inl{INT_MIN}
 is explicitly excluded by the specification in Listing~\ref{lst:abs2-h}.
@@ -255,7 +255,7 @@ of the ACSL specification.
 
 This also means that in a situation as in Listing~\ref{lst:use_abs2-2},
 where nothing is known about the argument of \inl{abs_int}, 
-Frama-C\slash WP cannot establish that the precondition of \inl{abs_int} is satisfied
+\framacwp cannot establish that the precondition of \inl{abs_int} is satisfied
 or, in other words, that \inl{x > INT_MIN} holds.
 
 \begin{listing}[hbt]
@@ -268,10 +268,10 @@ or, in other words, that \inl{x > INT_MIN} holds.
 \clearpage
 
 If on the other hand we have precise information on the potential
-arguments, then Frama-C\slash WP can exploit the specification of 
+arguments, then \framacwp can exploit the specification of 
 \inl{abs_int} in order derive some interesting properties.
 As an example, we consider the code fragment in Listing~\ref{lst:use_abs2-3}.
-Here, Frama-C\slash WP can verify that the assertion after 
+Here, \framacwp can verify that the assertion after 
 the call of \inl{abs_int} is correct.
 
 
@@ -317,7 +317,7 @@ some data are logged as in Listing~\ref{lst:abs3logging1}.
 \caption{\label{lst:abs3logging1} Calling a logging function from \inl{abs_int}}
 \end{listing}
 
-If Frama-C\slash WP attempts to verify the code in Listing~\ref{lst:abs3logging1},
+If \framacwp attempts to verify the code in Listing~\ref{lst:abs3logging1},
 then it issues the following warning:
 %
 \begin{small}
@@ -360,12 +360,12 @@ Of course, it is quite difficult to ensure by testing alone that something does 
 \end{itemize}
 
 To come back to our question about Listing~\ref{lst:abs3a1} it is important
-to understand that Frama-C\slash WP verifies that the implementation shown there
+to understand that \framacwp verifies that the implementation shown there
 satisfies the specification.
 
 If one wishes to forbid that a function changes global variables
 one can use an \inl{assigns \\nothing} clause as shown in Listing~\ref{lst:abs3a2}.
-Frama-C\slash WP will then point out that this implementation prevents
+\framacwp will then point out that this implementation prevents
 the verification of the assigns clause.
 
 \begin{listing}[hbt]

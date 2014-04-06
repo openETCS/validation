@@ -32,25 +32,25 @@ The mathematical definition of absolute value is very simple
           \right.
 \end{align}
 
-A straightforward implementation of \inl{abs_int} is shown in Listing~\ref{fig:abs}.
+A straightforward implementation of \inl{abs_int} is shown in Listing~\ref{lst:abs}.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/abs.c}
 \end{minipage}
-\caption{\label{fig:abs} An implementation of the absolute value function}
+\caption{\label{lst:abs} An implementation of the absolute value function}
 \end{listing}
 
 In order to demonstrate that this implementation is correct we have to provide
 a formal specification.
-Listing~\ref{fig:abs1} shows our first attempt for an ACSL specification of \inl{abs_int} that
+Listing~\ref{lst:abs1} shows our first attempt for an ACSL specification of \inl{abs_int} that
 is based on the mathematical definition of $|\cdot|$ in Equation~\ref{eq:abs}.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/abs1.c}
 \end{minipage}
-\caption{\label{fig:abs1} A first attempt to formally specify \inl{abs_int}}
+\caption{\label{lst:abs1} A first attempt to formally specify \inl{abs_int}}
 \end{listing}
 
 The first thing to note is that ACSL specifications are placed in special C comments
@@ -65,7 +65,7 @@ There is, however, also an additional operator \inl{==>} which expresses logical
 
 \subsection{Why can Frama-C\slash WP not verify such a simple function?}
 
-Although the specification and implementation in Listing~\ref{fig:abs1} look perfectly right, 
+Although the specification and implementation in Listing~\ref{lst:abs1} look perfectly right, 
 Frama-C\slash WP cannot verify that the implementation actually satisfies its specification.
 
 
@@ -73,11 +73,11 @@ Frama-C\slash WP cannot verify that the implementation actually satisfies its sp
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/test_abs.c}
 \end{minipage}
-\caption{\label{fig:test_abs} Some simple test cases for \inl{abs_int}}
+\caption{\label{lst:test_abs} Some simple test cases for \inl{abs_int}}
 \end{listing}
 
 The reason becomes clear if we look at some actual return values of \inl{abs_int}.
-Listing~\ref{fig:test_abs} shows our test code whose output is listed in Table~\ref{tbl:test_abs_output}.
+Listing~\ref{lst:test_abs} shows our test code whose output is listed in Table~\ref{tbl:test_abs_output}.
 
 \begin{table}[hbt]
 \begin{center}
@@ -111,7 +111,7 @@ Consequently, there is no such thing as an \emph{arithmetic overflow} when addin
 integers.
 In other words,
 Frama-C\slash WP is perfectly right not being able to verify that \inl{abs_int}
-satisfies the contract in Listing~\ref{fig:abs1}.
+satisfies the contract in Listing~\ref{lst:abs1}.
 
 \subsection{Sharpening the contract of \inl{abs_int}}
 
@@ -135,18 +135,18 @@ Thus, our formal specification should exclude the value \inl{INT_MIN}
 from the set of admissible value on which \inl{abs_int} can be applied.
 In ACSL, we can use the \inl{requires} clause to express \emph{preconditions}
 of a specification.
-Listing~\ref{fig:abs1a} shows an extended specification of \inl{abs_int}
+Listing~\ref{lst:abs1a} shows an extended specification of \inl{abs_int}
 that takes the limitations of the type \inl{int} into account.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/abs1a.c}
 \end{minipage}
-\caption{\label{fig:abs1a} Taking integer overflows into account}
+\caption{\label{lst:abs1a} Taking integer overflows into account}
 \end{listing}
 
 Frama-C\slash WP is now capable to verify that the implementation of
-\inl{abs_int} satisfies the specification of Listing~\ref{fig:abs1a}.
+\inl{abs_int} satisfies the specification of Listing~\ref{lst:abs1a}.
 
 There is an important lesson that can be learned here:
 \begin{framed}
@@ -172,20 +172,20 @@ capabilities of Frama-C\slash WP we turn to a simple software engineering questi
 It is common practice to put function prototype into ``\inl{.h}'' files and
 keep the implementation in files ending in~``\inl{.c}''.
 Frama-C\slash WP support this separation of specification of and implementation.
-Listing~\ref{fig:abs2-h} shows the file \inl{abs2.h} which contains
+Listing~\ref{lst:abs2-h} shows the file \inl{abs2.h} which contains
 a declaration of \inl{abs_int} together with an attached ACSL specification.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/abs2.h}
 \end{minipage}
-\caption{\label{fig:abs2-h} Specifying a function prototype in a header file}
+\caption{\label{lst:abs2-h} Specifying a function prototype in a header file}
 \end{listing}
 
-Listing~\ref{fig:abs2-c} shows the specification of \inl{abs_int} in a~\inl{.c} file.
+Listing~\ref{lst:abs2-c} shows the specification of \inl{abs_int} in a~\inl{.c} file.
 Note that the file \inl{abs2.h} with the specification is included by this file.
 Frama-C\slash WP can verify that this implementation satisfies the contract in
-Listing~\ref{fig:abs2-h}.
+Listing~\ref{lst:abs2-h}.
 
 
 
@@ -193,7 +193,7 @@ Listing~\ref{fig:abs2-h}.
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/abs2.c}
 \end{minipage}
-\caption{\label{fig:abs2-c} Implementation at a different location than the specification}
+\caption{\label{lst:abs2-c} Implementation at a different location than the specification}
 \end{listing}
 
 Of course, the definition of a very small function like \inl{abs_int} would normally
@@ -205,26 +205,26 @@ at the call side.
 \subsection{Modular verification}
 
 We now look at a simple example in which our function \inl{abs_int} is used.
-More precisely, we include in Listing~\ref{fig:use_abs2-1} the
-header file from Listing~\ref{fig:abs2-h} which contains an ACSL specification of \inl{abs_int}.
+More precisely, we include in Listing~\ref{lst:use_abs2-1} the
+header file from Listing~\ref{lst:abs2-h} which contains an ACSL specification of \inl{abs_int}.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/use_abs2_1.c}
 \end{minipage}
-\caption{\label{fig:use_abs2-1} A simple example of modular verification}
+\caption{\label{lst:use_abs2-1} A simple example of modular verification}
 \end{listing}
 
 \FloatBarrier
 
-When Frama-C\slash WP tries to verify the code in Listing~\ref{fig:use_abs2-1},
+When Frama-C\slash WP tries to verify the code in Listing~\ref{lst:use_abs2-1},
 then it actually tries to establish whether at the program locations where \inl{abs_int} 
 is called the \emph{preconditions} of \inl{abs_int} are satisfied.
 Based on the specification of \inl{abs_int},
 Frama-C\slash WP can indeed verify that for the first three calls 
 the preconditions are indeed fulfilled.
 For the last call this verification fails because the value \inl{INT_MIN}
-is explicitly excluded by the specification in Listing~\ref{fig:abs2-h}.
+is explicitly excluded by the specification in Listing~\ref{lst:abs2-h}.
 
 Note that the implementation of \inl{abs_int} does not play any role in determining
 whether it is safe to call the function in a particular context.
@@ -232,7 +232,7 @@ This is what we call \emph{modular verification}: a function can be verified in
 isolation whereas code that uses the function only uses the the pre- and postconditions
 of the ACSL specification.
 
-This also means that in a situation as in Listing~\ref{fig:use_abs2-2},
+This also means that in a situation as in Listing~\ref{lst:use_abs2-2},
 where nothing is known about the argument of \inl{abs_int}, 
 Frama-C\slash WP cannot establish that the precondition of \inl{abs_int} is satisfied
 or, in other words, that \inl{x > INT_MIN} holds.
@@ -241,7 +241,7 @@ or, in other words, that \inl{x > INT_MIN} holds.
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/use_abs2_2.c}
 \end{minipage}
-\caption{\label{fig:use_abs2-2} Another example of modular verification}
+\caption{\label{lst:use_abs2-2} Another example of modular verification}
 \end{listing}
 
 \clearpage
@@ -249,7 +249,7 @@ or, in other words, that \inl{x > INT_MIN} holds.
 If on the other hand we have precise information on the potential
 arguments, then Frama-C\slash WP can exploit the specification of 
 \inl{abs_int} in order derive some interesting properties.
-As an example, we consider the code fragment in Listing~\ref{fig:use_abs2-3}.
+As an example, we consider the code fragment in Listing~\ref{lst:use_abs2-3}.
 Here, Frama-C\slash WP can verify that the assertion after 
 the call of \inl{abs_int} is correct.
 
@@ -258,18 +258,18 @@ the call of \inl{abs_int} is correct.
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/use_abs2_3.c}
 \end{minipage}
-\caption{\label{fig:use_abs2-3} A more complex example of modular verification}
+\caption{\label{lst:use_abs2-3} A more complex example of modular verification}
 \end{listing}
 
 Note that this assertion is a \emph{static}, that is, it is
 an ACSL annotation that resides in a comment and does not effect
-the execution of the code in Listing~\ref{fig:use_abs2-3}.
+the execution of the code in Listing~\ref{lst:use_abs2-3}.
 
 \clearpage
 
 \subsection{Dealing with side effects}
 
-Listing~\ref{fig:abs3a1} shows an implementation of \inl{abs_int}
+Listing~\ref{lst:abs3a1} shows an implementation of \inl{abs_int}
 that writes as a side effect the argument~\inl{x} to a global variable~\inl{a}.
 A natural question is to ask whether this implementation with a side effect
 also satisfies the specification.
@@ -278,7 +278,7 @@ also satisfies the specification.
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/abs3a1.c}
 \end{minipage}
-\caption{\label{fig:abs3a1} An implementation with side effects}
+\caption{\label{lst:abs3a1} An implementation with side effects}
 \end{listing}
 
 \FloatBarrier
@@ -287,16 +287,16 @@ Before we answer this question we consider various uses for side effects.
 There are of course legitimate use for side effects.
 The assignment to a memory location outside the scope of the function
 might be meaningful because an error condition is reported or because
-some data are logged as in Listing~\ref{fig:abs3logging1}.
+some data are logged as in Listing~\ref{lst:abs3logging1}.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/abs3logging1.c}
 \end{minipage}
-\caption{\label{fig:abs3logging1} Calling a logging function from \inl{abs_int}}
+\caption{\label{lst:abs3logging1} Calling a logging function from \inl{abs_int}}
 \end{listing}
 
-If Frama-C\slash WP attempts to verify the code in Listing~\ref{fig:abs3logging1},
+If Frama-C\slash WP attempts to verify the code in Listing~\ref{lst:abs3logging1},
 then it issues the following warning:
 %
 \begin{small}
@@ -338,12 +338,12 @@ to perform their intended function and do not perform unintended functions
 Of course, it is quite difficult to ensure by testing alone that something does \emph{not} happen.
 \end{itemize}
 
-To come back to our question about Listing~\ref{fig:abs3a1} it is important
+To come back to our question about Listing~\ref{lst:abs3a1} it is important
 to understand that Frama-C\slash WP verifies that the implementation shown there
 satisfies the specification.
 
 If one wishes to forbid that a function changes global variables
-one can use an \inl{assigns \\nothing} clause as shown in Listing~\ref{fig:abs3a2}.
+one can use an \inl{assigns \\nothing} clause as shown in Listing~\ref{lst:abs3a2}.
 Frama-C\slash WP will then point out that this implementation prevents
 the verification of the assigns clause.
 
@@ -351,7 +351,7 @@ the verification of the assigns clause.
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/abs3a2.c}
 \end{minipage}
-\caption{\label{fig:abs3a2} Specifying the absence of side effects}
+\caption{\label{lst:abs3a2} Specifying the absence of side effects}
 \end{listing}
 
 
@@ -359,7 +359,7 @@ the verification of the assigns clause.
 
 Of course, an all-or-nothing-approach to side effects is not very helpful
 for the verification of real-life software.
-Listing~\ref{fig:abs3a3} shows how the \inl{assigns} clause of a
+Listing~\ref{lst:abs3a3} shows how the \inl{assigns} clause of a
 specification can name the exact memory location that the
 function is allowed to modify.
 
@@ -367,7 +367,7 @@ function is allowed to modify.
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block ]{./Abs/abs3a3.c}
 \end{minipage}
-\caption{\label{fig:abs3a3} Finer control of side effects}
+\caption{\label{lst:abs3a3} Finer control of side effects}
 \end{listing}
 
 

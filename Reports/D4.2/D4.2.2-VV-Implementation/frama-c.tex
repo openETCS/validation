@@ -2,10 +2,10 @@
 \section{An Introduction to Formal Verification with \framacwp}
 \label{sec:frama-c}
 
-Frama-C is platform dedicated to source-code analysis of C software.
+Frama-C is a platform dedicated to source-code analysis of C software.
 It has a plug-in architecture and can thus be easily extended to 
 different kinds of analyses.
-The WP plugin of Frama-C allows to formally verify that a a piece of
+The WP plugin of Frama-C allows one to formally verify that a piece of
 C code satisfies its specification.
 This implies, of course, that the user provides a \emph{formal specification}
 of what the implementation is supposed to do.
@@ -53,11 +53,12 @@ is based on the mathematical definition of $|\cdot|$ in Equation~\ref{eq:abs}.
 \caption{\label{lst:abs1} A first attempt to formally specify \inl{abs_int}}
 \end{listing}
 
-The first thing to note is that ACSL specifications are placed in special C comments
+The first thing to note is that ACSL specifications---or \emph{contracts}---are placed in special C comments
 (they start with \inl{/*@}).
-Thus, they do not interfere with the execution of the code.
-The \inl{ensures} clause in the specification 
-expresses a \emph{postcondition}.
+Thus, they do not interfere with the executable code.
+The \inl{ensures} clause in the specification expresses \emph{postconditions},
+that is, properties that hould be guaranteed \emph{after} the execuition
+of \inl{abs_int}.
 The ACSL reserved word \inl{\\result} is used to refer to the return value of a C function.
 Note that we use the usual C operators \inl{==} and {<=} to express equalities and inequalities
 in the specification.
@@ -92,7 +93,7 @@ Listing~\ref{lst:test_abs} shows our test code whose output is listed in Table~\
 2147483647	&	2147483647 & \checkmark \\ \hline
 -1	&	1 & \checkmark \\ \hline
 -10	&	10 & \checkmark \\ \hline
--2147483648	&	-2147483648 & result is negative\\ \hline
+-2147483648	&	-2147483648 & $\lightning$ \\ \hline
 \end{tabular}
 \end{center}
 \caption{\label{tbl:test_abs_output} Test results for \inl{abs_int}}
@@ -104,13 +105,13 @@ whereas it should equal \inl{-INT_MIN}.
 The problem is that the type \inl{int} only present a 
 finite subset of the (mathematical) integers.
 Many computers use a two's-complement representation of integers
-which cover the range $[-2^{31}\ldots 2^{31}-1]$ on a 32-Bit machine.
+which covers the range $[-2^{31}\ldots 2^{31}-1]$ on a 32-bit machine.
 On such a machine \inl{-INT_MIN} cannot be  represented by a value
 of the type~\inl{int}.
 
 In a specification, \framacwp interprets integers as mathematical entities.
-Consequently, there is no such thing as an \emph{arithmetic overflow} when adding or multiplying
-integers.
+Consequently, there is no such thing as an \emph{arithmetic overflow} when
+adding or multiplying them.
 In other words,
 \framacwp is perfectly right not being able to verify that \inl{abs_int}
 satisfies the contract in Listing~\ref{lst:abs1}.
@@ -121,7 +122,7 @@ satisfies the contract in Listing~\ref{lst:abs1}.
 
 It is of course well known that the operation \inl{-x} can overflow
 and it is the fact that \framacwp can detect such overflows that 
-prevents incorrect verification results.
+helps to prevent incorrect verification results.
 
 The GNU Standard C Library clearly states that the absolute value of
 \inl{INT_MIN} is undefined.\footnote{%
@@ -136,10 +137,10 @@ Under \textsf{OSX}, the manual page of \inl{abs} mentions under the field of ``B
 \end{small}
 
 Thus, our formal specification should exclude the value \inl{INT_MIN}
-from the set of admissible value on which \inl{abs_int} can be applied.
+from the set of admissible value to which \inl{abs_int} can be applied.
 In ACSL, we can use the \inl{requires} clause to express \emph{preconditions}
-of a specification.
-Listing~\ref{lst:abs1a} shows an extended specification of \inl{abs_int}
+of a funtion.
+Listing~\ref{lst:abs1a} shows an extended contract of \inl{abs_int}
 that takes the limitations of the type \inl{int} into account.
 
 \begin{listing}[hbt]
@@ -163,7 +164,7 @@ admissible inputs and expected behavior---has to come from the \emph{requirement
 of the software and is not magically discovered from the source code by \framacwp.
 The code does what it does. 
 In order to verify that the code does what someone expects, these expectations
-must be clearly expressed, that is, they must be specified.
+must be clearly expressed, that is, they must be formally specified.
 \end{framed}
 
 \clearpage 
@@ -192,7 +193,7 @@ capabilities of \framacwp we turn to a simple software engineering question.
 
 It is common practice to put function prototype into ``\inl{.h}'' files and
 keep the implementation in files ending in~``\inl{.c}''.
-\framacwp support this separation of specification of and implementation.
+\framacwp supports this separation of specification and implementation.
 Listing~\ref{lst:abs2-h} shows the file \inl{abs2.h} which contains
 a declaration of \inl{abs_int} together with an attached ACSL specification.
 
@@ -217,9 +218,9 @@ Listing~\ref{lst:abs2-h}.
 \caption{\label{lst:abs2-c} Implementation at a different location than the specification}
 \end{listing}
 
-Of course, the definition of a very small function like \inl{abs_int} would normally
+We remark, that the definition of a very small function like \inl{abs_int} would normally
 be placed in a header file so that a compiler can inline the function definition
-at the call side.
+at the call site.
 
 \clearpage
 
@@ -239,19 +240,18 @@ header file from Listing~\ref{lst:abs2-h} which contains an ACSL specification o
 \FloatBarrier
 
 When \framacwp tries to verify the code in Listing~\ref{lst:use_abs2-1},
-then it actually tries to establish whether at the program locations where \inl{abs_int} 
-is called the \emph{preconditions} of \inl{abs_int} are satisfied.
+then it actually tries to establish whether at each program locations where
+it is called the \emph{preconditions} of \inl{abs_int} are satisfied.
 Based on the specification of \inl{abs_int},
-\framacwp can indeed verify that for the first three calls 
-the preconditions are indeed fulfilled.
+\framacwp can indeed verify that for the first three calls the preconditions are fulfilled.
 For the last call this verification fails because the value \inl{INT_MIN}
 is explicitly excluded by the specification in Listing~\ref{lst:abs2-h}.
 
-Note that the implementation of \inl{abs_int} does not play any role in determining
-whether it is safe to call the function in a particular context.
+Note that the \emph{implementation} of \inl{abs_int}
+does not play any role in determining whether it is safe to
+call the function in a particular context.
 This is what we call \emph{modular verification}: a function can be verified in
-isolation whereas code that uses the function only uses the the pre- and postconditions
-of the ACSL specification.
+isolation whereas code that calls the function only uses the function contract.
 
 This also means that in a situation as in Listing~\ref{lst:use_abs2-2},
 where nothing is known about the argument of \inl{abs_int}, 
@@ -267,8 +267,7 @@ or, in other words, that \inl{x > INT_MIN} holds.
 
 \clearpage
 
-If on the other hand we have precise information on the potential
-arguments, then \framacwp can exploit the specification of 
+If, on the other hand, we have precise information on the arguments at call site, then \framacwp can exploit the specification of 
 \inl{abs_int} in order derive some interesting properties.
 As an example, we consider the code fragment in Listing~\ref{lst:use_abs2-3}.
 Here, \framacwp can verify that the assertion after 
@@ -282,9 +281,13 @@ the call of \inl{abs_int} is correct.
 \caption{\label{lst:use_abs2-3} A more complex example of modular verification}
 \end{listing}
 
-Note that this assertion is a \emph{static}, that is, it is
-an ACSL annotation that resides in a comment and does not effect
+Note that this assertion is a \emph{static} on, that is, it is
+an ACSL annotation that resides inside a comment and does not effect
 the execution of the code in Listing~\ref{lst:use_abs2-3}.
+
+Also note that both in the function contract of \inl{use_3} and
+in the assertion \emph{relation chains} are used.
+This can simplify the writing of logic formula considerably.
 
 \clearpage
 

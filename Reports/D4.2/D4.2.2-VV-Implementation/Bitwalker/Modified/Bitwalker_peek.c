@@ -1,6 +1,7 @@
 
 #include <stdint.h>
 #include "Bitwalker.h"
+#include "extract_bit.h"
 
 uint64_t Bitwalker_Peek(unsigned int Startposition,
                         unsigned int Length,
@@ -16,9 +17,7 @@ uint64_t Bitwalker_Peek(unsigned int Startposition,
 
   for (i = Startposition; i < Startposition + Length; i++)
   {
-    uint8_t CurrentValue = Bitstream[i >> 3] & BitwalkerBitMaskTable[i & 0x07];
-
-    retval = (retval << 1) + (uint8_t)(CurrentValue != 0);
+    retval = (retval << 1) +  extract_bit(Bitstream, i);
   }
 
   return retval;

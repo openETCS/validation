@@ -1,5 +1,3 @@
-
-#include <stdint.h>
 #include "Bitwalker.h"
 
 int Bitwalker_Poke (unsigned int Startposition, unsigned int Length, uint8_t Bitstream[], unsigned int BitstreamSizeInBytes, uint64_t Value)

@@ -1,5 +1,3 @@
-
-#include <stdint.h>
 #include "Bitwalker.h"
 
 uint64_t Bitwalker_Peek(unsigned int Startposition,

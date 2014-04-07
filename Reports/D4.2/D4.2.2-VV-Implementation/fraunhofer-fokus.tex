@@ -88,6 +88,36 @@ assertions. If all these assertions can be proven, then
 the absence of run time errors is guaranteed.
 
 
+\begin{framed}
+The verifiers received the source code without sufficiently clear explanation
+about how the inputs and outputs of bitwalker functions are related.
+In particular, no information about error conditions were provided.
+On such a basis it is, as pointed out on Page~\pageref{lesson},
+not possible to write meaningful test cases;
+let alone to formally verify the functionality of the bitwalker functions.
+
+In a first step, we therefore inspected the source code and 
+derived from this an \emph{informal specification}.
+This informal specification is to be understood
+as a requirements document for the bitwalker functions as it should have been
+available for both the programmer and the verifier.
+
+There are several problems with this approach:
+\begin{itemize}
+\item
+The verifier could make an error while analysing the source code
+and end up with a wrong specification. 
+In fact, this happened in a first version.
+
+\item
+There could also be an error in the implementation which would then be present also
+in the specification, thus leading to the claim ``the code works as implemented''.
+\end{itemize}
+
+In order to avoid these problems we submitted our informal specification
+for review by the domain experts.
+\end{framed}
+
 \clearpage
 
 \subsection{The Function \peek}
@@ -95,17 +125,31 @@ the absence of run time errors is guaranteed.
 
 
 In this section we examine the function \peek.
-Initially, we provide an informal specification 
-followed by an implementation.
+Initially, we provide an informal specification followed by an implementation.
 We then derive a formal specification on the basis of the informal one. 
 Finally, we present the results of the deductive verification with \framac and \wpframac.
+
+\subsubsection{Original Implementation}
+
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Original/Bitwalker_peek.c}
+\end{minipage}
+\caption{\label{lst:peek-original} Original Implementation of \peek}
+\end{listing}
+
 
 
 \subsubsection{Informal Specification}
 \label{informal-peek}
 
 
-We first introduce some auxiliary concepts and formulate general assumptions:
+Before we introduce some auxiliary concepts and formulate general assumptions
+we would like to point our a the following: 
+When we speak of \emph{integers}, then we refer to the infinite set of mathematical
+integers $\{\ldots, -1, 0, 1, \ldots\}$
+and not one of the many finite representation provided by the type system of~C.
 
 \begin{itemize}
 \item
@@ -150,18 +194,25 @@ and its \emph{length}, that is, the number of bits it contains.
      with respect to a bit stream of length $n$ if the following conditions are
      satisfied
      \begin{align*}
-         0 &\leq p \leq 8n \\
-         0 &\leq p + l \leq 8n
+         0 &\leq p < 8n \\
+         0 &\leq p + l < 8n
      \end{align*}
 
 \item 
-We assume that the C-types \texttt{unsigned int} and \texttt{int}
+We assume that the C-types \inl{unsigned int} and \inl{int}, which
+are used in the implementation to represent indices, counting and error codes,
 have a width of~32~bits.
+We point this out here because we conducted the verification on a platform with
+these characteristics.
+
+As an aside, MISRA-C discourages the use of ``generic'' integer types
+such as \inl{int} and \inl{unsigned int} and recommends the use of integer types whose names
+contain the exact width.
 
 \end{itemize}
 
 Now we specify \peek with the introduced auxiliary concepts.
-The function \texttt{Bitwalker\_Peek} reads a bit sequence from a bit stream
+The function \peek reads a bit sequence from a bit stream
 and converts it to an integer.
 
 Its function signature reads as follows:
@@ -175,45 +226,59 @@ uint64_t  Bitwalker_Peek(unsigned int Startposition,
 
 The arguments have the following purpose:
 \begin{itemize}
-    \item \texttt{Startposition} is the bit index in the bit stream 
+    \item \inl{Startposition} is the bit index in the bit stream 
     where the bit sequence starts.
-    \item \texttt{Length} is the length of the bit sequence.
-    \item \texttt{Bitstream} is the array which provides the bit stream.
-    \item \texttt{BitstreamSizeInBytes} is the length of the array 
+    \item \inl{Length} is the length of the bit sequence.
+    \item \inl{Bitstream} is the array which provides the bit stream.
+    \item \inl{BitstreamSizeInBytes} is the length of the array 
     containing the bit stream. 
 \end{itemize}
 
-
-The following preconditions shall hold for the function arguments:
-\begin{itemize}
-\item \texttt{Bitstream} is a valid array of length \verb"BitstreamSizeInBytes"
-
-\item \texttt{Length} $\leq$ \texttt{64} and
-
-\item \texttt{Startposition + Length} $\leq$ \verb"UINT_MAX".
-\end{itemize}
-
+The following preconditions shall hold for the function arguments.
 Note that additional constraints are implicitly expressed by the use
 of \emph{unsigned} integer types.
+
+\begin{itemize}
+\item \inl{Bitstream} is a valid array of length \verb"BitstreamSizeInBytes"
+
+\item \inl{Length} $\leq$ \inl{64} and
+
+\item \inl{Startposition + Length} $\leq$ \inl{UINT_MAX}.\footnote{%
+      One of the reviewer had difficulties to understand this requirement.
+      If \inl{Startposition + Length} were (as an integer value) greater
+      than \inl{UINT_MAX}, then the result would be represented as a value of
+      \inl{unsigned int} that might be less than \inl{Startposition}.
+      Thus, the range \inl{Startposition ... Startposition + Length} would be
+      empty which is in most cases not what the programmer wanted.
+      This is a common mistake in programs and sometimes exploited by attackers.
+}
+\end{itemize}
 
 We continue with a more precise description of the desired behavior of \peek.
 As mentioned, the function \texttt{Bitwalker\_Peek} reads a bit sequence from a bit stream
 and converts it to a 64-bit unsigned integer.
 
-The left most bit of the bit sequence is interpreted as
-the most significant bit.
-Thus, for a bit sequence $(b_0, b_1,\ldots,b_{n - 1})$ the function
-returns the sum
+For a bit sequence $(b_0, b_1,\ldots,b_{n - 1})$ the function \peek returns the sum
 \begin{align}
     b_0 \cdot 2^{n - 1} + b_1\cdot 2^{n - 2} + \ldots + b_{n-1}\cdot 2^0
     =
     \sum_{i=0}^{n-1} b_i \cdot 2^{(n - 1) - i} 
 \end{align}
 
-If the bit sequence is not valid, then the function returns \texttt{0}.
-This increases the robustness of the function.
+Note that is a higher-level description than what is done in the source code.
+There is, in our opinion, not much point to reflect low-level bit fiddling
+into the specification if a clearer description is at hand.
 
-\clearpage
+If the bit sequence is not valid, then \peek shall return~0.
+We were wondering why the implementation maps an illegal input to a legitimate output.
+The code providers argued along the lines that this error condition was not
+considered important enough to be properly reported.
+One can interpret this design decision as an attempt to increase the
+robustness of the function against illegal values.
+In general, we recommend to explicitely describe all error conditions
+and to devise a consistent error detection and error recovery strategy.
+
+
 \subsubsection{Implementation}
 \label{impl-peek}
  
@@ -230,6 +295,14 @@ to select a single bit in the \texttt{Bitstream}.
 \end{minipage}
 \caption{\label{fig:impl-peek} Implementation of \peek}
 \end{listing}
+
+\begin{itemize}
+\item extensive use of bit operations
+\item various overflows can occur
+\item unnecessary casts
+\item const arguments
+\item discuss alternative implementation
+\end{itemize}
 
 The implementation uses a great amount of bit operations
 which is quite a challenge for the formal verification.
@@ -437,7 +510,7 @@ If the bit sequence is not valid, then \poke returns~$-1$.
 \end{itemize}
 
 \subsubsection{Implementation}
-\label{impl-poke}
+\label{sec:impl-poke}
 Listing \ref{fig:impl-poke} shows the implementation of \poke
 which discriminates three cases. The first two are the robustness cases
 of the informal specification and the last one is

@@ -14,7 +14,8 @@ uint64_t Bitwalker_Peek(unsigned int Startposition,
 
   for (i = Startposition; i < Startposition + Length; i++)
   {
-    uint8_t CurrentValue = Bitstream[i >> 3] & BitwalkerBitMaskTable[i & 0x07];
+    uint8_t CurrentValue = Bitstream[i >> 3] &
+                           BitwalkerBitMaskTable[i & 0x07];
 
     retval = (retval << 1) + (uint8_t)(CurrentValue != 0);
   }

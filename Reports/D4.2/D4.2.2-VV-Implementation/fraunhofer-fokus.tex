@@ -129,17 +129,86 @@ Initially, we provide an informal specification followed by an implementation.
 We then derive a formal specification on the basis of the informal one. 
 Finally, we present the results of the deductive verification with \framac and \wpframac.
 
-\subsubsection{Original Implementation}
+\subsubsection{Remarks on the Original Implementation}
+
+Listing~\ref{lst:peek-original} shows the original implementation of \peek.
 
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Original/Bitwalker_peek.c}
 \end{minipage}
-\caption{\label{lst:peek-original} Original Implementation of \peek}
+\caption{\label{lst:peek-original} Original implementation of \peek}
 \end{listing}
 
+Here are some remarks on this implementation.
 
+\begin{itemize}
+\item The implementation extensively uses bit operations.
+      This is of course largely a matter of taste.
+      Nevertheless, it is questionable whether representing a division 
+      of an index~\inl{i} by~8 as \inl{i >> 3} is better than writing it as~\inl{i/8}.
+\item The argument \inl{Bitstream} represents an array that is only read.
+      It is good programming practice to qualify such arguments as \inl{const}.
+
+\item The cast of \inl{CurrentValue != 0} to \inl{uint8_t} is unnecessary for the following reasons:
+\begin{itemize}
+\item The result of expression \inl{CurrentValue != 0} is of type \inl{int} and has either the value~1 or~0.
+\item According to the ``usual arithmetic conversions''\footnote{%
+     This is indeed the heading of Section~6.3.1.8 of the C standard.
+}
+this value will be promoted to the type of \inl{retval << 1} which is~\inl{uint64_t}.
+\end{itemize}
+
+    Thus, the cast to \inl{uint8_t} is pointless and removing it increases the clarity of the code.
+
+\end{itemize}
+
+At one point, an alternative to the implementation of \peek in
+Listing~\ref{lst:peek-original} was suggested.
+This alternative implementation, which is shown in Listing~\ref{lst:peek-alternative}
+attempts to limit the use of bit operations to a minimum.
+different results.
+
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[style=acsl-block,frame=single]
+  uint64_t Bitwalker_Peek (unsigned int Startposition,
+                           unsigned int Length,
+                           uint8_t Bitstream[],
+                           unsigned int BitstreamSizeInBytes)
+  {
+    uint64_t retval = 0;
+    for (unsigned int i = Startposition +
+           BitstreamSizeInBytes*!((Startposition + Length) <=
+           BitstreamSizeInBytes*8);
+           i < Startposition + Length; i++)
+      retval = (retval*2) +
+               (uint8_t)((uint8_t)!!(Bitstream[i/8] & BitwalkerBitMaskTable[i%8]));
+    return retval;
+ }
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:peek-alternative} An alternative implementation of \peek}
+\end{listing}
+
+Interestingly, it also adds another unnecessary casts to \inl{uint8_t}.
+However, the real problem with this alternative implementation is that it produces
+different results: Calling \peek from Listing~\ref{lst:peek-original} with the arguments
+
+\begin{verbatim}
+  Startposition = 8
+  Length = 32
+  Bitstream[] = {254, 7, 13, 9}
+  BitstreamSizeInBytes = 4
+\end{verbatim}
+
+produces~0 whereas the implementation from Listing~\ref{lst:peek-alternative} returns~118294784.
+Apparently, even \peek is not so simple that its functionality can be unambiguously
+understood just by looking at the code.
+
+\subsubsection{A First Analysis with \framac}
 
 \subsubsection{Informal Specification}
 \label{informal-peek}
@@ -275,7 +344,7 @@ The code providers argued along the lines that this error condition was not
 considered important enough to be properly reported.
 One can interpret this design decision as an attempt to increase the
 robustness of the function against illegal values.
-In general, we recommend to explicitely describe all error conditions
+In general, we recommend to explicitly describe all error conditions
 and to devise a consistent error detection and error recovery strategy.
 
 
@@ -295,14 +364,6 @@ to select a single bit in the \texttt{Bitstream}.
 \end{minipage}
 \caption{\label{fig:impl-peek} Implementation of \peek}
 \end{listing}
-
-\begin{itemize}
-\item extensive use of bit operations
-\item various overflows can occur
-\item unnecessary casts
-\item const arguments
-\item discuss alternative implementation
-\end{itemize}
 
 The implementation uses a great amount of bit operations
 which is quite a challenge for the formal verification.

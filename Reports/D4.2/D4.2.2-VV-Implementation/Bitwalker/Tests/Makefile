@@ -1,5 +1,7 @@
 
-DIR=../Sources
+#DIR=../Original
+DIR=../Modified
+#DIR=../Sources
 FILETYPE= c
 
 # make sure that the BOOST libraries (in particular dynamic_bitset) is in the include path

@@ -1,5 +1,3 @@
-
-#include <stdint.h>
 #include "Bitwalker.h"
 #include "extract_bit.h"
 

@@ -1,6 +1,5 @@
-
-#include <stdint.h>
 #include "Bitwalker.h"
+#include "poke_bits.h"
 
 int Bitwalker_Poke (unsigned int Startposition, unsigned int Length, uint8_t Bitstream[], unsigned int BitstreamSizeInBytes, uint64_t Value)
 {
@@ -19,11 +18,7 @@ int Bitwalker_Poke (unsigned int Startposition, unsigned int Length, uint8_t Bit
 
   for (i = Startposition + Length - 1; i >= (int)Startposition; i--)
   {
-    if ((Value & 0x01) == 0)
-      Bitstream[i >> 3] &= ~BitwalkerBitMaskTable[i & 0x07];
-    else
-      Bitstream[i >> 3] |=  BitwalkerBitMaskTable[i & 0x07];
-
+    poke_bits(&Bitstream[0], i, Value);
     Value >>= 1;
   }
 

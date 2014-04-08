@@ -11,7 +11,7 @@ CFLAGS = -Wall -pedantic -std=c11
 
 vpath %.$(FILETYPE)  $(DIR)
 
-all: test_bitwalker FORCE
+all: clean test_bitwalker FORCE
 	./test_bitwalker
 
 test_bitwalker:    test_bitwalker.o Bitwalker.o

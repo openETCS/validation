@@ -1,6 +1,7 @@
 
 #DIR=../Original
-DIR=../Modified
+#DIR=../Modified
+DIR=../Modified2
 #DIR=../Sources
 FILETYPE= c
 

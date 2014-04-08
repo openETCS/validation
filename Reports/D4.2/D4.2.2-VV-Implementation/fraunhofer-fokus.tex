@@ -120,16 +120,7 @@ for review by the domain experts.
 
 \clearpage
 
-\subsection{The Function \peek}
-\label{peek}
-
-
-In this section we examine the function \peek.
-Initially, we provide an informal specification followed by an implementation.
-We then derive a formal specification on the basis of the informal one. 
-Finally, we present the results of the deductive verification with \framac and \wpframac.
-
-\subsubsection{Remarks on the Original Implementation}
+\subsection{Remarks on the Original Implementation}
 
 Listing~\ref{lst:peek-original} shows the original implementation of \peek.
 
@@ -164,11 +155,11 @@ this value will be promoted to the type of \inl{retval << 1} which is~\inl{uint6
 
 \end{itemize}
 
+\clearpage
 At one point, an alternative to the implementation of \peek in
 Listing~\ref{lst:peek-original} was suggested.
 This alternative implementation, which is shown in Listing~\ref{lst:peek-alternative}
 attempts to limit the use of bit operations to a minimum.
-different results.
 
 
 \begin{listing}[hbt]
@@ -193,7 +184,7 @@ different results.
 \caption{\label{lst:peek-alternative} An alternative implementation of \peek}
 \end{listing}
 
-Interestingly, it also adds another unnecessary casts to \inl{uint8_t}.
+Interestingly, this implementation also employs unnecessary casts to \inl{uint8_t}.
 However, the real problem with this alternative implementation is that it produces
 different results: Calling \peek from Listing~\ref{lst:peek-original} with the arguments
 
@@ -207,6 +198,32 @@ different results: Calling \peek from Listing~\ref{lst:peek-original} with the a
 produces~0 whereas the implementation from Listing~\ref{lst:peek-alternative} returns~118294784.
 Apparently, even \peek is not so simple that its functionality can be unambiguously
 understood just by looking at the code.
+
+\clearpage
+
+Listing~\ref{lst:poke-original} shows the original implementation of \poke.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Original/Bitwalker_poke.c}
+\end{minipage}
+\caption{\label{lst:poke-original} Original implementation of \poke}
+\end{listing}
+
+Clearly visible in the code are various error conditions that are checked 
+returned by~\poke.
+No specifications for these error conditions have been provided.
+ 
+\clearpage
+
+\subsection{The Function \peek}
+\label{peek}
+
+
+In this section we examine the function \peek.
+Initially, we provide an informal specification followed by an implementation.
+We then derive a formal specification on the basis of the informal one. 
+Finally, we present the results of the deductive verification with \framac and \wpframac.
 
 \subsubsection{A First Analysis with \framac}
 

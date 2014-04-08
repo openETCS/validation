@@ -1,6 +1,10 @@
 #include "Bitwalker.h"
 
-int Bitwalker_Poke (unsigned int Startposition, unsigned int Length, uint8_t Bitstream[], unsigned int BitstreamSizeInBytes, uint64_t Value)
+int Bitwalker_Poke (unsigned int Startposition,
+                    unsigned int Length,
+                    uint8_t Bitstream[],
+                    unsigned int BitstreamSizeInBytes,
+                    uint64_t Value)
 {
   // plausibility check: is last byte in range
   if (((Startposition + Length - 1) >> 3) >= BitstreamSizeInBytes)

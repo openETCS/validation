@@ -3,7 +3,7 @@
 
 /*@
    requires 1 <= Length < 64;
-   requires Startposition + Length <= UINT_MAX;
+   requires 8*(Startposition + Length) < UINT_MAX;
    requires \valid(Bitstream + (0..BitstreamSizeInBytes-1));
 
    assigns \nothing;

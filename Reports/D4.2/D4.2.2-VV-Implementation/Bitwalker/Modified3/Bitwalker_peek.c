@@ -1,5 +1,9 @@
 #include "Bitwalker.h"
-#include "extract_bit.h"
+
+unsigned int inverse_modulo(unsigned int n, unsigned int d)
+{
+    return d - 1 - (n % d);
+}
 
 uint64_t Bitwalker_Peek(unsigned int Startposition,
                         unsigned int Length,
@@ -13,10 +17,11 @@ uint64_t Bitwalker_Peek(unsigned int Startposition,
 
   for (unsigned int i = Startposition; i < Startposition + Length; i++)
   {
-        unsigned int bit_index  = 7 - (i % 8);
+        unsigned int bit_index  = inverse_modulo(i, 8);
         uint8_t bit_as_byte = (Bitstream[i / 8] >> bit_index) & 1;
         retval = 2 * retval + bit_as_byte;
   }
 
   return retval;
 }
+

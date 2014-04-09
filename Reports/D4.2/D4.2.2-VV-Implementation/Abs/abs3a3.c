@@ -8,7 +8,7 @@ extern int a;
 /*@
     requires x > INT_MIN;
 
-    assigns a; // allow assignemt to a (but only to a).
+    assigns a; // allow assignment to a (but only to a).
 
     ensures 0 <= x ==> \result ==  x;
     ensures 0 >  x ==> \result == -x;

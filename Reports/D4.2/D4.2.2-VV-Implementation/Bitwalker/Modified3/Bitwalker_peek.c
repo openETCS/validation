@@ -33,14 +33,18 @@ uint64_t Bitwalker_Peek(unsigned int Startposition,
   uint64_t retval = 0;
 
   /*@
-    loop invariant Startposition <= i <= Startposition + Length;
+    loop invariant 0 <= i <= Length;
+    //loop invariant 0 <= retval <= 2 * \at(retval, Pre);
     loop assigns i, retval;
-    loop variant Startposition + Length - i;
+    loop variant Length - i;
   */
-  for (unsigned int i = Startposition; i < Startposition + Length; i++)
+  for (unsigned int i = 0; i < Length; i++)
   {
-        unsigned int bit_index  = inverse_modulo(i, 8);
-        uint8_t bit_as_byte = (Bitstream[i / 8] >> bit_index) & 1;
+        unsigned int pos = Startposition + i;
+
+        unsigned int bit_index  = inverse_modulo(pos, 8);
+        uint8_t shift = Bitstream[pos / 8] >> bit_index;
+        uint8_t bit_as_byte = shift & 1;
         //@ assert bit_as_byte <= 1;
 
         retval = 2 * retval + bit_as_byte;

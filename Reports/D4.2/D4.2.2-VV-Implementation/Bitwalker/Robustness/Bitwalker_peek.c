@@ -1,5 +1,8 @@
 #include "Bitwalker.h"
 
+/*@
+   \valid(Bitstream, 0..BitstreamSizeInBytes-1);
+*/
 uint64_t Bitwalker_Peek(unsigned int Startposition,
                         unsigned int Length,
                         uint8_t Bitstream[],

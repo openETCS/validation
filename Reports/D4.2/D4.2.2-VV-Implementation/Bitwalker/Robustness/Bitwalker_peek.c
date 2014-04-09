@@ -1,7 +1,12 @@
+#include "limits.h"
 #include "Bitwalker.h"
 
 /*@
-   \valid(Bitstream, 0..BitstreamSizeInBytes-1);
+   requires 1 <= Length < 64;
+   requires Startposition + Length <= UINT_MAX;
+   requires \valid(Bitstream + (0..BitstreamSizeInBytes-1));
+
+   assigns \nothing;
 */
 uint64_t Bitwalker_Peek(unsigned int Startposition,
                         unsigned int Length,
@@ -13,9 +18,12 @@ uint64_t Bitwalker_Peek(unsigned int Startposition,
 
   uint64_t retval = 0;
 
-  unsigned int i;
-
-  for (i = Startposition; i < Startposition + Length; i++)
+  /*@
+    loop invariant Startposition <= i <= Startposition + Length;
+    loop assigns i, retval;
+    loop variant Startposition + Length - i;
+  */
+  for (unsigned int i = Startposition; i < Startposition + Length; i++)
   {
     uint8_t CurrentValue = Bitstream[i >> 3] &
                            BitwalkerBitMaskTable[i & 0x07];

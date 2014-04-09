@@ -120,7 +120,7 @@ for review by the domain experts.
 
 \clearpage
 
-\subsection{Remarks on the Original Implementation}
+\subsection{A First Look on \peek}
 
 Listing~\ref{lst:peek-original} shows the original implementation of \peek.
 
@@ -199,24 +199,8 @@ produces~0 whereas the implementation from Listing~\ref{lst:peek-alternative} re
 Apparently, even \peek is not so simple that its functionality can be unambiguously
 understood just by looking at the code.
 
+
 \clearpage
-
-Listing~\ref{lst:poke-original} shows the original implementation of \poke.
-
-\begin{listing}[hbt]
-\begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Original/Bitwalker_poke.c}
-\end{minipage}
-\caption{\label{lst:poke-original} Original implementation of \poke}
-\end{listing}
-
-Clearly visible in the code are various error conditions that are checked 
-returned by~\poke.
-No specifications for these error conditions have been provided.
- 
-\clearpage
-
-\subsection{A First Analysis with \framac}
 
 Figure~\ref{fig:peek-wp} shows a normalized representation of \peek
 that is enhanced with static \acsl assertions.
@@ -235,6 +219,24 @@ that they will \emph{not} occur.
 
 \clearpage
 
+\subsection{A First Look on \poke}
+
+Listing~\ref{lst:poke-original} shows the original implementation of \poke.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Original/Bitwalker_poke.c}
+\end{minipage}
+\caption{\label{lst:poke-original} Original implementation of \poke}
+\end{listing}
+
+Clearly visible in the code are various error conditions that are checked 
+returned by~\poke.
+No specifications for these error conditions have been provided.
+ 
+\clearpage
+
+
 Figure~\ref{fig:poke-wp} shows the normalized representation of \poke
 with \acsl assertions that indicate potential runtime erros.
 
@@ -250,6 +252,8 @@ with \acsl assertions that indicate potential runtime erros.
 \subsection{The Function \peek}
 \label{peek}
 
+
+\subsection{Old}
 
 In this section we examine the function \peek.
 Initially, we provide an informal specification followed by an implementation.

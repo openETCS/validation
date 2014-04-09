@@ -6,16 +6,15 @@ uint64_t Bitwalker_Peek(unsigned int Startposition,
                         uint8_t Bitstream[],
                         unsigned int BitstreamSizeInBytes)
 {
-  if (((Startposition + Length - 1) / 8) >= BitstreamSizeInBytes)
+  if ((Startposition + Length)  > 8 * BitstreamSizeInBytes)
     return 0;	// error: index out of range
 
   uint64_t retval = 0;
 
   for (unsigned int i = Startposition; i < Startposition + Length; i++)
   {
-        uint8_t val = Bitstream[i / 8];
-        unsigned int k  = 0x07-(i & 0x07);
-        uint8_t bit_as_byte = (val >> k) & 0x01;
+        unsigned int bit_index  = 7 - (i % 8);
+        uint8_t bit_as_byte = (Bitstream[i / 8] >> bit_index) & 1;
         retval = 2 * retval + bit_as_byte;
   }
 

@@ -1,5 +1,4 @@
 
-clean::
 
 include Makefile.template
 
@@ -8,4 +7,8 @@ OBJ := $(SRC:.c=*.o)
 
 obj : $(OBJ)
 
+
+test_abs: test_abs.o abs.o
+	$(CC) -o $@ $+
+	./test_abs
 

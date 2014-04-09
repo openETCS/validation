@@ -54,7 +54,9 @@ export WPREPORT=$(WP) $(WP_FLAGS) $(WP_PROVER_FLAGS)
 
 # start WP on command line and run provers
 %.wp:%.c FORCE
-	@$(WP) $(WP_FLAGS) $(WP_PROVER_FLAGS) -wp-out $(patsubst %.c,%.wp, $<)  $<
+	@$(WP) $(WP_FLAGS) $(WP_PROVER_FLAGS)\
+              -wp-out $(patsubst %.c,%.wp, $<)  \
+              -print -ocode $(patsubst %.c,%.i, $<)  $<
 
 wp: $(FILE).wp
 
@@ -101,7 +103,10 @@ clean:: FORCE
 
 
 format: FORCE
-	@astyle -A1 -f -p -Y -z2 --indent=spaces -s2 *.c *.spec *.impl *.cpp *.h 
+	@astyle -A1 -f -p -Y -z2 --indent=spaces -s2 *.c *.h 
+
+iformat: FORCE
+	@astyle -A1 -f -p -Y -z2 --indent=spaces -s2 -xC50 -xL *.i
 
 
 FORCE:

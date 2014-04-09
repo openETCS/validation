@@ -217,6 +217,14 @@ that they will \emph{not} occur.
 \end{center}
 \end{figure}
 
+These potential runtime errors are related to the facts that at this point \framacwp
+\begin{itemize}
+\item cannot exclude that \inl{Length} can be greater then~64 
+\item has to assume that \inl{Startposition + Length} may overflow
+\item has no guarantee that \inl{BitstreamSizeInBytes} is the length 
+      of the array starting at the address \inl{Bitstream}
+\end{itemize}
+
 \clearpage
 
 \subsection{A First Look on \poke}
@@ -246,6 +254,16 @@ with \acsl assertions that indicate potential runtime erros.
 \caption{\label{fig:poke-wp} Potential runtime errors in \peek}
 \end{center}
 \end{figure}
+
+Similiarly to the potential runtime errors of \peek \framacwp
+faces the problem that it
+
+\begin{itemize}
+\item cannot exclude that \inl{Length} can be greater then~64 
+\item has to assume that \inl{Startposition + Length} may overflow
+\item has no guarantee that \inl{BitstreamSizeInBytes} is the length 
+      of the array starting at the address \inl{Bitstream}
+\end{itemize}
 
 \clearpage
 

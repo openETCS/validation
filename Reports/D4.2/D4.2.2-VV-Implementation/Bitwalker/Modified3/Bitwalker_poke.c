@@ -21,9 +21,9 @@ int Bitwalker_Poke (unsigned int Startposition,
   }
 
   // Everything ok, we can iterate bitwise from left to right
-  for (int i = Length - 1; i >= 0; i--)
+  for (unsigned int i = Length; i > 0; i--)
   {
-    int pos = Startposition + i;
+    int pos = Startposition + i - 1;
     uint8_t mask = 1 <<  inverse_modulo(pos, 8);
 
     if ((Value % 2) == 0)

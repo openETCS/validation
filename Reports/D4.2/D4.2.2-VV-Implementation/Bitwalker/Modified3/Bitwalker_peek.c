@@ -10,7 +10,7 @@
 */
 unsigned int inverse_modulo(unsigned int n, unsigned int d)
 {
-    return d - 1 - (n % d);
+  return d - 1 - (n % d);
 }
 
 /*@
@@ -41,14 +41,14 @@ uint64_t Bitwalker_Peek(unsigned int Startposition,
   */
   for (unsigned int i = 0; i < Length; i++)
   {
-        unsigned int pos = Startposition + i;
+    unsigned int pos = Startposition + i;
 
-        unsigned int bit_index  = inverse_modulo(pos, 8);
-        uint8_t shift = Bitstream[pos / 8] >> bit_index;
-        uint8_t bit_as_byte = shift & 1;
-        //@ assert bit_as_byte == 0 || bit_as_byte == 1;
+    unsigned int bit_index  = inverse_modulo(pos, 8);
+    uint8_t shift = Bitstream[pos / 8] >> bit_index;
+    uint8_t bit_as_byte = shift & 1;
+    //@ assert bit_as_byte == 0 || bit_as_byte == 1;
 
-        retval = 2 * retval + bit_as_byte;
+    retval = 2 * retval + bit_as_byte;
   }
 
   return retval;

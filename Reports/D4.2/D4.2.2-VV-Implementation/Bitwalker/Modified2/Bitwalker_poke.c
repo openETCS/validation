@@ -12,7 +12,6 @@ int Bitwalker_Poke (unsigned int Startposition, unsigned int Length, uint8_t Bit
 
   if (MaxValue < Value)
     return -2;  // error: value to big for bit field
-
   // Everything ok, we can iterate bitwise from left to right
   int i;
 

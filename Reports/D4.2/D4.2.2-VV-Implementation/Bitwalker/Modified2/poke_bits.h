@@ -1,6 +1,10 @@
-
 void poke_bits(uint8_t* Bitstream, unsigned int index, uint64_t Value)
 {
-    Bitstream[index >> 3] |= (Value & 0x01)<< (0x07 - (index & 0x07));
+    uint8_t mask = 0x01 <<  (0x07 - (index & 0x07));
+    if ((Value & 0x01) == 0)
+      Bitstream[index >> 3] &= ~mask;
+    else
+      Bitstream[index >> 3] |=  mask;
+
 }
 

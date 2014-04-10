@@ -20,7 +20,7 @@ int Bitwalker_Poke (unsigned int Startposition,
   for (int i = Length - 1; i >= 0; i--)
   {
     int pos = Startposition + i;
-    uint8_t mask = 1 <<  (7 - (pos % 8));
+    uint8_t mask = 1 <<  inverse_modulo(pos, 8);
 
     if ((Value % 2) == 0)
       Bitstream[pos / 8] &= ~mask;

@@ -28,7 +28,7 @@ int main(int argc, char** argv)
                   << (pos >> 3) << "\t"
                   << (pos / 8) << "\t"
                   << (pos & 0x07) << "\t"
-                  //<< int(BitwalkerBitMaskTable[pos & 0x07]) << "\t"
+                  << int(BitwalkerBitMaskTable[pos & 0x07]) << "\t"
                   << log2(int(BitwalkerBitMaskTable[pos & 0x07])) << "\t"
                   << 7 - (pos % 8) << "\t"
                   << std::endl;

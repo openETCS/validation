@@ -1,8 +1,8 @@
 
 #DIR=../Original
 #DIR=../Modified
-DIR=../Modified2
-#DIR=../Modified3
+#DIR=../Modified2
+DIR=../Modified3
 #DIR=../Sources
 FILETYPE= c
 
@@ -18,7 +18,6 @@ all: clean test_bitwalker FORCE
 
 test_bitwalker:    test_bitwalker.o Bitwalker.o
 	$(CXX) -o $@ $+
-
 
 format:
 	@astyle -A1 -f -p -Y -z2 -c --indent=spaces -s4  *.cpp

@@ -11,7 +11,7 @@ int Bitwalker_Poke (unsigned int Startposition,
     return -1;	// error: index out of range
 
   // plausibility check: is value in range
-  uint64_t MaxValue = (((uint64_t) 1) << Length) - 1;
+  const uint64_t MaxValue = (((uint64_t) 1) << Length) - 1;
 
   if (MaxValue < Value)
     return -2;  // error: value to big for bit field
@@ -27,7 +27,7 @@ int Bitwalker_Poke (unsigned int Startposition,
     else
       Bitstream[pos / 8] |=  mask;
 
-    Value >>= 1;
+    Value /= 2;
   }
 
   return 0;

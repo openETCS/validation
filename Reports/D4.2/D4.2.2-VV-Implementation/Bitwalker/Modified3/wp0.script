@@ -4,9 +4,7 @@ Goal typed_ref_Bitwalker_Peek_assert.
 Hint Bitwalker_Peek,property.
 Proof.
   intros.
-  left.
   unfold x_5.
-
   admit.
 Qed.
 
@@ -15,19 +13,22 @@ Hint Bitwalker_Peek,preserved.
 Proof.
   intros.
   subst x_3 x_9.
+  apply and_comm.
   split.
-  Focus 2.
-    auto with zarith.
 
-  unfold is_uint64 in *.
-  subst x_0.
+  + auto with zarith.
 
-  destruct H37 as [zero|one].
-    rewrite <- zero.
-    admit.
-
-    rewrite <- one.
-    admit.
+  + unfold is_uint64 in *.
+    subst x_0.
+    destruct H37 as [zero|one].
+    - rewrite <- zero.
+      cut((2 * (lsl 1 i_0))%Z = lsl 1 (1 + i_0)).
+      auto with zarith.
+      admit.
+    - rewrite <- one.
+      cut((2 * (lsl 1 i_0))%Z = lsl 1 (1 + i_0)).
+      auto with zarith.
+      admit.
 Qed.
 
 

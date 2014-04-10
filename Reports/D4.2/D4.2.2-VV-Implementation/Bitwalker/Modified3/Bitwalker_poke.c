@@ -1,5 +1,4 @@
 #include "Bitwalker.h"
-#include "poke_bits.h"
 
 int Bitwalker_Poke (unsigned int Startposition,
                     unsigned int Length,
@@ -21,7 +20,13 @@ int Bitwalker_Poke (unsigned int Startposition,
   for (int i = Length - 1; i >= 0; i--)
   {
     int pos = Startposition + i;
-    poke_bits(&Bitstream[0], pos, Value);
+    uint8_t mask = 1 <<  (7 - (pos % 8));
+
+    if ((Value % 2) == 0)
+      Bitstream[pos / 8] &= ~mask;
+    else
+      Bitstream[pos / 8] |=  mask;
+
     Value >>= 1;
   }
 

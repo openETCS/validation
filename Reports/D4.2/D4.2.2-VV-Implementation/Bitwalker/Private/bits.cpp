@@ -1,7 +1,10 @@
 
 #include <vector>
 #include <iostream>
+#include <cmath>
 #include "boost/lexical_cast.hpp"
+
+static const uint8_t BitwalkerBitMaskTable[] = {0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};
 
 int main(int argc, char** argv)
 {
@@ -20,7 +23,17 @@ int main(int argc, char** argv)
     for(size_t i = 0; i < length; ++i)
     {
         size_t pos = start + i;
-        std::cout << i << "\t" << pos << "\t" << (pos >> 3) << std::endl;
+        std::cout << i << "\t"
+                  << pos << "\t"
+                  << (pos >> 3) << "\t"
+                  << (pos / 8) << "\t"
+                  << (pos & 0x07) << "\t"
+                  //<< int(BitwalkerBitMaskTable[pos & 0x07]) << "\t"
+                  << log2(int(BitwalkerBitMaskTable[pos & 0x07])) << "\t"
+                  << 7 - (pos % 8) << "\t"
+                  << std::endl;
     }
+
+    return EXIT_SUCCESS;
 
 }

@@ -21,6 +21,7 @@ unsigned int inverse_modulo(unsigned int n, unsigned int d)
 
    assigns \nothing;
 
+   ensures \result <= (1 << Length);
 */
 uint64_t Bitwalker_Peek(unsigned int Startposition,
                         unsigned int Length,
@@ -34,7 +35,7 @@ uint64_t Bitwalker_Peek(unsigned int Startposition,
 
   /*@
     loop invariant 0 <= i <= Length;
-    //loop invariant 0 <= retval <= 2 * \at(retval, Pre);
+    loop invariant 0 <= retval < 1 << i;
     loop assigns i, retval;
     loop variant Length - i;
   */
@@ -45,7 +46,7 @@ uint64_t Bitwalker_Peek(unsigned int Startposition,
         unsigned int bit_index  = inverse_modulo(pos, 8);
         uint8_t shift = Bitstream[pos / 8] >> bit_index;
         uint8_t bit_as_byte = shift & 1;
-        //@ assert bit_as_byte <= 1;
+        //@ assert bit_as_byte == 0 || bit_as_byte == 1;
 
         retval = 2 * retval + bit_as_byte;
   }

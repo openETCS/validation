@@ -1,22 +1,43 @@
 #include <cassert>
 #include <cmath>
 #include <algorithm>
+#include <iterator>
 #include <vector>
 #include <string>
 #include <iostream>
 #include <sstream>
 #include <exception>
 #include "boost/dynamic_bitset.hpp"
+#include "boost/utility.hpp"
 
 extern "C"
 {
 #include "Bitwalker.h"
 }
 
+const unsigned int BitsPerByte = 8;
+
+typedef boost::dynamic_bitset<unsigned char> Bitset;
 typedef std::vector<uint8_t> Bytestream;
 typedef boost::dynamic_bitset<uint8_t> Bitstream;
 
-const unsigned int BitsPerByte = 8;
+std::ostream& operator<<(std::ostream& stream, const Bytestream& bytes)
+{
+    stream << '(';
+
+    for(auto i = bytes.begin(); i != bytes.end(); ++i)
+    {
+        stream << int(*i);
+
+        if (boost::next(i) != bytes.end())
+        {
+            stream << ", ";
+        }
+    }
+
+    stream << ')';
+    return stream;
+}
 
 void test_peek_general(unsigned int start,
                        unsigned int length,
@@ -24,41 +45,62 @@ void test_peek_general(unsigned int start,
                        uint64_t expected_value)
 {
     // if these conditions are violated then BitWalker_Peek is undefined
-    assert(length < 64);
-    assert(start < UINT_MAX - length);
+    if (length >= 64)
+    {
+        std::stringstream msg;
+        msg << "length = " << length << " is expected to be less than 64";
+        throw std::logic_error(msg.str());
+    }
 
-    Bitstream original(bytes.begin(), bytes.end());
+    if (start >= UINT_MAX - length)
+    {
+        std::stringstream msg;
+        msg << "start = " << start << " is expected to be less than " << UINT_MAX - length;
+        throw std::logic_error(msg.str());
+    }
 
     const uint64_t value = Bitwalker_Peek(start, length, bytes.data(), bytes.size());
+    Bitstream original(bytes.rbegin(), bytes.rend());
 
     if (value != expected_value)
     {
         std::stringstream msg;
-        msg << "ERROR" <<  std::endl;
-        msg << "value = " << value << "\tdoes not match"
-                  << "\texpected_value =\t" << expected_value << std::endl;
-        msg << "\tstart\t= " << start << std::endl;
-        msg << "\tlength\t= " << length << std::endl;
+        msg << std::endl;
+        msg << "value = " << value << std::endl;
+        msg << "does not match" << std::endl;
+        msg << "expected_value = " << expected_value << std::endl;
+        msg << "start = " << start << std::endl;
+        msg << "length = " << length << std::endl;
+        msg << "byte array = " << bytes << std::endl;
+
         throw std::runtime_error(msg.str());
     }
 
     if (start + length > original.size())
-    {
         assert(value == 0);
-    }
+    else if (length ==  original.size())
+        assert(value == original.to_ulong());
     else
     {
         Bitstream sequence(length);
 
-        for(size_t i = 0; i < sequence.size(); ++i)
+        for(size_t i = 0; i < sequence.size(); i++)
         {
-            sequence[i] = original[start + i];
+            size_t pos = (original.size() - start - length) + i;
+            sequence[i] = original[pos];
+
         }
 
         uint64_t value_from_sequence = sequence.to_ulong();
-        assert(value_from_sequence == value);
-    }
 
+        if(value_from_sequence != value)
+        {
+            std::cout << "ERROR" <<  std::endl;
+            std::cout << "value = " << value << "\tdoes not match"
+                      << "\tvalue_from_sequence =\t" << value_from_sequence << std::endl;
+            assert(false);
+        }
+    }
 }
 
 
@@ -68,14 +110,15 @@ void test_poke_general(unsigned int start,
                        uint64_t value,
                        int expected_code)
 {
-    // if these conditions are violated then BitWalker_Poke is undefined
+    // if these conditions are violated then BitWalker_Peek is undefined
     assert(length < 64);
     assert(start < UINT_MAX - length);
 
-    Bitstream original(bytes.begin(), bytes.end());
-
-
+    const Bitstream original(bytes.rbegin(), bytes.rend());
     const int exit_code = Bitwalker_Poke(start, length, bytes.data(), bytes.size(), value);
+    const Bitstream changed(bytes.rbegin(), bytes.rend());
+    Bitstream temp(length);
+    const Bitstream max_value = temp.set();
 
     if (exit_code != expected_code)
     {
@@ -90,129 +133,226 @@ void test_poke_general(unsigned int start,
 
     if (start + length > original.size())
     {
+        assert(original == changed);
         assert(exit_code == -1);
+    }
+    else if(value > max_value.to_ulong())
+    {
+        assert(original == changed);
+        assert(exit_code == -2);
     }
     else
     {
-        Bitstream result(bytes.begin(), bytes.end());
 
-        Bitstream max_stream(length);
-        max_stream.set();
-        const uint64_t max_value = max_stream.to_ulong();
+        Bitstream sequence(length, value);
+        Bitstream cpy = original;
 
-        // check whether length was large enough to hold value
-        if (value <= max_value)
+        for(size_t i = 0; i < sequence.size(); i++)
         {
-            assert(exit_code == 0);
-
-            // finally, check whether no other bits have changed
-            Bytestream result_bytes(bytes.size());
-            to_block_range(result, result_bytes.begin());
-
-            Bitstream finally(result_bytes.begin(), result_bytes.end());
-            assert(finally.size() == original.size());
-
+            size_t pos = (cpy.size() - start - length) + i;
+            cpy[pos] = sequence[i];
         }
-        else
-        {
-            assert(exit_code == -2);
-        }
+
+        assert(cpy == changed);
+        assert(exit_code == 0);
+
+        for(int  i = cpy.size() - 1 ;  i > (int)(cpy.size() - start); i--)
+            assert(original[i] == cpy[i]);
+
+
+        for(int  i = cpy.size() - 1 - start; i > (int) (cpy.size() - start - length); i--)
+            assert(changed[i] == cpy[i]);
+
+        for(int  i = cpy.size() - start - length ;  i >= 0; i--)
+            assert(original[i] == cpy[i]);
 
     }
 }
 
 
 
-void test_peek_generic(Bytestream bytes)
+
+Bytestream fill_bitstream(const std::string  &buffer)
 {
+    Bitstream bitstream = Bitstream(buffer);
+    Bytestream bytes;
+    // Copy bytes to buffer
+    boost::to_block_range(bitstream, std::back_inserter(bytes));
+    return bytes;
+}
 
-    Bitstream original(bytes.begin(), bytes.end());
 
-    //testing single bits
+uint64_t bin_to_ulong(std::string bitstream)
+{
+    return Bitstream(bitstream).to_ulong();
+}
+
+void test_peek_generic(Bytestream byte)
+{
+    //testing single Bits
     {
-        Bitstream sequence(1);
+        Bitstream bitstream(byte.rbegin(), byte.rend());
 
-        for(size_t i = 0; i < sequence.size(); ++i)
+        for(size_t i = 0; i < bitstream.size(); i++)
         {
-            sequence[i] = original[i];
-            test_peek_general(i, sequence.size(), bytes, sequence.to_ulong() );
+            try
+            {
+                test_peek_general(i, 1, byte, bitstream[bitstream.size() - 1 - i]);
+            }
+            catch(std::exception& e)
+            {
+                std::cerr << "ERROR" << e.what() << std::endl;
+                std::terminate();
+            }
         }
     }
-
-
-    //testing bit sums of every element of the bytestream
+    //testing bitsums
     {
-        for(size_t i = 0; i < bytes.size(); ++i)
+        Bitstream bitstream(byte.rbegin(), byte.rend());
+
+        for(size_t i = 0; i <= bitstream.size(); i++)
         {
-            Bitstream sequence(i + 1);
+            try
+            {
+                Bitstream sequence(i);
 
-            for(size_t j = 0; j < sequence.size(); ++j)
-                sequence[j] = original[j];
+                for(size_t j = 0; j < sequence.size(); j++)
+                    sequence[j] = bitstream[bitstream.size() - i + j];
 
-            test_peek_general(0, sequence.size(), bytes, sequence.to_ulong() );
+                test_peek_general(0, i, byte, sequence.to_ulong());
+            }
+            catch(std::exception& e)
+            {
+                std::cerr << "ERROR" << e.what() << std::endl;
+                std::terminate();
+            }
         }
     }
+}
 
+
+void test_peek_param(unsigned int start,
+                     unsigned int length,
+                     unsigned int  bytestream_size_in_byte,
+                     unsigned int value)
+{
+    Bitstream bitstream(bytestream_size_in_byte * BitsPerByte);
+    Bitstream sequence(length, value);
+
+    for(size_t i = 0; i < length; i++)
+    {
+        bitstream[bitstream.size() - start - length + i] = sequence[i];
+    }
+
+    Bytestream bytes(bytestream_size_in_byte);
+    boost::to_block_range(bitstream, bytes.rbegin());
+
+    try
+    {
+        test_peek_general(start, length, bytes, value);
+    }
+    catch(std::exception& e)
+    {
+        std::cerr << "ERROR" << e.what() << std::endl;
+        std::terminate();
+    }
 }
 
 void test_peek()
 {
+    try
     {
-        Bytestream bytes { 255, 0, 5, 7, 13, 9};
-
-        test_peek_generic(bytes);
+        Bytestream bytes {254 , 7, 13, 9};
         const unsigned int bits = bytes.size() * BitsPerByte;
+        test_peek_generic(bytes);
 
-        for(size_t i = 0; i < bytes.size(); ++i)
-            test_peek_general(BitsPerByte * i, BitsPerByte, bytes, bytes[i]);
+        {
+            const unsigned int bits = bytes.size() * BitsPerByte;
+            test_peek_general(0, bits, bytes, 4261874953);
 
-        for(size_t i = 1; i < bytes.size(); ++i)
-            test_peek_general(BitsPerByte * i, bits, bytes, 0);
+            for(size_t i = 0; i < bytes.size(); ++i)
+                test_peek_general(BitsPerByte * i, BitsPerByte, bytes, bytes[i]);
+
+            for(size_t i = 1; i < bytes.size(); ++i)
+                test_peek_general(BitsPerByte * i, bits, bytes, 0);
+        }
+
+        {
+            size_t len =  5;
+            unsigned int value = 6;
+            size_t size = 4;
+
+            for(size_t start = 0; start <= size * BitsPerByte - len; start++)
+                test_peek_param(start, len, size, value);
+        }
+
+        {
+            size_t len =  12;
+            unsigned int value = 3025;
+            size_t size = 4;
+
+            for(size_t start = 0; start <= size * BitsPerByte - len; start++)
+                test_peek_param(start, len, size, value);
+        }
+
+
+        {
+            size_t len =  3;
+            unsigned int value = 7;
+            size_t size = 4;
+
+            for(size_t start = 0; start <= size * BitsPerByte - len; start++)
+                test_peek_param(start, len, size, value);
+        }
+
+        {
+            test_peek_general( 0, 5, fill_bitstream("11101000"), bin_to_ulong("11101"));
+            test_peek_general(16, 3, bytes, 0);
+            test_peek_general(16, 7, bytes, 6);
+            test_peek_general(20, 4, bytes, 13);
+            test_peek_general(bits, 0, bytes, 0);
+            test_peek_general(0, 0, bytes, 0);
+
+
+            // testing invalid parameters
+            test_peek_general(0, bits + 1, bytes, 0);
+            test_peek_general(bits, 1, bytes, 0);
+        }
+    }
+    catch(std::exception& e)
+    {
+        std::cerr << "ERROR" << e.what() << std::endl;
+        std::terminate();
     }
 }
 
 
 void test_poke()
 {
-    {
-        Bytestream bytes { 255, 0, 5, 7, 13, 9};
-        const unsigned int bits = bytes.size() * BitsPerByte;
 
-        // read within stream with various lengths
-        test_poke_general(6, 6 + bits, bytes, 4000, -1);
-        test_poke_general(6, 14, bytes, 4000, 0);
-        test_poke_general(6, 13, bytes, 4000, 0);
-        test_poke_general(6, 12, bytes, 4000, 0);
-        test_poke_general(6, 11, bytes, 4000, -2);
 
-        test_poke_general(6, 16, bytes, 4000, 0);
-        test_poke_general(6, 2, bytes, 4000, -2);
-        test_poke_general(20, 18, bytes, 4000, 0);
-        test_poke_general(20, 0, bytes, 0, 0);
-
-        //test_poke_general(5, 8, bytes, 254, 0);
-        //test_poke_general(5, 7, bytes, 254, -2);
-        //test_poke_general(5, 9, bytes, 254, 0);
-        //test_poke_general(5, bits, bytes, 254, -1);
-
-        //test_poke_general(0, 9, bytes, 256, 0);
-        //test_poke_general(0, 8, bytes, 256, -2);
-        //test_poke_general(0, bits, bytes, 256, 0);
-        //test_poke_general(0, bits+1, bytes, 256, -1);
-
-        //test_poke_general(bits, 1, bytes, 1, -1);
-        //test_poke_general(bits-1, 1, bytes, 1, 0);
-        //test_poke_general(bits-1, 1, bytes, 2, -2);
-
-    }
+    Bytestream bytes {254 , 7, 13, 9};
+    const unsigned int bits = bytes.size() * BitsPerByte;
+    test_poke_general( 0, bits + 1, bytes, 7, -1);
+    test_poke_general( 0, 1, bytes, 7, -2);
+    test_poke_general( 0, 8, bytes, 0, 0);
+    test_poke_general( 5, 8, bytes, 24, 0);
 }
 
 
 
 int main()
 {
-    test_peek();
-    test_poke();
+    try
+    {
+        test_peek();
+        test_poke();
+    }
+    catch(std::exception& e)
+    {
+        std::cerr << "something happend" << std::endl;
+        std::terminate();
+    }
 
     return EXIT_SUCCESS;
 }

@@ -3,14 +3,14 @@
 
 
 /*@
-   requires 8 * BitstreamSizeInBytes < UINT_MAX;
-   requires Startposition + Length < UINT_MAX;
-   requires 0 <= Length < 64;
-   requires \valid(Bitstream + (0..BitstreamSizeInBytes-1));
+   requires valid_bitstream: \valid(Bitstream + (0..BitstreamSizeInBytes-1));
+   requires valid_length: 0 <= Length < 64;
+   requires no_overflow_1: Startposition + Length < UINT_MAX;
+   requires no_overflow_2: 8 * BitstreamSizeInBytes < UINT_MAX;
 
    assigns \nothing;
 
-   ensures \result <= (1 << Length);
+   ensures no_overflow_on_result: \result <= (1 << Length);
 */
 uint64_t Bitwalker_Peek(unsigned int Startposition,
                         unsigned int Length,

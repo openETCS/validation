@@ -1,8 +1,12 @@
 
+
+include ../Makefile.template
+
+
 all: bits
 	./bits 5 17
 
 
-clean:
+clean::
 	$(RM) bits
 

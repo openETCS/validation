@@ -1,5 +1,4 @@
 #include "Bitwalker.h"
-#include "limits.h"
 
 
 /*@

@@ -2,6 +2,7 @@
 #define BITWALKER_H
 
 #include <stdint.h>
+#include <limits.h>
 
 /*@
     requires d > 0;

@@ -2,21 +2,21 @@
 
 
 /*@
-   requires valid_bitstream: \valid(Bitstream + (0..BitstreamSizeInBytes-1));
+   requires valid_bitstream: \valid(Bitstream + (0..BitstreamSize-1));
    requires valid_length: 0 <= Length < 64;
-   requires no_overflow_1: Startposition + Length < UINT_MAX;
-   requires no_overflow_2: 8 * BitstreamSizeInBytes < UINT_MAX;
+   requires no_overflow_1: Start + Length < UINT_MAX;
+   requires no_overflow_2: 8 * BitstreamSize < UINT_MAX;
 
    assigns \nothing;
 
    ensures no_overflow_on_result: \result <= (1 << Length);
 */
-uint64_t Bitwalker_Peek(unsigned int Startposition,
+uint64_t Bitwalker_Peek(unsigned int Start,
                         unsigned int Length,
                         uint8_t Bitstream[],
-                        unsigned int BitstreamSizeInBytes)
+                        unsigned int BitstreamSize)
 {
-  if ((Startposition + Length)  > 8 * BitstreamSizeInBytes)
+  if ((Start + Length)  > 8 * BitstreamSize)
     return 0;	// error: index out of range
 
   uint64_t retval = 0;
@@ -29,7 +29,7 @@ uint64_t Bitwalker_Peek(unsigned int Startposition,
   */
   for (unsigned int i = 0; i < Length; i++)
   {
-    unsigned int pos = Startposition + i;
+    unsigned int pos = Start + i;
 
     unsigned int bit_index  = inverse_modulo(pos, 8);
     uint8_t shift = Bitstream[pos / 8] >> bit_index;

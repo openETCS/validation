@@ -29,10 +29,14 @@ int main()
       size_t byte_index = pos/8;
       size_t bit_index = 7 - (pos % 8);
       uint8_t shift = bytes[byte_index] >> bit_index;
+      std::cout << (shift & 1);
+      /*
       std::cout << byte_index << "\t" 
                 << bit_index << "\t" 
                 << (shift & 1) << "\t" 
                 << std::endl;
+      */
    }
+   std::cout << std::endl;
 }
 

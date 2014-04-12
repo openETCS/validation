@@ -267,19 +267,7 @@ faces the problem that it
 
 \clearpage
 
-\subsection{The Function \peek}
-\label{peek}
-
-
-\subsection{Old}
-
-In this section we examine the function \peek.
-Initially, we provide an informal specification followed by an implementation.
-We then derive a formal specification on the basis of the informal one. 
-Finally, we present the results of the deductive verification with \framac and \wpframac.
-
-\subsubsection{Informal Specification}
-\label{informal-peek}
+\subsection{Informal Specifications}
 
 
 Before we introduce some auxiliary concepts and formulate general assumptions
@@ -347,6 +335,9 @@ such as \inl{int} and \inl{unsigned int} and recommends the use of integer types
 contain the exact width.
 
 \end{itemize}
+
+\subsubsection{Informal Specification of \peek}
+\label{informal-peek}
 
 Now we specify \peek with the introduced auxiliary concepts.
 The function \peek reads a bit sequence from a bit stream
@@ -416,147 +407,11 @@ In general, we recommend to explicitly describe all error conditions
 and to devise a consistent error detection and error recovery strategy.
 
 
-\subsubsection{Implementation}
-\label{impl-peek}
- 
-Listing~\ref{fig:impl-peek} shows the \isoc implementation of \peek 
-for which we aim to verify that it fulfills the informal specification.
-The case where the bit sequence is not valid is handled by the \texttt{if}-statement.
-For a valid sequence the summation of the bits is done in the \texttt{for}-loop.
-The array \texttt{BitwalkerBitMaskTable} is a \texttt{const} helper array 
-to select a single bit in the \texttt{Bitstream}.
-
-\begin{listing}[hbt]
-\begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./figures/peek.impl}
-\end{minipage}
-\caption{\label{fig:impl-peek} Implementation of \peek}
-\end{listing}
-
-The implementation uses a great amount of bit operations
-which is quite a challenge for the formal verification.
-We will discuss this further in section~\ref{issues}.
-
-\clearpage
-
-\subsubsection{Formal Specification with \acsl}
-\label{formal-peek}
-
-In order to verify that the given implementation of \peek fulfills 
-the informal specification, we have to formalize the specification.
-Listing~\ref{fig:spec-peek} shows such a formalization in \acsl for \peek.
-
-\begin{listing}[hbt]
-\begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./figures/peek.spec}
-\end{minipage}
-\caption{\label{fig:spec-peek} Formal specification of \peek in \acsl}
-\end{listing}
-
-We specify a function contract for \peek containing preconditions
-and postconditions introduced by the key words \inl{requires}
-and \inl{ensures}, respectively.
-In addition, the \acsl language provides the \inl{assigns} clause to specify 
-that a function is not allowed to change memory locations other than the ones 
-explicitly listed. 
-When no \inl{assigns} clauses are specified, 
-the function is allowed to modify every accessible memory location. 
-
-The three preconditions for the function arguments of the informal specification 
-are formalized straight forward in the function contract also by three preconditions.
-For the first one we use the predicate \inl{IsValidRange}
-which we specified in \acsl in order to state that the \inl{Bitstream}
-is a valid array of length \inl{BitstreamSizeInBytes}.
-Furthermore, we claim {\it via} the \inl{assigns} clause 
-that \peek does not alter any memory location
-apart from local variables.
-
-Moreover, we use so-called behaviors in \acsl for a distinction of the two cases
-from the informal specification.
-The cases are discriminated through the predicate \texttt{ValidBitIndex}
-which indicates whether a bit sequence is valid or not.
-The first behavior \texttt{out\_of\_range} represents the robustness 
-case where the bit sequence is not valid and 
-the second behavior specifies the expected behavior in the normal case.
-
-In both cases we state what the result of \peek shall be 
-as postconditions. In addition, we use a negated form of
-a predicate called \inl{TooBig} in the last postcondition of
-the normal case. This postcondition was introduced to verify
-that the functions \peek and \poke interact correctly.
-Therefore, we will discuss this postcondition in section~\ref{interaction}.
-
-Since the implementation of \peek contains a loop,
-we need a loop specification containing a variant for the termination
-proof and some invariants to enable the automatic theorem provers
-to verify the postconditions.
-Although this loop specification is important for the verification,
-it is not used for formalizing the informal specification.
-
-Since we verify the implementation with respect to the formal specification, 
-it is crucial that it matches the informal one. 
-Therefore, we reviewed the accordance of both specifications.
-
-%\clearpage
-\subsubsection{Formal Verification with \framac/\wpframac}
-\label{verification-peek}
-
-In this section we present the current state of the verification results 
-for \peek.
-Table~\ref{tab:results-peek} discriminates the results for
-three different types of verification conditions (VCs).
-
-\begin{table}[hbt]
-  \centering
-  \begin{tabular}[htb]{lccc}
-    \toprule
-     & \# VC & Proven VCs & Verification rate in \%\\
-    \midrule
-    lemmas & $1$ &$0$ & $0$ \\
-    %\midrule
-    rte-assertions&$9$&$5$&$55$\\
-    rest &$18$ &$17$&$94$\\
- %   \bottomrule
-%    &$27$&$22$&$81$\\
-    \bottomrule
-  \end{tabular}
-  \caption{Verification Results of \peek}
-  \label{tab:results-peek}
-\end{table}
-
-
-The first row contains the lemmas we used to ease the verification for the automatic theorem provers.
-The second row contains the \inl{rte}-assertions 
-concerning the absence of run time errors.
-The third row shows all other verification conditions for \peek
-which are mainly about functional behavior.
-However, they also contain the postconditions for the robustness cases
-and the loop specification.
-
-For each row we listed the total number of generated verification conditions,
-the number of proven verification conditions and the verification rate
-that is the percentage of proven verification conditions. 
-
-The verification rate for the \inl{rte}-assertions are very low 
-due to the difficulty for \framac to deal with bit operations.
-In order to increase this rate, we will verify the absence
-of run time errors separately and will provide additional lemmas and axioms
-to ease the verification.
-We point out some of the related challenges in section~\ref{issues}.
-
-
-
-\clearpage
-
-\subsection{The Function \poke}
-\label{poke}
-
+\subsubsection{Informal Specification of \poke}
+\label{informal-poke}
 
 In this section we examine the function \poke
 in the same manner as we did it for \peek in section~\ref{peek}.
-
-\subsubsection{Informal Specification}
-\label{informal-poke}
 
 The function \poke converts an integer to a bit sequence and writes it
 into a bit stream.
@@ -638,25 +493,87 @@ sequence $(b_0, b_1,\ldots,b_{n - 1})$ cannot be stored and\\
 If the bit sequence is not valid, then \poke returns~$-1$.
 \end{itemize}
 
-\subsubsection{Implementation}
-\label{sec:impl-poke}
-Listing \ref{fig:impl-poke} shows the implementation of \poke
-which discriminates three cases. The first two are the robustness cases
-of the informal specification and the last one is
-the normal case where the function actually writes into the bit stream.
-Similarly to \peek a lot of bit operations are used. 
+\clearpage
+
+\subsection{Tests for \peek and \poke}
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./figures/poke.impl}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Tests/test_peek.cpp}
 \end{minipage}
-\caption{\label{fig:impl-poke} Implementation of \poke}
+\caption{\label{lst:test_peek} Test code for \peek}
 \end{listing}
 
+\clearpage
 
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Tests/test_poke.cpp}
+\end{minipage}
+\caption{\label{lst:test_poke} Test code for \poke}
+\end{listing}
 
 \clearpage
-\subsubsection{Formal Specification with ACSL}
+
+\subsection{Formal Specification with \acsl}
+\label{formal-peek}
+
+In order to verify that the given implementation of \peek fulfills 
+the informal specification, we have to formalize the specification.
+Listing~\ref{fig:spec-peek} shows such a formalization in \acsl for \peek.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block, frame=single]{./figures/peek.spec}
+\end{minipage}
+\caption{\label{fig:spec-peek} Formal specification of \peek in \acsl}
+\end{listing}
+
+We specify a function contract for \peek containing preconditions
+and postconditions introduced by the key words \inl{requires}
+and \inl{ensures}, respectively.
+In addition, the \acsl language provides the \inl{assigns} clause to specify 
+that a function is not allowed to change memory locations other than the ones 
+explicitly listed. 
+When no \inl{assigns} clauses are specified, 
+the function is allowed to modify every accessible memory location. 
+
+The three preconditions for the function arguments of the informal specification 
+are formalized straight forward in the function contract also by three preconditions.
+For the first one we use the predicate \inl{IsValidRange}
+which we specified in \acsl in order to state that the \inl{Bitstream}
+is a valid array of length \inl{BitstreamSizeInBytes}.
+Furthermore, we claim {\it via} the \inl{assigns} clause 
+that \peek does not alter any memory location
+apart from local variables.
+
+Moreover, we use so-called behaviors in \acsl for a distinction of the two cases
+from the informal specification.
+The cases are discriminated through the predicate \texttt{ValidBitIndex}
+which indicates whether a bit sequence is valid or not.
+The first behavior \texttt{out\_of\_range} represents the robustness 
+case where the bit sequence is not valid and 
+the second behavior specifies the expected behavior in the normal case.
+
+In both cases we state what the result of \peek shall be 
+as postconditions. In addition, we use a negated form of
+a predicate called \inl{TooBig} in the last postcondition of
+the normal case. This postcondition was introduced to verify
+that the functions \peek and \poke interact correctly.
+Therefore, we will discuss this postcondition in section~\ref{interaction}.
+
+Since the implementation of \peek contains a loop,
+we need a loop specification containing a variant for the termination
+proof and some invariants to enable the automatic theorem provers
+to verify the postconditions.
+Although this loop specification is important for the verification,
+it is not used for formalizing the informal specification.
+
+Since we verify the implementation with respect to the formal specification, 
+it is crucial that it matches the informal one. 
+Therefore, we reviewed the accordance of both specifications.
+
+\subsubsection{Formal Specification of \poke with ACSL}
 \label{formal-poke}
 
 Listing~\ref{fig:spec-poke} shows the function contract of \poke.
@@ -690,8 +607,56 @@ the return value shall be in this case.
 \end{listing}
 
 
+\clearpage
 
-\FloatBarrier
+\subsection{Formal Verification with \framacwp}
+\label{verification-peek}
+
+In this section we present the current state of the verification results 
+for \peek.
+Table~\ref{tab:results-peek} discriminates the results for
+three different types of verification conditions (VCs).
+
+\begin{table}[hbt]
+  \centering
+  \begin{tabular}[htb]{lccc}
+    \toprule
+     & \# VC & Proven VCs & Verification rate in \%\\
+    \midrule
+    lemmas & $1$ &$0$ & $0$ \\
+    %\midrule
+    rte-assertions&$9$&$5$&$55$\\
+    rest &$18$ &$17$&$94$\\
+ %   \bottomrule
+%    &$27$&$22$&$81$\\
+    \bottomrule
+  \end{tabular}
+  \caption{Verification Results of \peek}
+  \label{tab:results-peek}
+\end{table}
+
+
+The first row contains the lemmas we used to ease the verification for the automatic theorem provers.
+The second row contains the \inl{rte}-assertions 
+concerning the absence of run time errors.
+The third row shows all other verification conditions for \peek
+which are mainly about functional behavior.
+However, they also contain the postconditions for the robustness cases
+and the loop specification.
+
+For each row we listed the total number of generated verification conditions,
+the number of proven verification conditions and the verification rate
+that is the percentage of proven verification conditions. 
+
+The verification rate for the \inl{rte}-assertions are very low 
+due to the difficulty for \framac to deal with bit operations.
+In order to increase this rate, we will verify the absence
+of run time errors separately and will provide additional lemmas and axioms
+to ease the verification.
+We point out some of the related challenges in section~\ref{issues}.
+
+
+\clearpage
 
 \subsubsection{Formal Verification with Frama-C/WP}
 \label{verification-poke}

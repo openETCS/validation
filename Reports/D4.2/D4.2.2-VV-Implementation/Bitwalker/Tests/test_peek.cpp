@@ -34,7 +34,6 @@ void test_peek(unsigned int start,
         msg << "start = " << start << std::endl;
         msg << "length = " << length << std::endl;
         msg << "byte array = " << bytes << std::endl;
-
         throw std::runtime_error(msg.str());
     }
 

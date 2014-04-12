@@ -7,7 +7,7 @@ void test_poke(unsigned int start,
                uint64_t value,
                int expected_code)
 {
-    // if these conditions are violated then BitWalker_Peek is undefined
+    // if these conditions are violated then BitWalker_Poke is undefined
     assert(length < 64);
     assert(start < UINT_MAX - length);
 

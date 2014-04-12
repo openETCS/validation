@@ -16,7 +16,7 @@ vpath %.$(FILETYPE)  $(DIR)
 all: clean test_bitwalker FORCE
 	./test_bitwalker
 
-test_bitwalker:    test_bitwalker.o Bitwalker.o
+test_bitwalker:    test_bitwalker.o test_peek.o Bitwalker.o
 	$(CXX) -o $@ $+
 
 format:

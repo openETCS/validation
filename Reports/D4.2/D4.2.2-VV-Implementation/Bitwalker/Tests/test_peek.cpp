@@ -1,10 +1,10 @@
 
 #include "test_bitwalker.h"
 
-void test_peek_general(unsigned int start,
-                       unsigned int length,
-                       Bytestream bytes,
-                       uint64_t expected_value)
+void test_peek(unsigned int start,
+               unsigned int length,
+               Bytestream bytes,
+               uint64_t expected_value)
 {
     // if these conditions are violated then BitWalker_Peek is undefined
     if (length >= 64)

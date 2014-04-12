@@ -21,33 +21,20 @@ extern "C"
 
 const unsigned int BitsPerByte = 8;
 
-typedef boost::dynamic_bitset<unsigned char> Bitset;
 typedef std::vector<uint8_t> Bytestream;
 typedef boost::dynamic_bitset<uint8_t> Bitstream;
 
-inline
-std::ostream& operator<<(std::ostream& stream, const Bytestream& bytes)
-{
-    stream << '(';
+std::ostream& operator<<(std::ostream& stream, const Bytestream& bytes);
 
-    for(auto i = bytes.begin(); i != bytes.end(); ++i)
-    {
-        stream << int(*i);
+void test_peek(unsigned int start,
+               unsigned int length,
+               Bytestream bytes,
+               uint64_t expected_value);
 
-        if (boost::next(i) != bytes.end())
-        {
-            stream << ", ";
-        }
-    }
-
-    stream << ')';
-    return stream;
-}
-
-
-void test_peek_general(unsigned int start,
-                       unsigned int length,
-                       Bytestream bytes,
-                       uint64_t expected_value);
+void test_poke(unsigned int start,
+               unsigned int length,
+               Bytestream bytes,
+               uint64_t value,
+               int expected_code);
 
 #endif

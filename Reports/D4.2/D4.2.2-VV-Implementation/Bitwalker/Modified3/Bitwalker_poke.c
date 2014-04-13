@@ -38,9 +38,9 @@ int Bitwalker_Poke (unsigned int Start,
   }
 
   // plausibility check: is value in range
-  const uint64_t MaxValue = (((uint64_t) 1) << Length) - 1;
+  const uint64_t MaxValue = (((uint64_t) 1) << Length);
 
-  if (MaxValue < Value)
+  if (Value >= MaxValue)
   {
     return -2;  // error: value to big for bit field
   }

@@ -8,25 +8,39 @@ void test_poke(unsigned int start,
                int expected_code)
 {
     // if these conditions are violated then BitWalker_Poke is undefined
-    assert(length < 64);
-    assert(start < UINT_MAX - length);
+    std::stringstream msg;
+    if (length >= 64)
+    {
+        msg << "length = " << length << " must be less than 64";
+        throw std::logic_error(msg.str());
+    }
+
+    if (start >= UINT_MAX - length)
+    {
+        msg << "start = " << start << " must be less than " << UINT_MAX - length;
+        throw std::logic_error(msg.str());
+    }
 
     const Bitstream original(bytes.rbegin(), bytes.rend());
     const int exit_code = Bitwalker_Poke(start, length, bytes.data(), bytes.size(), value);
-    const Bitstream changed(bytes.rbegin(), bytes.rend());
-    Bitstream temp(length);
-    const Bitstream max_value = temp.set();
 
     if (exit_code != expected_code)
     {
-        std::cout << "ERROR" <<  std::endl;
-        std::cout << "exit_code = " << exit_code << "\tdoes not match"
-                  << "\texpected_code =\t" << expected_code << std::endl;
-        std::cout << "\tstart\t= " << start << std::endl;
-        std::cout << "\tlength\t= " << length << std::endl;
-        std::cout << "\tvalue\t= " << value << std::endl;
-        assert(false);
+        msg << std::endl;
+        msg << "exit_code = " << exit_code << std::endl;
+        msg << "does not match" << std::endl;
+        msg << "expected_code = " << expected_code << std::endl;
+        msg << "start = " << start << std::endl;
+        msg << "length = " << length << std::endl;
+        msg << "value = " << value << std::endl;
+        msg << "byte array = " << bytes << std::endl;
+        throw std::runtime_error(msg.str());
     }
+
+    const Bitstream changed(bytes.rbegin(), bytes.rend());
+
+    Bitstream max_value(length);
+    max_value.set();
 
     if (start + length > original.size())
     {

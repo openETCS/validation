@@ -6,7 +6,7 @@
    requires no_overflow_1: Start + Length < UINT_MAX;
    requires no_overflow_2: 8 * BitstreamSize < UINT_MAX;
 
-   assigns Bitstream[0..BitstreamSize-1];
+   assigns Bitstream[Start/8..(Start + Length)/8];
 
    behavior  bit_sequence_too_long:
      assumes (Start + Length)  > 8 * BitstreamSize;
@@ -48,7 +48,7 @@ int Bitwalker_Poke (unsigned int Start,
   // Everything ok, we can iterate bitwise from left to right
   /*@
     loop invariant 0 <= i <= Length;
-    loop assigns i, Value, Bitstream[0..BitstreamSize-1];
+    loop assigns i, Value, Bitstream[Start/8..(Start + Length)/8];
     loop variant i;
   */
   for (unsigned int i = Length; i > 0; i--)

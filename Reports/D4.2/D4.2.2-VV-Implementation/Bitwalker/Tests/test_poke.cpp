@@ -7,8 +7,8 @@ void test_poke(unsigned int start,
                uint64_t value,
                int expected_code)
 {
-    // if these conditions are violated then BitWalker_Poke is undefined
     std::stringstream msg;
+
     if (length >= 64)
     {
         msg << "length = " << length << " must be less than 64";

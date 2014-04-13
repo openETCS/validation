@@ -20,7 +20,7 @@ test_bitwalker:    test_bitwalker.o test_peek.o test_poke.o Bitwalker.o
 	$(CXX) -o $@ $+
 
 format:
-	@astyle -A1 -f -p -Y -z2 -c --indent=spaces -s4  *.cpp
+	@astyle -A1 -f -p -Y -z2 -c --indent=spaces -s4  *.cpp *.h
 
 clean:
 	@$(RM) test_bitwalker

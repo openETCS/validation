@@ -7,7 +7,7 @@ void test_peek(unsigned int start,
                uint64_t expected_value)
 {
     std::stringstream msg;
-    // if these conditions are violated then BitWalker_Peek is undefined
+
     if (length >= 64)
     {
         msg << "length = " << length << " must be less than 64";

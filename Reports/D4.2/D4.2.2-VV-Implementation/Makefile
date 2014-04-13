@@ -19,7 +19,9 @@ clean:
 	$(RM) *.fls
 	$(RM) *.lof
 	$(RM) *.log
+	$(RM) *.lop1
 	$(RM) *.lot
+	$(RM) *.lox
 	$(RM) *.out
 	$(RM) *.toc
 

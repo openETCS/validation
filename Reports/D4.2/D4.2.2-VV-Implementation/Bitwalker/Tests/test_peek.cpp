@@ -10,14 +10,14 @@ void test_peek(unsigned int start,
     if (length >= 64)
     {
         std::stringstream msg;
-        msg << "length = " << length << " is expected to be less than 64";
+        msg << "length = " << length << " must be less than 64";
         throw std::logic_error(msg.str());
     }
 
     if (start >= UINT_MAX - length)
     {
         std::stringstream msg;
-        msg << "start = " << start << " is expected to be less than " << UINT_MAX - length;
+        msg << "start = " << start << " must be less than " << UINT_MAX - length;
         throw std::logic_error(msg.str());
     }
 

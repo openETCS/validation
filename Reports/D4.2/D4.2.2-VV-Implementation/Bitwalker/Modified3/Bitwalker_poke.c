@@ -14,12 +14,12 @@
      ensures \result == -1;
 
    behavior  value_too_big:
-     assumes (1 << Length) <= Value && (Start + Length) <= BitstreamSize;
+     assumes (1 << Length) <= Value && (Start + Length) <= 8 * BitstreamSize;
      assigns \nothing;
      ensures \result == -2;
 
    behavior  normal_case:
-     assumes Value < (1 << Length) && (Start + Length) <= BitstreamSize;
+     assumes Value < (1 << Length) && (Start + Length) <= 8 * BitstreamSize;
      assigns Bitstream[Start/8..(Start + Length)/8];
 
    complete behaviors;

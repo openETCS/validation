@@ -1,0 +1,127 @@
+SHELL=/bin/bash
+#Variables for counting invalid and valid proof goals; used in make-report targets
+# the variables will be overwritten by function startWP and startJessie in script script_functions.sh
+
+export SCRIPT_DIR=../../Scripts
+#setup compiler flags
+INCLUDES=$(CPPFLAGS) -I$(FRAMAC_SHARE)/libc
+
+
+SHARED_FLAGS=-Wall -pedantic 
+CFLAGS=-std=c11 $(SHARED_FLAGS)
+CXXFLAGS=-std=c++11 $(SHARED_FLAGS)
+
+
+#setup wp
+WP_TIMEOUT ?= 5
+WP_COQ_TIMEOUT ?= 20
+WP_ALT_ERGO_STEPS ?= 1000
+WP_PROCESSES ?= 1
+
+#setup coq
+SCRIPT?='wp0.script' # default script
+
+# We differentiate between two types of WP options:
+# 1) in WP_FLAGS we collect the general options
+# 2) in WP_PROVER_FLAGS we collect the ones where we select the provers
+# This allows us, for example, to start the gui very quickly and then
+# run the prover(s) on select proof obligtions.
+
+WP_FLAGS  =-cpp-command 'gcc -C -E -nostdinc $(INCLUDES)'
+WP_FLAGS += -pp-annot -no-unicode
+WP_FLAGS += -wp
+WP_FLAGS += -wp-rte
+#WP_FLAGS += -wp-driver ../../external.driver
+WP_FLAGS += -wp-script $(SCRIPT)
+WP_FLAGS += -wp-model Typed+ref
+WP_FLAGS += -wp-timeout $(WP_TIMEOUT)
+WP_FLAGS += -wp-coq-timeout $(WP_COQ_TIMEOUT)
+WP_FLAGS += -wp-steps $(WP_ALT_ERGO_STEPS)
+WP_FLAGS += -wp-par $(WP_PROCESSES)
+
+
+WP_PROVER_FLAGS += -wp-prover alt-ergo
+WP_PROVER_FLAGS += -wp-prover cvc4
+WP_PROVER_FLAGS += -wp-prover coq 
+#WP_PROVER_FLAGS +=-wp-report console.report
+
+
+# run WP on command line 
+export WP=frama-c.byte 
+export WPGUI=frama-c-gui.byte
+export WPREPORT=$(WP) $(WP_FLAGS) $(WP_PROVER_FLAGS)
+
+
+
+%.format:%.c FORCE
+	@astyle -A1 -f -p -Y -z2 --indent=spaces -s2 $<
+
+%.format:%.cpp FORCE
+	@astyle -A1 -f -p -Y -z2 --indent=spaces -s2 $<
+
+%.format:%.h FORCE
+	@astyle -A1 -f -p -Y -z2 --indent=spaces -s2 $<
+
+%.format:%.hpp FORCE
+	@astyle -A1 -f -p -Y -z2 --indent=spaces -s2 $<
+
+# start WP on command line and run provers
+%.wp:%.c FORCE
+	@$(WP) $(WP_FLAGS) $(WP_PROVER_FLAGS)\
+              -wp-out $(patsubst %.c,%.wp, $<)  \
+              -print -ocode $(patsubst %.c,%.i, $<)  $<
+
+wp: $(FILE).wp
+
+
+# start WP on command line but do not run provers
+%.check:%.c FORCE
+	@($(WP) $(WP_FLAGS) -wp-prover none -wp-out $(patsubst %.c,%.wp, $<)  $< &)
+
+check: $(FILE).check
+
+
+# start WP GUI and run provers
+%.wpgui:%.c FORCE
+	@($(WPGUI) $(WP_FLAGS) $(WP_PROVER_FLAGS) -wp-out $(patsubst %.c,%.wp, $<)  $< &)
+
+wpgui: $(FILE).wpgui
+
+
+# start WP GUI but do not run provers
+%.checkgui:%.c FORCE
+	@(frama-c-gui $(WP_FLAGS) -wp-prover none -wp-out $(patsubst %.c,%.wp, $<)  $< &)
+
+checkgui: $(FILE).checkgui
+
+
+report-wp:
+	@(. ${SCRIPT_DIR}/script_functions.sh; reportWp $(FILE););
+	@ $(RM) fillFull.debug
+
+report-raw:
+	(. ${SCRIPT_DIR}/script_functions.sh; extract_raw_data_Wp $(FILE););
+
+
+clean:: FORCE
+	@$(RM) *.o
+	@$(RM) *.i
+	@$(RM) *.back
+	@$(RM) *.orig
+	@$(RM) *.exe
+	@$(RM) -rf  *.debug
+	@$(RM) -rf  .frama-c
+	@$(RM) -rf  *.jessie
+	@$(RM) -rf  *.wp
+	@$(RM) -rf  *.ml
+
+
+format: FORCE
+	@astyle -A1 -f -p -Y -z2 --indent=spaces -s2 *.c *.h 
+
+iformat: FORCE
+	@astyle -A1 -f -p -Y -z2 --indent=spaces -s2 -xC50 -xL *.i
+
+
+FORCE:
+

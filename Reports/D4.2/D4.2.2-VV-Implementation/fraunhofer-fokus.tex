@@ -88,24 +88,194 @@ assertions. If all these assertions can be proven, then
 the absence of run time errors is guaranteed.
 
 
+\begin{framed}
+The verifiers received the source code without sufficiently clear explanation
+about how the inputs and outputs of bitwalker functions are related.
+In particular, no information about error conditions were provided.
+On such a basis it is, as pointed out on Page~\pageref{lesson},
+not possible to write meaningful test cases;
+let alone to formally verify the functionality of the bitwalker functions.
+
+In a first step, we therefore inspected the source code and 
+derived from this an \emph{informal specification}.
+This informal specification is to be understood
+as a requirements document for the bitwalker functions as it should have been
+available for both the programmer and the verifier.
+
+There are several problems with this approach:
+\begin{itemize}
+\item
+The verifier could make an error while analysing the source code
+and end up with a wrong specification. 
+In fact, this happened in a first version.
+
+\item
+There could also be an error in the implementation which would then be present also
+in the specification, thus leading to the claim ``the code works as implemented''.
+\end{itemize}
+
+In order to avoid these problems we submitted our informal specification
+for review by the domain experts.
+\end{framed}
+
 \clearpage
 
-\subsection{The Function \peek}
-\label{peek}
+\subsection{A First Look on \peek}
+
+Listing~\ref{lst:peek-original} shows the original implementation of \peek.
 
 
-In this section we examine the function \peek.
-Initially, we provide an informal specification 
-followed by an implementation.
-We then derive a formal specification on the basis of the informal one. 
-Finally, we present the results of the deductive verification with \framac and \wpframac.
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Original/Bitwalker_peek.c}
+\end{minipage}
+\caption{\label{lst:peek-original} Original implementation of \peek}
+\end{listing}
+
+Here are some remarks on this implementation.
+
+\begin{itemize}
+\item The implementation extensively uses bit operations.
+      This is of course largely a matter of taste.
+      Nevertheless, it is questionable whether representing a division 
+      of an index~\inl{i} by~8 as \inl{i >> 3} is better than writing it as~\inl{i/8}.
+\item The argument \inl{Bitstream} represents an array that is only read.
+      It is good programming practice to qualify such arguments as \inl{const}.
+
+\item The cast of \inl{CurrentValue != 0} to \inl{uint8_t} is unnecessary for the following reasons:
+\begin{itemize}
+\item The result of expression \inl{CurrentValue != 0} is of type \inl{int} and has either the value~1 or~0.
+\item According to the ``usual arithmetic conversions''\footnote{%
+     This is indeed the heading of Section~6.3.1.8 of the C standard.
+}
+this value will be promoted to the type of \inl{retval << 1} which is~\inl{uint64_t}.
+\end{itemize}
+
+    Thus, the cast to \inl{uint8_t} is pointless and removing it increases the clarity of the code.
+
+\end{itemize}
+
+\clearpage
+At one point, an alternative to the implementation of \peek in
+Listing~\ref{lst:peek-original} was suggested.
+This alternative implementation, which is shown in Listing~\ref{lst:peek-alternative}
+attempts to limit the use of bit operations to a minimum.
 
 
-\subsubsection{Informal Specification}
-\label{informal-peek}
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[style=acsl-block,frame=single]
+  uint64_t Bitwalker_Peek (unsigned int Startposition,
+                           unsigned int Length,
+                           uint8_t Bitstream[],
+                           unsigned int BitstreamSizeInBytes)
+  {
+    uint64_t retval = 0;
+    for (unsigned int i = Startposition +
+           BitstreamSizeInBytes*!((Startposition + Length) <=
+           BitstreamSizeInBytes*8);
+           i < Startposition + Length; i++)
+      retval = (retval*2) +
+               (uint8_t)((uint8_t)!!(Bitstream[i/8] & BitwalkerBitMaskTable[i%8]));
+    return retval;
+ }
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:peek-alternative} An alternative implementation of \peek}
+\end{listing}
+
+Interestingly, this implementation also employs unnecessary casts to \inl{uint8_t}.
+However, the real problem with this alternative implementation is that it produces
+different results: Calling \peek from Listing~\ref{lst:peek-original} with the arguments
+
+\begin{verbatim}
+  Startposition = 8
+  Length = 32
+  Bitstream[] = {254, 7, 13, 9}
+  BitstreamSizeInBytes = 4
+\end{verbatim}
+
+produces~0 whereas the implementation from Listing~\ref{lst:peek-alternative} returns~118294784.
+Apparently, even \peek is not so simple that its functionality can be unambiguously
+understood just by looking at the code.
 
 
-We first introduce some auxiliary concepts and formulate general assumptions:
+\clearpage
+
+Figure~\ref{fig:peek-wp} shows a normalized representation of \peek
+that is enhanced with static \acsl assertions.
+These assertions can be generated by \framac for all operations where
+runtime errors, that is illegal pointer accesses or arithmetic overflows, can occur.
+Green bullets indicate potential runtime errors where \framacwp can verify
+that they will \emph{not} occur.
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{figures/peek-wp.pdf}
+\caption{\label{fig:peek-wp} Potential runtime errors in \peek}
+\end{center}
+\end{figure}
+
+These potential runtime errors are related to the facts that at this point \framacwp
+\begin{itemize}
+\item cannot exclude that \inl{Length} can be greater then~64 
+\item has to assume that \inl{Startposition + Length} may overflow
+\item has no guarantee that \inl{BitstreamSizeInBytes} is the length 
+      of the array starting at the address \inl{Bitstream}
+\end{itemize}
+
+\clearpage
+
+\subsection{A First Look on \poke}
+
+Listing~\ref{lst:poke-original} shows the original implementation of \poke.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Original/Bitwalker_poke.c}
+\end{minipage}
+\caption{\label{lst:poke-original} Original implementation of \poke}
+\end{listing}
+
+Clearly visible in the code are various error conditions that are checked 
+returned by~\poke.
+No specifications for these error conditions have been provided.
+ 
+\clearpage
+
+
+Figure~\ref{fig:poke-wp} shows the normalized representation of \poke
+with \acsl assertions that indicate potential runtime errors.
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{figures/poke-wp.pdf}
+\caption{\label{fig:poke-wp} Potential runtime errors in \peek}
+\end{center}
+\end{figure}
+
+Similarly to the potential runtime errors of \peek \framacwp
+faces the problem that it
+
+\begin{itemize}
+\item cannot exclude that \inl{Length} can be greater then~64 
+\item has to assume that \inl{Startposition + Length} may overflow
+\item has no guarantee that \inl{BitstreamSizeInBytes} is the length 
+      of the array starting at the address \inl{Bitstream}
+\end{itemize}
+
+\clearpage
+
+\subsection{Informal Specifications}
+\label{sec:informal-specification}
+
+
+Before we introduce some auxiliary concepts and formulate general assumptions
+we would like to point our a the following: 
+When we speak of \emph{integers}, then we refer to the infinite set of mathematical
+integers $\{\ldots, -1, 0, 1, \ldots\}$
+and not one of the many finite representation provided by the type system of~C.
 
 \begin{itemize}
 \item
@@ -150,18 +320,28 @@ and its \emph{length}, that is, the number of bits it contains.
      with respect to a bit stream of length $n$ if the following conditions are
      satisfied
      \begin{align*}
-         0 &\leq p \leq 8n \\
-         0 &\leq p + l \leq 8n
+         0 &\leq p < 8n \\
+         0 &\leq p + l < 8n
      \end{align*}
 
 \item 
-We assume that the C-types \texttt{unsigned int} and \texttt{int}
+We assume that the C-types \inl{unsigned int} and \inl{int}, which
+are used in the implementation to represent indices, counting and error codes,
 have a width of~32~bits.
+We point this out here because we conducted the verification on a platform with
+these characteristics.
+
+As an aside, MISRA-C discourages the use of ``generic'' integer types
+such as \inl{int} and \inl{unsigned int} and recommends the use of integer types whose names
+contain the exact width.
 
 \end{itemize}
 
+\subsubsection{Informal Specification of \peek}
+\label{informal-peek}
+
 Now we specify \peek with the introduced auxiliary concepts.
-The function \texttt{Bitwalker\_Peek} reads a bit sequence from a bit stream
+The function \peek reads a bit sequence from a bit stream
 and converts it to an integer.
 
 Its function signature reads as follows:
@@ -175,186 +355,64 @@ uint64_t  Bitwalker_Peek(unsigned int Startposition,
 
 The arguments have the following purpose:
 \begin{itemize}
-    \item \texttt{Startposition} is the bit index in the bit stream 
+    \item \inl{Startposition} is the bit index in the bit stream 
     where the bit sequence starts.
-    \item \texttt{Length} is the length of the bit sequence.
-    \item \texttt{Bitstream} is the array which provides the bit stream.
-    \item \texttt{BitstreamSizeInBytes} is the length of the array 
+    \item \inl{Length} is the length of the bit sequence.
+    \item \inl{Bitstream} is the array which provides the bit stream.
+    \item \inl{BitstreamSizeInBytes} is the length of the array 
     containing the bit stream. 
 \end{itemize}
 
-
-The following preconditions shall hold for the function arguments:
-\begin{itemize}
-\item \texttt{Bitstream} is a valid array of length \verb"BitstreamSizeInBytes"
-
-\item \texttt{Length} $\leq$ \texttt{64} and
-
-\item \texttt{Startposition + Length} $\leq$ \verb"UINT_MAX".
-\end{itemize}
-
+The following preconditions shall hold for the function arguments.
 Note that additional constraints are implicitly expressed by the use
 of \emph{unsigned} integer types.
+
+\begin{itemize}
+\item \inl{Bitstream} is a valid array of length \verb"BitstreamSizeInBytes"
+
+\item \inl{Length} $\leq$ \inl{64} and
+
+\item \inl{Startposition + Length} $\leq$ \inl{UINT_MAX}.\footnote{%
+      One of the reviewer had difficulties to understand this requirement.
+      If \inl{Startposition + Length} were (as an integer value) greater
+      than \inl{UINT_MAX}, then the result would be represented as a value of
+      \inl{unsigned int} that might be less than \inl{Startposition}.
+      Thus, the range \inl{Startposition ... Startposition + Length} would be
+      empty which is in most cases not what the programmer wanted.
+      This is a common mistake in programs and sometimes exploited by attackers.
+}
+\end{itemize}
 
 We continue with a more precise description of the desired behavior of \peek.
 As mentioned, the function \texttt{Bitwalker\_Peek} reads a bit sequence from a bit stream
 and converts it to a 64-bit unsigned integer.
 
-The left most bit of the bit sequence is interpreted as
-the most significant bit.
-Thus, for a bit sequence $(b_0, b_1,\ldots,b_{n - 1})$ the function
-returns the sum
+For a bit sequence $(b_0, b_1,\ldots,b_{n - 1})$ the function \peek returns the sum
 \begin{align}
     b_0 \cdot 2^{n - 1} + b_1\cdot 2^{n - 2} + \ldots + b_{n-1}\cdot 2^0
     =
     \sum_{i=0}^{n-1} b_i \cdot 2^{(n - 1) - i} 
 \end{align}
 
-If the bit sequence is not valid, then the function returns \texttt{0}.
-This increases the robustness of the function.
+Note that is a higher-level description than what is done in the source code.
+There is, in our opinion, not much point to reflect low-level bit fiddling
+into the specification if a clearer description is at hand.
 
-\clearpage
-\subsubsection{Implementation}
-\label{impl-peek}
- 
-Listing~\ref{fig:impl-peek} shows the \isoc implementation of \peek 
-for which we aim to verify that it fulfills the informal specification.
-The case where the bit sequence is not valid is handled by the \texttt{if}-statement.
-For a valid sequence the summation of the bits is done in the \texttt{for}-loop.
-The array \texttt{BitwalkerBitMaskTable} is a \texttt{const} helper array 
-to select a single bit in the \texttt{Bitstream}.
-
-\begin{listing}[hbt]
-\begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./figures/peek.impl}
-\end{minipage}
-\caption{\label{fig:impl-peek} Implementation of \peek}
-\end{listing}
-
-The implementation uses a great amount of bit operations
-which is quite a challenge for the formal verification.
-We will discuss this further in section~\ref{issues}.
-
-\clearpage
-
-\subsubsection{Formal Specification with \acsl}
-\label{formal-peek}
-
-In order to verify that the given implementation of \peek fulfills 
-the informal specification, we have to formalize the specification.
-Listing~\ref{fig:spec-peek} shows such a formalization in \acsl for \peek.
-
-\begin{listing}[hbt]
-\begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./figures/peek.spec}
-\end{minipage}
-\caption{\label{fig:spec-peek} Formal specification of \peek in \acsl}
-\end{listing}
-
-We specify a function contract for \peek containing preconditions
-and postconditions introduced by the key words \inl{requires}
-and \inl{ensures}, respectively.
-In addition, the \acsl language provides the \inl{assigns} clause to specify 
-that a function is not allowed to change memory locations other than the ones 
-explicitly listed. 
-When no \inl{assigns} clauses are specified, 
-the function is allowed to modify every accessible memory location. 
-
-The three preconditions for the function arguments of the informal specification 
-are formalized straight forward in the function contract also by three preconditions.
-For the first one we use the predicate \inl{IsValidRange}
-which we specified in \acsl in order to state that the \inl{Bitstream}
-is a valid array of length \inl{BitstreamSizeInBytes}.
-Furthermore, we claim {\it via} the \inl{assigns} clause 
-that \peek does not alter any memory location
-apart from local variables.
-
-Moreover, we use so-called behaviors in \acsl for a distinction of the two cases
-from the informal specification.
-The cases are discriminated through the predicate \texttt{ValidBitIndex}
-which indicates whether a bit sequence is valid or not.
-The first behavior \texttt{out\_of\_range} represents the robustness 
-case where the bit sequence is not valid and 
-the second behavior specifies the expected behavior in the normal case.
-
-In both cases we state what the result of \peek shall be 
-as postconditions. In addition, we use a negated form of
-a predicate called \inl{TooBig} in the last postcondition of
-the normal case. This postcondition was introduced to verify
-that the functions \peek and \poke interact correctly.
-Therefore, we will discuss this postcondition in section~\ref{interaction}.
-
-Since the implementation of \peek contains a loop,
-we need a loop specification containing a variant for the termination
-proof and some invariants to enable the automatic theorem provers
-to verify the postconditions.
-Although this loop specification is important for the verification,
-it is not used for formalizing the informal specification.
-
-Since we verify the implementation with respect to the formal specification, 
-it is crucial that it matches the informal one. 
-Therefore, we reviewed the accordance of both specifications.
-
-%\clearpage
-\subsubsection{Formal Verification with \framac/\wpframac}
-\label{verification-peek}
-
-In this section we present the current state of the verification results 
-for \peek.
-Table~\ref{tab:results-peek} discriminates the results for
-three different types of verification conditions (VCs).
-
-\begin{table}[hbt]
-  \centering
-  \begin{tabular}[htb]{lccc}
-    \toprule
-     & \# VC & Proven VCs & Verification rate in \%\\
-    \midrule
-    lemmas & $1$ &$0$ & $0$ \\
-    %\midrule
-    rte-assertions&$9$&$5$&$55$\\
-    rest &$18$ &$17$&$94$\\
- %   \bottomrule
-%    &$27$&$22$&$81$\\
-    \bottomrule
-  \end{tabular}
-  \caption{Verification Results of \peek}
-  \label{tab:results-peek}
-\end{table}
+If the bit sequence is not valid, then \peek shall return~0.
+We were wondering why the implementation maps an illegal input to a legitimate output.
+The code providers argued along the lines that this error condition was not
+considered important enough to be properly reported.
+One can interpret this design decision as an attempt to increase the
+robustness of the function against illegal values.
+In general, we recommend to explicitly describe all error conditions
+and to devise a consistent error detection and error recovery strategy.
 
 
-The first row contains the lemmas we used to ease the verification for the automatic theorem provers.
-The second row contains the \inl{rte}-assertions 
-concerning the absence of run time errors.
-The third row shows all other verification conditions for \peek
-which are mainly about functional behavior.
-However, they also contain the postconditions for the robustness cases
-and the loop specification.
-
-For each row we listed the total number of generated verification conditions,
-the number of proven verification conditions and the verification rate
-that is the percentage of proven verification conditions. 
-
-The verification rate for the \inl{rte}-assertions are very low 
-due to the difficulty for \framac to deal with bit operations.
-In order to increase this rate, we will verify the absence
-of run time errors separately and will provide additional lemmas and axioms
-to ease the verification.
-We point out some of the related challenges in section~\ref{issues}.
-
-
-
-\clearpage
-
-\subsection{The Function \poke}
-\label{poke}
-
+\subsubsection{Informal Specification of \poke}
+\label{informal-poke}
 
 In this section we examine the function \poke
 in the same manner as we did it for \peek in section~\ref{peek}.
-
-\subsubsection{Informal Specification}
-\label{informal-poke}
 
 The function \poke converts an integer to a bit sequence and writes it
 into a bit stream.
@@ -436,25 +494,103 @@ sequence $(b_0, b_1,\ldots,b_{n - 1})$ cannot be stored and\\
 If the bit sequence is not valid, then \poke returns~$-1$.
 \end{itemize}
 
-\subsubsection{Implementation}
-\label{impl-poke}
-Listing \ref{fig:impl-poke} shows the implementation of \poke
-which discriminates three cases. The first two are the robustness cases
-of the informal specification and the last one is
-the normal case where the function actually writes into the bit stream.
-Similarly to \peek a lot of bit operations are used. 
+\clearpage
+
+\subsection{Tests for \peek and \poke}
+
+In this section we show some tests for \peek and \poke.
+These tests were derived from the informal specification in 
+Section~\ref{sec:informal-specification}.
+
+We use the \CC\ class \inl{boost::dynamic_bitset} in order to represent
+\inl{bit sequences} in our tests.
+This class\footnote{
+  See \url{http://www.boost.org/doc/libs/1_55_0/libs/dynamic_bitset/dynamic_bitset.html}
+},
+which is part of the \textsf{Boost} libraries,
+provides a higher-level and easier to use interface to bit sequences than is possible in~C.
+
+\fxfatal{describe some test cases}
+
+\fxfatal{emphasize that test cases could detect an incompatible implementation}
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./figures/poke.impl}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Tests/test_peek.cpp}
 \end{minipage}
-\caption{\label{fig:impl-poke} Implementation of \poke}
+\caption{\label{lst:test_peek} Test code for \peek}
 \end{listing}
 
+\clearpage
 
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Tests/test_poke.cpp}
+\end{minipage}
+\caption{\label{lst:test_poke} Test code for \poke}
+\end{listing}
 
 \clearpage
-\subsubsection{Formal Specification with ACSL}
+
+\subsection{Formal Specification with \acsl}
+\label{formal-peek}
+
+In order to verify that the given implementation of \peek fulfills 
+the informal specification, we have to formalize the specification.
+Listing~\ref{fig:spec-peek} shows such a formalization in \acsl for \peek.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block, frame=single]{./figures/peek.spec}
+\end{minipage}
+\caption{\label{fig:spec-peek} Formal specification of \peek in \acsl}
+\end{listing}
+
+We specify a function contract for \peek containing preconditions
+and postconditions introduced by the key words \inl{requires}
+and \inl{ensures}, respectively.
+In addition, the \acsl language provides the \inl{assigns} clause to specify 
+that a function is not allowed to change memory locations other than the ones 
+explicitly listed. 
+When no \inl{assigns} clauses are specified, 
+the function is allowed to modify every accessible memory location. 
+
+The three preconditions for the function arguments of the informal specification 
+are formalized straight forward in the function contract also by three preconditions.
+For the first one we use the predicate \inl{IsValidRange}
+which we specified in \acsl in order to state that the \inl{Bitstream}
+is a valid array of length \inl{BitstreamSizeInBytes}.
+Furthermore, we claim {\it via} the \inl{assigns} clause 
+that \peek does not alter any memory location
+apart from local variables.
+
+Moreover, we use so-called behaviors in \acsl for a distinction of the two cases
+from the informal specification.
+The cases are discriminated through the predicate \texttt{ValidBitIndex}
+which indicates whether a bit sequence is valid or not.
+The first behavior \texttt{out\_of\_range} represents the robustness 
+case where the bit sequence is not valid and 
+the second behavior specifies the expected behavior in the normal case.
+
+In both cases we state what the result of \peek shall be 
+as postconditions. In addition, we use a negated form of
+a predicate called \inl{TooBig} in the last postcondition of
+the normal case. This postcondition was introduced to verify
+that the functions \peek and \poke interact correctly.
+Therefore, we will discuss this postcondition in section~\ref{interaction}.
+
+Since the implementation of \peek contains a loop,
+we need a loop specification containing a variant for the termination
+proof and some invariants to enable the automatic theorem provers
+to verify the postconditions.
+Although this loop specification is important for the verification,
+it is not used for formalizing the informal specification.
+
+Since we verify the implementation with respect to the formal specification, 
+it is crucial that it matches the informal one. 
+Therefore, we reviewed the accordance of both specifications.
+
+\subsubsection{Formal Specification of \poke with ACSL}
 \label{formal-poke}
 
 Listing~\ref{fig:spec-poke} shows the function contract of \poke.
@@ -488,8 +624,56 @@ the return value shall be in this case.
 \end{listing}
 
 
+\clearpage
 
-\FloatBarrier
+\subsection{Formal Verification with \framacwp}
+\label{verification-peek}
+
+In this section we present the current state of the verification results 
+for \peek.
+Table~\ref{tab:results-peek} discriminates the results for
+three different types of verification conditions (VCs).
+
+\begin{table}[hbt]
+  \centering
+  \begin{tabular}[htb]{lccc}
+    \toprule
+     & \# VC & Proven VCs & Verification rate in \%\\
+    \midrule
+    lemmas & $1$ &$0$ & $0$ \\
+    %\midrule
+    rte-assertions&$9$&$5$&$55$\\
+    rest &$18$ &$17$&$94$\\
+ %   \bottomrule
+%    &$27$&$22$&$81$\\
+    \bottomrule
+  \end{tabular}
+  \caption{Verification Results of \peek}
+  \label{tab:results-peek}
+\end{table}
+
+
+The first row contains the lemmas we used to ease the verification for the automatic theorem provers.
+The second row contains the \inl{rte}-assertions 
+concerning the absence of run time errors.
+The third row shows all other verification conditions for \peek
+which are mainly about functional behavior.
+However, they also contain the postconditions for the robustness cases
+and the loop specification.
+
+For each row we listed the total number of generated verification conditions,
+the number of proven verification conditions and the verification rate
+that is the percentage of proven verification conditions. 
+
+The verification rate for the \inl{rte}-assertions are very low 
+due to the difficulty for \framac to deal with bit operations.
+In order to increase this rate, we will verify the absence
+of run time errors separately and will provide additional lemmas and axioms
+to ease the verification.
+We point out some of the related challenges in section~\ref{issues}.
+
+
+\clearpage
 
 \subsubsection{Formal Verification with Frama-C/WP}
 \label{verification-poke}

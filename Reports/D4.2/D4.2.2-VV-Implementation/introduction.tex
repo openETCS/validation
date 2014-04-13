@@ -9,15 +9,34 @@ In this document we report about \emph{preliminary} results on the verification
 of C-code developed in the OpenETCS project.
 In particular, we report on the use of static analysis methods (including formal methods)
 on C code that has been developed by the project partner Siemens (Germany).
+Figure~\ref{fig:Bitwalker-Overview} gives an overview on the software that
+is in the focus of this report.
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{figures/Bitwalker-Overview.pdf}
+\caption{\label{fig:Bitwalker-Overview} The place of \texttt{Bitwalker} with the OpenETCS software}
+\end{center}
+\end{figure}
+
+The OpenETCS decoder is a large collection of functions dedicated to
+the reading of of ETCS messages.
+In order to fulfill their task these function rely on the relatively
+small software package \inl{Bitwalker}.
+The \inl{Bitwalker} software, as seen by the OpenETCS decoder,
+is best understood as a ``class'' with a handful of methods.
+Note that this class is implemented in~C as a \inl{struct} where
+the methods are implemented as functions.
+The core functionality  of this class, which consists in converting bit sequences to integers
+and the other way round, depends on two more basic function, namely~\peek and~\poke.
 
 This software has been analyzed by the OpenETCS project partners SQS (Spain)
 and Fraunhofer FOKUS (Germany).
 The Frama-C tool, which is developed by the French project partner {CEA LIST},
 has been used for some of the analyses.
 
-In Section~\ref{sec:sqs} we report about the results of a broad range
-of static analyses. 
-These methods are aimed at finding well-known deficiencies that might occur in C or \CC\ software.
+Section~\ref{sec:frama-c} gives a short overview on the \framacwp tool
+that plays a central role in the verification of the Bitwalker functions.
 
 In Section~\ref{sec:fokus} we take a more formal approach by 
 \begin{enumerate}
@@ -26,6 +45,10 @@ In Section~\ref{sec:fokus} we take a more formal approach by
 \item using the {Frama-C} verification platform to establish a formal proof that the C code
       satisfies the formal specification.
 \end{enumerate}
+
+In Section~\ref{sec:sqs} we report about the results of a broad range
+of static analyses. 
+These methods are aimed at finding well-known deficiencies that might occur in C or \CC\ software.
 
 Regarding the more formal approach it must be pointed out that so far only a 
 part of Siemens' \emph{BitWalker} has been formalized and verified.

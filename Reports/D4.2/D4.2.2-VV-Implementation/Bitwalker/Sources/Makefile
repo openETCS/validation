@@ -4,7 +4,7 @@ export SCRIPT_DIR = .
 
 CPPFLAGS = -I. -I../GeneratedC/
 
-CFLAGS = -Wall -pedantic
+CFLAGS = -Wall -pedantic -std=c99 
 CXXFLAGS = -Wall -pedantic -std=c++11
 
 
@@ -14,13 +14,7 @@ endif
 
 
 WP_FLAGS = -cpp-command 'gcc -C -E -I.' -pp-annot -no-unicode\
-           -wp -wp-rte #\
-	   -wp-model Typed+ref\
-          -wp-timeout $(WP_TIMEOUT)
-
-#WP_FLAGS += -wp-proof why3:alt-ergo
-#WP_FLAGS += -wp-proof why3:cvc3
-#WPFLAGS +=-wp-proof coq -wp-script 'wp0.script' 
+           -wp -wp-rte 
 
 
 export WP_GUI=frama-c-gui.byte $(WP_FLAGS)

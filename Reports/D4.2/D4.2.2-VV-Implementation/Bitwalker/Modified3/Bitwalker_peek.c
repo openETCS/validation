@@ -43,7 +43,7 @@ uint64_t Bitwalker_Peek(unsigned int Start,
   {
     unsigned int pos = Start + i;
     unsigned int byte_index = pos / 8;
-    unsigned int bit_index  = inverse_modulo(pos, 8); 
+    unsigned int bit_index  = inverse_modulo(pos, 8);
 
     // treat as unsigned int for Frama-C
     unsigned int shift = Bitstream[byte_index] >> bit_index;

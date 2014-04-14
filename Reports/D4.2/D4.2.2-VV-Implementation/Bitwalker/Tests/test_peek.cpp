@@ -35,30 +35,6 @@ void test_peek(unsigned int start,
         throw std::runtime_error(msg.str());
     }
 
-    if (start + length > original.size())
-        assert(value == 0);
-    else if (length ==  original.size())
-        assert(value == original.to_ulong());
-    else
-    {
-        Bitstream sequence(length);
-
-        for(size_t i = 0; i < sequence.size(); i++)
-        {
-            size_t pos = (original.size() - start - length) + i;
-            sequence[i] = original[pos];
-
-        }
-
-        uint64_t value_from_sequence = sequence.to_ulong();
-
-        if(value_from_sequence != value)
-        {
-            std::cout << "ERROR" <<  std::endl;
-            std::cout << "value = " << value << "\tdoes not match"
-                      << "\tvalue_from_sequence =\t" << value_from_sequence << std::endl;
-            assert(false);
-        }
-    }
+    test_peek_normal_case(original, value, start, length);
 }
 

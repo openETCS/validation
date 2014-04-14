@@ -1,8 +1,8 @@
 
-#DIR=../Original
+DIR=../Original
 #DIR=../Modified
 #DIR=../Modified2
-DIR=../Modified3
+#DIR=../Modified3
 #DIR=../Sources
 FILETYPE= c
 
@@ -16,7 +16,7 @@ vpath %.$(FILETYPE)  $(DIR)
 all: clean test_bitwalker FORCE
 	./test_bitwalker
 
-test_bitwalker:    test_bitwalker.o test_peek.o test_poke.o Bitwalker.o
+test_bitwalker:    test_bitwalker.o test_peek.o test_poke.o test_peek_normal_case.o test_poke_normal_case.o Bitwalker.o
 	$(CXX) -o $@ $+
 
 format:

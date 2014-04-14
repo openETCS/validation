@@ -1,16 +1,5 @@
-#include "Bitwalker.h"
+#include "Bitwalker_Peek.h"
 
-
-/*@
-   requires valid_bitstream: \valid(Bitstream + (0..BitstreamSize-1));
-   requires valid_length: 0 <= Length < 64;
-   requires no_overflow_1: Start + Length < UINT_MAX;
-   requires no_overflow_2: 8 * BitstreamSize < UINT_MAX;
-
-   assigns \nothing;
-
-   ensures no_overflow_on_result: \result <= (1 << Length);
-*/
 uint64_t Bitwalker_Peek(unsigned int Start,
                         unsigned int Length,
                         uint8_t Bitstream[],
@@ -31,7 +20,7 @@ uint64_t Bitwalker_Peek(unsigned int Start,
   {
     unsigned int pos = Start + i;
     unsigned int byte_index = pos / 8;
-    unsigned int bit_index  = inverse_modulo(pos, 8); 
+    unsigned int bit_index  = inverse_modulo(pos, 8);
 
     // treat as unsigned int for Frama-C
     unsigned int shift = Bitstream[byte_index] >> bit_index;

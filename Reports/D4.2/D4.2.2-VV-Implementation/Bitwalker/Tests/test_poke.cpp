@@ -38,42 +38,6 @@ void test_poke(unsigned int start,
     }
 
     const Bitstream changed(bytes.rbegin(), bytes.rend());
-
-    Bitstream max_value(length);
-    max_value.set();
-
-    if (start + length > original.size())
-    {
-        assert(original == changed);
-        assert(exit_code == -1);
-    }
-    else if(value > max_value.to_ulong())
-    {
-        assert(original == changed);
-        assert(exit_code == -2);
-    }
-    else
-    {
-        Bitstream sequence(length, value);
-        Bitstream cpy = original;
-
-        for(size_t i = 0; i < sequence.size(); i++)
-        {
-            size_t pos = (cpy.size() - start - length) + i;
-            cpy[pos] = sequence[i];
-        }
-
-        assert(cpy == changed);
-        assert(exit_code == 0);
-
-        for(int  i = cpy.size() - 1 ;  i > (int)(cpy.size() - start); i--)
-            assert(original[i] == cpy[i]);
-
-        for(int  i = cpy.size() - 1 - start; i > (int) (cpy.size() - start - length); i--)
-            assert(changed[i] == cpy[i]);
-
-        for(int  i = cpy.size() - start - length ;  i >= 0; i--)
-            assert(original[i] == cpy[i]);
-    }
+    test_poke_normal_case(original, changed, exit_code, value, start, length);
 }
 

@@ -176,8 +176,6 @@ void test_peek()
 
 void test_poke()
 {
-
-
     Bytestream bytes {254 , 7, 13, 9};
     const unsigned int bits = bytes.size() * BitsPerByte;
     test_poke( 0, bits + 1, bytes, 7, -1);

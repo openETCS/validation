@@ -37,14 +37,23 @@ void test_poke_normal_case(const Bitstream& original,
         assert(cpy == changed);
         assert(exit_code == 0);
 
-        for(int  i = cpy.size() - 1 ;  i > (int)(cpy.size() - start); i--)
+        for(size_t  i = cpy.size()-start;  i < cpy.size(); i++)
             assert(original[i] == cpy[i]);
 
-        for(int  i = cpy.size() - 1 - start; i > (int) (cpy.size() - start - length); i--)
+        for(size_t  i = cpy.size()-start-length; i < cpy.size()-start; i++)
             assert(changed[i] == cpy[i]);
 
-        for(int  i = cpy.size() - start - length ;  i >= 0; i--)
+        for(size_t  i = 0;  i < cpy.size()-start-length; i++)
             assert(original[i] == cpy[i]);
     }
 }
+
+
+
+
+
+
+
+
+
 

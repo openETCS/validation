@@ -104,7 +104,7 @@ available for both the programmer and the verifier.
 There are several problems with this approach:
 \begin{itemize}
 \item
-The verifier could make an error while analysing the source code
+The verifier could make an error while analyzing the source code
 and end up with a wrong specification. 
 In fact, this happened in a first version.
 
@@ -509,9 +509,45 @@ This class\footnote{
 which is part of the \textsf{Boost} libraries,
 provides a higher-level and easier to use interface to bit sequences than is possible in~C.
 
-\fxfatal{describe some test cases}
+Specifically, we use in our \CC\ test code the following typedefs
 
-\fxfatal{emphasize that test cases could detect an incompatible implementation}
+\begin{lstlisting}[style = acsl-block]
+  typedef std::vector<uint8_t>           Bytestream;
+
+  typedef boost::dynamic_bitset<uint8_t> Bitstream;
+\end{lstlisting}
+
+to represent arrays of sequences of bytes and bits, respectively.
+An object of type \inl{Bitstream} can be initialized with an object
+of type \inl{Bytestream}. The type \inl{Bitstream} offers random access
+to its stored bits.
+In addition, it allows to
+\begin{itemize}
+\item  compute the unsigned value represented in the bit stream by calling the
+       method \inl{to_ulong()}, thereby representing the functionality of \peek
+\item  create a bit stream from an unsigned integer value by a special constructor,
+       thus representing the functionality of \poke
+\end{itemize}
+
+Listings~\ref{lst:test_peek} and~\ref{lst:test_poke} show fragments of our test code
+for \peek and \poke, respectively.
+
+While testing the Bitwalker was not our main objective it proved useful for
+the following reasons.
+
+\begin{itemize}
+\item It helped us formulating the formal specifications of \peek and \poke.
+  
+\item It allowed us to quickly detect that the alternative implementation of
+      \peek in Listing~\ref{lst:peek-alternative} is not equivalent to the
+      original implementation in Listing~\ref{lst:peek-original}.
+
+\item It provided some assurance that our re-implementations of \peek and \poke
+      that we use in Section~\ref{sec:formal-specification} do not behave differently
+      than the original implementations.
+\end{itemize}
+
+\clearpage
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -532,6 +568,7 @@ provides a higher-level and easier to use interface to bit sequences than is pos
 \clearpage
 
 \subsection{Formal Specification with \acsl}
+\label{sec:formal-specification}
 \label{formal-peek}
 
 In order to verify that the given implementation of \peek fulfills 
@@ -626,6 +663,7 @@ the return value shall be in this case.
 \clearpage
 
 \subsection{Formal Verification with \framacwp}
+\label{sec:verification}
 \label{verification-peek}
 
 In this section we present the current state of the verification results 

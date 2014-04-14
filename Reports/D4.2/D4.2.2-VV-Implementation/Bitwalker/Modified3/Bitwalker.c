@@ -1,2 +1,2 @@
-#include "Bitwalker_peek.c"
-#include "Bitwalker_poke.c"
+#include "Bitwalker_Peek.c"
+#include "Bitwalker_Poke.c"

@@ -19,13 +19,13 @@
 \wp{Work-Package 4: ``Validation \& Verification Strategy''}
 
 %set a title here
-\title{openETCS Hazard and Risk Analysis Methodology}
+\title{openETCS Hazard and Risk Analysis and Safety Case Methodology}
 
 %set a subtitle here
-\subtitle{Guideline for the safety related activities in an openETCS Onboard Unit development}
+\subtitle{Overall methodology for the safety related activities to the openETCS on-board unit software development}
 
 %set the date of the report here
-\date{March 2014} %\\ Revised March 2013}
+\date{April 2014} %\\ Revised March 2013}
 
 %define a list of authors and their affiliation here
 
@@ -59,7 +59,8 @@
 
 
 \begin{abstract}
-This document presents an overview about the main activities performed during the OpenETCS development process to identify hazards inside the openETCS software and to assess the risk resulting from these hazards. Thereby, a consistent methodology is derived, which connects the hazard and risk analysis for the system and subsystems from which potential hazards and corresponding risks will be derived with methods to identify and enforce  to ensure the overall quality during the design of all safety related parts of the system. Overall, the safety plan will guarantee that the safety design activities required in D2.6 are covered and all safety requirements are fulfilled. 
+This document describes the overall concepts for hazard and risk analysis and for the development of the resulting safety case as it has been identified during the first iteration of WP 4.
+After the introduction defining the overall context of the document, the combination of methods are presented to identify hazards inside the openETCS software and to assess the risk resulting from these hazards for the system and subsystems. The sequence of activities is detailed on the proof of concept performed during the first WP 4 iteration. In the second part of this document the plan for the openETCS safety case is described. This includes the compilation of documents resulting from the performed openETCS software development as well as the derivation of a generic safety case structure for the development of an on-board unit using the openETCS software.
 \end{abstract}
 
 %=============================
@@ -77,11 +78,11 @@ This document presents an overview about the main activities performed during th
 \multicolumn{2}{|c|}{Document information} \\
 \hline
 Work Package &  WP4  \\
-Deliverable ID or doc. ref. & D4.2\\
+Deliverable ID or doc. ref. & D4.2.3\\
 \hline
-Document title & openETCS Safety Plan\\
-Document version & 00.20 \\
-Document authors (org.)  & Jan Welte (TU-BS)\\
+Document title & openETCS Hazard and Risk Analysis and Safety Case Methodology \\
+Document version & 00.3 \\
+Document authors (org.)  & Jan Welte (TU-BS) and Merlin Pokam (AEbt)\\
 \hline
 \end{tabular}
 
@@ -89,9 +90,9 @@ Document authors (org.)  & Jan Welte (TU-BS)\\
 \hline
 \multicolumn{2}{|c|}{Review information} \\
 \hline
-Last version reviewed & -- \\
+Last version reviewed & 00.2 \\
 \hline
-Main reviewers & -- \\
+Main reviewers (org.) & Olivier Hervillard	(Systerel), Stephan Jagusch (Aebt), Hardi Hunger (DLR) and Marielle Petit-Doche (Systerel) \\
 \hline
 \end{tabular}
 
@@ -101,7 +102,7 @@ Main reviewers & -- \\
 \hline
   &  Name & Role & Date   \\
 \hline  
-Written by    &  Jan Welte & WP4-T4.4 Task Leader  &  October 2013\\
+Written by    &  Jan Welte & WP4-T4.4 Task Leader  &  April 2014\\
 \hline
 Approved by & -- & -- & \\
 \hline
@@ -111,12 +112,13 @@ Approved by & -- & -- & \\
 \hline
 \multicolumn{4}{|c|}{Document evolution} \\
 \hline
-00.01 & 01/10/2013 & Jan Welte &  Document creation \\
-\hline
 Version &  Date & Author(s) & Justification  \\
+\hline
+00.0 & 01/10/2013 & Jan Welte &  Document creation \\
 \hline  
 00.1 & 28/01/2014 & Jan Welte &  Extended Introduction  \\
-00.2 & 19/03/2014 & Jan Welte &  Reword document structure to incorporate review comments from internal assessment \\
+00.2 & 19/03/2014 & Jan Welte &  Reworded document structure to incorporate review comments from internal assessment \\
+00.3 & 16/04/2014 & Jan Welte &  Incorporated Review comments \\
 \hline  
 \end{tabular}
 \newpage
@@ -134,14 +136,11 @@ During system development the system limits and components have to be establishe
 \section{Purpose}
 \label{sec:purpose}
 
-The hazard and risk analysis activities are part of the overall safety process which is "the series of procedures that are followed to enable all safety requirements of a product to be identified and met". To ensure that the safety process is implemented in a proper way the EN 50129 requires a safety management which is consistent process for RAMS presented in the EN 50126. 
+The hazard and risk analysis activities are part of the overall safety process which is defined in the EN 50129 as "the series of procedures that are followed to enable all safety requirements of a product to be identified and met". To ensure that the safety process is implemented in a proper way the EN 50129 requires a safety management which is consistent process for RAMS presented in the EN 50126. To do this the management has to present and control all related activities and documentations over the life-cycle taking into account the approval mile-stones and review requirements. As the product life-cycle is an ongoing process and iterative changes are taking place, the management system has to ensure that the respective safety effects of every change is considered. As the openETCS project does not cover the full development of an ETCS on-board unit, the safety related activities in WP 4 do not cover all required parts of a EN 50129 complaint safety process and management. Hence, the purpose of this document is to present the basic concepts for hazard and risk analysis and safety case development derived respectively evaluated during the first iteration of WP 4. 
 
-The purpose of the safety plan is to show in details how the safety requirements will be implemented over the development process. To do this the plan has to present the management structure, all related activities and documentations over the life-cycle, as well as the approval mile-stones and review requirements. As the product life-cycle is an ongoing process and, specifically in a project like openETCS, iterative changes are taking place, this plan has to be updated to assess the respective safety effects. This will be done according to the different iterations levels performed in WP 4. 
-Furthermore, this document also includes the plan for the safety case, which itself is the final assessment document to demonstrate the actual product compliance with all specified safety requirements which have been implemented accordingly.
+As the movement characteristics of a train set specific limits in which a driver alone is able to avoid derailment or any kind of collisions railway signaling and protection systems have been developed to ensure safe train movements. Respectively, the mayor parts of a train control system like ETCS include functionalities which shall guarantee that the overall railway system does not get in a hazardous situation. Correspondingly,this document illustrates the concepts for hazard and risk analysis which has been defined during the first WP 4 iteration to identify hazards or allocate them from the overall system analysis if the are related to the openETCS software. In addition the resulting risk for these hazards has to be evaluated to deduce specific safety requirements which have to be considered during the development process to reduce the risk. To support the concept presentation the results of the first proof of concept activities performed during this iteration are presented in section \ref{sec:Proofofconcept}.
 
-As the movement characteristics of a train set specific limits in which a driver alone is able to avoid derailment or any kind of collisions railway signaling and protection systems have been developed to ensure safe train movements. Respectively, the mayor parts of a train control system like ETCS include functionalities which shall guarantee that the overall railway system does not get in a hazardous situation.
-
-Since the openETCS project does not produce a specific train borne on-board unit the openETCS safety plan, will not cover all specific software and hardware aspects. The focus is mainly on the EVC kernel functionality and only partially on further real time and hardware/software integration aspects. However, this safety plan shall at least cover the safety process needed to ensure that the openETCS software development can be extended to become the functional basis for a complete on-board unit development. 
+Since the openETCS project does not produce a specific train borne on-board the openETCS documents, will not cover all specific software and hardware aspects which the EN 50129 requires for a sufficient safety case as the final assessment document to demonstrate that actual product is compliant with all specified safety requirements which have been implemented accordingly. On this grounds during the first WP 4 iteration a model-based concept has been derive how the openETCS contributions to an on board unit safety case a prepared. therefore, all documents shall be related to a generic safety case for an EVC using the openETCS software development.
 
 \section{Document Structure}
 \label{sec:document-structure}

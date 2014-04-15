@@ -1,5 +1,5 @@
 
-\section{An Introduction to Formal Verification with \framacwp}
+\chapter{An Introduction to Formal Verification with \framacwp}
 \label{sec:frama-c}
 
 Frama-C is a platform dedicated to source-code analysis of C software.
@@ -11,10 +11,10 @@ This implies, of course, that the user provides a \emph{formal specification}
 of what the implementation is supposed to do.
 Frama-C comes with its own specification language ACSL which stands for
 \emph{ANSI\slash ISO C Specification Language}.
-In order to help potential users to master ACSL we discuss in this section 
+In order to help potential users to master ACSL we discuss in this chapter 
 a very simple C function and explain various aspects of ACSL.
 
-\subsection{First steps}
+\section{First steps}
 
 We will consider the function that computes the absolute value $|x|$
 of an integer $x$.
@@ -64,7 +64,7 @@ Note that we use the usual C operators \inl{==} and {<=} to express equalities a
 in the specification.
 There is, however, also an additional operator \inl{==>} which expresses logical implication.
 
-\subsection{Why can \framacwp not verify such a simple function?}
+\section{Why can \framacwp not verify such a simple function?}
 
 Although the specification and implementation in Listing~\ref{lst:abs1} look perfectly right, 
 \framacwp cannot verify that the implementation actually satisfies its specification.
@@ -119,7 +119,7 @@ implementation does not respect the given specification.
 
 \clearpage
 
-\subsection{Sharpening the contract of \inl{abs_int}}
+\section{Sharpening the contract of \inl{abs_int}}
 
 It is of course well known that the operation \inl{-x} can overflow
 and it is the fact that \framacwp can detect such overflows that 
@@ -187,7 +187,7 @@ Listing~\ref{lst:abs1b}, \framacwp can verify that no runtime error will occur.
 
 \clearpage
 
-\subsection{Separating specification and implementation}
+\section{Separating specification and implementation}
 
 Before we continue exploring more advanced specification and verification
 capabilities of \framacwp we turn to a simple software engineering question.
@@ -225,7 +225,7 @@ at the call site.
 
 \clearpage
 
-\subsection{Modular verification}
+\section{Modular verification}
 
 We now look at a simple example in which our function \inl{abs_int} is used.
 More precisely, we include in Listing~\ref{lst:use_abs2-1} the
@@ -290,7 +290,7 @@ contracts and assertions.
 
 \clearpage
 
-\subsection{Dealing with side effects}
+\section{Dealing with side effects}
 
 Listing~\ref{lst:abs3a1} shows an implementation of \inl{abs_int}
 that writes as a side effect the argument~\inl{x} to a global variable~\inl{a}.

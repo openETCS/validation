@@ -1,6 +1,6 @@
 \documentclass{template/openetcs_article}
 % Use the option "nocc" if the document is not licensed under Creative Commons
-%\documentclass[nocc]{template/openetcs_article} 
+% \documentclass[nocc]{template/openetcs_article}
 \usepackage{lipsum,url}
 \usepackage{xspace}
 \usepackage{graphicx}
@@ -22,7 +22,7 @@
 \usepackage{amsfonts}
 \definecolor{hblue}{RGB}{79,129,189}
 
-%user specified macros
+% user specified macros
 \input{macros.tex}
 
 
@@ -31,25 +31,24 @@
 \frontmatter
 \project{openETCS}
 
-%Please do not change anything above this line
-%============================
-% The document metadata is defined below
+% Please do not change anything above this line ============================ The
+% document metadata is defined below
 
 \reportnum{OETCS/WP4/D4.2.1}
 
-%define your workpackage or task here
+% define your workpackage or task here
 \wp{openETCS@ITEA Work Package 4.2: ``Verification \& Validation of the Formal Model''}
 
-%set a title here
+% set a title here
 \title{D.4.2.1 1st interim V\&V report on the applicability of the V\&V approach to the formal abstract model}
 
-%set a subtitle here
+% set a subtitle here
 \subtitle{}
 
-%set the date of the report here
+% set the date of the report here
 \date{January 2014}
 
-%define a list of authors and their affiliation here
+% define a list of authors and their affiliation here
 \author{Ana Cavalli \and João Santos \and Huu-Nghia Nguyen}
 
 \affiliation{Institut Mines-Télécom}
@@ -75,110 +74,132 @@
 % define the coverart
 \coverart[width=350pt]{openETCS_EUPL}
 
-%define the type of report
+% define the type of report
 \reporttype{}
 
 
 
-%\begin{abstract}
-%define an abstract here
+% \begin{abstract} define an abstract here
 
-%\lipsum[12-13]
+% \lipsum[12-13]
 
-%\end{abstract}
+% \end{abstract}
 
-%=============================
-%Do not change the next three lines
-\maketitle
-\tableofcontents
-\listoffiguresandtables
+% ============================= Do not change the next three lines
+\maketitle \tableofcontents \listoffiguresandtables \newpage
+% =============================
+
+% The actual document starts below this line =============================
+
+
+% Start here
+
+\section{Introduction}
+
+To ensure the correctness and consistency of a model and its implementation, the
+validation and verification has to be performed alongside with the modeling
+process. Thus this task will be performed repeatedly during WP3 and will provide
+feedback to it.
+This document presents the interim results of the first iteration of
+verification and validation of formal model.
+However as the actual formal model of the ETCS system, provided by WP3, has not
+yet been initiated, no ``real'' input is currently applied.
+
+% This deliverable presents interim results from different partners from the
+% project.
+The following sections present the contributions of the partners: 
+\begin{itemize}
+  \item Institut Mines-Télécom: Verification of the Movement Authority
+  \item TWT GmbH Science \& Innovation: Verification of Procedures of Subset
+  026-5
+  \item University of Bremen: Verification of the Management of the Radio
+  Comumunication
+  \item University of Rostock: Verification of the Speed and distance
+  Monitoring  
+  \item Systerel: Verification of Procedure on-Sight and the Management of Radio Communication.
+\end{itemize}
+
 \newpage
-%=============================
-
-% The actual document starts below this line
-%=============================
-
-
-%Start here
-
-\section*{Introduction}
-
-To ensure the correctness and consistency of a model and its implementation, the validation and verification has to be performed alongside with the modeling process. Thus this task will
-be performed repeatedly during WP3 and will provide feedback to it.
-%
-This document presents the interim results of the first iteration of verification and validation of formal model.
-However as the actual formal model of the ETCS system, provided by WP3, has not yet been initiated, no ``real'' input is currently applied.
-
-%This deliverable presents interim results from different partners from the project. 
-The following sections present the contributions of the partners: Institut Mines-Télécom, TWT GmbH Science \& Innovation, University of Bremen, University of Rostock, and Systerel.
-
-\newpage
-\section{Institut Mines-Télécom}
+\section{Institut Mines-Télécom: Verification of the Movement Authority}
 
 \subsection{Introduction}
 
-Over the past century, Europe's railways have been developed within national boundaries, resulting in a variety of different signaling and train control systems, which hampers cross-border traffic. To increase interoperability for the railway sector, the European Union has decided to adopt and standardize the European Train Control System (ETCS) new methods and tools to verify the reliability of such system need to be elaborated.
-We focus on applying model-based formal methods on validation and verification (V\&V) of the ETCS system.
-This allows to model the system rigorously and to analyze it to ensure that the models is consistent and reasonably complete, and that any system that meets the models is certain to satisfy the required properties.
+In this section, the modeling, verification and test generation of the Movement
+Authority of the OBU. The overall goal of this activity is to ensure that the
+movement of the train is always under control of RBC. 
+Therefore we fistly formalize the SRS of OBU and then velidate and verify
+the model by using model-checking and model-based testing. 
+
+\subsection{Object of Verification}
+The object of verification is the Movement Authority of the train.
+
+\subsection{Available Specification}
+The Movement Authority is described in Subset-026, chapter 3.8. This chapter
+gives (1) the defintions and structure of the movement authority, 
+(2) the procedures of OBU to send a Movement Authority request to
+the RBC and to receive a Movement Authority response from the RBC;
+and (3) the use of Movement Authority on the OBU.
+
+Chapter 4.4 of Subset-026 describes in detail 16 different movement modes of OBU
+such as ISOLATION, TRIP, STAND BY, \ldots. At the moment, we generalize these modes onto
+two abstract modes: MOVE and STOP specifying when the train are moving or not.
+
+\subsection{Detailed Verification Plan}
+
+\subsubsection{Goal} 
+We intend firstly to model the Movement Authority of OBU described in
+Subset-026-3.8. We then use the model to validate the safety
+properties and to generate the test.
+
+
+
+
+\subsubsection{Method/Approach}
+
+We focus on applying model-based formal methods on validation and verification
+(V\&V) of the ETCS system.
 An overview of our approach is depicted in Figure~\ref{fig:approach}.
 
 \begin{figure}[!htbp]
 \begin{center}
-  \includegraphics[width=.75\textwidth]{figures/TSP-approach.pdf}
-  \caption{Overview of Our Approach}
+  \includegraphics[width=.7\textwidth]{figures/TSP-approach.pdf}
+  \caption{Overview of Institut Telecom-Mines' Approach}
   \label{fig:approach}
 \end{center}
 \end{figure}
 
-In the openETCS project, the system requirement specifications are represented by using SysML models. We validate and verify the models on two aspects, model-level and execution-level, by using two model-based techniques: model-checking and model-based testing.
-At the model-level, V\&V is done through model-checking, by using IFx tool, of IF formal models which are representations of the SysML models.
-As model-checking techniques check exhaustively models, hence it may be expensive in some special cases where we intend to check some properties of models in some explicit conditions.
+
+In the openETCS project, the system requirement specifications are represented
+by using SysML models. We validate and verify the models on two aspects,
+model-level and execution-level, by using two model-based techniques:
+model-checking and model-based testing.
+At the model-level, V\&V is done through model-checking, by using IFx tool, of
+IF formal models which are representations of the SysML models.
+As model-checking techniques check exhaustively models, hence it may be
+expensive in some special cases where we intend to check some properties of
+models in some explicit conditions.
 In such a case, model-based testing is a low-cost alternative.
-At the execution-level, we encode the SysML models by Java simulators that are then used to execute some tests. Model-checking can also be done at this level by using Java PathFinder through assertions.
-We also illustrate the consistency of two aspects by applying test cases, that are generated by TestGen-IF tool at the model-level, on our Java simulators, i.e., all tests must give {\em pass} verdict
+At the execution-level, we encode the SysML models by Java simulators that are
+then used to execute some tests. Model-checking can also be done at this level
+by using Java PathFinder through assertions.
+We also illustrate the consistency of two aspects by applying test cases, that
+are generated by TestGen-IF tool at the model-level, on our Java simulators,
+i.e., all tests must give {\em pass} verdict
 
-The automatic translations form SysML models to IF models to Java simulators are being studied. Furthermore, as the actual models provided by WP3 have not yet been initiated, we started with a formal model that is a finite state machine augmented with continuous variables and guards. This model can be considered as an abstract version of ETCS model and it can be refined in our future steps, e.g., the {\bf Moving} function mode of the TRAIN can be refined to SHUNTING, TRIP function modes of OBU in Subset-026.4.4.
-It is presented in Section~\ref{sec:model}.
-In this section, we illustrate also how to deliver a formal model for a system requirement specification.
-Section~\ref{sec:spec} introduces our representations of our formal model by using IF language, XML and Java. The V\&V of the model by using model-checking is represented in Section~\ref{sec:model-checking}. Section~\ref{sec:test} is devoted to model-based testing of the model.
-We end with conclusions and future works.
-
-\subsection{Modeling the European Train Control System}
-\label{sec:model}
-
-\subsubsection{System Requirements}
-
-The specification of the ETCS system requirements describes the system behavior as well as a number of functional requirements. As the significance and complexity of these requirements grow rapidly, formal techniques for producing reliable control software become of importance. Such formal methods and model-based verification and testing are among the most promising approaches for increasing software confidence.
-
-To formally describe these requirements, one needs a formalism that takes into account continuous variables (variables related to the train position, speed and acceleration) and also different roles of different actors in the specifications: a) the Radio Block Center (RBC), the train (TRAIN), and the environment itself (ENV). The devised formal model must represent critical situations such as a) alarm signals from the RBC; b) external inputs to RBC and trains; c) critical distance between two trains; d) the loss of some messages from/to a TRAIN or from/to a RBC.  
-
-The following requirements for the TRAIN system are considered in our approach.
-
-\begin{description}
-\item{Requirement $R_1$:} \textit{For each train, there is the safety distance SD.}
-
-\item{Requirement $R_2$:} \textit{If TRAIN$_{id}$ is controlled by the RBC, then it reports its current position ($p$), speed ($v$), and acceleration ($a$) and the next internal state where the output parameters $p$, $v$, $a$ are updated according to the train sensors.}
-
-\item{Requirement $R_3$:} \textit{The input parameter SD represents the safety distance between two trains and is a constant in the model.}
-
-\item{Requirement $R_4$:}  \textit{Messages between the train and the RBC may be lost. However, the train continues moving and it should automatically decide if it is in a safe position or not.}
-\end{description}
-
-Those four system requirements are taken into account when deriving a formal train system specification which is represented as a extended timed finite state machine.
+The automatic translations form SysML models to IF models to Java simulators are
+being studied. Furthermore, as the actual models provided by WP3 have not yet
+been initiated, we started with a formal model that is a finite state machine
+augmented with continuous variables and guards. This model can be considered as
+an abstract version of ETCS model and it can be refined in our future steps,
+e.g., the MOVE function mode of the TRAIN can be refined to SHUNTING,
+TRIP function modes of OBU in Subset-026.4.4.
 
 
+\subsubsection{Means}
 
-\subsubsection{Modeling Decisions} 
-
-There exist several formal models related to ETCS~\cite{pjesh01,zh05,Ammann2011,ltlzx11,Feuser2012}. Most approaches describe the system behavior using logic formulas and then verify whether these formulae satisfy some safety requirements, such as the safe distance between trains, alarm messages (fire, accidents, etc.) which can come from outside a train and RBC as well as from inside the train. 
-In order to develop a formal model in the ETCS context it is necessary to consider the actors in Figure~\ref{fig:model} and discuss the behavioral aspects of an RBC and a train under control and which safety aspects should be taken into account. This figure also shows messages exchanged between the different actors, with the rep message being a report that the train sends to the RBC and the messages move, neg and stopRBC being messages sent from the RBC to the train to inform what state is should go to (moving, negotiation or stop state, explained below). The control message is used to inform the train of who it needs to communicate with. The other messages were not considered on our first version of the model.
-
-
-The TRAIN, RBC, and ENV actors communicate in a distributed scenario that is characterized by the absence of a global time, thus, each player has its own clock. Moreover, there are two main safety issues related to time constraints. First, how often the train should report to RBC (position, speed, etc.) and how often the RBC has to send control messages to the train. We do not discuss this issue in the deliverable, since this decision is usually made when verifying the safety of a corresponding logic formula. In our approach, this is modeled by discrete time instances when messages may be received/sent. The second aspect is related to the situation when, for some reason, exchange messages are lost. In order to deal with this situation we augment our model with a timeout function. If there is no input before the timeout expires then the actors (RBC, a TRAIN under control, and/or ENV) has to make their own decision, e.g., for the safety issues usually it is the decision to stop the train. Therefore, in our model we synchronize the RBC and TRAIN by sending messages with relevant parameters such as the position, the maximum speed, the velocity, or the security point. 
-
-Another portion of safety issues is related to situations when a TRAIN under control moves in an autonomous way: when the TRAIN should negotiate with RBC about the safety distance, when it should be stopped, i.e., we have to check the functional aspects of the system. Some core points can be defined where an actor has different behaviors, and those points can be considered as states in the model. The conditions when an actor moves from one point (state) to another are usually related to some safety distances between TRAINs, respecting alarm messages, etc. Transitions significantly depend on the values of continuous variables such as train position, speed, acceleration, etc. 
-
-To solve these issues, we consider an ETFSM (Extended Timed Finite State Machine) as a formal model from which test cases for verifying the safety aspects of the developed implementations can be automatically generated. 
+We consider an ETFSM (Extended Timed Finite State Machine) as a formal model
+from which test cases for verifying the safety aspects of the developed
+implementations can be automatically generated.
 Formally, 
     an ETFSM is a tuple 
     $(S, s_0, E, T,  \Delta, v_0)$ where:
@@ -188,255 +209,176 @@ Formally,
  $T$ is a set of transitions, 
  $\Delta \subset S \to S \times (\mathbb{N} \cup \{ \infty \})$ is timeout function, and
  $\vec{v}_0$ is the vector of initial values of the context variables.
-The timeout function $\Delta$ limits an interval by which a trigger of transition must occur (thus the transition will be fired). When the interval ends, the transition will be automatically fired in spite of its trigger has not yet occurred. 
+The timeout function $\Delta$ limits an interval by which a trigger of
+transition must occur (thus the transition will be fired). 
+When the interval ends, the transition will be automatically fired in spite of
+its trigger has not yet occurred.
 
-
-A TRAIN under control has four states where it has different behavior. These states are depicted in Figure~\ref{fig:states}. 
-
-\begin{figure}[!htbp]
-\centering
-  \includegraphics[width=.8\textwidth]{figures/ETCSStates.png}
-  \caption{States and Transitions of the Train and \textit{RBC} models.}
-  \label{fig:states}
-\end{figure}
-
-\begin{description}
-
-\item[Start.] The initial state is where the TRAIN gets a notification message informing that it is controlled by the given RBC. When getting this message the train reports the corresponding data to RBC and moves to another state (moving/stopping).
-
-\item[Moving.] At this state, the TRAIN can get different messages from RBC but almost any message should contain the safety distance according to the position of the previous TRAIN or possibly some obstacles reported to the RBC by the environment. If the TRAIN is in a safe position it continues moving in an autonomic way. However, if its position is closer to some dangerous point then the train should come to another state and start the negotiation with RBC.
-
-\item[Negotiation.] If the TRAIN crosses the critical point then it should be immediately stopped. The safety point can be calculated by the RBC based on the data got from the previous TRAIN or on some data got from ENV.
-
-\item[Stop.] The TRAIN waits for an input of RBC in order to start moving again. In our model, we have such an actor as the ENV and as far as we know, the idea of modeling the ETCS environment never has been presented. The ENV can send alarm messages to the RBC if something happens outside. We also model the train “red button” (accident, fire etc.) inside the train also by the environment and in this case, the train has to immediately report the situation to the RBC. The RBC states are almost the same as for the train but the RBC can get/send messages to/from the environment that usually is some automatic control (another RBC) or some manager in charge. Moreover, based on the collected information (from other RBC, from trains this RBC is in charge of, etc.) the RBC calculates the safety position for a given train and reports this position to the train. Below we present formula of how this safety position is calculated based on the ETCS requirements.
-\end{description}
-
-
-\subsubsection{Modeling Requirements}
-We briefly describe the main requirements of the ETCS Level 3. In application Level 3 replaces the line-side signals as well as the trackside occupancy checking devices. The location of the train is determined by the trainside optometry and reported to the trackside radio block centre via the GSM-R radio transmission. In this configuration, train spacing is no longer controlled by the interlocking. However, the latter has to exchange information about the route setting with the RBC. In this level, the trains follow the moving block principle~\cite{platzer2009european}, i.e., the current speed and acceleration of a train are dynamically determined by a RBC tracking the train.  Trains are only allowed to move when the RBC grants them permission to do so. According to the set of requirements, in this model, we have the first the \textit{requirement R1} which is the critical point of \textit{Train$_{id}$} of interest (with respect to the previous train). This point is calculated by the RBC that controls the \textit{Train$_{id}$}  to avoid collisions. 
-
-Figure~\ref{fig:model} depicts the exchange messages among the actors. The environment ENV actor represents external inputs which may occur in the system, such as an alarm event or a call of an administrator that can interact with the RBC. Thus, the \textit{requirement R2} is also considered in the model.
-
-The RBC analyzes the information obtained from the previous train and returns the critical distance d to the train. According to the rules, the safety distance \textit{requirement R3} is used in the model.
-
-We say that a train at position $p$ and with the critical point $d$ is:
-
-\begin{itemize}
-\item In a \textit{safe} position if $(d - p) >= 4 SD$;
-\item In a \textit{negotiation} position if $2 SD <=  (d - p) <=  4 SD$;
-\item In a \textit{stop} position if $(d - p) < 2 SD$.
-\end{itemize}
-
-The developed model takes the above expressions into consideration: If a TRAIN is at the \textbf{Moving} state and it is in a \textit{safe} position then it can remain at this state having the speed and acceleration recommended by the RBC that controls the TRAIN. However, if the train progresses and the critical distance is not increased with the same speed, then the train will move to a negotiation position and enter the \textbf{Negotiation} state. Finally, if the train is at the \textbf{Negotiation} state and the critical distance does not increase then the train moves to a stop position and enters the \textbf{Stop} state where the train has zero speed. 
-
-
-This model satisfies the \textit{requirement R4}.	
-To model this behavior the timeouts $TAB = 4*SD/Vmax$ and $TBC = 2*SD/Vmax$ are introduced in our model (where $Vmax$ is the maximum speed allowed for the train). If the train is at the \textbf{Moving} state and the train does not receive any message from the RBC then after $TAB$ time units it automatically moves to the \textbf{Negotiation} state, while if the train is at the \textbf{Negotiation} state and does not receive any input message from the RBC during TBC then the train moves to the \textbf{Stop} state.
-
-
-\subsubsection{Formal Model}
-
-We use the following functions when describing the set of transitions of the TRAIN and RBC models:
-
-\begin{itemize}
-\item The function $g(RBC)$ returns the critical point $d$ to the \textit{Train$_{id}$};
-\item The function $rep(Train_{id})$ returns the current position ($p$), speed ($v$) and acceleration ($a$) values and the next internal state of the \textit{Train$_{id}$} according to the values of the train sensors.
-\end{itemize}
 
 \begin{figure}[!htbp]
 \begin{center}
-  \includegraphics[width=.6\textwidth]{figures/ETCSModel.png}
-  \caption{Communications among the Actors: TRAIN, RBC and ENV}
+  \includegraphics[width=.8\textwidth]{figures/OBUmodel.png}
+  \caption{Extended Timed Finite State Machine of OBU}
   \label{fig:model}
 \end{center}
 \end{figure}
 
 
-\noindent\textbf{The train.} An ETFSM that describes the internal behavior of the TRAIN has the following states. State \textbf{Start} is the initial state of the train. Any train at this state is not controlled by the RBC of our interest. Once the train is controlled it moves to the \textbf{Moving} state.
+The formal model is then represented by IF description or XML in order to be
+checked by using IF model-checker and Java Pathfinder respectivelly.
+Test cases are generated by using TestGen-IF.
 
-The RBC checks the position of the train at appropriate time units which usually are very close to each other. If the train crosses the Negotiation point then the train and the RBC start negotiating and the train moves to \textbf{Negotiation} state. The dot line $TAB$ denotes a timeout. If the train does not receive any input from the RBC during an appropriate time period (this is discussed above), then the train automatically moves to the \textbf{Negotiation} state.  The train is at this state if the train has crossed the Negotiation point but did not reach stop position yet; the RBC calculates a new critical position (point $d$).  If the train reaches Stop position then the train automatically should stop (moves to the \textbf{Stop} state). Otherwise, it continues moving and will go to the \textbf{Moving} state or stay at the \textbf{Negotiation} state depending on the value of $d$ and its current position. At the \textbf{Stop} state the train has the null speed. The train can come to this state if timeouts are triggered or the current position of the train is very close to the critical point, or the train has received an alarm message from inside the train (modeled as a part of the environment) or a \textit{stopRBC} message from the RBC.
-
-\noindent\textbf{The RBC.} At the initial state \textbf{IDLE}, the RBC collects the information of all the trains which are controlled by this RBC and is waiting for the message \textit{take\_care} to control a train of interest.
- 
-When the message \textit{take\_care} is confirmed by the train then the RBC moves to the \textbf{Info} state. The \textbf{Info} is the state where the RBC waits for a message from the train that contains its position, speed and acceleration and its current internal state. 
-
-The RBC sends the message \textit{control(k)} to the train in the \textbf{IDLE} state and when $k = j$ the train Train$_j$ is controlled by the RBC. Once getting the message \textit{control(j)} at the \textbf{Start} state the train replies with the message \textit{rep(p; v; a; state)} to the RBC. In fact, once controlled by RBC the train replies with this message to any input from the RBC. The message \textit{move(d; V$_{max}$; a$_{max}$)} sent to the train contains the critical point $d$ (with respect to the previous train or with respect to the next station etc.), the maximum speed $V_{max}$ and the maximum acceleration $a_{max}$ that the train can have. 
-
-Depending on the position of the previous train and possibly other conditions, the critical point $d$ is calculated and according to its value the RBC moves to the \textbf{Stop} state, to the \textbf{Negotiation} state, or to the \textbf{Move} state. The \textbf{Stop} is a state where the RBC finds out that the train is stopped.
-
-It could happen because the position of the train is close to the point $d$ (the train is in a Stop position) or if any external input alarm occurs. The \textbf{Negotiation} is a state that denotes an active exchange of messages between the train and the RBC since the train is not in a \textit{safe} position but did not reach a \textit{stop} position, i.e., the train is in a \textit{negotiation} position. The \textbf{Move} state denotes that the train is moving as autonomous as possible.
-
-The RBC sends the message \textit{stopRBC} in order to stop the train. If the train receives this message at any state then the train moves to the \textbf{Stop} state. 
-
-The message \textit{neg(d; $V_{max}$; $a_{max}$)} is sent to the train when the RBC knows that the train is at the \textbf{Negotiation} state. The environment can send the \textit{alarm} message to the RBC indicating that something is going wrong outside. 
-
-Finally if the RBC gets this message then RBC sends the message \textit{stopRBC} in order to stop this train and enters the \textbf{Stop} state. There is a timeout $TAB$ from state \textbf{Moving} to the \textbf{Negotiation} state, where $TAB = 4*SD$ (four times exceeding the safety distance): 
-
-\textit{If the train is in the \textbf{Moving} state and the train does not receive any input during $TAB$ time units, then the train automatically moves to \textbf{Negotiation} state.}
-
-There also is a timeout $TBC$ from the \textbf{Negotiation} state to the \textbf{Stop} state, where $TBC = 3*SD$ (three times exceeding the safety distance) that means:
-
-\textit{If the train is in the \textbf{Negotiation} state and the train does not receive any input after $TBC$ time units, then it automatically moves to the \textbf{Stop} state.}
+\textbf{Model Checking using IF.}
+Model checking is an automatic technique for verifying finite-state reactive
+systems. Using such techniques one could automatically check if the model
+specifies most of the requirements of the system, such as the important safety
+properties described in Task 4.4. Similar to proof techniques, in order to use
+model checking to verify if the SFM (Semi-formal model) and FFM (fully formal
+model) comply with the safety and function requirements (cf. RWP2 /D2.6-02-058),
+the properties to be proven have to be identified and described. To implement
+the use model checking, it is mandatory to specify the model using finite-state
+reactive systems, and they should also provide an intuitive way to express the
+properties to be model checked. The language for describing a formal model for
+which corresponding model checkers exist should be selected and the set of
+critical requirements to be verified need to be clearly identified. The proposed
+model checking techniques should be supported in the selected tool chain. As
+mentioned above, we are using XML-based and IF-based specification to perform
+the model checking of train safety properties.
 
 
 
-\subsection{Using Specification Languages to Describe the Model}
-\label{sec:spec}
-\subsubsection{SysML}
 
-SysML (Systems Modeling Language) is a general-purpose graphical modeling language for systems engineering applications. It supports the specification, analysis, design, verification and validation of a broad range of systems and systems-of-systems. It is defined as an open source specification of a subset extension of the UML, i.e., SysML reuses seven of fourteen diagrams of UML and add two diagrams: requirement and parametric diagrams. It seeks to generalize UML for specifying complex systems that include non-software components such as information, processes, hardware, personnel and facilities.
+\textbf{Model Checking using Java Pathfinder.}
+Java Pathfinder~\cite{JPF} (JPF) is a system to verify executable Java bytecode
+programs. The core of JPF is a Java Virtual Machine that is also implemented in
+Java. JPF executes normal Java bytecode programs and can store, match and
+restore program states. Its primary application has been Model checking of
+concurrent programs, to find defects such as data races and deadlocks.
+
+As in our simulator, the XML-specification of the proposed model is automatically
+converted into Java code. The safety properties will be then specified as Java
+assertions and will be added to the corresponding Java implementation.
+
+\textbf{Test Generation using TestGen-IF.}
+When using model checkers the criteria for the model to be safe is that all the
+safety properties should be checked. This is impossible, since the number of
+safety properties could be infinite and thus, only some of them can be checked
+through the above step.
+For this reason, as a complementary approach, testing is commonly used. If the
+corresponding model respects some requirements, i.e., only expected outputs are
+produced to applied input sequences, to some extent, there is a confidence that
+the models is safe. In order to derive ‘good’ tests a formal model should be
+involved. It is known that only the FSM model where each input is followed by a
+corresponding output allows automatic deriving finite tests with the guaranteed
+fault coverage where the races between inputs and outputs can be easily avoided.
+ Many authors for deriving finite tests with the guaranteed fault coverage turn
+their model to some kind of an FSM (see,
+e.g.,~\cite{springintveld2001testing,zymc11,Gromov2009}).
+
+We decided to use TestGen-IF to automatically extract a set of test cases from
+the formal model described in the IF language. We have identified a set of basic
+requirements and we can describe them as IF properties.  Based on these
+properties, the TestGen-IF tool automatically generates a set of test cases.
+These test cases can be used to test if the model follows the requirements defined for the test generation.
 
 
-\subsubsection{Intermediate Format Language}
+\textbf{Test Execution by the Simulator.}
+For simulation, the artifacts should provide means to execute the model.  The
+simulator must be automatically generated, so that, when run against test
+scenarios (inputs/outputs for the model), we may conclude whether the model
+follows the specification or not. In particular, it is important to define test
+scenarios for the safety critical properties. Since, the development within
+openETCS has to the goal to reach the CENELEC EN 50128 SIL 4 standard, it is
+highly recommended (cf. SIL 4) that the simulation needs to cover all states,
+transitions, data-flow, and paths in the model. It would also be desirable to
+include graphical representation of the simulation/model and also provide a
+report of the visited components as specified by CENELEC EN 50128 SIL 4. CENELEC
+EN 50128 SIL4 also advocates to perform tracing. Being able to trace the
+requirements that are met during a simulation is also advisable to allow simple
+requirement coverage.
 
-IF is a language based on temporized machines, allowing the description of existing concepts into specification formalisms.  A real-time system described using IF language is composed of processes running in parallel and interacting asynchronously through shared variables and message exchanges via communication channels. The description of a system in IF consists in the definition of: data types, constants, shared variables, communication signals and processes. In Figure~\ref{fig:if:specification} we represent a short code of our model in this language.
+Once we have a test suite generated by TestGen-IF, we execute them using our simulator. The simulator provides a trace of the execution of each test and the expected trace. By comparing both traces it is possible to identify problems with the model.
 
-\begin{figure}[!htbp]
-\centering
-  \includegraphics[width=.6\textwidth]{figures/IF-spec.pdf}
-  \caption{A Sample Code of the ETCS Specification in IF.}
-  \label{fig:if:specification}
-\end{figure}
+%We present a short overview of the result of applying this tool in a
+% requirement related to Property~1 as described in Figure~\ref{set:of:tests}.
+
+%  Let us note that, according to the system specification, the property OBJ(1)
+% is correct in any of the states of the train model. Therefore, at any state,
+% the train should stop when receiving an external alarm input.
 
 
-\subsubsection{XML and Java}
+\subsection{Results}
 
-In order to assess the possibilities of the model to represent safety properties, we have been implemented a prototype in XML-based language that then automatically generates Java simulator.
+
+
+\subsubsection{Summary}
+
+We have provided a method to formally model the
+requirements of the European Train Control System using finite state machines
+augmented with continuous variables (train position, speed, acceleration) and
+time constraints. 
+
+We have modeled OBU on Timed Extended Finite State Machine.
+We have also presented different model checking techniques to verify the
+proposed formal model. 
+To efficiently perform such model checking we use different specification
+languages, namely, XML and IF languages. With TestGen-IF we automatically generated a test suite that was used to verify our simulator.
 %
-The simulator can reproduce a sequence of outputs corresponding a given timed parameterized input sequence. 
 
-Currently, each actor is described by a XML file, in which the main component is state and inside each state all its characteristics are presented. Among the possible things, there are transitions that start at this state, internal variables for each state, update functions for these variables and timeouts.  
-Once the XML file is properly defined, it is parsed, using JDOM - a Java library for XML parsing -  in order to create an internal representation of the ETFSM. During this phase, all the components are created internally to be used later for the simulation. After this phase is completed, the model is ready to be executed. The simulator itself is implemented in Java, with a different thread in charge of keeping time (issuing an alarm when a timeout has occurred). Also, each component is represented internally by a different object, for example transitions and timeouts are different object types with very distinct characteristics. 
+\textbf{Evidence Produced}
 
-\subsection{Model Verification}
-\label{sec:model-checking}
+By providing TestGen-IF with test objectives, we were able to automatically generate a test suite capable of verifying the properties related to them. Currently we have four different test objectives and with them we generated a suite of 22 tests. By providing more test objectives it is possible to generate more tests.
+Each test constitutes a sequence of inputs (or period of time without an input) and expected outputs.
 
-We verify the proposed formal model by using two different model checking approaches, one at model level and another at execution level.
+The tests generated were executed by the simulator. When executing a test, the simulator provides a file that compares the expected trace with trace that was simulated. If an inconsistency occurs, the test is considered failed. On our first execution we found some inconsistencies between the IF model and the XML model used by the simulator. After taking care of these inconsistencies we were able to execute all the tests pass.
 
+\subsubsection{Conclusions/Lessons Learned}
 
-\subsubsection{Deriving Safety Properties}
-\label{subsec3.1}
-
-When performing the verification of the TEFSM model we considered the following safety properties.
-
-\begin{description}
-
-\item[Property 1.]
-The train is in the \textbf{Moving} state, running at 100km per hour, with an acceleration of 10km per h² on a distance of 100km. Due to some external unexpected reasons, the train must stop as soon as possible. Therefore, an alarm from the environment is sent to the train. Automatically, the train should stop and provide a reporting message with its current parameters (state, position, etc.) to the RBC.
-
-\item[Property 2.]
-In this case, the property is the capability of the ETCS system of taking over control if the driver appears to be going too fast.\footnote{This property represents the situation that caused the Spain train accident}  We consider the train in the \textbf{Start} state, receiving the message move with a certain speed and acceleration.
-
-\item[Property 3.]
-A train is in the \textbf{Moving} state, running with a speed of 100 km per hour, with an acceleration of 10 km per h², situated somewhere at 10 km from the reference point. The safety distance ($SD$) between two ETCS trains is of 300 km. The train receives the signal move with the maximum speed of 105 km per hour and with an acceleration of 15 km per h² for the next 900 km.
-
-\item[Property 4.]
-The property is related to transitions with time-outs. We consider a train in the \textbf{Moving} state, moving with a speed of 100 km per hour, with an acceleration of 10 km per h². The safety distance is of 300 km and the maximum speed allowed is $V_{max} = 105$ km per hour. 
-
-The communication between the train and the RBC is lost, so the train should take an appropriate decision on the next state, after an appropriate period of time.
-\end{description}
-
-\subsubsection{Model Checking using IFx}
-Model checking is an automatic technique for verifying finite-state reactive systems. Using such techniques one could automatically check if the model specifies most of the requirements of the system, such as the important safety properties described in Task 4.4. Similar to proof techniques, in order to use model checking to verify if the SFM (Semi-formal model) and FFM (fully formal model) comply with the safety and function requirements (cf. RWP2 /D2.6-02-058), the properties to be proven have to be identified and described. To implement the use model checking, it is mandatory to specify the model using finite-state reactive systems, and they should also provide an intuitive way to express the properties to be model checked. The language for describing a formal model for which corresponding model checkers exist should be selected and the set of critical requirements to be verified need to be clearly identified. The proposed model checking techniques should be supported in the selected tool chain. As mentioned above, we are using XML-based and IF-based specification to perform the model checking of train safety properties.
+Currently, the obtained model can be considered as an abstract representation
+of the system specification provided by the standard, i.e., the MOVE
+function mode of the OBU can be refined to SHUNTING, TRIP function modes of
+OBU in Subset-026.4.4.
 
 
+\subsection{Future Activities}
 
+On the one hand, we refine our formal model to take into account different
+function modes of OBU.
+In the other hand, we complete the automatic translations from the SysML
+specification to the IF specification or to our Java simulator.
+We also plan to verify the fault coverage of these tests by executing Java
+simulator against corresponding traces and executing Java Mutants.
 
-\subsubsection{Model Checking using Java Pathfinder}
-When using model checkers the criteria for the model to be safe is that all the safety properties should be checked. This is impossible, since the number of safety properties could be infinite and thus, only some of them can be checked through the above step.
-%
-For this reason, as a complementary approach, testing is commonly used. If the corresponding model respects some requirements, i.e., only expected outputs are produced to applied input sequences, to some extent, there is a confidence that the models is safe. In order to derive ‘good’ tests a formal model should be involved. It is known that only the FSM model where each input is followed by a corresponding output allows automatic deriving finite tests with the guaranteed fault coverage where the races between inputs and outputs can be easily avoided.  Many authors for deriving finite tests with the guaranteed fault coverage turn their model to some kind of an FSM (see, e.g.,~\cite{springintveld2001testing,zymc11,Gromov2009}). 
-
-As for simulation, the artifacts should provide means to execute the model.  The simulator must be automatically generated, so that, when run against test scenarios (inputs/outputs for the model), we may conclude whether the model follows the specification or not. In particular, it is important to define test scenarios for the safety critical properties. Since, the development within openETCS has to the goal to reach the CENELEC EN 50128 SIL 4 standard, it is highly recommended (cf. SIL 4) that the simulation needs to cover all states, transitions, data-flow, and paths in the model. It would also be desirable to include graphical representation of the simulation/model and also provide a report of the visited components as specified by CENELEC EN 50128 SIL 4. CENELEC EN 50128 SIL4 also advocates to perform tracing. Being able to trace the requirements that are met during a simulation is also advisable to allow simple requirement coverage.
-
-
-Java Pathfinder~\cite{JPF} (JPF) is a system to verify executable Java bytecode programs. The core of JPF is a Java Virtual Machine that is also implemented in Java. JPF executes normal Java bytecode programs and can store, match and restore program states. Its primary application has been Model checking of concurrent programs, to find defects such as data races and deadlocks. 
-
-As in this project, the XML-specification of the proposed model is automatically converted into Java code. The safety properties will be then specified as Java assertions and will be added to the corresponding Java implementation. 
-
-
-\subsection{Testing European Train Control System}
-\label{sec:test}
-
-\subsubsection{Adaptive scenario} 
-
-In this section, we present the notion of testing and discuss a testing scenario for our model. We assume that the RBC and the train are tested separately, i.e., when testing the train software the RBC is replaced by a tester that sends inputs to the train and checks whether the produced outputs are expected. Moreover, we consider adaptive testing, i.e., a test case is represented as an acyclic ETFSM~\cite{Petrenko2011,offutt1989coupling} where only one timed input is defined at each intermediate state. We start at the initial state and apply an input defined at the state to an IUT. Based on the produced output the FSM R that represents a test case will move to another prescribed state where another input can be specified and exactly this input will be applied at the next step.  If the observed trace is a trace of the specification ETFSM then we say that the IUT passed a test case. Otherwise, the IUT fails the test case, i.e., the IUT does not conform to the given specification. We illustrate our approach using the following testing scenario (Figure~\ref{testing:scenario}):
-
-\input{figure_test}
-
-\textit{If there is no signal from RBC for an appropriate period of time then a train must stop itself.}
-
-In Figure~\ref{testing:scenario} are represented the following five steps:
-
-\begin{enumerate}
-\item The tester (simulating the RBC functioning) starts with sending the message control to the train. The 0 value in the initial state means that the RBC does not wait anything to send this message.
-\item Depending on the internal state of the train, the tester moves to different states. In order to simplify the example let us consider that the train always answers this message.
-\item At these states the tester waits for the appropriate number of time units $TAB + TBC$ or $TBC$ when there are no messages sent to the train.
-\item Then the tester checks the state of the train by sending the control message again.
- If the train is in the \textbf{Stop} state then the tester returns \textit{Pass}, otherwise it returns \textit{Fail}. Finally, having the train at the \textbf{Stop} state the tester forces it to move with the maximal permissible speed and acceleration and returns the critical distance $d$.
-\end{enumerate}
- 
-In the same way, other testing scenarios for checking safety properties may be considered. For example, we can derive a test case that checks whether a train stops when being close to the critical point $d$, a test case that checks whether a train changes the Moving state when crossing the critical point $d$, a test case that checks whether a train speed (acceleration) does not exceed the permissible maximum, etc. Finally, it is worth mentioning that when we are testing whether a train stops when reaching a critical point or whether the train respects RBC requirements about its speed and acceleration we must use continuous variables.
-
-\subsubsection{Test Cases Generation based on IF Model}
-
-In this Section we present how to automatically extract a set of test cases from the formal model described in the IF language. We have identified a set of basic requirements and we can describe them as IF properties.  Based on these properties, the TestGen-IF tool automatically generates a set of test cases.
-
-We present a short overview of the result of applying this tool in a requirement related to Property~1 as described in Figure~\ref{set:of:tests}.
-
-\begin{figure}[!htbp]
-\begin{lstlisting}
-#Test-case for the train in the Moving state
-?ETCS_control{} !ETCS_report{{Train}0,10,100,10,start}
-?ETCS_alarm_to_train{} !ETCS_report{{Train}0,10,100,10,moving}
-?ETCS_control{} !ETCS_report{{Train}0,10,0,0,_stop}
-#Test-case for the train in the Negotiation state
-?ETCS_control{} !ETCS_report{{Train}0,10,100,10,start}
-?ETCS_move{900,105,15} !ETCS_report{{Train}0,10,100,10,moving}
-?ETCS_alarm_to_train{} !ETCS_report{{Train}0,10,100,10,negotiation}
-?ETCS_control{} !ETCS_report{{Train}0,10,0,0,_stop}
-\end{lstlisting}
-\caption{An Example of Test Case generated by TestGen-IF tool.\label{set:of:tests}}
-\end{figure}
-
-%
-%Let us note that, according to the system specification, the property OBJ(1) is correct in any of the states of the train model. Therefore, at any state, the train should stop when receiving an external alarm input.
-
-Different test scenarios are performed with respect to safety properties discussed in Section~\ref{subsec3.1}. As a future work we plan to verify the fault coverage of these tests by executing Java simulator against corresponding traces.
-
-
-\subsection{Conclusions}
-
-In this deliverable, we have provided a method to formally model the requirements of the European Train Control System using finite state machines augmented with continuous variables (train position, speed, acceleration) and time constraints. Currently, the obtained model can be considered as an abstract representation of the system specification provided by the standard, i.e., the {\bf Moving} function mode of the TRAIN can be refined to SHUNTING, TRIP function modes of OBU in Subset-026.4.4.
-
-We have also presented different model checking techniques to verify the proposed formal model. To efficiently perform such model checking we use different specification languages, namely, XML and IF languages.
-%
-We have proposed a technique of the ETCS adaptive testing w.r.t. test scenarios written as train safety properties. 
-
-As a future work, on the one hand, we refine our formal model.
-In the other hand, we complete the automatic translations from the SysML specification to the IF specification or to our Java simulator.
 
 \newpage
+
+\let\oldparagraph\paragraph
+\let\oldsubparagraph\subparagraph
+
+\renewcommand{\paragraph}[1]{\subsection{#1}}
+\renewcommand{\subparagraph}[1]{\subsubsection{#1}}
 
 \input{twt-D4-2-1}
 
 \newpage
 
-\section{University of Bremen}
-
 \input{UniBremen-D4-2-1}
 
 \newpage
-
-\section{University of Rostock }
 
 \input{URO-D4-2-1}
 
 \newpage
 
+
+\let\paragraph\oldparagraph
+\let\paragraph\oldsubparagraph
+
+
 \section{Systerel}
 
-Three approaches of VnV  on formal models have been experimented and are presented in this section:
+Three approaches of VnV  on formal models have been experimented and are
+presented in this section:
 
 \begin{enumerate}
 \item VnV on classical B  model that cover software design level, in the objective to provide an open-source approach;
@@ -444,13 +386,39 @@ Three approaches of VnV  on formal models have been experimented and are present
 \item VnV on Scade model that cover software design level.
 \end{enumerate}
 
-Classical B and Scade model specify the same example of Subset 026 "§5.9 Procedure on-Sight", Event-B model specifies the "Mangement of Radio communication" function.
+Classical B and Scade model specify the same example of Subset 026 "§5.9
+Procedure on-Sight", Event-B model specifies the "Mangement of Radio
+communication" function.
 
 \input{BmodelVnV}
 
 \input{EventB-Rodin-VnV}
 
 \input{ScadeModelVnV}
+
+
+\section{Conclusion}
+
+This Deliverable presented the formal \vv of Institut
+Mines-Telecom, TWT GmbH Science \& Inovation, University of Bremen, University of Rostock, and
+Systerel.
+The V\&V activities are focused on the System Requirement Specifications in
+Subset-026 such as the Movement Authority (chap. 3.8), the Procedures (chap. 5),
+the Management of the Radio Communication (chap. 3.5), the Speed and Distance
+Monitoring (chap. 3.13), and the Procedure on-Signt (chap. 5).
+
+These SRSs have been formalized in formal models such as  Extended Timed Finite
+State Machine, Colored Petri-Net, SCADE, Classical B and Event B.
+The V\&V have been done on these models. They resulted
+the correctness of the SRS but also
+some inconsistencies, ambiguities and gaps in SRS being
+repported in the Specification Findings.
+
+The next steps are to refine the formal models and then to do the V\&V.
+The specification findings will be updated during this process.
+The test generation and then execution against the
+simulators will be also focused.
+
 
 
 

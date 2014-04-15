@@ -1,5 +1,5 @@
 
-\section{Formal Verification of Bitwalker}
+\section{Formal Verification of the Bitwalker Core Functionality}
 \label{sec:formal-verification}
 
 
@@ -120,7 +120,19 @@ for review by the domain experts.
 
 \clearpage
 
-\subsection{A First Look on \peek}
+\subsection{A First Look on \peek and \poke}
+
+In this section we analyse the implementations of \peek 
+and \poke.
+The goal is to devise a more precise specification than
+was original provided.
+Of course, a specification derived from the source code by the verifier
+must be subject to a review of the domain experts.
+
+At his point we are already using \framacwp in order to identify
+potential run time errors in the source code.
+
+\subsubsection{Analysing \peek}
 
 Listing~\ref{lst:peek-original} shows the original implementation of \peek.
 
@@ -155,7 +167,6 @@ this value will be promoted to the type of \inl{retval << 1} which is~\inl{uint6
 
 \end{itemize}
 
-\clearpage
 At one point, an alternative to the implementation of \peek in
 Listing~\ref{lst:peek-original} was suggested.
 This alternative implementation, which is shown in Listing~\ref{lst:peek-alternative}
@@ -227,7 +238,7 @@ These potential runtime errors are related to the facts that at this point \fram
 
 \clearpage
 
-\subsection{A First Look on \poke}
+\subsubsection{Analysing \poke}
 
 Listing~\ref{lst:poke-original} shows the original implementation of \poke.
 
@@ -270,12 +281,16 @@ faces the problem that it
 \subsection{Informal Specifications}
 \label{sec:informal-specification}
 
-
-Before we introduce some auxiliary concepts and formulate general assumptions
-we would like to point our a the following: 
+Before we provide an informal specification of \peek and \poke, respectively,
+we introduce some auxiliary concepts and formulate general assumptions.
+We would also like to point out the following: 
 When we speak of \emph{integers}, then we refer to the infinite set of mathematical
 integers $\{\ldots, -1, 0, 1, \ldots\}$
-and not one of the many finite representation provided by the type system of~C.
+and not to one of the many finite representation provided by the type system of~C.
+This distinction is important because mathematical integers
+usually play an important role in \acsl specifications.
+
+\subsubsection{Basic Concepts}
 
 \begin{itemize}
 \item
@@ -302,6 +317,22 @@ mark bit positions in the first and second array element, respectively.
 \end{center}
 \end{figure}
 
+\item 
+The C~programming language neither provides a type \emph{bit}
+nor does it support random access to the bits of a bit stream.
+In order to access the $i$-th bit of a bit sequence one typically
+has to first access the byte with index $j = i/8$ and then access the 
+bit $k = i \pmod{8}$ within this byte.
+Note that in Figure~\ref{fig:bitstream-indices} 
+bytes and bits are indexed in increasing order from the \emph{left}.
+On the byte level, however, bits are often indexed from the \emph{right}.
+For example, to access the $k$-th bit of a byte \inl{a} one can
+shift this bit to the right by $7-k$ and extracts then the now
+rightmost bit by performing a bit-wise \emph{and} with the value~1
+%
+\begin{verbatim}
+   (a >> (7-k)) & 1
+\end{verbatim}
 
 \item
 A \emph{bit sequence} is a consecutive sequence of bits within a bit stream
@@ -324,7 +355,8 @@ and its \emph{length}, that is, the number of bits it contains.
          0 &\leq p + l < 8n
      \end{align*}
 
-\item 
+\end{itemize}
+
 We assume that the C-types \inl{unsigned int} and \inl{int}, which
 are used in the implementation to represent indices, counting and error codes,
 have a width of~32~bits.
@@ -334,8 +366,6 @@ these characteristics.
 As an aside, MISRA-C discourages the use of ``generic'' integer types
 such as \inl{int} and \inl{unsigned int} and recommends the use of integer types whose names
 contain the exact width.
-
-\end{itemize}
 
 \subsubsection{Informal Specification of \peek}
 \label{informal-peek}
@@ -353,7 +383,8 @@ uint64_t  Bitwalker_Peek(unsigned int Startposition,
                          unsigned int BitstreamSizeInBytes);
 \end{lstlisting}
 
-The arguments have the following purpose:
+\paragraph{Arguments}
+The arguments of \peek have the following purpose:
 \begin{itemize}
     \item \inl{Startposition} is the bit index in the bit stream 
     where the bit sequence starts.
@@ -363,12 +394,13 @@ The arguments have the following purpose:
     containing the bit stream. 
 \end{itemize}
 
+\paragraph{Preconditions}
 The following preconditions shall hold for the function arguments.
 Note that additional constraints are implicitly expressed by the use
 of \emph{unsigned} integer types.
 
 \begin{itemize}
-\item \inl{Bitstream} is a valid array of length \verb"BitstreamSizeInBytes"
+\item \inl{Bitstream} is a valid array of length \inl{BitstreamSizeInBytes}
 
 \item \inl{Length} $\leq$ \inl{64} and
 
@@ -377,19 +409,17 @@ of \emph{unsigned} integer types.
       when evaluating \inl{Startposition + Length}.
 \end{itemize}
 
-We continue with a more precise description of the desired behavior of \peek.
-As mentioned, the function \texttt{Bitwalker\_Peek} reads a bit sequence from a bit stream
+\paragraph{Description}
+As mentioned, the function \peek reads a bit sequence from a bit stream
 and converts it to a 64-bit unsigned integer.
 
 For a bit sequence $(b_0, b_1,\ldots,b_{n - 1})$ the function \peek returns the sum
 \begin{align}
-    b_0 \cdot 2^{n - 1} + b_1\cdot 2^{n - 2} + \ldots + b_{n-1}\cdot 2^0
-    =
     \sum_{i=0}^{n-1} b_i \cdot 2^{(n - 1) - i} 
 \end{align}
 
 Note that is a higher-level description than what is done in the source code.
-There is, in our opinion, not much point to reflect low-level bit fiddling
+There is, in our opinion, not much point to reflect all of the low-level bit operations
 into the specification if a clearer description is at hand.
 
 If the bit sequence is not valid, then \peek shall return~0.
@@ -419,36 +449,34 @@ int      Bitwalker_Poke(unsigned int Startposition,
 \end{lstlisting}
 
 
-%\subsubsection*{Arguments}
+\paragraph{Arguments}
 The arguments have the following purpose:
 
 \begin{itemize}
-    \item \texttt{Startposition} is the bit index in the bit stream 
+    \item \inl{Startposition} is the bit index in the bit stream 
     where the bit sequence starts.
-    \item \texttt{Length} is the length of the bit sequence.
-    \item \texttt{Bitstream} is the array which provides the bit stream.
-    \item \texttt{BitstreamSizeInBytes} is the length of the array 
+    \item \inl{Length} is the length of the bit sequence.
+    \item \inl{Bitstream} is the array which provides the bit stream.
+    \item \inl{BitstreamSizeInBytes} is the length of the array 
     containing the bit stream. 
-    \item \texttt{Value} is the integer which shall be converted into a bit sequence.
+    \item \inl{Value} is the integer which shall be converted into a bit sequence.
 \end{itemize}
 
 
-%\subsubsection*{Preconditions}
-The following preconditions shall hold for the function arguments:
+\paragraph{Preconditions}
+The following conditions shall hold for the function arguments:
 
 \begin{itemize}
-\item \texttt{Bitstream} is a valid array of length \verb"BitstreamSizeInBytes"
+\item \inl{Bitstream} is a valid array of length \inl{BitstreamSizeInBytes}
 
-\item \texttt{Length} $<$ \texttt{unsigned int}.
-
-\item \texttt{Startposition + Length} $\leq$ \verb"UINT_MAX".
+\item \inl{Startposition + Length} is less than \verb"UINT_MAX".
 \end{itemize}
 
 Note that additional constraints are implicitly expressed by the use
 of \emph{unsigned} integer types.
 
 
-%\subsubsection*{Description}
+\paragraph{Description}
 Now we can specify \poke as follows:
 The function \poke converts a 64-bit unsigned integer to a bit sequence and 
 writes it into a bit stream.
@@ -461,8 +489,8 @@ such that
 \end{align}
 
 The function \poke tries to store the sequence $(b_0, b_1,\ldots,b_{n - 1})$
-in the bit sequence of \texttt{Length} bits that starts
-at bit index \texttt{Startposition}.
+in the bit sequence of \inl{Length} bits that starts
+at bit index \inl{Startposition}.
 
 The return value of \poke depends on the following three cases:
 
@@ -472,13 +500,13 @@ If the bit sequence is valid, then there are two cases:
 
 \begin{itemize}
 \item
-If $\texttt{Length} \geq n$, then  the sequence
-$(\overbrace{0,\ldots,0}^{\texttt{Length}-n},b_0, b_1,\ldots,b_{n - 1})$
-is stored in the bit stream starting at \texttt{Startposition}.
+If \inl{Length} is greater or equal than $n$, then  the sequence
+$(\overbrace{0,\ldots,0}^{\mathtt{Length}-n},b_0, b_1,\ldots,b_{n - 1})$
+is stored in the bit stream starting at \inl{Startposition}.
 The return value of \poke is 0.
 
 \item
-If $\texttt{Length} < n$, then the
+If \inl{Length}  is less then $n$, then the
 sequence $(b_0, b_1,\ldots,b_{n - 1})$ cannot be stored and\\
 \poke returns~$-2$.
 \end{itemize}
@@ -598,9 +626,9 @@ apart from local variables.
 
 Moreover, we use so-called behaviors in \acsl for a distinction of the two cases
 from the informal specification.
-The cases are discriminated through the predicate \texttt{ValidBitIndex}
+The cases are discriminated through the predicate \inl{ValidBitIndex}
 which indicates whether a bit sequence is valid or not.
-The first behavior \texttt{out\_of\_range} represents the robustness 
+The first behavior \inl{out\_of\_range} represents the robustness 
 case where the bit sequence is not valid and 
 the second behavior specifies the expected behavior in the normal case.
 

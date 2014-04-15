@@ -35,26 +35,53 @@ and Fraunhofer FOKUS (Germany).
 The Frama-C tool, which is developed by the French project partner {CEA LIST},
 has been used for some of the analyses.
 
+\clearpage
+
+The ultimate verification goals are the following
+
+\begin{enumerate}
+\item provide evidence that the Bitwalker software satisfies 
+      accepted quality standards
+\item develop a formal specification for the Bitwalker software
+\item verify that the Bitwalker software satisfies its formal specification
+\item show that the Bitwalker software does not raise runtime errors
+\item verify that OpenETCS decoder calls the Bitwalker software only
+      according to its specification
+\end{enumerate}
+
+We are confident that all these verification goals can be reached.
+For this preliminary verification report, report,
+we only provide partial answers to the first four topics.
+In order to achieve the last goal more development and verification
+work is currently conducted by Fraunhofer ESK and Fraunhofer FOKUS. 
+
+\subsection{Structure of this Document}
+
 Section~\ref{sec:frama-c} gives a short overview on the \framacwp tool
 that plays a central role in the verification of the Bitwalker functions.
+Here we also try to rectify some misunderstandings about formal verification
+that we have encountered in our work.
 
-In Section~\ref{sec:formal-verification} we take a more formal approach by 
+In Section~\ref{sec:formal-verification} we analyze
+the functions \peek and \poke from the Bitwalker core and
 \begin{enumerate}
-\item formally specifying the expected functional behavior in the ACSL specification language of {Frama-C}
+\item formally specify the
+      expected functional behavior in the \acsl specification language of {Frama-C}
       and
-\item using the {Frama-C} verification platform to establish a formal proof that the C code
-      satisfies the formal specification.
+\item using the {Frama-C} verification platform to establish a formal proof that these
+      C~functions do not raise runtime errors when called according to their
+      formal specification.
 \end{enumerate}
 
 In Section~\ref{sec:static-analysis} we report about the results of a broad range
 of static analyses. 
-These methods are aimed at finding well-known deficiencies that might occur in C or \CC\ software.
+These methods are aimed at finding well-known quality deficiencies that
+might occur in C or \CC\ software.
 
-Regarding the more formal approach it must be pointed out that so far only a 
-part of Siemens' \emph{BitWalker} has been formalized and verified.
-In the process of this work several enhancements for the Frama-C verification platform have 
-been identified and reported to the developers at {CEA LIST}.
+Thus, so far only a part of Siemens' \emph{BitWalker} has been formalized and verified.
+In the process of this work several enhancements for the \framac verification platform
+have been identified and reported to the developers at {CEA LIST}.
 
-
-
+In Section~\ref{sec:conclusions} we draw preliminary conclusions
+and outline the next steps in our verification efforts.
 

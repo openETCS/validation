@@ -2,6 +2,7 @@
 \section{Formal Verification of the Bitwalker Core Functionality}
 \label{sec:formal-verification}
 
+\fxfatal[inline]{improve this intro}
 
 In this section we describe our work on the formal verification
 of the so-called Bitwalker.
@@ -35,8 +36,6 @@ Finally, we give an overview about the still open issues in section~\ref{issues}
 \label{plan}
 \label{method}
 
-\fxfatal[inline]{not ready for review}
-
 In this section we introduce our method of choice along with the used tools.
 We use a deductive verification approach to 
 formally prove that a function fulfills its specification.
@@ -46,12 +45,14 @@ Figure~\ref{fig:method} shows the method with the involved verification tools.
 
 \begin{figure}[hbt]
 \centering
-\includegraphics[width=0.60\textwidth]{figures/method-bitwalker.pdf}
-\caption{\label{fig:method} The method to formally verify the Bitwalker.}
+\includegraphics[width=0.60\textwidth]{figures/deductive-verification.pdf}
+\caption{\label{fig:method} Deductive verification of C code with \framacwp.}
 \end{figure}
 
 Starting point is an informal specification of a function with which in mind
-a implementation is written and on which basis the formal specification is created.
+a implementation is written.
+This informal specification is then formalized using the
+\acsl specification language that is part of \framac.
 The formal specification of a function is a so-called function contract
 which contains preconditions to express what a function expects from its caller
 and postconditions to state the guarantees after the execution.
@@ -61,37 +62,35 @@ which is a formal language to express behavioral properties of \isoc programs.
 
 Moreover, it is the specification language associated with 
 the verification platform \framac~\cite{FramaC}
-which we use along with its plug-in \wpframac~\cite{wp}.
-Within \framac, \wpframac enables the deductive verification of
-\isoc programs that have been annotated with \acsl.
-\wpframac generates verification conditions which are submitted to external 
+which we use along with its plug-in \framacwp~\cite{wp}.
+Within \framac, the \wpframac plug-in supports
+the deductive verification of \isoc programs that have been annotated with \acsl.
+\framacwp generates verification conditions which are submitted to 
 automatic or interactive theorem provers.
-A function is then verified if each verification condition is discharged
-by at least one prover.
+If each verification condition is discharged by at least one prover, then
+the the implementation of the function satisfies its contract.
 
-Figure~\ref{fig:method} shows that we first apply the automatic
-theorem provers \altergo~\cite{alt-ergo} and \cvc~\cite{cvc3}
-and then apply the
-interactive theorem prover \coq~\cite{Coq}
-for the still unproven conditions in order to automate as much as possible.
+Figure~\ref{fig:method} shows that we apply the automatic
+theorem provers \altergo~\cite{alt-ergo} and \cvc~\cite{cvc}
+and then, if necessary, apply the interactive theorem prover \coq~\cite{Coq}
+for the still unproven conditions.
 Moreover, unproven conditions motivate to give some extra information
 in the form of axioms, lemmas and assertions in \acsl, 
 since they can ease the search of a proof.
 One need to be careful with axioms because they can yield contradictions
 and thus make the proof system unsound.
-This is different for lemmas and assertions
-because \wpframac will generate additional verification conditions for them.
 
 In order to prove the absence of run time errors we use
-the \inl{rte} option of \wpframac that automatically introduces \acsl
-assertions. If all these assertions can be proven, then
+the \inl{rte} option of \wpframac that automatically generates \acsl
+assertions for critical operations.
+If all these assertions can be proven, then
 the absence of run time errors is guaranteed.
 
 
 \begin{framed}
-The verifiers received the source code without sufficiently clear explanation
-about how the inputs and outputs of bitwalker functions are related.
-In particular, no information about error conditions were provided.
+The verifiers received the source code only with a high-level description
+of what the Bitwalker is supposed to do.
+In particular, no sufficient information about error conditions were provided.
 On such a basis it is, as pointed out on Page~\pageref{lesson},
 not possible to write meaningful test cases;
 let alone to formally verify the functionality of the bitwalker functions.
@@ -122,7 +121,7 @@ for review by the domain experts.
 
 \subsection{A First Look on \peek and \poke}
 
-In this section we analyse the implementations of \peek 
+In this section we analyze the implementations of \peek 
 and \poke.
 The goal is to devise a more precise specification than
 was original provided.

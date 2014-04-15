@@ -120,7 +120,19 @@ for review by the domain experts.
 
 \clearpage
 
-\subsection{A First Look on \peek}
+\subsection{A First Look on \peek and \poke}
+
+In this section we analyse the implementations of \peek 
+and \poke.
+The goal is to devise a more precise specification than
+was original provided.
+Of course, a specification derived from the source code by the verifier
+must be subject to a review of the domain experts.
+
+At his point we are already using \framacwp in order to identify
+potential run time errors in the source code.
+
+\subsubsection{Analysing \peek}
 
 Listing~\ref{lst:peek-original} shows the original implementation of \peek.
 
@@ -155,7 +167,6 @@ this value will be promoted to the type of \inl{retval << 1} which is~\inl{uint6
 
 \end{itemize}
 
-\clearpage
 At one point, an alternative to the implementation of \peek in
 Listing~\ref{lst:peek-original} was suggested.
 This alternative implementation, which is shown in Listing~\ref{lst:peek-alternative}
@@ -227,7 +238,7 @@ These potential runtime errors are related to the facts that at this point \fram
 
 \clearpage
 
-\subsection{A First Look on \poke}
+\subsubsection{Analysing \poke}
 
 Listing~\ref{lst:poke-original} shows the original implementation of \poke.
 

@@ -1,9 +1,10 @@
 
-\section{Formal Verification of the Bitwalker Core Functionality}
+\chapter{Formal Verification of the Bitwalker Core Functionality}
 \label{sec:formal-verification}
 
+\fxfatal[inline]{improve this intro}
 
-In this section we describe our work on the formal verification
+In this chapter we describe our work on the formal verification
 of the so-called Bitwalker.
 The Bitwalker shall read bit sequences from a bit stream 
 and convert them to an integer. Furthermore, it shall
@@ -31,11 +32,9 @@ Finally, we give an overview about the still open issues in section~\ref{issues}
 
 \clearpage
 
-\subsection{Verification Method}
+\section{Verification Method}
 \label{plan}
 \label{method}
-
-\fxfatal[inline]{not ready for review}
 
 In this section we introduce our method of choice along with the used tools.
 We use a deductive verification approach to 
@@ -46,12 +45,14 @@ Figure~\ref{fig:method} shows the method with the involved verification tools.
 
 \begin{figure}[hbt]
 \centering
-\includegraphics[width=0.60\textwidth]{figures/method-bitwalker.pdf}
-\caption{\label{fig:method} The method to formally verify the Bitwalker.}
+\includegraphics[width=0.60\textwidth]{figures/deductive-verification.pdf}
+\caption{\label{fig:method} Deductive verification of C code with \framacwp.}
 \end{figure}
 
 Starting point is an informal specification of a function with which in mind
-a implementation is written and on which basis the formal specification is created.
+a implementation is written.
+This informal specification is then formalized using the
+\acsl specification language that is part of \framac.
 The formal specification of a function is a so-called function contract
 which contains preconditions to express what a function expects from its caller
 and postconditions to state the guarantees after the execution.
@@ -61,37 +62,35 @@ which is a formal language to express behavioral properties of \isoc programs.
 
 Moreover, it is the specification language associated with 
 the verification platform \framac~\cite{FramaC}
-which we use along with its plug-in \wpframac~\cite{wp}.
-Within \framac, \wpframac enables the deductive verification of
-\isoc programs that have been annotated with \acsl.
-\wpframac generates verification conditions which are submitted to external 
+which we use along with its plug-in \framacwp~\cite{wp}.
+Within \framac, the \wpframac plug-in supports
+the deductive verification of \isoc programs that have been annotated with \acsl.
+\framacwp generates verification conditions which are submitted to 
 automatic or interactive theorem provers.
-A function is then verified if each verification condition is discharged
-by at least one prover.
+If each verification condition is discharged by at least one prover, then
+the the implementation of the function satisfies its contract.
 
-Figure~\ref{fig:method} shows that we first apply the automatic
-theorem provers \altergo~\cite{alt-ergo} and \cvc~\cite{cvc3}
-and then apply the
-interactive theorem prover \coq~\cite{Coq}
-for the still unproven conditions in order to automate as much as possible.
+Figure~\ref{fig:method} shows that we apply the automatic
+theorem provers \altergo~\cite{alt-ergo} and \cvc~\cite{cvc}
+and then, if necessary, apply the interactive theorem prover \coq~\cite{Coq}
+for the still unproven conditions.
 Moreover, unproven conditions motivate to give some extra information
 in the form of axioms, lemmas and assertions in \acsl, 
 since they can ease the search of a proof.
 One need to be careful with axioms because they can yield contradictions
 and thus make the proof system unsound.
-This is different for lemmas and assertions
-because \wpframac will generate additional verification conditions for them.
 
 In order to prove the absence of run time errors we use
-the \inl{rte} option of \wpframac that automatically introduces \acsl
-assertions. If all these assertions can be proven, then
+the \inl{rte} option of \wpframac that automatically generates \acsl
+assertions for critical operations.
+If all these assertions can be proven, then
 the absence of run time errors is guaranteed.
 
 
 \begin{framed}
-The verifiers received the source code without sufficiently clear explanation
-about how the inputs and outputs of bitwalker functions are related.
-In particular, no information about error conditions were provided.
+The verifiers received the source code only with a high-level description
+of what the Bitwalker is supposed to do.
+In particular, no sufficient information about error conditions were provided.
 On such a basis it is, as pointed out on Page~\pageref{lesson},
 not possible to write meaningful test cases;
 let alone to formally verify the functionality of the bitwalker functions.
@@ -120,9 +119,9 @@ for review by the domain experts.
 
 \clearpage
 
-\subsection{A First Look on \peek and \poke}
+\section{A First Look on \peek and \poke}
 
-In this section we analyse the implementations of \peek 
+In this section we analyze the implementations of \peek 
 and \poke.
 The goal is to devise a more precise specification than
 was original provided.
@@ -132,7 +131,7 @@ must be subject to a review of the domain experts.
 At his point we are already using \framacwp in order to identify
 potential run time errors in the source code.
 
-\subsubsection{Analysing \peek}
+\subsection{Analysing \peek}
 
 Listing~\ref{lst:peek-original} shows the original implementation of \peek.
 
@@ -238,7 +237,7 @@ These potential runtime errors are related to the facts that at this point \fram
 
 \clearpage
 
-\subsubsection{Analysing \poke}
+\subsection{Analysing \poke}
 
 Listing~\ref{lst:poke-original} shows the original implementation of \poke.
 
@@ -278,7 +277,7 @@ faces the problem that it
 
 \clearpage
 
-\subsection{Informal Specifications}
+\section{Informal Specifications}
 \label{sec:informal-specification}
 
 Before we provide an informal specification of \peek and \poke, respectively,
@@ -290,7 +289,7 @@ and not to one of the many finite representation provided by the type system of~
 This distinction is important because mathematical integers
 usually play an important role in \acsl specifications.
 
-\subsubsection{Basic Concepts}
+\subsection{Basic Concepts}
 
 \begin{itemize}
 \item
@@ -367,7 +366,7 @@ As an aside, MISRA-C discourages the use of ``generic'' integer types
 such as \inl{int} and \inl{unsigned int} and recommends the use of integer types whose names
 contain the exact width.
 
-\subsubsection{Informal Specification of \peek}
+\subsection{Informal Specification of \peek}
 \label{informal-peek}
 
 Now we specify \peek with the introduced auxiliary concepts.
@@ -432,7 +431,7 @@ In general, we recommend to explicitly describe all error conditions
 and to devise a consistent error detection and error recovery strategy.
 
 
-\subsubsection{Informal Specification of \poke}
+\subsection{Informal Specification of \poke}
 
 In this section we examine the function \poke
 in the same manner as we did it for \peek.
@@ -517,7 +516,7 @@ If the bit sequence is not valid, then \poke returns~$-1$.
 
 \clearpage
 
-\subsection{Tests for \peek and \poke}
+\section{Tests for \peek and \poke}
 
 In this section we show some tests for \peek and \poke.
 These tests were derived from the informal specification in 
@@ -589,7 +588,7 @@ the following reasons.
 
 \clearpage
 
-\subsection{Formal Specification with \acsl}
+\section{Formal Specification with \acsl}
 \label{sec:formal-specification}
 \label{formal-peek}
 
@@ -597,13 +596,13 @@ the following reasons.
 
 In order to verify that the given implementation of \peek fulfills 
 the informal specification, we have to formalize the specification.
-Listing~\ref{fig:spec-peek} shows such a formalization in \acsl for \peek.
+Listing~\ref{lst:spec-peek} shows such a formalization in \acsl for \peek.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Bitwalker_Peek.h}
 \end{minipage}
-\caption{\label{fig:spec-peek} Formal specification of \peek in \acsl}
+\caption{\label{lst:spec-peek} Formal specification of \peek in \acsl}
 \end{listing}
 
 We specify a function contract for \peek containing preconditions
@@ -644,7 +643,7 @@ it is not used for formalizing the informal specification.
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Bitwalker_Peek.c}
 \end{minipage}
-\caption{\label{fig:spec-peek} Implementation of \peek with \acsl loop invariants}
+\caption{\label{lst:impl-peek} Implementation of \peek with \acsl loop invariants}
 \end{listing}
 
 Since we verify the implementation with respect to the formal specification, 
@@ -690,12 +689,12 @@ the return value shall be in this case.
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Bitwalker_Poke.c}
 \end{minipage}
-\caption{\label{lst:spec-poke} Implementation of \poke with loop invariants}
+\caption{\label{lst:impl-poke} Implementation of \poke with loop invariants}
 \end{listing}
 
 \clearpage
 
-\subsection{Formal Verification with \framacwp}
+\section{Formal Verification with \framacwp}
 \label{sec:verification}
 \label{verification-peek}
 
@@ -776,7 +775,7 @@ Therefore, we will verify the absence of run time errors separately as well.
 
 \clearpage
 
-\subsection{Open Issues}
+\section{Open Issues}
 \label{issues}
 
 \fxfatal{not ready for review}

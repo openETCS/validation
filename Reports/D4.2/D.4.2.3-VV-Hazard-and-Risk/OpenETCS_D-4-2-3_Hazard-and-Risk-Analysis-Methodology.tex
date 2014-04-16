@@ -13,7 +13,7 @@
 % The document metadata is defined below
 
 %assign a report number here
-\reportnum{OETCS/WP4/D4.2.3V02}
+\reportnum{OETCS/WP4/D4.2.3}
 
 %define your workpackage here
 \wp{Work-Package 4: ``Validation \& Verification Strategy''}
@@ -78,7 +78,7 @@ After the introduction defining the overall context of the document, the combina
 \multicolumn{2}{|c|}{Document information} \\
 \hline
 Work Package &  WP4  \\
-Deliverable ID or doc. ref. & D4.2.3\\
+Deliverable ID & D 4.2.3\\
 \hline
 Document title & openETCS Hazard and Risk Analysis and Safety Case Methodology \\
 Document version & 00.3 \\
@@ -145,37 +145,42 @@ Since the openETCS project does not produce a specific train borne on-board the 
 \section{Document Structure}
 \label{sec:document-structure}
 
-As the openETCS software development process and the respective tool chain are used in an iterative process this document only presents the current state of the openETCS safety related activities as it is also only one iteration step. So far this version of D.4.2.3 covers an introduction to the openETCS development process, the high-level safety principals defined by the ETCS system documentation and the basic plans for hazard and risk analysis and th safety case development in openETCS. 
+As the openETCS software development process and the respective tool chain are used in an iterative process this document only presents the current state of the openETCS safety related activities as it only presents the results of the first WP 4 iteration. Chapter \ref{sec:introduction} gives an introduction to the overall document providing the basic document information and listing all reference standards and openETCS deliverables. Additionally, section \ref{sec:Background} provides an introduction concerning the context of quality and safety as it is understood in this document.
 
-As safety is a term which is used in different context and therefore interpreted differently depending on the used reference system, the following section \ref{sec:Background} presents the principal concept and terminology on which the following safety process is founded. These section shall present and clarify the underlying understanding of safety as it in standards EN 50126, EN 50128 and EN 50129 for railway system development. Thereby, it is important to state more precisely the relation between quality and safety for software as this is the core aspect for the openETCS development. The basic open ETCS software develpment phases are shown in chapter \ref{sec:development-process} on which the following methodology for hazard and risk analysis is based. A more detailed process for the hazard and risk analysis is presented in chapter \ref{sec:hazardandrisk}  and evaluated in a first proof of concept. Furthermore chapter \ref{sec:safetycase} describs the principal requirements for the openETCS safety case and specifies the model-based documentation process pursued for the openETCS argumentation structure management which will be the basis for the safety case. 
+As the hazard and risk analysis and all safety case activities are directly related to the overall development process, chapter \ref{sec:development-process} introduces the general steps of the openETCS development process and its interface to safety activities. In the following chapter \ref{sec:hazardandrisk} the concept for hazard and risk analysis during the openETCS development is presented. The fundamental safety principal for ETCS, which are the starting point for all openETCS specific activities, are described in section \ref{sec:ETCS-safety}.
+The derived plan how hazard and risk analysis may be perfomred for the openETCS software development is specified in section \ref{sec:Proofofconcept} and evaluated in a first proof of concept work performed during the first WP 4 iteration. Chapter \ref{sec:safetycase} describes the plan to collect and establish the safety case related documentation for the openETCS development, which has to be usable by following projects. While section \ref{sec:safetycase-structure} the principal requirements for the overall safety case activities, section \ref{sec:safetycase-model} presents the model-based approach planed for openETCS and the supporting tools, which shall be applied.
 
+\section{Document Evolution}
 
+This document will be further specified with the progress of the design process to update and detail the corresponding hazard and risk analysis methods. This specifically reference to the refinement of safety properties on different modeling levels and their corresponding verification and validation methods. All resulting changes and additional safety activities have to be maintained and documented according to the overall safety process. 
 
-\section{Reference documents}
+The openETCS development plan presented in chapter \ref{sec:development-process} is based on the development plan as it is described in the current version of the Quality Assurance Plan and in WP 2 deliverables D2.3 and D2.4. As the development methods and processes are still evolving this document has to be adopted accordingly. Concrete methods to verify and validate safety relevant properties derived from the hazard control methods described in this document, will be specified in the Verification and Validation plan. Also the tools used to support those activities will be detailed in this plan.
+
+\section{Reference Documents}
 \label{sec:refdoc}
 
 This document essentially refers to the following standards, ETCS specification documents and openETCS project documents.
 
 \begin{itemize}
-\item ISO 9000 --- 12/2005 --- \emph{Quality management}
-\item ISO 9001 --- 12/2008 --- \emph{Quality management systems — Requirements}
-\item ISO 25010 --- 03/2011 --- \emph{Systems and software engineering -- Systems and software Quality Requirements and Evaluation (SQuaRE) -- System and software quality models}
-\item CENELEC EN 50126-1 --- 01/2000 --- \emph{Railways applications –- The specification and 
+\item \textbf{ISO~9000} --- 12/2005 --- \emph{Quality management}
+\item \textbf{ISO~9001} --- 12/2008 --- \emph{Quality management systems — Requirements}
+\item \textbf{ISO~25010} --- 03/2011 --- \emph{Systems and software engineering -- Systems and software Quality Requirements and Evaluation (SQuaRE) -- System and software quality models}
+\item \textbf{CENELEC EN~50126-1} --- 01/2000 --- \emph{Railways applications –- The specification and 
 demonstration of Reliability, Availability, Maintenability and Safety (RAMS) –- Part 1: 
 Basic requirements and generic process}
-\item CENELEC EN 50128 --- 10/2011 --- \emph{Railway applications -- Communication, signalling and 
+\item \textbf{CENELEC EN~50128} --- 10/2011 --- \emph{Railway applications -- Communication, signalling and 
 processing systems -- Software for railway control and protection systems}
-\item CENELEC EN 50129 --- 05/2003 --- \emph{Railway applications –- Communication, signalling and 
+\item \textbf{CENELEC EN~50129} --- 05/2003 --- \emph{Railway applications –- Communication, signalling and 
 processing systems –- Safety related electronic systems for signalling}
-\item CCS TSI --- \emph{ CCS TSI for HS and CR transeuropean rail has been adopted by a Commission Decision 2012/88/EU on the 25th January 2012}
-\item SUBSET-026 3.3.0 --- \emph{System Requirement Specification}
-\item SUBSET-091 3.2.0 --- \emph{Safety Requirements for the Technical Interoperability
+\item \textbf{CCS~TSI} --- \emph{ CCS TSI for HS and CR transeuropean rail has been adopted by a Commission Decision 2012/88/EU on the 25th January 2012}
+\item \textbf{SUBSET-026} 3.3.0 --- \emph{System Requirement Specification}
+\item \textbf{SUBSET-091} 3.2.0 --- \emph{Safety Requirements for the Technical Interoperability
 of ETCS in Levels 1 \& 2}
-\item SUBSET-088 2.3.0 --- \emph{ETCS Application Levels 1 \& 2 - Safety Analysis}
-\item FPP --- \emph{Project Outline Full Project Proposal Annex OpenETCS} -- v2.2
-\item D2.2 -- Report on CENELEC standard
-\item D2.3 -- Definition of the overall process for the formal description of ETCS and the rail system it works in 
-\item D2.4 -- Definition of the methods used to perform the formal description
+\item \textbf{SUBSET-088} 2.3.0 --- \emph{ETCS Application Levels 1 \& 2 - Safety Analysis}
+\item \textbf{FPP} --- \emph{Project Outline Full Project Proposal Annex OpenETCS} -- v2.2
+\item \textbf{D2.2} -- Report on CENELEC standard
+\item \textbf{D2.3} -- Definition of the overall process for the formal description of ETCS and the rail system it works in 
+\item \textbf{D2.4} -- Definition of the methods used to perform the formal description
 \end{itemize}
 
 
@@ -184,43 +189,61 @@ of ETCS in Levels 1 \& 2}
 \section{Glossary}
 \label{sec:glossary}
 
-\begin{description}
 
-\item [ACedit] Assurance Case Editor
-\item [ARM] Argumentation  Metamodel
-\item[FMEA] Failure Mode Effect Analysis
-\item[GSN] Goal Structured Notation
-\item[MoRC] Management of Radio Communication
-\item[SIL] Safety Integrity Level
-\item[SRS] System Requirement Specification
-\item[THR] Tolerable Hazard Rate
-\item[V\&V] Verification \& Validation
 
-\end{description}
+\begin{tabular}{rl}
+\textbf{ACedit} & Assurance Case Editor \\ 
+\textbf{ARM} & Argumentation  Metamodel \\ 
+\textbf{FMEA} & Failure Mode Effect Analysis \\ 
+\textbf{GSN} & Goal Structured Notation \\ 
+\textbf{MoRC} & Management of Radio Communication \\ 
+\textbf{SIL} & Safety Integrity Level \\ 
+\textbf{SRS} & System Requirement Specification \\ 
+\textbf{THR} & Tolerable Hazard Rate \\ 
+\textbf{V\&V} & Verification \& Validation \\ 
+\end{tabular} 
+
+
+
 
 \section{Background Information}
 \label{sec:Background}
 
-In the context of railway system development the EN 5012X and the ISO 900X standards are closely connected. Respectively, the terms safety and quality and related terms as reliability, maintainability, availability, usability and security are often used together. For example the EN 50129 names evidence of quality and safety management as conditions for a safety acceptance. The following sections shall give a common definition for all this aspects, which are required in a CENELEC confirm development process. 
+As safety is a term which is used in different contexts and therefore interpreted differently depending on the used reference system, the following section \ref{sec:Background} presents the principal concept and terminology on which the following safety process is founded. Thereby, this section mainly bases on the understanding of safety as it is used in standards EN~50126, EN~50128 and EN~50129 for railway system development. In the context of railway system development the EN~5012X and the ISO~900X standards are closely connected. Respectively, the terms safety and quality and related terms as reliability, maintainability, availability, usability and security are often used together. For example the EN~50129 names evidence of quality and safety management as conditions for a safety acceptance. The following sections shall give a common definition for all this aspects, which are required in a CENELEC confirm development process. 
 
 \subsection{Quality}
 
-The ISO 9000 defines quality as "degree to which a set of inherent characteristics fulfills requirements", which clearly shows a more objective view as the EN 50129, which defines quality as "a user perception of the attributes of a product". As for system development the given requirements always present the objective against which the system has to be measured this definition is consistent with the definition of verification and validation as it is presented in the EN 50128 and the openETCS Verification and Validation plan.
+The ISO~9000 defines quality as "degree to which a set of inherent characteristics fulfills requirements", which clearly shows a more objective view as the EN~50129, which defines quality as "a user perception of the attributes of a product". As for system development the given requirements always present the objective against which the system has to be measured this definition is consistent with the definition of verification and validation as it is presented in the EN~50128 and the openETCS Verification and Validation plan.
 
-Depending on the respective field of application specific standards further specify the characteristics which shall be taken in account to establish quality. The EN 50126 as primary standard for railway applications gives RAMS as the major contributor for the quality of service. 
+Depending on the respective field of application specific standards further specify the characteristics which shall be taken in account to establish quality. The EN~50126 as primary standard for railway applications gives RAMS as the major contributor for the quality of service. 
 
 \subsection{Software Quality}
 
-The ISO 25010 for software engineering defines quality of a system as "the result of the quality of the system elements and their interaction" and therefore separates between two different so called quality models for software. Software quality covers the local software specific quality aspects by defining eight software characteristics: functional, suitability, reliability, performance efficiency, operability, security, compatibility, maintainability and transferability.
-These can be assess for the software b independent measures without the operational  context.
-On the other hand the quality in use model represents those characteristics measuring quality related to the operational environment in which a specific user applies the software. The standard defines here three characteristics: 
-usability in use, flexibility in use and safety in use.
+The ISO~25010 for software engineering defines quality of a system as "the result of the quality of the system elements and their interaction" and therefore separates between two different so called quality models for software. Software quality covers the local software specific quality aspects by defining eight software characteristics: functional, suitability, reliability, performance efficiency, operability, security, compatibility, maintainability and transferability (see figure \ref{fig:Software-Product-Quality-eng}).
 
-This distinction between local and system quality characteristics shows that functional correctness and safety can be closely related for a safety relevant system, but with respect to the development these have to be addressed different to evaluate their quality.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\linewidth]{Software-Product-Quality-eng}
+\caption{Software Product Quality as defined in ISO~25010}
+\label{fig:Software-Product-Quality-eng}
+\end{figure}
+
+
+These can be assess for software itself independently of the operational  context for which the software has been developed. On the other hand the quality in use model represents those characteristics measuring quality related to the operational environment in which a specific user applies the software. The standard defines here three characteristics: 
+usability in use, flexibility in use and safety in use (see figure \ref{fig:Software-Quality-in-use}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\linewidth]{Software-Quality-in-use}
+\caption{Software Quality in use as defined in ISO~25010}
+\label{fig:Software-Quality-in-use}
+\end{figure}
+
+This distinction between local and system quality characteristics shows that functional correctness and safety is closely related for a safety relevant system, but with respect to the development these have to be addressed different to evaluate their quality.
 
 \subsection{Railway RAMS}
 
-Safety in the railway development as defined in the EN 50126 is in considered in the over all context of Quality of Service and the specific relations between reliability, availability, maintainability and safety, short RAMS. These aspects represent the major contributions to the overall quality of service and have to be evaluated throughout the whole life cycle.
+Safety in the railway development as defined in the EN~50126 is in considered in the over all context of Quality of Service and the specific relations between reliability, availability, maintainability and safety, short RAMS. These aspects represent the major contributions to the overall quality of service and have to be evaluated throughout the whole life cycle.
 
 As represented in figure \ref{fig:RAMS-EN50126} reliability and maintainability are characteristics which can be applied to the local system as these are specific to the application of this system. In contrast availability and safety are global characteristics as both depend on the behavior and dependences between different components of the overall system.
 
@@ -231,7 +254,7 @@ As represented in figure \ref{fig:RAMS-EN50126} reliability and maintainability 
 \label{fig:RAMS-EN50126}
 \end{figure}
 
-These depenences between the local and global system charcteristics and the static and dynamic system aspects are shown in figure \ref{fig:Reliability-RAMS}. 
+These dependences between the local and global system characteristics and the static and dynamic system aspects are shown in figure \ref{fig:Reliability-RAMS}. 
 
 \begin{figure}[htbp]
 \centering
@@ -243,7 +266,7 @@ These depenences between the local and global system charcteristics and the stat
 
 \subsection{Probabilistic Safety Concept}
 
-The EN 50128 standard defines safety as the ``freedom from unacceptable levels of risk of harm to people", which shows that the safety approach required by the CENELEC standards is risk-based.
+The EN~50128 standard defines safety as the ``freedom from unacceptable levels of risk of harm to people", which shows that the safety approach required by the CENELEC standards is risk-based.
 
 \paragraph{Risk}
 
@@ -269,25 +292,19 @@ This demonstrates that the first step is to define the system properties, specif
 
 The safety integrity level (SIL) represented the acceptable risk for every part of the system. The risk control process as it is presented in figure \ref{fig:Risk-control-modell-eng} is then performed to ensure that the safety integrity levels are reach by every part of the system.
 
-Since software itself does not fails in the way technical equipment does the specific software safety integrity level represent a qualitative measure with respect to the required degree of correctness for the software functionality than a qualitative value for the likelihood of failing. To reach the needed degree of correctness for the software various design, verification and validation methods are required corresponding to the assigned software safety integrity level. This process leads to safety requirements which have to be implemented in the software design as well as verified and validated. Respectively the EN 50126 describes the safety design process as a series of safety tasks for each life cycle phase. This task are related to a number of safety artifacts which are created, used and adapted over time through the different safety design activities.
+Since software itself does not fails in the way technical equipment does the specific software safety integrity level represent a qualitative measure with respect to the required degree of correctness for the software functionality than a qualitative value for the likelihood of failing. To reach the needed degree of correctness for the software various design, verification and validation methods are required corresponding to the assigned software safety integrity level. This process leads to safety requirements which have to be implemented in the software design as well as verified and validated. Respectively the EN~50126 describes the safety design process as a series of safety tasks for each life cycle phase. This task are related to a number of safety artifacts which are created, used and adapted over time through the different safety design activities.
 
 
 \subsection{Safety Case}
 
-The EN 50129 states that evidence of quality management, safety management, as well as functional and technical safety have to be provided for safety acceptance. The safety case shall be the structured safety justification document demonstrating that these conditions have been satisfied.
+The EN~50129 states that evidence of quality management, safety management, as well as functional and technical safety have to be provided for safety acceptance. The safety case shall be the structured safety justification document demonstrating that these conditions have been satisfied.
 Therefore, the British Ministry of Defence defines a safety case as “a structured argument, supported by a body of evidence that provides a compelling, comprehensible and valid case that a system is safe for a given application in a given environment.”\cite{MinistryofDefence.2007} This definition emphasizes the distinction between the “argumentation” and the “evidences”, which corresponds to the distinction between rules coming from the legal requirements and facts resulting from the actual working process. This clear distinction between the safety argumentation and the evidences helps to structure the safety case and improvement of the discussions with the legal authorities.\cite{Muller.2010}
 
 %\subsection{Safety Glossary}
 
 %\textbf{Added via the glossary documentation process for openETCS}
 
-\chapter{Document Evolution}
 
-This document will be further specified with the progress of the design process to update and detail the corresponding hazard and risk analysis methods. This specifically reference to the refinement of safety properties on different modeling levels and their corresponding verification and validation methods. All resulting changes and additional safety activities have to be maintained according to the EN~50128 and document according to the overall safety case process. 
-
-The openETCS development plan presented in chapter \ref{sec:development-process} is based on the available information in the Quality Assurance Plan and from WP 2 D2.3 and D2.4. As the development methods and processes are still evolving this document has to be adopted accordingly.
-
-Concrete methods to verify and validate safety relevant properties derived from the hazard control methods descriped in this document, will be specified in the Verification and Validation plan. Also the tools used to support those activities will be detailed in this plan.
 
 \chapter{OpenETCS Development process}
 \label{sec:development-process}
@@ -297,7 +314,7 @@ The safety related activities
 
 \section{Formalization and software development}
 
-The software development in the OpenETCS project shall be performed as an open, model-based, agile Software development. The respective combination of methods used during the development process shall comply with a SIL 4 development process according to EN 50128 for which the requirements are analyzed and shown in detail in D2.2. The overall openETCS Software development process presenting the development principals how the on-board unit requirements for ETCS shall be formalized first in a semi-formal SysML architecture model and afterwards in a detail formal SCADE behavior model, which is the basis for the automatic source code generation, are outlined in WP 2 D2.3 and D2.4. 
+The software development in the OpenETCS project shall be performed as an open, model-based, agile Software development. The respective combination of methods used during the development process shall comply with a SIL 4 development process according to EN~50128 for which the requirements are analyzed and shown in detail in D2.2. The overall openETCS Software development process presenting the development principals how the on-board unit requirements for ETCS shall be formalized first in a semi-formal SysML architecture model and afterwards in a detail formal SCADE behavior model, which is the basis for the automatic source code generation, are outlined in WP 2 D2.3 and D2.4. 
 
 The detailed principals and phases of this development process including all related artifacts and used tools have to be presented in the Quality Assurance Plan.  As the project continues this development process and the supporting tools are still evolving, respectively the detailed development description has to be updated in the Quality Assurance Plan continuously.
 
@@ -308,7 +325,7 @@ The detailed principals and phases of this development process including all rel
 \label{fig:DevopmentProcess}
 \end{figure}
 
-Figure \ref{fig:DevopmentProcess} shows the general artifacts for the openETCS Software development mapped to the EN 50128 V model development life cycle. As the Verification and Validation activities are specific to the design artifacts further details are not available at this point. The Verification and Validation plan describes a number of methods which can be applied for different properties in the context of the openETCS development principals.
+Figure \ref{fig:DevopmentProcess} shows the general artifacts for the openETCS Software development mapped to the EN~50128 V model development life cycle. As the Verification and Validation activities are specific to the design artifacts further details are not available at this point. The Verification and Validation plan describes a number of methods which can be applied for different properties in the context of the openETCS development principals.
 
 Corresponding to the development artifacts the openETCS development process has 5 main distinguishable phase show in table \ref{tab:DevelopmentPhases}. Every phase besides the validation phase is mostly supported by one means of description and one corresponding tool, but the overall traceability of the development requires linking requirements and design elements between all phases. 
 
@@ -328,7 +345,7 @@ Corresponding to the development artifacts the openETCS development process has 
 \label{tab:DevelopmentPhases}
 \end{table}
 
-Although the phase represent different working steps in the life cycle according to EN 50128 the agile development process applied in openETCS induces that the phases are performed iterative during the development process. Respectively, the traceability linking in combination with the verification methods has to ensure that changes in one phase of the development are adopted for all linked artifacts up- and downwards in the development process.
+Although the phase represent different working steps in the life cycle according to EN~50128 the agile development process applied in openETCS induces that the phases are performed iterative during the development process. Respectively, the traceability linking in combination with the verification methods has to ensure that changes in one phase of the development are adopted for all linked artifacts up- and downwards in the development process.
 
 \section{Interfaces to Safety Activities}
 
@@ -400,6 +417,7 @@ In relation to SUBSET-91 further documents should be take into account to derive
 Based on these overall safety goals as specific hazard and risk analysis for the software subsystem has to be performed to allocate the requirements and set-up the openETCS hazard log as shown in figure \ref{fig:SafetyProcess}. Cased on the principal software architecture the risk can be assess, which then leads to the definition of risk control measures. These are the basis for specific safety requirements for the on-board unit software design and its verification and validation. During the development these requirements are adopted if necessary for the different abstraction levels from the high level model down to the source code. The safety case, which shall be supported by a Goal Structured Notation (GSN) \cite{GSNwebsite} model as presented in chapter \ref{sec:safetycase} has to present all needed documentation to show that these leads to the required risk level.
 
 \section{General ETCS Safety Principals}
+\label{sec:ETCS-safety}
 
 Based on the ETCS reference architecture SUBSET-91 gives the role of ETCS as train protection as the following:
 
@@ -463,11 +481,11 @@ The following task have been performed during the Proof of Concept as examples f
 The first task conformity comparison has been performed to verify the model, as no formal verification process has already been performed on the chosen preliminary model. The conformity was passed, as all sub function of the subset 026 function (MoRC) and those of the model match together and all Input \& Output data for each sub function of the subset 026 function and those of the model also match together. 
 
  
-The second task Safety Analysis was performed using methods for three different safety activities as defined in the EN 50129 standard: hazard identification,
+The second task Safety Analysis was performed using methods for three different safety activities as defined in the EN~50129 standard: hazard identification,
 risk estimation and evaluation, derivation of the Safety requirements. In general hazard identification and risk analysis are performed using traditional approaches like FMECA or HAZOP. In the case of openETCS since models are available a model-based, computer supported approach (based on the Tool “Safety Architect” from the company ALL4TEC) for hazard identification has been used in addition.
 Both results have been compared at the end to validate the results.
  
-For functions coming from the Subset 026 a hazard and rick analysis has been already performed, including a SIL allocation as presented in Subset 091. All these functions have a SIL 4 safety requirement; therefore sub function from these functions shall have also a SIL 4 safety requirement. For functions and corresponding sub function coming from others sources than the SUBSET-26 a SIL allocation on the basis of techniques described in the standards EN 50126, 50129 or IEC 61508-5 shall be performed.
+For functions coming from the Subset 026 a hazard and rick analysis has been already performed, including a SIL allocation as presented in Subset 091. All these functions have a SIL 4 safety requirement; therefore sub function from these functions shall have also a SIL 4 safety requirement. For functions and corresponding sub function coming from others sources than the SUBSET-26 a SIL allocation on the basis of techniques described in the standards EN~50126, 50129 or IEC 61508-5 shall be performed.
  
 The third Task of the process consists in performing a Safety Assessment, which implies derivation of safety requirements and the following assessment of the model against these safety requirements. The derivation of the Safety requirements required knowledge in the function being analyzed, the interfaced components, the ETCS in general and CENELEC standard.
  
@@ -495,14 +513,14 @@ In general the safety case has to present to the assessing authority that the de
 To do so the present chain of argumentation has to state the requirements for the product development, its derived specifications and the evidence that the work has been done accordingly. To do this the safety case has to collect and combine documents from many different activities during the work process. As these documents are usually produced and stored in different places and formats studies have shown that a large amount of time to produce the safety case is spent on searching for document, maintaining document contents and maintaining document references \cite{Muller.2010}. 
 
 \section{Structure}
-
+\label{sec:safetycase-structure}
 As the openETCS development has the objective to produce a reference formalization and implementation for the ETCS on-board unit, which can be used by interested parties during further development, it is highly important to collect all relevant documents in a way, that the can directly be used even for safety relevant system development. If thereby the distinction between basic assumptions, safety argumentation and evidences for the openETCS development is presented properly in the safety case the discussions with the legal authorities is improved and reusability is made easier. 
 
-Overall the openETCS will separate between the following three kind of evidence in compliance to the safety acceptance conditions stated in the EN 50129. 
+Overall the openETCS will separate between the following three kind of evidence in compliance to the safety acceptance conditions stated in the EN~50129. 
 
 \subsection{Quality Management Evidence}
 
-Since the openETCS project as a research does not have the objective to conduct all steps needed for a vital on-board unit development, the resulting safety case will be generic in many parts only giving the requirements and basic safety strategies, but lacking the actual evidence. However, the overall safety argumentation has to be set up to meet SIL 4 requirements. Therefore the safety case has to show that the methods chosen in the openETCS development process satisfy the EN 50128 quality requirements and which documents have to be created during the process to obtain the required evidence. Basis for this work will be the Quality Assurance Plan, which builds the basis for all quality management activities.
+Since the openETCS project as a research does not have the objective to conduct all steps needed for a vital on-board unit development, the resulting safety case will be generic in many parts only giving the requirements and basic safety strategies, but lacking the actual evidence. However, the overall safety argumentation has to be set up to meet SIL 4 requirements. Therefore the safety case has to show that the methods chosen in the openETCS development process satisfy the EN~50128 quality requirements and which documents have to be created during the process to obtain the required evidence. Basis for this work will be the Quality Assurance Plan, which builds the basis for all quality management activities.
 
 \subsection{Safety Management Evidence}
 
@@ -514,14 +532,15 @@ As detailed in chapter \ref{sec:hazardandrisk} the overall safety argumentation 
 The main evidence for this part will be the validation results which proof that the actual models and/or the code satisfies the overall safety principals. For all evidence to been produced during the openETCS process the safety case clear has to show the specific artifacts need to enable every adapter to provide these evidence later while reusing already provided evidence in the context of the overall safety argumentation.
 
 \section{Model-based Argumentation}
+\label{sec:safetycase-model}
 
-The openETCS safety case shall present a transparent and easy to understand argumentation chain referring to the relations between the sequential and parallel processes in the development process and the respective requirements in the normative EN 50129 safety case. Capitalize on the basic principals applied during the openETCS development the safety chase can be enhance by using a model-based representation connected to the central data base to reference the respected artifacts \cite{Muller.2010}. Thereby, the model provides a graphical representation of the argumentation chain, which makes it possible to directly identify in which development step which requirements is address and which are the respective artifacts containing the design and the corresponding evidence. 
+The openETCS safety case shall present a transparent and easy to understand argumentation chain referring to the relations between the sequential and parallel processes in the development process and the respective requirements in the normative EN~50129 safety case. Capitalize on the basic principals applied during the openETCS development the safety chase can be enhance by using a model-based representation connected to the central data base to reference the respected artifacts \cite{Muller.2010}. Thereby, the model provides a graphical representation of the argumentation chain, which makes it possible to directly identify in which development step which requirements is address and which are the respective artifacts containing the design and the corresponding evidence. 
 
 In this way the generic safety case present the over argumentation structure connecting requirements, design artifacts and evidence. The specific openETCS safety case is then provided trough the linking to the github data based providing document versions and status information to ensure consistence throughout the evolving documentation.
 
 \subsection{Goal Structured Notation}
 
-Interviews performed during the INESS project have shown that graphical argumentation structures ease the discussions between with legal authorities as it provides a look on the essence of the argumentation strategy in an easy way. During the method evaluation the Goal Structuring Notation (GSN) \cite{Kelly.2004thegoal, GSNwebsite} has been identified as suitable argumentation notation, already use in industrial projects, to  graphically  to model the relations between individual requirements, methods and evidence in a safety case. The argumentation demonstrates how each requirement will be address by a tree structure of derived subgoals and the resulting evidence to satisfy these goals as shown in figure \ref{fig:GSN-SafetyCase}. The different notes in the tree will be linked to the openETCS development artifacts in the github document management system. Additionally the artifacts will be linked to the modeled documentation of the EN 50128 development process during the corresponding phases to demonstrate the process conformity. 
+Interviews performed during the INESS project have shown that graphical argumentation structures ease the discussions between with legal authorities as it provides a look on the essence of the argumentation strategy in an easy way. During the method evaluation the Goal Structuring Notation (GSN) \cite{Kelly.2004thegoal, GSNwebsite} has been identified as suitable argumentation notation, already use in industrial projects, to  graphically  to model the relations between individual requirements, methods and evidence in a safety case. The argumentation demonstrates how each requirement will be address by a tree structure of derived subgoals and the resulting evidence to satisfy these goals as shown in figure \ref{fig:GSN-SafetyCase}. The different notes in the tree will be linked to the openETCS development artifacts in the github document management system. Additionally the artifacts will be linked to the modeled documentation of the EN~50128 development process during the corresponding phases to demonstrate the process conformity. 
  
 \begin{figure}[htbp]
 \centering

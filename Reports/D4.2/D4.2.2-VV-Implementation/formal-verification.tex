@@ -120,6 +120,7 @@ for review by the domain experts.
 \clearpage
 
 \section{A First Look on \peek and \poke}
+\label{sec:bitwalker-first-look}
 
 In this section we analyze the implementations of \peek 
 and \poke.
@@ -132,6 +133,7 @@ At his point we are already using \framacwp in order to identify
 potential run time errors in the source code.
 
 \subsection{Analysing \peek}
+\label{sec:bitwalker-peek-first-look}
 
 Listing~\ref{lst:peek-original} shows the original implementation of \peek.
 
@@ -518,6 +520,7 @@ If the bit sequence is not valid, then \poke returns~$-1$.
 \clearpage
 
 \section{Tests for \peek and \poke}
+\label{sec:bitwalker-tests}
 
 In this section we show some tests for \peek and \poke.
 These tests were derived from the informal specification in 
@@ -733,11 +736,12 @@ There are several reasons for these modifications:
       the source code to support the verification.
 \item Some shift operations were rewritten as divisions\slash multiplications
       to be more similar to the specification.
-\item We felt that the slightly shorter variable names make the source code
-      better legible.
+
+\item We felt that the shorter variable names make the source code more legible.
 \end{itemize}
 
-\fxfatal{need assurance that implementation does change its behavior}
+In order to ensure that the refactored code behaves as the original
+on we checked both with our test cases (see Section~\ref{sec:bitwalker-tests}).
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -748,8 +752,47 @@ There are several reasons for these modifications:
 
 \clearpage
 
+Of course, rewriting the implementation while verifying it, may appear odd.
+Ideally, the verification tool should take the code as it is.
+However, as we have seen when discussing the specification, the
+expression to check whether the bit sequence is valid,
+could be reformulated so that it does not raise unintended run time errors.
+Moreover, our refactoring removed an unnecessary cast (see 
+Section~\ref{sec:bitwalker-peek-first-look}).
+
+Here are some additional notes on Listing~\ref{lst:impl-peek}.
+
+\begin{itemize}
+\item
+We added a (static) \acsl assertion that indicates whether \framacwp is ``aware''
+that \inl{UINT64_MAX} equals~$2^{64}-1$.
+
+\item
+We added the following small helper function for converting a
+given ``global'' bit index into a ``local'' bit index that is used for right shifts.
+
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block]{./Bitwalker/Modified3/inverse_modulo.h}
+\end{minipage}
+     
+\item
+There are several loop invariants and one loop variant. 
+The latter is necessary for \framacwp to decide whether the loop terminates.
+
+We mention here only the loop invariant that asserts that in the $i$-th iteration
+the value \inl{retval} is less than~$2^i$.
+This, together with the precondition that \inl{Length}
+is less than~64, is essential to ensure that no arithmetic overflow
+can occur when computing the return value of \peek.
+ 
+\end{itemize}
+
+\clearpage
+
 \subsection{Formal Specification of \poke}
 \label{sec:formal-specification-poke}
+
+\fxfatal[inline]{not yet ready}
 
 Finally, the behavior \inl{normal} assumes 
 that \inl{Value} is not too big and the bit sequence is valid. 
@@ -770,6 +813,8 @@ the return value shall be in this case.
 \clearpage
 
 \subsection{Loop Invariants for \poke}
+
+\fxfatal[inline]{not yet ready}
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}

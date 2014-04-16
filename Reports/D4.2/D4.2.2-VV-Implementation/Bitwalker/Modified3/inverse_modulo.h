@@ -1,4 +1,3 @@
-
 /*@
     requires d > 0;
 

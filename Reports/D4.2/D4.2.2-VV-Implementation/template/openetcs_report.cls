@@ -92,7 +92,7 @@ openETCS project based on ERDC class v1.1]
 \usepackage{txfonts}
 
 
-%% \setlength{\textheight}{15cm}%%unsere änderung
+%% \setlength{\textheight}{14cm}%%unsere änderung
 
 
 \def\@projectfont{%

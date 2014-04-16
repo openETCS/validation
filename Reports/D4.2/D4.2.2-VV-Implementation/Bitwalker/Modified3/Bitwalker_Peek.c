@@ -8,6 +8,7 @@ uint64_t Bitwalker_Peek(unsigned int Start,
   if ((Start + Length)  > 8 * BitstreamSize)
     return 0;	// error: index out of range
 
+  //@ assert UINT64_MAX == (1 << 64) -1;
   uint64_t retval = 0;
 
   /*@

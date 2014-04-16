@@ -8,7 +8,7 @@ uint64_t Bitwalker_Peek(unsigned int Start,
   if ((Start + Length)  > 8 * BitstreamSize)
     return 0;	// error: index out of range
 
-  const unsigned int LengthInBytes = Length / 8;
+  //@ assert UINT64_MAX == (1 << 64) -1;
   uint64_t retval = 0;
 
   /*@
@@ -17,7 +17,7 @@ uint64_t Bitwalker_Peek(unsigned int Start,
     loop assigns i, retval;
     loop variant Length - i;
   */
-  for (unsigned int i = 0; i < LengthInBytes; i++)
+  for (unsigned int i = 0; i < Length; i++)
   {
     unsigned int pos = Start + i;
     unsigned int byte_index = pos / 8;

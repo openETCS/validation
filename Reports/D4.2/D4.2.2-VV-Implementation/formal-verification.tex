@@ -120,6 +120,7 @@ for review by the domain experts.
 \clearpage
 
 \section{A First Look on \peek and \poke}
+\label{sec:bitwalker-first-look}
 
 In this section we analyze the implementations of \peek 
 and \poke.
@@ -132,6 +133,7 @@ At his point we are already using \framacwp in order to identify
 potential run time errors in the source code.
 
 \subsection{Analysing \peek}
+\label{sec:bitwalker-peek-first-look}
 
 Listing~\ref{lst:peek-original} shows the original implementation of \peek.
 
@@ -414,6 +416,7 @@ and converts it to a 64-bit unsigned integer.
 
 For a bit sequence $(b_0, b_1,\ldots,b_{n - 1})$ the function \peek returns the sum
 \begin{align}
+\label{eq:peek-result}
     \sum_{i=0}^{n-1} b_i \cdot 2^{(n - 1) - i} 
 \end{align}
 
@@ -517,6 +520,7 @@ If the bit sequence is not valid, then \poke returns~$-1$.
 \clearpage
 
 \section{Tests for \peek and \poke}
+\label{sec:bitwalker-tests}
 
 In this section we show some tests for \peek and \poke.
 These tests were derived from the informal specification in 
@@ -590,13 +594,24 @@ the following reasons.
 
 \section{Formal Specification with \acsl}
 \label{sec:formal-specification}
-\label{formal-peek}
 
-\fxfatal{not ready for review}
+In this section we discuss formal contracts for \peek and \poke.
+The contracts are written in \acsl.
+Note that the contracts do not provide a full formal specification
+of the functionality of the respective functions.
+As of now they describe the main operation modes and are aimed at showing
+that no runtime errors can occur if the functions are called 
+in a context where their preconditions are satisfied..
 
-In order to verify that the given implementation of \peek fulfills 
-the informal specification, we have to formalize the specification.
-Listing~\ref{lst:spec-peek} shows such a formalization in \acsl for \peek.
+\subsection{Formal Specification of \peek}
+\label{sec:formal-specification-peek}
+
+
+Listing~\ref{lst:spec-peek} shows an \acsl contract with the 
+main operation modes of \peek.
+Note that we have labeled various properties of the contract.
+This feature of \acsl allows us to refer to them more easily.
+Note also that we sometimes use shorter names than in the original implementation.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -605,39 +620,128 @@ Listing~\ref{lst:spec-peek} shows such a formalization in \acsl for \peek.
 \caption{\label{lst:spec-peek} Formal specification of \peek in \acsl}
 \end{listing}
 
-We specify a function contract for \peek containing preconditions
-and postconditions introduced by the key words \inl{requires}
-and \inl{ensures}, respectively.
-In addition, the \acsl language provides the \inl{assigns} clause to specify 
-that a function is not allowed to change memory locations other than the ones 
-explicitly listed. 
-When no \inl{assigns} clauses are specified, 
-the function is allowed to modify every accessible memory location. 
+The structure of this contract is as follows:
 
-The three preconditions for the function arguments of the informal specification 
-are formalized straight forward in the function contract also by three preconditions.
-For the first one we use the predicate \inl{IsValidRange}
-which we specified in \acsl in order to state that the \inl{Bitstream}
-is a valid array of length \inl{BitstreamSizeInBytes}.
-Furthermore, we claim {\it via} the \inl{assigns} clause 
-that \peek does not alter any memory location
-apart from local variables.
+\begin{description}
+\item[General preconditions an assigns clauses]~
 
-Moreover, we use so-called behaviors in \acsl for a distinction of the two cases
-from the informal specification.
-The cases are discriminated through the predicate \inl{ValidBitIndex}
-which indicates whether a bit sequence is valid or not.
-The first behavior \inl{out\_of\_range} represents the robustness 
-case where the bit sequence is not valid and 
-the second behavior specifies the expected behavior in the normal case.
+\begin{itemize}
+\item
+The property \inl{valid_bitstream} expresses that 
+\inl{Bitstream} is the starting address of a valid array of length
+\inl{BitstreamSize}.
 
+\item
+The property \inl{valid_length} expresses the requirement that only
+bit sequences with a length less than~64 are to be read.
 
-Since the implementation of \peek contains a loop,
-we need a loop specification containing a variant for the termination
-proof and some invariants to enable the automatic theorem provers
-to verify the postconditions.
-Although this loop specification is important for the verification,
-it is not used for formalizing the informal specification.
+\item
+The two \inl{overflow} properties request that no arithmetic overflow
+shall occur for the expressions \inl{Start + Length} and
+\inl{8 * BitstreamSize}, respectively.
+
+Given the operational context of the \bitwalker these overflows are unlikely
+to happen. 
+Nevertheless, a formal verification tool such as \framacwp does not
+know about the size of ETCS telegrams and therefore needs this information.
+
+\item
+The assigns clause expresses that \peek will not change any memory location
+outside its scope.
+This means in particular that \peek will not have side effects.
+      
+\end{itemize}
+
+\item[Behavior for invalid bit sequences]~
+
+The behavior \inl{bit_sequence_too_long} describes the situation where
+the specified bit sequence does not fit into the underlying bit stream.
+
+\begin{itemize}
+\item
+The assumes clause describes the conditions to which this behavior applies.
+Note that we use the formulation 
+\begin{verbatim}
+   (Start + Length) > 8 * BitstreamSize
+\end{verbatim}
+in order to describe an invalid bit sequence whereas the original implementation
+in Listing~\ref{lst:peek-original} used the expression
+\begin{verbatim}
+   ((Start + Length - 1) >> 3) >= BitstreamSize
+\end{verbatim}
+
+The main difference is that we reformulate the division inherent in the shift
+operation as a multiplication.
+Moreover, switching to a strict inequality saves us the trouble
+to deal with a potential overflow in the term \inl{(Start + Length - 1)}
+that occurs if both \inl{Start} and \inl{Length} are~0.
+Last but no least, the new expression is also shorter.
+
+\item
+The postcondition of this behavior is that \peek is expected to return~0.
+Not surprisingly, we also request that no external memory locations are
+changed when this behavior is active.
+
+\end{itemize}
+
+\item[Behavior for valid bit sequences]~
+
+The behavior \inl{normal_case} describes the normal operation mode of \peek.
+\begin{itemize}
+\item
+Note that the assumes clause is the negation of the assumes clause  of
+the behavior~\inl{bit_sequence_too_long}.
+
+\item
+Again we specify that no assignments are to occur.
+
+\item 
+At this point the formalization of the behavior of \peek is incomplete.
+We only specify, the rather weak postcondition, that now overflow shall occur
+when computing the result.
+The complete formalization, which must be based on Formula~\eqref{eq:peek-result}
+on Page~\pageref{eq:peek-result}, will be part of a later release this document.
+\end{itemize}
+
+\item[Relationship of both behaviors]~
+
+The specification contains also statements about the relationship
+of the behaviors \inl{bit_sequence_too_long} and \inl{normal_case}.
+
+\begin{itemize}
+\item
+The clause \inl{complete behaviors} expresses that
+the assumptions of both behaviors cover all admissible 
+input values according to the general preconditions.
+
+\item
+The clause \inl{disjoint behaviors} expresses
+that there are no input values that fit both 
+behaviors.
+\end{itemize}
+
+These clauses, which support the writing complete and non-contradictory specifications,
+will be checked \framacwp.
+\end{description}
+
+\clearpage
+
+\subsection{Loop Invariant for \peek}
+
+Listing~\ref{lst:impl-peek} shows our modified version of \peek.
+There are several reasons for these modifications:
+
+\begin{itemize}
+\item Loop invariants and static assertions had to be inserted into
+      the source code to support the verification.
+\item Some shift operations were rewritten as divisions\slash multiplications
+      to be more similar to the specification.
+
+\item We felt that the shorter variable names make the source code more legible.
+\end{itemize}
+
+In order to ensure that the refactored code behaves as the original
+on we checked both with our test cases (see Section~\ref{sec:bitwalker-tests}).
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -646,26 +750,49 @@ it is not used for formalizing the informal specification.
 \caption{\label{lst:impl-peek} Implementation of \peek with \acsl loop invariants}
 \end{listing}
 
-Since we verify the implementation with respect to the formal specification, 
-it is crucial that it matches the informal one. 
-Therefore, we reviewed the accordance of both specifications.
+\clearpage
+
+Of course, rewriting the implementation while verifying it, may appear odd.
+Ideally, the verification tool should take the code as it is.
+However, as we have seen when discussing the specification, the
+expression to check whether the bit sequence is valid,
+could be reformulated so that it does not raise unintended run time errors.
+Moreover, our refactoring removed an unnecessary cast (see 
+Section~\ref{sec:bitwalker-peek-first-look}).
+
+Here are some additional notes on Listing~\ref{lst:impl-peek}.
+
+\begin{itemize}
+\item
+We added a (static) \acsl assertion that indicates whether \framacwp is ``aware''
+that \inl{UINT64_MAX} equals~$2^{64}-1$.
+
+\item
+We added the following small helper function for converting a
+given ``global'' bit index into a ``local'' bit index that is used for right shifts.
+
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block]{./Bitwalker/Modified3/inverse_modulo.h}
+\end{minipage}
+     
+\item
+There are several loop invariants and one loop variant. 
+The latter is necessary for \framacwp to decide whether the loop terminates.
+
+We mention here only the loop invariant that asserts that in the $i$-th iteration
+the value \inl{retval} is less than~$2^i$.
+This, together with the precondition that \inl{Length}
+is less than~64, is essential to ensure that no arithmetic overflow
+can occur when computing the return value of \peek.
+ 
+\end{itemize}
 
 \clearpage
 
-Listing~\ref{lst:spec-poke} shows the function contract of \poke.
-The case independent preconditions of the informal specification 
-are reflected by the  first three \inl{requires}-clauses at the beginning of the contract.
-\poke modifies the \inl{Bitstream} and reads the array
-\inl{BitwalkerBitMaskTable} thus we need to express 
-that the two arrays must have separated memory locations. 
-Therefore, we use the predicate \inl{separated} in the fourth \inl{requires}-clause.
-Furthermore, in the following \inl{assigns}-clause we specify the memory locations which 
-can be altered by the function.
+\subsection{Formal Specification of \poke}
+\label{sec:formal-specification-poke}
 
-We specify the three cases of \poke by using behaviors. 
-The first behavior \inl{out\_of\_range} occurs if the given bit sequence is not valid with respect to the \inl{Bitstream}. 
-The second behavior \inl{value\_too\_big} covers the case where the value \inl{Value} 
-is not representable with only \inl{Length} bits.
+\fxfatal[inline]{not yet ready}
 
 Finally, the behavior \inl{normal} assumes 
 that \inl{Value} is not too big and the bit sequence is valid. 
@@ -684,6 +811,10 @@ the return value shall be in this case.
 
 
 \clearpage
+
+\subsection{Loop Invariants for \poke}
+
+\fxfatal[inline]{not yet ready}
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}

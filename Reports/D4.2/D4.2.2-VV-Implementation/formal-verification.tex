@@ -725,6 +725,20 @@ will be checked \framacwp.
 
 \subsection{Loop Invariant for \peek}
 
+Listing~\ref{lst:impl-peek} shows our modified version of \peek.
+There are several reasons for these modifications:
+
+\begin{itemize}
+\item Loop invariants and static assertions had to be inserted into
+      the source code to support the verification.
+\item Some shift operations were rewritten as divisions\slash multiplications
+      to be more similar to the specification.
+\item We felt that the slightly shorter variable names make the source code
+      better legible.
+\end{itemize}
+
+\fxfatal{need assurance that implementation does change its behavior}
+
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
 \lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Bitwalker_Peek.c}

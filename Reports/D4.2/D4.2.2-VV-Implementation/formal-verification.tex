@@ -603,8 +603,11 @@ in a context where their preconditions are satisfied..
 \label{sec:formal-specification-peek}
 
 
-Listing~\ref{lst:spec-peek} shows such a formalization of the
-main operation modes in \acsl for \peek.
+Listing~\ref{lst:spec-peek} shows an \acsl contract with the 
+main operation modes of \peek.
+Note that we have labeled various properties of the contract.
+This feature of \acsl allows us to refer to them more easily.
+Note also that we sometimes use shorter names than in the original implementation.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -612,6 +615,43 @@ main operation modes in \acsl for \peek.
 \end{minipage}
 \caption{\label{lst:spec-peek} Formal specification of \peek in \acsl}
 \end{listing}
+
+The structure of this contract is as follows:
+
+\begin{description}
+\item[General preconditions an assigns clauses]~
+
+\begin{itemize}
+\item
+The property \inl{valid_bitstream} expresses that 
+\inl{Bitstream} is the starting address of a valid array of length
+\inl{BitstreamSize}.
+
+\item
+The property \inl{valid_length} expresses the requirement that only
+bit sequences with a length less than~64 are to be read.
+
+\item
+The two \inl{overflow} properties request that no arithmetic overflow
+shall occur for the expressions \inl{Start + Length} and
+\inl{8 * BitstreamSize}, respectively.
+
+Given the operational context of the \bitwalker these overflows are unlikely
+to happen. 
+Nevertheless, a formal verification tool such as \framacwp does not
+know about the size of ETCS telegrams and therefore needs this information.
+
+\item
+The assigns clause expresses that \peek will not change any memory location
+outside its scope.
+This means in particular that \peek will not have side effects.
+      
+\end{itemize}
+
+\item[Behavior for invalid bit sequences]
+\item[Behavior for valid bit sequences]
+\item[Relationship of both behaviors]
+\end{description}
 
 We specify a function contract for \peek containing preconditions
 and postconditions introduced by the key words \inl{requires}
@@ -658,7 +698,10 @@ Since we verify the implementation with respect to the formal specification,
 it is crucial that it matches the informal one. 
 Therefore, we reviewed the accordance of both specifications.
 
-\clearpage
+%\clearpage
+
+\subsection{Formal Specification of \poke}
+\label{sec:formal-specification-poke}
 
 Listing~\ref{lst:spec-poke} shows the function contract of \poke.
 The case independent preconditions of the informal specification 

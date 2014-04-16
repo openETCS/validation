@@ -20,7 +20,6 @@ int Bitwalker_Poke (unsigned int Start,
     return -2;  // error: value to big for bit field
   }
 
-  // Everything ok, we can iterate bitwise from left to right
   /*@
     loop invariant 0 <= i <= Length;
     loop assigns i, Value, Bitstream[Start/8..(Start + Length)/8];

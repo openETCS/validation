@@ -649,6 +649,36 @@ This means in particular that \peek will not have side effects.
 \end{itemize}
 
 \item[Behavior for invalid bit sequences]
+
+The behavior \inl{bit_sequence_too_long} describes the situation where
+the specified bit sequence does not fit into the underlying bit stream.
+
+\begin{itemize}
+\item
+The assumes clause describes the conditions to which this behavior applies.
+Note that we use the formulation 
+\begin{verbatim}
+   (Start + Length) > 8 * BitstreamSize
+\end{verbatim}
+in order to describe an invalid bit sequence whereas the original implementation
+in Listing~\ref{lst:peek-original} used the expression
+\begin{verbatim}
+   ((Start + Length - 1) >> 3) >= BitstreamSize
+\end{verbatim}
+
+The main difference is that we reformulate the division inherent in the shift
+operation as a multiplication.
+Moreover, switching to a strict inequality saves us the trouble
+to deal with a potential overflow in the term \inl{(Start + Length - 1)}
+that occurs if both \inl{Start} and \inl{Length} are~0.
+
+\item
+The postcondition of this behavior is that \peek is expected to return~0.
+Not surprisingly, we also request that no external memory locations are
+changed when this behavior is active.
+
+\end{itemize}
+
 \item[Behavior for valid bit sequences]
 \item[Relationship of both behaviors]
 \end{description}

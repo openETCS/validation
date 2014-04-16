@@ -16,7 +16,7 @@
   behavior  normal_case:
     assumes (Start + Length) <= 8 * BitstreamSize;
     assigns \nothing;
-    ensures no_overflow_on_result: \result <= (1 << Length);
+    ensures no_overflow_on_result: \result <= (1 << Length) - 1;
 
   complete behaviors;
   disjoint behaviors;

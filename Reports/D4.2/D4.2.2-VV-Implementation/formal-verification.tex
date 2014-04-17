@@ -132,7 +132,7 @@ must be subject to a review of the domain experts.
 At his point we are already using \framacwp in order to identify
 potential run time errors in the source code.
 
-\subsection{Analysing \peek}
+\subsection{Analyzing \peek}
 \label{sec:bitwalker-peek-first-look}
 
 Listing~\ref{lst:peek-original} shows the original implementation of \peek.
@@ -239,7 +239,7 @@ These potential runtime errors are related to the facts that at this point \fram
 
 \clearpage
 
-\subsection{Analysing \poke}
+\subsection{Analyzing \poke}
 
 Listing~\ref{lst:poke-original} shows the original implementation of \poke.
 
@@ -623,7 +623,7 @@ Note also that we sometimes use shorter names than in the original implementatio
 The structure of this contract is as follows:
 
 \begin{description}
-\item[General preconditions an assigns clauses]~
+\item[Default behavior]~
 
 \begin{itemize}
 \item
@@ -648,7 +648,7 @@ know about the size of ETCS telegrams and therefore needs this information.
 \item
 The assigns clause expresses that \peek will not change any memory location
 outside its scope.
-This means in particular that \peek will not have side effects.
+This means in particular that \peek will not have any side effects.
       
 \end{itemize}
 
@@ -808,15 +808,67 @@ and use for some variables shorter names than in the original implementation.
 The contract is structured as follows.
 
 \begin{description}
-\item[General preconditons and assigns clauses]~
+\item[Default behavior]~
+The default of \poke behavior is very similar to that of \peek.
+The main difference is that \poke writes into the array passed as argument.
+
+\begin{itemize}
+\item
+The property \inl{valid_bitstream} expresses that 
+\inl{Bitstream} is the starting address of a valid array of length
+\inl{BitstreamSize}.
+
+\item
+The property \inl{valid_length} expresses the requirement that only
+bit sequences with a length less than~64 are to be read.
+
+\item
+The two \inl{overflow} properties request that no arithmetic overflow
+shall occur for the expressions \inl{Start + Length} and
+\inl{8 * BitstreamSize}, respectively.
+
+\item
+The assigns clause expresses that \poke will 
+write into a part of the array passed as argument.
+Apart from this assignment \poke will not have any side effects.
+      
+\end{itemize}
 
 \item[Behavior for invalid bit sequences]~
 
-\item[Behavior for non-convertible values]~
+The behavior \inl{bit_sequence_too_long} describes the situation where
+the specified bit sequence does not fit into the underlying bit stream.
+
+The postcondition of this behavior is that \poke is expected to return~$-1$.
+We also request that no external memory locations are changed when this behavior is active.
+
+
+\item[Behavior for values that do not fit into the bit sequence]~
+
+The behavior \inl{value_too_big} describes the case where the
+value to be converted into a bit sequence needs more bits than
+is provided by the (otherwise valid) bit sequence.
+
+\poke is then expected to return~$-2$.
+No external memory locations are to be changed when this behavior is active.
 
 \item[Behavior for the normal case]~
 
+The behavior \inl{normal_case} describes the normal operation mode of \peek.
+This behavior assumes that the value to be converted is less than $2^{\mathtt{Length}}$
+and, of course, that only valid bit sequences are considered.
+Since we concentrate on the absence of run time errors we only
+specify the range in the bit stream that is to be modified by \poke.
+
+
 \item[Relationship of the behaviors]~
+
+The contract of \poke consists of the three named behaviors
+\inl{normal_case}, \inl{bit_sequence_too_long}, and \inl{value_too_big}.
+These behaviors are \emph{complete}, meaning that they cover all the input values
+of the default behavior.
+Another verification goal is to show that these three behaviors exclude each other.
+
 \end{description}
 
 

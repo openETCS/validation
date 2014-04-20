@@ -729,6 +729,7 @@ will be checked \framacwp.
 \clearpage
 
 \subsection{Loop Invariant for \peek}
+\label{sec:peek-loop-invariants}
 
 Listing~\ref{lst:impl-peek} shows our modified version of \peek.
 There are several reasons for these modifications:
@@ -738,7 +739,7 @@ There are several reasons for these modifications:
       the source code to support the verification.
 \item Some shift operations were rewritten as divisions\slash multiplications
       to be more similar to the specification.
-
+\item The loop was rewritten so that loop index starts at~0.
 \item We felt that the shorter variable names make the source code more legible.
 \end{itemize}
 
@@ -880,8 +881,34 @@ Another verification goal is to show that these three behaviors exclude each oth
 \clearpage
 
 \subsection{Loop Invariants for \poke}
+\label{sec:poke-loop-invariants}
 
-\fxfatal[inline]{not yet ready}
+Listing~\ref{lst:impl-poke} shows our modified version of \poke.
+The reasons for this modifications are similar to those of \peek
+(cf.~Section~\ref{sec:peek-loop-invariants}).
+
+\begin{itemize}
+\item Loop invariants and static assertions had to be inserted into
+      the source code to support the verification.
+
+\item Most shift operations were rewritten as divisions\slash multiplications
+      to be more similar to the specification. 
+      In particular, we have omitted the helper array \inl{BitwalkerBitMaskTable}.
+      This has the advantage, at least from a verification point of view,
+      that we do not have to deal with aliasing issue between this array
+      and the array \inl{Bitstream}.
+
+\item The loop was rewritten so that loop index starts at~\inl{Length}
+      and that no casts to \inl{int} are necessary.
+
+\item Again we used the shorter variable names already introduced in
+      Section~\ref{sec:peek-loop-invariants}.
+
+\item Instead of testing that \inl{Value} is greater than~$2^\mathtt{Length} - 1$
+      we simply test that it is greater or equal than~$2^\mathtt{Length}$.
+\end{itemize}
+
+
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}

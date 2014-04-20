@@ -369,7 +369,7 @@ such as \inl{int} and \inl{unsigned int} and recommends the use of integer types
 contain the exact width.
 
 \subsection{Informal Specification of \peek}
-\label{informal-peek}
+\label{sec:informal-peek}
 
 Now we specify \peek with the introduced auxiliary concepts.
 The function \peek reads a bit sequence from a bit stream
@@ -435,6 +435,7 @@ and to devise a consistent error detection and error recovery strategy.
 
 
 \subsection{Informal Specification of \poke}
+\label{sec:informal-poke}
 
 In this section we examine the function \poke
 in the same manner as we did it for \peek.
@@ -498,23 +499,24 @@ The return value of \poke depends on the following three cases:
 
 \begin{itemize}
 \item 
+If the bit sequence is not valid, then \poke returns~$-1$.
+
+\item 
 If the bit sequence is valid, then there are two cases:
 
 \begin{itemize}
 \item
-If \inl{Length} is greater or equal than $n$, then  the sequence
+If $x$ is greater or equal than $2^\mathtt{Length}$, then~$x$
+cannot be represented as bit sequence $(b_0, b_1,\ldots,b_{\mathtt{Length} - 1})$.
+\poke returns then~$-2$.
+
+\item
+If $x$ is less the $2^{\mathtt{Length}}$, then  the sequence
 $(\overbrace{0,\ldots,0}^{\mathtt{Length}-n},b_0, b_1,\ldots,b_{n - 1})$
 is stored in the bit stream starting at \inl{Startposition}.
 The return value of \poke is 0.
 
-\item
-If \inl{Length}  is less then $n$, then the
-sequence $(b_0, b_1,\ldots,b_{n - 1})$ cannot be stored and\\
-\poke returns~$-2$.
 \end{itemize}
-
-\item 
-If the bit sequence is not valid, then \poke returns~$-1$.
 \end{itemize}
 
 \clearpage

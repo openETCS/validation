@@ -629,9 +629,9 @@ The structure of this contract is as follows:
 
 \begin{itemize}
 \item
-The property \inl{valid_bitstream} expresses that 
-\inl{Bitstream} is the starting address of a valid array of length
-\inl{BitstreamSize}.
+The property \inl{readable_bitstream} use the built-in \acsl predicate \inl{\\valid_read}.
+This expresses that that all addresses in the range~\inl{Bitstream[0..BitstreamSize-1]}
+can be safely dereferenced for \emph{reading} but not necessarily for writing.
 
 \item
 The property \inl{valid_length} expresses the requirement that only
@@ -808,6 +808,8 @@ and use for some variables shorter names than in the original implementation.
 \caption{\label{lst:spec-poke} Formal Specification of \poke}
 \end{listing}
 
+\clearpage 
+
 The contract is structured as follows.
 
 \begin{description}
@@ -817,9 +819,11 @@ The main difference is that \poke writes into the array passed as argument.
 
 \begin{itemize}
 \item
-The property \inl{valid_bitstream} expresses that 
-\inl{Bitstream} is the starting address of a valid array of length
-\inl{BitstreamSize}.
+The property \inl{writeable_bitstream} is formulated using
+the built-in \acsl predicate~\inl{\\valid}.
+This expresses that that all addresses starting at \inl{Bitstream}
+and with offsets in the range~\inl{0..BitstreamSize-1}
+can be safely dereferenced for \emph{reading and writing}.
 
 \item
 The property \inl{valid_length} expresses the requirement that only

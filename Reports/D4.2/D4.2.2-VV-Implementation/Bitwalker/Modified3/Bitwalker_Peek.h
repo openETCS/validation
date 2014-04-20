@@ -1,7 +1,8 @@
 #include "Bitwalker.h"
 
 /*@
-  requires valid_bitstream: \valid(Bitstream+(0..BitstreamSize-1));
+  requires readable_bitstream:
+           \valid_read(Bitstream + (0..BitstreamSize-1));
   requires valid_length: 0 <= Length < 64;
   requires no_overflow_1: Start + Length < UINT_MAX;
   requires no_overflow_2: 8 * BitstreamSize < UINT_MAX;

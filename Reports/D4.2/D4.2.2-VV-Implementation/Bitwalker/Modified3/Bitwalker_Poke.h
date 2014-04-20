@@ -8,7 +8,7 @@
 
   assigns Bitstream[Start/8..(Start + Length)/8];
 
-  behavior  bit_sequence_too_long:
+  behavior  invalid_bit_sequence:
     assumes (Start + Length)  > 8 * BitstreamSize;
     assigns \nothing;
     ensures \result == -1;

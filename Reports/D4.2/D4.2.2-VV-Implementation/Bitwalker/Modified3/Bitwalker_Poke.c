@@ -8,7 +8,7 @@ int Bitwalker_Poke (unsigned int Start,
 {
   if ((Start + Length)  > 8 * BitstreamSize)
   {
-    return -1;	// error: index out of range
+    return -1;	// error: invalid_bit_sequence
   }
 
   // compute pow2(Length)
@@ -16,7 +16,7 @@ int Bitwalker_Poke (unsigned int Start,
 
   if (Value >= MaxValue)
   {
-    return -2;  // error: value to big for bit sequence
+    return -2;  // error: value_too_big
   }
 
   /*@
@@ -41,7 +41,9 @@ int Bitwalker_Poke (unsigned int Start,
     Value /= 2;
   }
 
-  // assert Value == 0; // we should prove this at one point
+  // assert Value == 0;
+  // We should prove this at one point because it would show
+  // that we have consumed all bits of Value.
 
   return 0;
 }

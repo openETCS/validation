@@ -6,18 +6,17 @@ int Bitwalker_Poke (unsigned int Start,
                     unsigned int BitstreamSize,
                     uint64_t Value)
 {
-  // plausibility check: is last byte in range
   if ((Start + Length)  > 8 * BitstreamSize)
   {
     return -1;	// error: index out of range
   }
 
-  // plausibility check: is value in range
+  // compute 2^Length
   const uint64_t MaxValue = (((uint64_t) 1) << Length);
 
   if (Value >= MaxValue)
   {
-    return -2;  // error: value to big for bit field
+    return -2;  // error: value to big for bit sequence
   }
 
   /*@
@@ -42,7 +41,7 @@ int Bitwalker_Poke (unsigned int Start,
     Value /= 2;
   }
 
-  // assert Value == 0; // this should hold here
+  // assert Value == 0; // we should prove this at one point
 
   return 0;
 }

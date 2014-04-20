@@ -11,7 +11,7 @@ int Bitwalker_Poke (unsigned int Start,
     return -1;	// error: index out of range
   }
 
-  // compute 2^Length
+  // compute pow2(Length)
   const uint64_t MaxValue = (((uint64_t) 1) << Length);
 
   if (Value >= MaxValue)

@@ -728,7 +728,7 @@ will be checked \framacwp.
 
 \clearpage
 
-\subsection{Loop Invariant for \peek}
+\subsection{Code Annotations for \peek}
 \label{sec:peek-loop-invariants}
 
 Listing~\ref{lst:impl-peek} shows our modified version of \peek.
@@ -880,22 +880,32 @@ Another verification goal is to show that these three behaviors exclude each oth
 
 \clearpage
 
-\subsection{Loop Invariants for \poke}
+\subsection{Code Annotations for \poke}
 \label{sec:poke-loop-invariants}
 
 Listing~\ref{lst:impl-poke} shows our modified version of \poke.
-The reasons for this modifications are similar to those of \peek
-(cf.~Section~\ref{sec:peek-loop-invariants}).
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Bitwalker_Poke.c}
+\end{minipage}
+\caption{\label{lst:impl-poke} Implementation of \poke with loop invariants}
+\end{listing}
+
+\clearpage
+
+The reasons for modifications of \poke are similar to those discussed
+in Section~\ref{sec:peek-loop-invariants}.
 
 \begin{itemize}
-\item Loop invariants and static assertions had to be inserted into
+\item Loop invariants had to be inserted into
       the source code to support the verification.
 
 \item Most shift operations were rewritten as divisions\slash multiplications
       to be more similar to the specification. 
       In particular, we have omitted the helper array \inl{BitwalkerBitMaskTable}.
       This has the advantage, at least from a verification point of view,
-      that we do not have to deal with aliasing issue between this array
+      that we do not have to deal with aliasing issues between this array
       and the array \inl{Bitstream}.
 
 \item The loop was rewritten so that loop index starts at~\inl{Length}
@@ -910,13 +920,6 @@ The reasons for this modifications are similar to those of \peek
 \end{itemize}
 
 
-
-\begin{listing}[hbt]
-\begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Bitwalker_Poke.c}
-\end{minipage}
-\caption{\label{lst:impl-poke} Implementation of \poke with loop invariants}
-\end{listing}
 
 \clearpage
 

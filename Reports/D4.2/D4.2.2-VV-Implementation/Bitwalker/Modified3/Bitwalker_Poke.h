@@ -1,14 +1,15 @@
 #include "Bitwalker.h"
 
 /*@
-  requires valid_bitstream: \valid(Bitstream+(0..BitstreamSize-1));
+  requires writeable_bitstream:
+           \valid(Bitstream + (0..BitstreamSize-1));
   requires valid_length: 0 <= Length < 64;
   requires no_overflow_1: Start + Length < UINT_MAX;
   requires no_overflow_2: 8 * BitstreamSize < UINT_MAX;
 
   assigns Bitstream[Start/8..(Start + Length)/8];
 
-  behavior  bit_sequence_too_long:
+  behavior  invalid_bit_sequence:
     assumes (Start + Length)  > 8 * BitstreamSize;
     assigns \nothing;
     ensures \result == -1;

@@ -12,9 +12,34 @@ of what the implementation is supposed to do.
 Frama-C comes with its own specification language ACSL which stands for
 \emph{ANSI\slash ISO C Specification Language}.
 In order to help potential users to master ACSL we discuss in this chapter 
-a very simple C function and explain various aspects of ACSL.
+a very simple C function \inl{abs_int} that implements the computation of
+the absolute value for objects of type~\inl{int}.
+
+\begin{itemize}
+\item
+In Section~\ref{sec:first-steps} we will present a straightforward
+specification of \inl{abs_int}.
+We discuss the reasons why \framacwp is not able to verify that our
+implementation satisfies this specification in Section~\ref{sec:framac-failure}.
+
+\item 
+In Section~\ref{sec:contract-sharpening} we provide a more precise
+specification that can be verified by \framacwp.
+In Section~\ref{sec:separating-spec-impl} we explain
+how \framac supports---by allowing the separation the specification from the 
+implementation---good software engineering practices.
+
+\item
+Sections~\ref{sec:modular-verification} and~\ref{sec:side-effects}
+discuss, respectively,
+how \framacwp supports \emph{modular verification} and the
+formal treatment of \emph{side effects}.
+\end{itemize}
+
+\clearpage
 
 \section{First steps}
+\label{sec:first-steps}
 
 We will consider the function that computes the absolute value $|x|$
 of an integer $x$.
@@ -53,11 +78,13 @@ is based on the mathematical definition of the function $x \mapsto |x|$ in Equat
 \caption{\label{lst:abs1} A first attempt to formally specify \inl{abs_int}}
 \end{listing}
 
+\FloatBarrier
+
 The first thing to note is that ACSL specifications---or \emph{contracts}---are placed in special C comments
 (they start with \inl{/*@}).
 Thus, they do not interfere with the executable code.
 The \inl{ensures} clause in the specification expresses \emph{postconditions},
-that is, properties that should be guaranteed \emph{after} the execuition
+that is, properties that should be guaranteed \emph{after} the execution
 of \inl{abs_int}.
 The ACSL reserved word \inl{\\result} is used to refer to the return value of a C function.
 Note that we use the usual C operators \inl{==} and {<=} to express equalities and inequalities
@@ -65,10 +92,15 @@ in the specification.
 There is, however, also an additional operator \inl{==>} which expresses logical implication.
 
 \section{Why can \framacwp not verify such a simple function?}
+\label{sec:framac-failure}
 
 Although the specification and implementation in Listing~\ref{lst:abs1} look perfectly right, 
 \framacwp cannot verify that the implementation actually satisfies its specification.
 
+
+The reason becomes clear if we look at some actual return values of \inl{abs_int}.
+Listing~\ref{lst:test_abs} shows our test code whose output is
+listed in Table~\ref{tbl:test_abs_output}.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -77,10 +109,7 @@ Although the specification and implementation in Listing~\ref{lst:abs1} look per
 \caption{\label{lst:test_abs} Some simple test cases for \inl{abs_int}}
 \end{listing}
 
-The reason becomes clear if we look at some actual return values of \inl{abs_int}.
-\clearpage
-
-Listing~\ref{lst:test_abs} shows our test code whose output is listed in Table~\ref{tbl:test_abs_output}.
+%\clearpage
 
 \begin{table}[hbt]
 \begin{center}
@@ -98,6 +127,8 @@ Listing~\ref{lst:test_abs} shows our test code whose output is listed in Table~\
 \end{center}
 \caption{\label{tbl:test_abs_output} Test results for \inl{abs_int}}
 \end{table}
+
+\FloatBarrier
 
 The offending value is in the last line of Table~\ref{tbl:test_abs_output}
 which basically states that \inl{abs_int(INT_MIN)} equals \inl{INT_MIN}
@@ -117,9 +148,9 @@ In other words,
 satisfies the contract in Listing~\ref{lst:abs1}. Indeed, the 
 implementation does not respect the given specification.
 
-\clearpage
 
 \section{Sharpening the contract of \inl{abs_int}}
+\label{sec:contract-sharpening}
 
 It is of course well known that the operation \inl{-x} can overflow
 and it is the fact that \framacwp can detect such overflows that 
@@ -140,7 +171,7 @@ Under \textsf{OSX}, the manual page of \inl{abs} mentions under the field of ``B
 Thus, our formal specification should exclude the value \inl{INT_MIN}
 from the set of admissible value to which \inl{abs_int} can be applied.
 In ACSL, we can use the \inl{requires} clause to express \emph{preconditions}
-of a funtion.
+of a function.
 Listing~\ref{lst:abs1a} shows an extended contract of \inl{abs_int}
 that takes the limitations of the type \inl{int} into account.
 
@@ -150,6 +181,8 @@ that takes the limitations of the type \inl{int} into account.
 \end{minipage}
 \caption{\label{lst:abs1a} Taking integer overflows into account}
 \end{listing}
+
+\FloatBarrier
 
 \framacwp is now capable to verify that the implementation of
 \inl{abs_int} satisfies the specification of Listing~\ref{lst:abs1a}.
@@ -168,7 +201,7 @@ In order to verify that the code does what someone expects, these expectations
 must be clearly expressed, that is, they must be formally specified.
 \end{framed}
 
-\clearpage 
+%\clearpage 
 
 Of course, it might not always be the goal to verify the complete functionality of a
 piece of software.
@@ -185,9 +218,10 @@ Listing~\ref{lst:abs1b}, \framacwp can verify that no runtime error will occur.
 \caption{\label{lst:abs1b} Minimal contract to ensure the absence of runtime errors in \inl{abs_int}}
 \end{listing}
 
-\clearpage
+%\clearpage
 
 \section{Separating specification and implementation}
+\label{sec:separating-spec-impl}
 
 Before we continue exploring more advanced specification and verification
 capabilities of \framacwp we turn to a simple software engineering question.
@@ -223,9 +257,10 @@ We remark, that the definition of a very small function like \inl{abs_int} would
 be placed in a header file so that a compiler can inline the function definition
 at the call site.
 
-\clearpage
+%\clearpage
 
 \section{Modular verification}
+\label{sec:modular-verification}
 
 We now look at a simple example in which our function \inl{abs_int} is used.
 More precisely, we include in Listing~\ref{lst:use_abs2-1} the
@@ -266,7 +301,7 @@ or, in other words, that \inl{x > INT_MIN} holds.
 \caption{\label{lst:use_abs2-2} Another example of modular verification}
 \end{listing}
 
-\clearpage
+\FloatBarrier
 
 If, on the other hand, we have precise information on the arguments at call site, then \framacwp can exploit the specification of 
 \inl{abs_int} in order derive some interesting properties.
@@ -288,9 +323,10 @@ the execution of the code in Listing~\ref{lst:use_abs2-3}.
 Also note that unlike to C~code, \emph{relation chains} can be used both in function
 contracts and assertions.
 
-\clearpage
+%\clearpage
 
 \section{Dealing with side effects}
+\label{sec:side-effects}
 
 Listing~\ref{lst:abs3a1} shows an implementation of \inl{abs_int}
 that writes as a side effect the argument~\inl{x} to a global variable~\inl{a}.
@@ -332,8 +368,6 @@ then it issues the following warning:
 Thus, it points out that the called function \inl{logging} should have a proper
 specification that clearly indicates its side effects.
 
-\clearpage
-
 There are, on the other hand, also good reasons to minimize or even forbid side 
 effects:
 
@@ -348,14 +382,13 @@ the real consequences of a function call are.
 In particular, one must be concerned about unintended consequences that
 are caused by side effects
 The norm IEC 61508 therefore requests in the context of software module testing
-and integration testing:\footnote{%
-   See IEC 61508-3 Table 1
-}
+and integration testing:
 
 \begin{quote}
 To show that all software modules,
 elements and subsystems interact correctly
 to perform their intended function and do not perform unintended functions
+(see also.~\cite[\S 7.4.7.2,\S 7.7.2.9]{IEC-61508-3})
 \end{quote}
 
 Of course, it is quite difficult to ensure by testing alone that something does \emph{not} happen.
@@ -378,7 +411,7 @@ the verification of the assigns clause.
 \end{listing}
 
 
-\clearpage
+\FloatBarrier
 
 Of course, an all-or-nothing-approach to side effects is not very helpful
 for the verification of real-life software.

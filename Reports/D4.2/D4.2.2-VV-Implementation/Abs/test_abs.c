@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <limits.h>
 
@@ -23,6 +22,4 @@ int main()
   print_abs(-1);
   print_abs(-10);
   print_abs(INT_MIN);
-
-  printf("\n");
 }

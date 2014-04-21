@@ -12,11 +12,34 @@ of what the implementation is supposed to do.
 Frama-C comes with its own specification language ACSL which stands for
 \emph{ANSI\slash ISO C Specification Language}.
 In order to help potential users to master ACSL we discuss in this chapter 
-a very simple C function and explain various aspects of ACSL.
+a very simple C function \inl{abs_int} that implements the computation of
+the absolute value for objects of type~\inl{int}.
+
+\begin{itemize}
+\item
+In Section~\ref{sec:first-steps} we will present a straightforward
+specification of \inl{abs_int}.
+We discuss the reasons why \framacwp is not able to verify that our
+implementation satisfies this specification in Section~\ref{sec:framac-failure}.
+
+\item 
+In Section~\ref{sec:contract-sharpening} we provide a more precise
+specification that can be verified by \framacwp.
+In Section~\ref{sec:separating-spec-impl} we explain
+how \framac supports---by allowing the separation the specification from the 
+implementation---good software engineering practices.
+
+\item
+Sections~\ref{sec:modular-verification} and~\ref{sec:side-effects}
+discuss, respectively,
+how \framacwp supports \emph{modular verification} and the
+formal treatment of \emph{side effects}.
+\end{itemize}
 
 \clearpage
 
 \section{First steps}
+\label{sec:first-steps}
 
 We will consider the function that computes the absolute value $|x|$
 of an integer $x$.
@@ -61,7 +84,7 @@ The first thing to note is that ACSL specifications---or \emph{contracts}---are 
 (they start with \inl{/*@}).
 Thus, they do not interfere with the executable code.
 The \inl{ensures} clause in the specification expresses \emph{postconditions},
-that is, properties that should be guaranteed \emph{after} the execuition
+that is, properties that should be guaranteed \emph{after} the execution
 of \inl{abs_int}.
 The ACSL reserved word \inl{\\result} is used to refer to the return value of a C function.
 Note that we use the usual C operators \inl{==} and {<=} to express equalities and inequalities
@@ -69,6 +92,7 @@ in the specification.
 There is, however, also an additional operator \inl{==>} which expresses logical implication.
 
 \section{Why can \framacwp not verify such a simple function?}
+\label{sec:framac-failure}
 
 Although the specification and implementation in Listing~\ref{lst:abs1} look perfectly right, 
 \framacwp cannot verify that the implementation actually satisfies its specification.
@@ -126,6 +150,7 @@ implementation does not respect the given specification.
 
 
 \section{Sharpening the contract of \inl{abs_int}}
+\label{sec:contract-sharpening}
 
 It is of course well known that the operation \inl{-x} can overflow
 and it is the fact that \framacwp can detect such overflows that 
@@ -146,7 +171,7 @@ Under \textsf{OSX}, the manual page of \inl{abs} mentions under the field of ``B
 Thus, our formal specification should exclude the value \inl{INT_MIN}
 from the set of admissible value to which \inl{abs_int} can be applied.
 In ACSL, we can use the \inl{requires} clause to express \emph{preconditions}
-of a funtion.
+of a function.
 Listing~\ref{lst:abs1a} shows an extended contract of \inl{abs_int}
 that takes the limitations of the type \inl{int} into account.
 
@@ -196,6 +221,7 @@ Listing~\ref{lst:abs1b}, \framacwp can verify that no runtime error will occur.
 %\clearpage
 
 \section{Separating specification and implementation}
+\label{sec:separating-spec-impl}
 
 Before we continue exploring more advanced specification and verification
 capabilities of \framacwp we turn to a simple software engineering question.
@@ -234,6 +260,7 @@ at the call site.
 %\clearpage
 
 \section{Modular verification}
+\label{sec:modular-verification}
 
 We now look at a simple example in which our function \inl{abs_int} is used.
 More precisely, we include in Listing~\ref{lst:use_abs2-1} the
@@ -299,6 +326,7 @@ contracts and assertions.
 %\clearpage
 
 \section{Dealing with side effects}
+\label{sec:side-effects}
 
 Listing~\ref{lst:abs3a1} shows an implementation of \inl{abs_int}
 that writes as a side effect the argument~\inl{x} to a global variable~\inl{a}.

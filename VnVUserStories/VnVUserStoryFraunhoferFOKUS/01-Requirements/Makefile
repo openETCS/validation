@@ -3,7 +3,7 @@
 export ASPELL=aspell check --lang=en --encoding=utf-8
 
 
-all: D4.2.2.tex FORCE
+all: informal_spec.tex FORCE
 	latexmk -pdf $<
 
 
@@ -11,7 +11,7 @@ FORCE:
 
 
 clean:
-	$(RM) D4.2.2.pdf
+	$(RM) informal_spec.pdf
 	$(RM) *.aux
 	$(RM) *.bak
 	$(RM) *.bbl

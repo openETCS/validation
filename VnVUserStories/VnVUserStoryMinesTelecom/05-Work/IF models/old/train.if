@@ -1,0 +1,240 @@
+/************************************************************** * System ETCS - *
+**
+* Last modified: 2013.09.26 *
+* Department LOR, IT-Sudparis * **************************************************************/
+system ETCS;
+const SD = 300; /* the safety distance between two ETCS trains */ 
+const NbTrains = 2; /* NbTrains: The maximum number of Trains */
+type states = enum
+	start, moving, _stop, negotiation
+endenum;
+type dType    = range 1210 .. 1211;
+type VmaxType = range 105 .. 106;
+type AmaxType = range 15 .. 16;
+ /************
+ * Signals *
+ *************/
+signal ETCS_no_controlled(pid);
+signal ETCS_report(pid, integer, integer, integer, states); signal ETCS_control();
+signal ETCS_move(dType, VmaxType, AmaxType);
+signal ETCS_stopRBC();
+signal ETCS_negotiation(dType, VmaxType, AmaxType);
+signal ETCS_alarm_to_train();
+signal ETCS_take_care();
+signal ETCS_alarm_to_env();
+signal ETCS_Stop();
+signal ETCS_Inf();
+
+ /**************
+ * Connections *
+ ***************/
+/* channel 1 and 6 */
+signalroute train_to_RBCenv(1)
+from Train to env
+with ETCS_no_controlled, ETCS_report;
+ /* channel 2 and channel 5 */
+signalroute RBCenv_to_train(1)
+ from env to Train
+ with ETCS_control, ETCS_move, ETCS_stopRBC, ETCS_negotiation;
+  /* channel 3 */
+ signalroute env_to_train(1)
+  from env to Train
+  with ETCS_alarm_to_train;
+  /* channel 4 and channel 7 */
+ /*signalroute RBC_to_RBC(1)
+  from RBC to RBC
+  with ETCS_take_care;
+  */
+  /* channel 8 */
+ /*signalroute RBC_to_env(1)
+  from RBC to env
+  with ETCS_alarm_to_env;
+ */
+  /* channel 9 */
+ /*signalroute env_to_RBC(1)
+  from env to RBC
+ #reliable #multicast
+ with ETCS_take_care, ETCS_Stop, ETCS_Inf; */
+ /********************************************************** * Process train * **********************************************************/
+ process Train(2);
+ var Vmax integer := 105 private;
+ var Amax integer := 15 private;
+ var p integer := 10 private; /* position */
+ var v integer := 100 private; /* velocity */
+ var a integer := 10 private; /* acceleration */
+ var d integer private; /* safety distance */
+ var c_TAB clock private; /* time variable used for timeouts */ 
+ var c_TBC clock private; /* time variable used for timeouts */
+  
+  /**********************
+  * State start *
+  **********************/
+ /* the initial state of the train; the train in this state is not controlled by the RBC */
+ state start #start ;
+ deadline lazy;
+	 input ETCS_move(d, Vmax, Amax);
+	 output ETCS_no_controlled(self);
+	 /* the answer is no_controlled message because the train is not controlled yet */
+	 nextstate -;
+	 deadline lazy;
+ input ETCS_negotiation(d, Vmax, Amax);
+ output ETCS_no_controlled(self);
+ /* the answer is no_controlled message because the train is not controlled yet */
+ nextstate -;
+ deadline lazy;
+  input ETCS_alarm_to_train();
+  output ETCS_report(self, p, v, a, start);
+ task v:=0;
+ task a:=0;
+ nextstate _stop;
+ deadline lazy;
+ input ETCS_stopRBC();
+  output ETCS_report(self, p, v, a, start);
+  task v:=0;
+ task a:=0;
+ nextstate _stop;
+ deadline lazy;
+  input ETCS_control();
+ /* if the train receives the control message, it moves to the moving state */ output ETCS_report(self, p, v, a, start);
+ set c_TAB := 0;
+ nextstate moving;
+ endstate;
+  /**********************
+  * State moving *
+  **********************/
+ /* once the train is controlled, it moves to the moving state */
+ state moving;
+  /* received a move signal from RBC */
+  deadline lazy;
+ input ETCS_move (d, Vmax, Amax);
+ nextstate moving_inter;
+ deadline lazy;
+ input ETCS_control();
+ output ETCS_report(self, p, v, a, moving); nextstate -;
+ /* received an alarm signal from environment */
+  deadline lazy;
+ input ETCS_alarm_to_train();
+ output ETCS_report(self, p, v, a, moving);
+ reset c_TAB;
+ task v:=0;
+ task a:=0;
+ nextstate _stop;
+ /* received a negotiation signal from RBC */
+  deadline lazy;
+ input ETCS_negotiation(d, Vmax, Amax);
+ output ETCS_report(self, p, v, a, moving);
+ reset c_TAB;
+ set c_TBC := 0;
+  nextstate negotiation;
+  deadline eager;
+ when c_TAB >= (2*SD)/Vmax;
+ reset c_TAB;
+ informal "--Timeout TAB";
+ set c_TBC := 0;
+ /* it does not receive any message from the RBC then after TAB time units => timeout */
+ nextstate negotiation;
+ endstate;
+ /*********************************************************************** 
+ * State moving_inter - intermediare state used for modelisation * ***********************************************************************/
+  state moving_inter #unstable ;
+ provided ((d-p) >= (4*SD));
+ output ETCS_report(self, p, v, a, moving);
+ nextstate moving;
+ provided (2*SD <= d-p) and ((d-p) <= (4*SD)); output ETCS_report(self, p, v, a, moving); reset c_TAB;
+ nextstate negotiation;
+ provided ((d-p) < (2*SD));
+ output ETCS_report(self, p, v, a, moving);
+ reset c_TAB;
+ task v:=0;
+ task a:=0;
+ nextstate _stop;
+ endstate;
+ /****************************************** 
+ * State negotiation * 
+ ******************************************/
+ state negotiation;
+ /* the train is at this state if the train has crossed the negotiation point, but
+ did not reach stop position yet */
+  /* received a move signal from RBC */
+ deadline lazy;
+ input ETCS_move(d, Vmax, Amax);
+ nextstate negotiation_inter;
+ deadline lazy;
+ input ETCS_control();
+ output ETCS_report(self, p, v, a, negotiation); nextstate -;
+ /* received an alarm signal from environment */ deadline lazy;
+ input ETCS_alarm_to_train();
+ reset c_TBC;
+ output ETCS_report(self, p, v, a, negotiation); task v:=0;
+ task a:=0;
+ nextstate _stop;
+ /* received a negotiation signal from RBC */ deadline lazy;
+ input ETCS_negotiation(d, Vmax, Amax);
+ output ETCS_report(self, p, v, a, negotiation); nextstate -;
+  /* received a stop signal from RBC */
+  deadline lazy;
+  input ETCS_stopRBC();
+ reset c_TBC;
+ output ETCS_report(self, p, v, a, negotiation); task v:=0;
+ task a:=0;
+ nextstate _stop;
+ /* it does not receive any message from the RBC then after TAB time units => timeout */
+  deadline eager;
+ when c_TBC >= (2*SD)/Vmax;
+ reset c_TBC;
+ informal "--Timeout TBC";
+ task v:=0;
+ task a:=0;
+ nextstate _stop;
+ endstate;
+ /*********************************************************************** * State negotiation_inter - intermediare state used for modelisation * ***********************************************************************/
+ state negotiation_inter #unstable ;
+ deadline eager;
+ provided (2 *SD <= d-p) and (d-p <=4*SD); output ETCS_report(self, p, v, a, negotiation); reset c_TBC;
+ nextstate negotiation;
+ deadline eager;
+ provided ((d-p) <(2*SD));
+ output ETCS_report(self, p, v, a, negotiation); reset c_TBC;
+ task v:=0;
+ task a:=0;
+ nextstate _stop;
+ deadline eager;
+ provided ((d-p) > (4*SD));
+ output ETCS_report(self, p, v, a, negotiation); set c_TAB := 0;
+ reset c_TBC;
+ nextstate moving;
+ endstate;
+  /**********************
+  * State stop *
+  **********************/
+ state _stop;
+  /* received a move signal from RBC */
+ deadline lazy;
+ input ETCS_move(d, Vmax, Amax);
+ output ETCS_report(self, p, v, a, _stop);
+  set c_TAB := 0;
+ nextstate moving;
+  /* received a negotiation signal from RBC */
+ deadline lazy;
+ input ETCS_negotiation(d, Vmax, Amax);
+ output ETCS_report(self, p, v, a, _stop);
+ set c_TBC := 0;
+ nextstate negotiation;
+ /*received a control signal from RBC */
+ deadline lazy;
+ input ETCS_control();
+ output ETCS_report(self, p, v, a, _stop);
+ nextstate -;
+  /* received an alarm from the RBC */
+  deadline lazy;
+  input ETCS_alarm_to_train();
+  output ETCS_report(self, p, v, a, _stop);
+  nextstate - ;
+  /* received a stop signal from the RBC */
+  deadline lazy;
+  input ETCS_stopRBC();
+  output ETCS_report (self, p, v, a, _stop);
+  nextstate -;
+   endstate;
+  endprocess; /* train */
+  endsystem;

@@ -1,0 +1,145 @@
+\documentclass{template/openetcs_article}
+% Use the option "nocc" if the document is not licensed under Creative Commons
+%\documentclass[nocc]{template/openetcs_article}
+\usepackage{lipsum,url}
+\usepackage{supertabular}
+\usepackage{multirow}
+\usepackage{color, colortbl}
+\definecolor{gray}{rgb}{0.8,0.8,0.8}
+\graphicspath{{./template/}{.}{./images/}}
+
+\begin{document}
+
+\frontmatter
+\project{openETCS}
+
+%Please do not change anything above this line
+%============================
+
+
+% The document metadata is defined below
+
+%assign a report number here
+\reportnum{OETCS/WP1/D02}
+
+%define your workpackage here
+\wp{Work-Package 4: ``V\&V''}
+
+%set a title here
+\title{ETCS Specification Findings}
+
+%set a subtitle here
+\subtitle{Findings of ETCS specification analyses}
+
+%set the date of the report here
+\date{\today}
+
+%define a list of authors and their affiliation here
+
+\author{Huu Nghia \textsc{Nguyen}}
+
+\affiliation{Telecom-SudParis\\
+ 9 rue Charles Fourier\\
+91011 Evry Cedex\\
+ French}
+
+%\author{Fabien~Belmonte}
+
+%\affiliation{Alstom Transport\\
+%  Information Solution\\
+%  48 rue Albert Dhalenne\\
+%  93482 Saint-Ouen cedex, France}
+
+% define the coverart
+\coverart[width=350pt]{openETCS_EUPL}
+
+%define the type of report
+\reporttype{Description of work}
+
+
+\begin{abstract}
+  This document lists analysis results of the ETCS specification and accompagnying standards that indicate problems such as unclearities, inconsistencies, ambiguities, incompleteness or errors. For now it is part of Telecom-SudParis' model verification user story but the goal is to extend its scope.
+\end{abstract}
+
+\newcounter{issuecounter}
+\newcommand{\issue}[1]{\refstepcounter{issuecounter}\textbf{Issue \#\arabic{issuecounter} (#1):}}	
+
+\newcommand{\resolution}{\textit{Resolution: }}	
+
+%=============================
+\maketitle
+
+\tableofcontents
+\newpage
+%=============================
+
+
+
+\section{Purpose of this Document}
+
+  This document lists findings in the ETCS specification and accompagnying standards indicating problems such as inconsistencies, ambiguities, incompleteness or errors that arise during analysis or modelling. The goals are the following:
+  \begin{itemize}
+    \item Clarify and correct problems to help in system modelling
+    \item Indicate issues in the standard for future improvement
+    \item ... 
+  \end{itemize}
+
+This document is to be considered as ``living document'' that is continuously extended during the runtime of the project. Solutions to issues or workarounds shall be added when available.
+
+
+
+\section{List of Issues}
+
+\subsection{Subset-026-3.6 Movement Authority}
+
+\issue{3.8.3.10}
+ "It shall be possible to give the length of a section to any location in the track"
+
+\resolution
+Since the length of a section is not a location, this sentence could be changed to "It shall be possible to give the end of a section to any location in the track".
+
+\issue{3.8.3.11} 
+"In moving block operation the MA shall never exceed the min safe rear end of the preceding train"
+
+\resolution
+Since Movement Authority (MA) is a data structure (see 3.8.3), this sentence could be changed "MA" to "EoA" (End of Authority)
+
+
+\issue{3.8.1.1.a}
+" Release speed can also be calculated on-board the train (see section Error! Reference source not found.)"
+
+\resolution
+Give a correct reference.
+
+\issue{3.8}
+I found in the subset, there are two different notations:
+
+- EoA (End of Authority) vs. EOA (End Of Authority)
+
+- LoA (Limit of Authority) vs. LOA (Limit Of Authority)
+
+What is different between them?
+
+\resolution
+Use an unique notation if they express the same mean.
+
+
+\bibliographystyle{unsrt}
+\bibliography{erdc}
+
+
+%\begin{thebibliography}{9}
+
+%\bibitem{lamport94}
+%  Leslie Lamport,
+%  \emph{\LaTeX: A Document Preparation System}.
+%  Addison Wesley, Massachusetts,
+%  2nd Edition,
+%  1994.
+
+%\end{thebibliography}
+
+%===================================================
+%Do NOT change anything below this line
+
+\end{document}

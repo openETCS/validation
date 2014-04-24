@@ -1,0 +1,109 @@
+system ETCS;
+
+const SD = 300;      /*Subset-026.4. A3.1 the safety distance between two ETCS trains is 300m*/ 
+const N_TRAINS = 12; /*The maximum number of Trains */
+
+type ID = range 0 .. 100;
+type Location = range 0 .. 100;
+type Distance = range 0 .. 100;
+type Timeout  = range 0 .. 100;
+type Size     = range 1 .. 10;	/*number of sections in a MA*/
+
+const MAX_SPEED = 600;
+type Speed    = range 0 .. MAX_SPEED;
+
+type DangerPointInfo = record
+	distance Distance;/*distance from end of section to danger point*/
+	speed Speed;      /*release speed related to danger point*/
+endrecord;
+
+
+type OverlapInfo = record
+	distance Distance;	   /*distance from end of section to end of overlap*/
+	timeout Timeout;
+	distanceTimeout Timeout; /*distance from overlap timeout start location to end of section*/
+	speed Speed;           /*release speed related to overlap*/
+endrecord;
+
+type Section = record
+	distance Distance;   /*length of section*/
+	timeout Timeout;       /* optional */
+	timeoutStop Distance;/* optional: distance from beginning of section to Section Timeout Stop location*/
+	
+	/* for End section only */
+	endTimeout Timeout;
+	endDistance Distance; /*distance from the endTimeout start location to the end of the last section*/
+	dangerInfo DangerPointInfo;
+	overlapInfo OverlapInfo;
+endrecord;
+
+const N_SECTIONS = 5;    /*maximum number of sections in an MA*/
+type Sections = array [N_SECTIONS] of Section;
+
+/*Struct of Movement Authority*/
+type MA = record
+	size Size; /*Number of Sections composing the distance to End of Authority*/
+	sections Sections;
+endrecord;
+
+type Reason = enum
+	DRIVER, TIME_BEFORE_EOA_LOA, TIMER_EXPIRED, TRACK_DES, TRACK_FREEUP
+endenum;
+
+
+
+signal MovementAuthority(MA);
+
+signal RequestToStopEarlier();/* Subset0026.3.7.2.4 from RBC only */
+/*Subset0026 3.10.2*/
+signal EmergencyMessages();	 /* Subset0026.3.7.2.4 from RBC only */
+
+
+
+signal TemporarySpeedRestrictions();
+
+signal MARequest(Reason);
+
+
+signal NeedSendMARequest();	/*3.8.2.7*/
+
+/*Subset0026 3.8.3*/
+signalroute RBC_to_OBU(1)
+	from env to OBU	
+	with MovementAuthority;
+
+signalroute OBU_to_RBC(1)
+	from OBU to env
+	with MARequest;
+	
+signalroute ENV_to_OBU(1)
+	from env to OBU
+	with TemporarySpeedRestrictions
+		 ;
+signalroute Driver_to_OBU(1)
+	from env to OBU
+	with NeedSendMARequest;
+signalroute Balise_to_OBU(1)
+	from env to OBU
+	with NeedSendMARequest;	
+	
+	
+process OBU(N_TRAINS);
+var ma MA;
+var reason Reason; 
+ /* the initial state of the train; the train in this state is not controlled by the RBC */
+state idle #start ;
+	input NeedSendMARequest();
+		task reason := DRIVER;
+		nextstate reqMA;
+	task ma.size := 0 ;
+	nextstate -;
+	//stop;
+endstate;
+
+state reqMA #unstable ;
+	nextstate idle;
+endstate;
+
+endprocess;
+endsystem;

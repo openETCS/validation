@@ -4,46 +4,180 @@
 
 \subsection{The structure \inl{T_Bitwalker_Incremental_Locals}}
 
+
+
+\begin{lstlisting}[style=acsl-block]
+typedef struct{
+                uint8_t *Bitstream;
+			    unsigned int Length;
+			    unsigned int CurrentBitposition;
+			  } T_Bitwalker_Incremental_Locals;
+\end{lstlisting}
+
+
+
 \subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Init}}
 
+
+In this section we specify the function \init,  it  initializes a record of the type \locals. Its function signature reads as follows:
+
+
+\begin{lstlisting}[style=acsl-block]
+void Bitwalker_IncrementalWalker_Init(
+        T_Bitwalker_Incremental_Locals *Locals,
+        uint8_t Bitstream[],
+        unsigned int Size,
+        unsigned int FirstBitposition);
+\end{lstlisting}
+
+
 \paragraph{Arguments}
+\begin{itemize}
+    \item  \inl{Locals} is pointer to a \inl{struct} of type \locals which is to be initialized.
+   \item \inl{Bitstream} is  the stream which is to be initialized to the component \inl{Bitstream} of \inl{Locals}.
+   \item \inl{Size} is the length of the bit stream.
+   \item \inl{FirstBitposition} is the position where the bit stream begins.
+\end{itemize}
 
 \paragraph{Preconditions}
+\begin{itemize}
+    \item  \inl{Locals} is a valid \inl{struct}.
+\end{itemize}
 
 \paragraph{Description}
+\init assigns the values of last three arguments to \inl{Locals}, such that
+\inl{Locals.Bitstream} points to \inl{Bitstream}, the value of \inl{Locals.Length} is the content of \inl{Size} and 
+\inl{Locals.CurrentBitposition} is a copy of \inl{FirstBitposition}. The argument \inl{Bitstream} remains unchanged by the function \init.
 
 \subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Next}}
 
+\begin{lstlisting}[style=acsl-block]
+uint64_t Bitwalker_IncrementalWalker_Peek_Next (T_Bitwalker_Incremental_Locals *Locals,
+                                                unsigned int Length);
+\end{lstlisting}
+
+
 \paragraph{Arguments}
+\begin{itemize}
+    \item  \inl{Locals} holds a bit stream, the start position and the length of the bit stream.
+   \item \inl{Length} is the Length of the sequence.
+\end{itemize}
 
 \paragraph{Preconditions}
+\begin{itemize}
+    \item  \inl{Locals} is a valid record, where \inl{Local.Bitstream} is a valid array of \inl{Locals.Length}.
+    \item \inl{Length} $\leq$ \inl{64} and
+    \item \inl{Locals.CurrentBitposition} $\leq $ \inl{UINT_MAX} $-$ \inl{Length}
+\end{itemize}
 
 \paragraph{Description}
+\peeknext reads a sequence from a bit stream and  returns it as $64$ bit integer. If the bit sequence is not valid the function shall return \inl{0}. Furthermore  it sets \inl{Locals.CurrentBitposition} to the first position behind the sequence that was read. All other components of \inl{Locals} are not altered.
+
+
+
 
 \subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Finish}}
 
+\begin{lstlisting}[style=acsl-block]
+int Bitwalker_IncrementalWalker_Peek_Finish (T_Bitwalker_Incremental_Locals *Locals);
+\end{lstlisting}
+
 \paragraph{Arguments}
 
+\begin{itemize}
+    \item  \inl{Locals} holds a bit stream, the start position and the length of the bit stream.
+\end{itemize}
+
 \paragraph{Preconditions}
+\begin{itemize}
+    \item  \inl{Locals} is a valid record.
+    \item \inl{Locals.CurrentBitposition} $\leq $ \inl{UINT_MAX}.
+\end{itemize}
 
 \paragraph{Description}
+\peekfinish  returns the current bit position of the bit stream that is hold by \inl{Locals}.
+\textbf{return value should be  an unsigned type instead of signed type} 
 
 \subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Next}}
+\begin{lstlisting}[style=acsl-block]
+int		 Bitwalker_IncrementalWalker_Poke_Next(T_Bitwalker_Incremental_Locals *Locals, unsigned int Length, uint64_t Value);
+\end{lstlisting}
 
 \paragraph{Arguments}
 
+\begin{itemize}
+    \item  \inl{Locals} holds a bit stream, the start position of the sequence within the bit stream.
+   \item \inl{Length} is the Length of the sequence.
+   \item \inl{Value} is the integer which shall be converted into a bit sequence
+\end{itemize}
+
 \paragraph{Preconditions}
+\begin{itemize}
+    \item  \inl{Locals} is a valid record.
+    \item \inl{Locals.CurrentBitposition} + \inl{Length} is less than \inl{UINT_MAX}
+\end{itemize}
 
 \paragraph{Description}
+
+
+
+
+We specify \pokenext as follows:
+The function \poke converts a 64-bit unsigned integer to a bit sequence and 
+writes it into a bit stream.
+
+For $0 \leq x$ exists a shortest sequence of~0 and~1
+$(b_0, b_1,\ldots,b_{n - 1})$
+such that
+\begin{align}
+    \sum_{i=0}^{n-1} b_i \cdot 2^{(n - 1) - i} = x.
+\end{align}
+
+The function \pokenext tries to store the sequence $(b_0, b_1,\ldots,b_{n - 1})$
+in the bit sequence of \inl{Length} bits that starts
+at bit index \inl{Locals.CurrentBitposition}.
+
+The return value depends on  the following cases:
+\begin{itemize}
+    \item  If the bit sequence is not valid \peeknext  returns $-1$.
+    \item  If the bit sequence is valid, then there are two cases:
+\begin{itemize}
+\item
+If $x$ is greater or equal than $2^\mathtt{Length}$, then~$x$
+cannot be represented as bit sequence $(b_0, b_1,\ldots,b_{\mathtt{Length} - 1})$.
+\pokenext returns then~$-2$.
+
+\item
+If $x$ is less the $2^{\mathtt{Length}}$, then  the sequence
+$(\overbrace{0,\ldots,0}^{\mathtt{Length}-n},b_0, b_1,\ldots,b_{n - 1})$
+is stored in the bit stream starting at \inl{Locals.CurrentBitposition}.
+The return value of \pokenext is 0.
+
+\end{itemize}
+\end{itemize}
+
+Regardless of whether the poke was successful \pokenext sets the value  \inl{Locals.CurrentBitpositiontion} to the first position behind the sequence that it tired to poke.
+ All other components of the record \inl{Locals} remain unaltered.
+
 
 \subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Finish}}
 
+\begin{lstlisting}[style=acsl-block]
+int		 Bitwalker_IncrementalWalker_Poke_Finish (T_Bitwalker_Incremental_Locals *Locals);
+\end{lstlisting}
 
 \paragraph{Arguments}
+\begin{itemize}
+    \item  \inl{Locals} holds a bit stream, the start position and the length of the bit stream.
+\end{itemize}
 
 \paragraph{Preconditions}
+\begin{itemize}
+    \item  \inl{Locals} is a valid record.
+    \item \inl{Locals.CurrentBitposition} $\leq $ \inl{UINT_MAX}.
+\end{itemize}
 
 \paragraph{Description}
-
+\peekfinish  returns the current bit position of the bit stream that is hold by \inl{Locals}.
 
 

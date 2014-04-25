@@ -1,6 +1,5 @@
-\section{Introduction}
 
-We introduce some auxiliary concepts and formulate general assumptions:
+\section{Basic concepts}
 
 \begin{itemize}
 \item
@@ -27,6 +26,22 @@ mark bit positions in the first and second array element, respectively.
 \end{center}
 \end{figure}
 
+\item 
+The C~programming language neither provides a type \emph{bit}
+nor does it support random access to the bits of a bit stream.
+In order to access the $i$-th bit of a bit sequence one typically
+has to first access the byte with index $j = i/8$ and then access the 
+bit $k = i \pmod{8}$ within this byte.
+Note that in Figure~\ref{fig:bitstream-indices} 
+bytes and bits are indexed in increasing order from the \emph{left}.
+On the byte level, however, bits are often indexed from the \emph{right}.
+For example, to access the $k$-th bit of a byte \inl{a} one can
+shift this bit to the right by $7-k$ and extracts then the now
+rightmost bit by performing a bit-wise \emph{and} with the value~1
+%
+\begin{verbatim}
+   (a >> (7-k)) & 1
+\end{verbatim}
 
 \item
 A \emph{bit sequence} is a consecutive sequence of bits within a bit stream
@@ -45,14 +60,19 @@ and its \emph{length}, that is, the number of bits it contains.
      with respect to a bit stream of length $n$ if the following conditions are
      satisfied
      \begin{align*}
-         0 &\leq p \leq 8n \\
-         0 &\leq p + l \leq 8n
+         0 &\leq p < 8n \\
+         0 &\leq p + l < 8n
      \end{align*}
-
-\item 
-We assume that the C-types \texttt{unsigned int} and \texttt{int}
-have a width of~32~bits.
 
 \end{itemize}
 
+We assume that the C-types \inl{unsigned int} and \inl{int}, which
+are used in the implementation to represent indices, counting and error codes,
+have a width of~32~bits.
+We point this out here because we conducted the verification on a platform with
+these characteristics.
+
+As an aside, MISRA-C discourages the use of ``generic'' integer types
+such as \inl{int} and \inl{unsigned int} and recommends the use of integer types whose names
+contain the exact width.
 

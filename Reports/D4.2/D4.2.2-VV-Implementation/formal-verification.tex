@@ -1,5 +1,5 @@
 
-\chapter{Formal Verification of the \bitwalker Core Functionality}
+\chapter{Formal verification of the \bitwalker core functionality}
 \label{sec:formal-verification}
 
 \fxfatal[inline]{improve this intro}
@@ -32,7 +32,7 @@ Finally, we give an overview about the still open issues in section~\ref{issues}
 
 \clearpage
 
-\section{Verification Method}
+\section{Verification method}
 \label{plan}
 \label{method}
 
@@ -119,7 +119,7 @@ for review by the domain experts.
 
 \clearpage
 
-\section{A First Look on \peek and \poke}
+\section{A first look on \peek and \poke}
 \label{sec:bitwalker-first-look}
 
 In this section we analyze the implementations of \peek 
@@ -209,7 +209,7 @@ different results: Calling \peek from Listing~\ref{lst:peek-original} with the a
 
 produces~0 whereas the implementation from Listing~\ref{lst:peek-alternative} returns~118294784.
 Apparently, even \peek is not so simple that its functionality can be unambiguously
-understood just by looking at the code.
+understood just by reading the code.
 
 
 \clearpage
@@ -278,247 +278,7 @@ faces the problem that it
 \end{itemize}
 
 \clearpage
-
-\section{Informal Specifications}
-\label{sec:informal-specification}
-
-Before we provide an informal specification of \peek and \poke, respectively,
-we introduce some auxiliary concepts and formulate general assumptions.
-We would also like to point out the following: 
-When we speak of \emph{integers}, then we refer to the infinite set of mathematical
-integers $\{\ldots, -1, 0, 1, \ldots\}$
-and not to one of the many finite representation provided by the type system of~C.
-This distinction is important because mathematical integers
-usually play an important role in \acsl specifications.
-
-\subsection{Basic Concepts}
-
-\begin{itemize}
-\item
-A \emph{bit stream} is an array containing elements of type \verb"uint8_t".
-
-A bit stream of length $n$ contains $8n$ bits.
-
-\item
-A bit stream is \emph{valid} if the array is valid.
-
-\item 
-A bit stream can be indexed both by its array indices
-and its \emph{bit indices}.
-
-Figure~\ref{fig:bitstream-indices} shows the difference between 
-array indices and bit indices in a bit stream.
-The two bit indices, 0~and~14,
-mark bit positions in the first and second array element, respectively.
-
-\begin{figure}[hbt]
-\begin{center}
-\includegraphics[width=0.40\textwidth]{figures/array_as_stream.pdf}
-\caption{\label{fig:bitstream-indices} Array indices and bit indices in a bit stream}
-\end{center}
-\end{figure}
-
-\item 
-The C~programming language neither provides a type \emph{bit}
-nor does it support random access to the bits of a bit stream.
-In order to access the $i$-th bit of a bit sequence one typically
-has to first access the byte with index $j = i/8$ and then access the 
-bit $k = i \pmod{8}$ within this byte.
-Note that in Figure~\ref{fig:bitstream-indices} 
-bytes and bits are indexed in increasing order from the \emph{left}.
-On the byte level, however, bits are often indexed from the \emph{right}.
-For example, to access the $k$-th bit of a byte \inl{a} one can
-shift this bit to the right by $7-k$ and extracts then the now
-rightmost bit by performing a bit-wise \emph{and} with the value~1
-%
-\begin{verbatim}
-   (a >> (7-k)) & 1
-\end{verbatim}
-
-\item
-A \emph{bit sequence} is a consecutive sequence of bits within a bit stream
-as represented in Figure~\ref{fig:bitsequence}.
-\begin{figure}[hbt]
-\begin{center}
-\includegraphics[width=0.40\textwidth]{figures/bit_sequence.pdf}
-\caption{\label{fig:bitsequence} A bit sequence within a bit stream}
-\end{center}
-\end{figure}
-
-A bit sequence is given by the position of its first bit (a bit index in the bit stream)
-and its \emph{length}, that is, the number of bits it contains.
-
-\item A bit sequence of length $l$ that starts at bit index $p$ is \emph{valid}
-     with respect to a bit stream of length $n$ if the following conditions are
-     satisfied
-     \begin{align*}
-         0 &\leq p < 8n \\
-         0 &\leq p + l < 8n
-     \end{align*}
-
-\end{itemize}
-
-We assume that the C-types \inl{unsigned int} and \inl{int}, which
-are used in the implementation to represent indices, counting and error codes,
-have a width of~32~bits.
-We point this out here because we conducted the verification on a platform with
-these characteristics.
-
-As an aside, MISRA-C discourages the use of ``generic'' integer types
-such as \inl{int} and \inl{unsigned int} and recommends the use of integer types whose names
-contain the exact width.
-
-\subsection{Informal Specification of \peek}
-\label{sec:informal-peek}
-
-Now we specify \peek with the introduced auxiliary concepts.
-The function \peek reads a bit sequence from a bit stream
-and converts it to an integer.
-
-Its function signature reads as follows:
-
-\begin{lstlisting}[style=acsl-block]
-uint64_t  Bitwalker_Peek(unsigned int Startposition, 
-                         unsigned int Length,
-                         uint8_t Bitstream[],
-                         unsigned int BitstreamSizeInBytes);
-\end{lstlisting}
-
-\paragraph{Arguments}
-The arguments of \peek have the following purpose:
-\begin{itemize}
-    \item \inl{Startposition} is the bit index in the bit stream 
-    where the bit sequence starts.
-    \item \inl{Length} is the length of the bit sequence.
-    \item \inl{Bitstream} is the array which provides the bit stream.
-    \item \inl{BitstreamSizeInBytes} is the length of the array 
-    containing the bit stream. 
-\end{itemize}
-
-\paragraph{Preconditions}
-The following preconditions shall hold for the function arguments.
-Note that additional constraints are implicitly expressed by the use
-of \emph{unsigned} integer types.
-
-\begin{itemize}
-\item \inl{Bitstream} is a valid array of length \inl{BitstreamSizeInBytes}
-
-\item \inl{Length} $\leq$ \inl{64} and
-
-\item \inl{Startposition} $\leq$ \inl{UINT_MAX} - \inl{Length}.
-      This condition expresses that no arithmetic overflows shall occur
-      when evaluating \inl{Startposition + Length}.
-\end{itemize}
-
-\paragraph{Description}
-As mentioned, the function \peek reads a bit sequence from a bit stream
-and converts it to a 64-bit unsigned integer.
-
-For a bit sequence $(b_0, b_1,\ldots,b_{n - 1})$ the function \peek returns the sum
-\begin{align}
-\label{eq:peek-result}
-    \sum_{i=0}^{n-1} b_i \cdot 2^{(n - 1) - i} 
-\end{align}
-
-Note that is a higher-level description than what is done in the source code.
-There is, in our opinion, not much point to reflect all of the low-level bit operations
-into the specification if a clearer description is at hand.
-
-If the bit sequence is not valid, then \peek shall return~0.
-We were wondering why the implementation maps an illegal input to a legitimate output.
-The code providers argued along the lines that this error condition was not
-considered important enough to be properly reported.
-One can interpret this design decision as an attempt to increase the
-robustness of the function against illegal values.
-In general, we recommend to explicitly describe all error conditions
-and to devise a consistent error detection and error recovery strategy.
-
-
-\subsection{Informal Specification of \poke}
-\label{sec:informal-poke}
-
-In this section we examine the function \poke
-in the same manner as we did it for \peek.
-
-The function \poke converts an integer to a bit sequence and writes it
-into a bit stream.
-Its function signature reads as follows:
-\begin{lstlisting}[style = acsl-block]
-int      Bitwalker_Poke(unsigned int Startposition,
-                        unsigned int Length,
-                        uint8_t Bitstream[],
-                        unsigned int BitstreamSizeInBytes,
-                        uint64_t Value);
-\end{lstlisting}
-
-
-\paragraph{Arguments}
-The arguments have the following purpose:
-
-\begin{itemize}
-    \item \inl{Startposition} is the bit index in the bit stream 
-    where the bit sequence starts.
-    \item \inl{Length} is the length of the bit sequence.
-    \item \inl{Bitstream} is the array which provides the bit stream.
-    \item \inl{BitstreamSizeInBytes} is the length of the array 
-    containing the bit stream. 
-    \item \inl{Value} is the integer which shall be converted into a bit sequence.
-\end{itemize}
-
-
-\paragraph{Preconditions}
-The following conditions shall hold for the function arguments:
-
-\begin{itemize}
-\item \inl{Bitstream} is a valid array of length \inl{BitstreamSizeInBytes}
-
-\item \inl{Startposition + Length} is less than \verb"UINT_MAX".
-\end{itemize}
-
-Note that additional constraints are implicitly expressed by the use
-of \emph{unsigned} integer types.
-
-
-\paragraph{Description}
-Now we can specify \poke as follows:
-The function \poke converts a 64-bit unsigned integer to a bit sequence and 
-writes it into a bit stream.
-
-For $0 \leq x$ exists a shortest sequence of~0 and~1
-$(b_0, b_1,\ldots,b_{n - 1})$
-such that
-\begin{align}
-    \sum_{i=0}^{n-1} b_i \cdot 2^{(n - 1) - i} = x.
-\end{align}
-
-The function \poke tries to store the sequence $(b_0, b_1,\ldots,b_{n - 1})$
-in the bit sequence of \inl{Length} bits that starts
-at bit index \inl{Startposition}.
-
-The return value of \poke depends on the following three cases:
-
-\begin{itemize}
-\item 
-If the bit sequence is not valid, then \poke returns~$-1$.
-
-\item 
-If the bit sequence is valid, then there are two cases:
-
-\begin{itemize}
-\item
-If $x$ is greater or equal than $2^\mathtt{Length}$, then~$x$
-cannot be represented as bit sequence $(b_0, b_1,\ldots,b_{\mathtt{Length} - 1})$.
-\poke returns then~$-2$.
-
-\item
-If $x$ is less the $2^{\mathtt{Length}}$, then  the sequence
-$(\overbrace{0,\ldots,0}^{\mathtt{Length}-n},b_0, b_1,\ldots,b_{n - 1})$
-is stored in the bit stream starting at \inl{Startposition}.
-The return value of \poke is 0.
-
-\end{itemize}
-\end{itemize}
-
+\input{informal-specifications}
 \clearpage
 
 \section{Tests for \peek and \poke}
@@ -594,7 +354,7 @@ the following reasons.
 
 \clearpage
 
-\section{Formal Specification with \acsl}
+\section{Formal specification with \acsl}
 \label{sec:formal-specification}
 
 In this section we discuss formal contracts for \peek and \poke.
@@ -605,9 +365,8 @@ As of now they describe the main operation modes and are aimed at showing
 that no runtime errors can occur if the functions are called 
 in a context where their preconditions are satisfied..
 
-\subsection{Formal Specification of \peek}
+\subsection{Formal specification of \peek}
 \label{sec:formal-specification-peek}
-
 
 Listing~\ref{lst:spec-peek} shows an \acsl contract with the 
 main operation modes of \peek.
@@ -728,7 +487,7 @@ will be checked \framacwp.
 
 \clearpage
 
-\subsection{Code Annotations for \peek}
+\subsection{Code annotations for \peek}
 \label{sec:peek-loop-invariants}
 
 Listing~\ref{lst:impl-peek} shows our modified version of \peek.
@@ -792,7 +551,7 @@ can occur when computing the return value of \peek.
 
 \clearpage
 
-\subsection{Formal Specification of \poke}
+\subsection{Formal specification of \poke}
 \label{sec:formal-specification-poke}
 
 Listing~\ref{lst:spec-poke} shows an \acsl contract with the 
@@ -884,7 +643,7 @@ Another verification goal is to show that these three behaviors exclude each oth
 
 \clearpage
 
-\subsection{Code Annotations for \poke}
+\subsection{Code annotations for \poke}
 \label{sec:poke-loop-invariants}
 
 Listing~\ref{lst:impl-poke} shows our modified version of \poke.
@@ -924,91 +683,69 @@ in Section~\ref{sec:peek-loop-invariants}.
 \end{itemize}
 
 
-
 \clearpage
 
-\section{Formal Verification with \framacwp}
+\section{Results of formal verification with \framacwp}
 \label{sec:verification}
-\label{verification-peek}
-
-\fxfatal{not ready for review}
 
 In this section we present the current state of the verification results 
-for \peek.
-Table~\ref{tab:results-peek} discriminates the results for
-three different types of verification conditions (VCs).
+for \peek and \poke.
+Table~\ref{tbl:results-peek-and-poke} lists how many of the generated proof
+obligations could be verified by theorem provers.
 
 \begin{table}[hbt]
-  \centering
-  \begin{tabular}[htb]{lccc}
-    \toprule
-     & \# VC & Proven VCs & Verification rate in \%\\
-    \midrule
-    lemmas & 1 &0 & 0 \\
-    %\midrule
-    rte-assertions&9&5&55\\
-    rest &18 &17&94\\
- %   \bottomrule
-%    &27&22&81\\
-    \bottomrule
-  \end{tabular}
-  \caption{Verification Results of \peek}
-  \label{tab:results-peek}
+\centering
+\begin{tabular}{|l|p{1.1cm}|p{1.1cm}|p{1.1cm}||c|c|c|c|}
+\hline
+Function & proof obligations 
+         & verified obligations 
+         & verifi\-ca\-tion rate
+         & Qed 
+         & Alt-Ergo 
+         & CVC4
+         & Coq\\
+\hline
+\hline
+ \peek &  72 & 70 &  97\% & 52 & 18 & 0 & 0  \\
+\hline
+ \poke &  81 & 81 & 100\% & 53 & 26 & 2 & 0  \\
+\hline
+\end{tabular}
+\caption{\label{tbl:results-peek-and-poke} Verification results for \peek and \poke}
 \end{table}
 
+In the case of \poke all~81 verification conditions were proven
+by automatic theorem provers.
+This means that the implementation of~\poke
+shown in Listing~\ref{lst:impl-poke} satisfies the formal specification
+in Listing~\ref{lst:spec-poke}.
 
-The first row contains the lemmas we used to ease the verification for the automatic theorem provers.
-The second row contains the \inl{rte}-assertions 
-concerning the absence of run time errors.
-The third row shows all other verification conditions for \peek
-which are mainly about functional behavior.
-However, they also contain the postconditions for the robustness cases
-and the loop specification.
+In the case of \peek, two out of 72 proof obligations could not be
+verified automatically and will have to be handled by the interactive
+theorem prover \coq.
+The unproven obligations are related to the loop invariant that
+states that in iteration~$i$ the value \inl{retval} is less than~$2^i$
+(see Listing~\ref{lst:impl-peek}).
 
-For each row we listed the total number of generated verification conditions,
-the number of proven verification conditions and the verification rate
-that is the percentage of proven verification conditions. 
+Table~\ref{tbl:results-peek-and-poke} also lists how many proof
+obligations were discharged by the various provers.
 
-The verification rate for the \inl{rte}-assertions are very low 
-due to the difficulty for \framac to deal with bit operations.
-In order to increase this rate, we will verify the absence
-of run time errors separately and will provide additional lemmas and axioms
-to ease the verification.
-We point out some of the related challenges in section~\ref{issues}.
+\begin{itemize}
+\item \qed, which is a built-in simplifier of \framacwp, discharges most of the obligations
 
+\item \altergo, which is the default theorem prover of \framacwp, can deal with
+      most of the remaining obligations
 
+\item \cvc, which is one of many external theorem provers that can be used with \framacwp,
+      discharges for \poke two proof obligations that could be tackled neither by \qed nor \altergo
 
-In this section we present the current state of verification results of 
-for \poke.
-The results are shown in Table~\ref{tab:results-poke}.
- We listed the different verification conditions 
- row by row like we did for \peek.
-
-The function \poke has significantly more unproven verification conditions than \peek
-this is because it is more complex and alters memory locations via bit operations.
-Therefore, we will verify the absence of run time errors separately as well.
-
-\begin{table}[hbt]
-  \centering
-  \begin{tabular}[h]{lccc}
-    \toprule
-     & \# VC & Proven VCs & Proven VCs in \%\\
-    \midrule
-    lemmas & $1$ &$0$ & $0$ \\
-    %\midrule
-    rte-assertions&$19$&$7$&$36$\\
-    rest &$49$ &$38$&$77$\\
-    %\bottomrule
-    %&$68$&$45$&$66$\\
-    \bottomrule
-  \end{tabular}
-  \caption{Verification Results of \poke}
-  \label{tab:results-poke}
-\end{table}
+\item \coq, which is an interactive theorem prover has not been used so far but
+      will be employed to deal with the two remaining proof obligations of \peek
+\end{itemize}
 
 \clearpage
 
-\section{Open Issues}
+\section{Open issues}
 \label{issues}
 
 \fxfatal{not ready for review}

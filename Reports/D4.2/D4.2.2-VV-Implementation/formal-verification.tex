@@ -687,7 +687,7 @@ in Section~\ref{sec:peek-loop-invariants}.
 
 \clearpage
 
-\section{Formal verification with \framacwp}
+\section{Results of formal verification with \framacwp}
 \label{sec:verification}
 
 In this section we present the current state of the verification results 
@@ -716,7 +716,7 @@ Function & proof obligations
 \caption{\label{tbl:results-peek-and-poke} Verification results for \peek and \poke}
 \end{table}
 
-In the case of \poke all~81 verfication conditions were proven
+In the case of \poke all~81 verification conditions were proven
 by automatic theorem provers.
 This means that the implementation of~\poke
 shown in Listing~\ref{lst:impl-poke} satisfies the formal specification
@@ -725,6 +725,25 @@ in Listing~\ref{lst:spec-poke}.
 In the case of \peek, two out of 72 proof obligations could not be
 verified automatically and will have to be handled by the interactive
 theorem prover \coq.
+The unproven obligations are related to the loop invariant that
+states that in iteration~$i$ the value \inl{retval} is less than~$2^i$
+(see Listing~\ref{lst:impl-peek}).
+
+Table~\ref{tbl:results-peek-and-poke} also lists how many proof
+obligations were discharged by the various provers.
+
+\begin{itemize}
+\item \qed, which is a built-in simplifier of \framacwp, discharges most of the obligations
+
+\item \altergo, which is the default theorem prover of \framacwp, can deal with
+      most of the remaining obligations
+
+\item \cvc, which is one of many external theorem provers that can be used with \framacwp,
+      discharges for \poke two proof obligations that could be tackled neither by \qed nor \altergo
+
+\item \coq, which is an interactive theorem prover has not been used so far but
+      will be employed to deal with the two remaining proof obligations of \peek
+\end{itemize}
 
 \clearpage
 

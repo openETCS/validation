@@ -690,7 +690,10 @@ in Section~\ref{sec:peek-loop-invariants}.
 \section{Formal verification with \framacwp}
 \label{sec:verification}
 
-\fxfatal{not ready for review}
+In this section we present the current state of the verification results 
+for \peek and \poke.
+Table~\ref{tbl:results-peek-and-poke} lists how many of the generated proof
+obligations could be verified by theorem provers.
 
 \begin{table}[hbt]
 \centering
@@ -710,80 +713,18 @@ Function & proof obligations
  \poke &  81 & 81 & 100\% & 53 & 26 & 2 & 0  \\
 \hline
 \end{tabular}
+\caption{\label{tbl:results-peek-and-poke} Verification results for \peek and \poke}
 \end{table}
 
-In this section we present the current state of the verification results 
-for \peek.
-Table~\ref{tab:results-peek} discriminates the results for
-three different types of verification conditions (VCs).
+In the case of \poke all~81 verfication conditions were proven
+by automatic theorem provers.
+This means that the implementation of~\poke
+shown in Listing~\ref{lst:impl-poke} satisfies the formal specification
+in Listing~\ref{lst:spec-poke}.
 
-\begin{table}[hbt]
-  \centering
-  \begin{tabular}[htb]{lccc}
-    \toprule
-     & \# VC & Proven VCs & Verification rate in \%\\
-    \midrule
-    lemmas & 1 &0 & 0 \\
-    %\midrule
-    rte-assertions&9&5&55\\
-    rest &18 &17&94\\
- %   \bottomrule
-%    &27&22&81\\
-    \bottomrule
-  \end{tabular}
-  \caption{Verification Results of \peek}
-  \label{tab:results-peek}
-\end{table}
-
-
-The first row contains the lemmas we used to ease the verification for the automatic theorem provers.
-The second row contains the \inl{rte}-assertions 
-concerning the absence of run time errors.
-The third row shows all other verification conditions for \peek
-which are mainly about functional behavior.
-However, they also contain the postconditions for the robustness cases
-and the loop specification.
-
-For each row we listed the total number of generated verification conditions,
-the number of proven verification conditions and the verification rate
-that is the percentage of proven verification conditions. 
-
-The verification rate for the \inl{rte}-assertions are very low 
-due to the difficulty for \framac to deal with bit operations.
-In order to increase this rate, we will verify the absence
-of run time errors separately and will provide additional lemmas and axioms
-to ease the verification.
-We point out some of the related challenges in section~\ref{issues}.
-
-
-
-In this section we present the current state of verification results of 
-for \poke.
-The results are shown in Table~\ref{tab:results-poke}.
- We listed the different verification conditions 
- row by row like we did for \peek.
-
-The function \poke has significantly more unproven verification conditions than \peek
-this is because it is more complex and alters memory locations via bit operations.
-Therefore, we will verify the absence of run time errors separately as well.
-
-\begin{table}[hbt]
-  \centering
-  \begin{tabular}[h]{lccc}
-    \toprule
-     & \# VC & Proven VCs & Proven VCs in \%\\
-    \midrule
-    lemmas & $1$ &$0$ & $0$ \\
-    %\midrule
-    rte-assertions&$19$&$7$&$36$\\
-    rest &$49$ &$38$&$77$\\
-    %\bottomrule
-    %&$68$&$45$&$66$\\
-    \bottomrule
-  \end{tabular}
-  \caption{Verification Results of \poke}
-  \label{tab:results-poke}
-\end{table}
+In the case of \peek, two out of 72 proof obligations could not be
+verified automatically and will have to be handled by the interactive
+theorem prover \coq.
 
 \clearpage
 

@@ -3,15 +3,15 @@
 export ASPELL=aspell check --lang=en --encoding=utf-8
 
 
-all: informal.tex FORCE
+all: informal-specification.tex FORCE
 	latexmk -pdf $<
 
 
 FORCE:
 
+.SILENT:clean
 
-clean:
-	$(RM) informal.pdf
+clean: FORCE 
 	$(RM) *.aux
 	$(RM) *.bak
 	$(RM) *.bbl

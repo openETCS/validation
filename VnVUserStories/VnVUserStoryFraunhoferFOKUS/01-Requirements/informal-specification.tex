@@ -1,14 +1,12 @@
 
-
-
-\documentclass[paper=a4,DIV16,oneside,lefteqn]{scrartcl}
+\documentclass[paper=a4,DIV17,oneside,lefteqn,american]{scrartcl}
 \pdfoutput=1
 
+\usepackage[american,german]{babel} 
 \usepackage[margin=1.2in]{geometry}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[american]{babel}
 
 \usepackage{hyperref}
 \usepackage[pdftex]{graphicx}
@@ -16,7 +14,7 @@
 \usepackage{textcomp}
 \usepackage{framed}
 
-\usepackage[draft,nomargin]{fixme}
+\usepackage[draft,inline,nomargin]{fixme}
 
 \usepackage{verbatim}
 
@@ -39,38 +37,17 @@
 \date{}
 
 \begin{document}
+\selectlanguage{american}
 \maketitle
+\input{abstract}
+\clearpage
 \tableofcontents
+\listoffixmes
+\clearpage
 
-\section{introduction}
-
-The \bitwalker software can be considered to consist of a \emph{public}
-and a \emph{private} part.
-\begin{itemize}
-\item
-The public part consists of the \isoc data type \bitwalkertype and several \isoc functions
-that can be used to manipulate objects this type.
-
-\item
-The private part consists of the functions \peek and \poke
-that implemnet the core functionality of \bitwalker.
-\end{itemize}
-
-Before we informally specify \bitwalker
-we introduce some auxiliary concepts and formulate general assumptions.
-We would also like to point out the following:
-When we speak in this document of \emph{integers},
-then we refer to the infinite set of mathematical
-integers $\{\ldots, -1, 0, 1, \ldots\}$
-and not to one of the many finite representation provided by the type system of \isoc.
-
-This distinction is important because it usually makes more sense
-to describe the functionality of a piece of software in a more
-asbtract way.
-In a later step the realities of specific the \isoc type system
-have to be taken into account.
-
+\include{introduction}
 \include{basic}
 \include{bitwalker-public}
 \include{bitwalker-private}
+
 \end{document}

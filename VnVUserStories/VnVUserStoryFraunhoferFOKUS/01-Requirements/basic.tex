@@ -56,13 +56,18 @@ as represented in Figure~\ref{fig:bitsequence}.
 A bit sequence is given by the position of its first bit (a bit index in the bit stream)
 and its \emph{length}, that is, the number of bits it contains.
 
-\item A bit sequence of length $l$ that starts at bit index $p$ is \emph{valid}
-     with respect to a bit stream of length $n$ if the following conditions are
-     satisfied
-     \begin{align*}
-         0 &\leq p < 8n \\
-         0 &\leq p + l < 8n
-     \end{align*}
+\item
+
+A bit sequence that starts at bit index $p$ and that consists of
+length $l \geq 0$ is refered to \emph{valid} (with respect to a bit stream of length $n$)
+if the following conditions are satisfied
+\begin{align*}
+  0 &\leq p < 8n \\
+  0 &\leq p + l \leq 8n
+\end{align*}
+
+Not that only the bits with indices $p \leq i < p + l$ are to be accessed
+but not the bit with index~$p+l$.
 
 \end{itemize}
 

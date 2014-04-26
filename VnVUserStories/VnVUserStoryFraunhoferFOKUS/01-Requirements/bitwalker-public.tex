@@ -1,23 +1,25 @@
 
 
-\section{The user interface of \bitwalker}
+\section{The public interface of \bitwalker}
 
-\subsection{The structure \inl{T_Bitwalker_Incremental_Locals}}
+\subsection{The structure \bitwalkertype}
 
 
 
 \begin{lstlisting}[style=acsl-block]
-typedef struct{
-                uint8_t *Bitstream;
-			    unsigned int Length;
-			    unsigned int CurrentBitposition;
-			  } T_Bitwalker_Incremental_Locals;
+   typedef struct
+   {
+       uint8_t       *Bitstream;
+       unsigned int  Length;
+       unsigned int CurrentBitposition;
+   } T_Bitwalker_Incremental_Locals;
 \end{lstlisting}
 
+\fxfatal{briefly describe struct members}
 
+\clearpage
 
 \subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Init}}
-
 
 In this section we specify the function \init,  it  initializes a record of the type \locals. Its function signature reads as follows:
 
@@ -45,9 +47,12 @@ void Bitwalker_IncrementalWalker_Init(
 \end{itemize}
 
 \paragraph{Description}
+
 \init assigns the values of last three arguments to \inl{Locals}, such that
 \inl{Locals.Bitstream} points to \inl{Bitstream}, the value of \inl{Locals.Length} is the content of \inl{Size} and 
 \inl{Locals.CurrentBitposition} is a copy of \inl{FirstBitposition}. The argument \inl{Bitstream} remains unchanged by the function \init.
+
+\clearpage
 
 \subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Next}}
 
@@ -71,10 +76,13 @@ uint64_t Bitwalker_IncrementalWalker_Peek_Next (T_Bitwalker_Incremental_Locals *
 \end{itemize}
 
 \paragraph{Description}
+
 \peeknext reads a sequence from a bit stream and  returns it as $64$ bit integer. If the bit sequence is not valid the function shall return \inl{0}. Furthermore  it sets \inl{Locals.CurrentBitposition} to the first position behind the sequence that was read. All other components of \inl{Locals} are not altered.
 
 
 
+
+\clearpage
 
 \subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Finish}}
 
@@ -95,8 +103,12 @@ int Bitwalker_IncrementalWalker_Peek_Finish (T_Bitwalker_Incremental_Locals *Loc
 \end{itemize}
 
 \paragraph{Description}
+
 \peekfinish  returns the current bit position of the bit stream that is hold by \inl{Locals}.
-\textbf{return value should be  an unsigned type instead of signed type} 
+
+\fxfatal{Should the return value be an unsigned type?}
+
+\clearpage
 
 \subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Next}}
 \begin{lstlisting}[style=acsl-block]
@@ -118,9 +130,6 @@ int		 Bitwalker_IncrementalWalker_Poke_Next(T_Bitwalker_Incremental_Locals *Loca
 \end{itemize}
 
 \paragraph{Description}
-
-
-
 
 We specify \pokenext as follows:
 The function \poke converts a 64-bit unsigned integer to a bit sequence and 
@@ -160,6 +169,8 @@ Regardless of whether the poke was successful \pokenext sets the value  \inl{Loc
  All other components of the record \inl{Locals} remain unaltered.
 
 
+\clearpage
+
 \subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Finish}}
 
 \begin{lstlisting}[style=acsl-block]
@@ -178,6 +189,7 @@ int		 Bitwalker_IncrementalWalker_Poke_Finish (T_Bitwalker_Incremental_Locals *L
 \end{itemize}
 
 \paragraph{Description}
+
 \peekfinish  returns the current bit position of the bit stream that is hold by \inl{Locals}.
 
 

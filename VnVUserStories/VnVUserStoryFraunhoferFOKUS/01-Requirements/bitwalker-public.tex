@@ -38,7 +38,7 @@ The type \bitwalkertype is defined as follows\\[1em]
 
 In this section we specify the function \init.
  The function  initializes object of the type \bitwalkertype.
-The function signature reads:
+The function signature reads:\\[1em]
 
 
 \begin{lstlisting}[style=acsl-block]
@@ -85,7 +85,7 @@ Its function signature reads as follows:\\[1em]
 
 
 \begin{lstlisting}[style=acsl-block]
-uint64_t Bitwalker_IncrementalWalker_Peek_Next (
+uint64_t Bitwalker_IncrementalWalker_Peek_Next(
     T_Bitwalker_Incremental_Locals *Locals,
     unsigned int Length);
 \end{lstlisting}
@@ -120,8 +120,12 @@ The function increments the value \inl{Locals->CurrentBitposition} by \inl{Lengt
 
 \section{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Finish}}
 
+
+ The function signature reads:\\[1em]
+
 \begin{lstlisting}[style=acsl-block]
-int Bitwalker_IncrementalWalker_Peek_Finish (T_Bitwalker_Incremental_Locals *Locals);
+int Bitwalker_IncrementalWalker_Peek_Finish(
+        T_Bitwalker_Incremental_Locals *Locals);
 \end{lstlisting}
 
 \paragraph{Arguments}
@@ -133,7 +137,6 @@ int Bitwalker_IncrementalWalker_Peek_Finish (T_Bitwalker_Incremental_Locals *Loc
 \paragraph{Preconditions}
 \begin{itemize}
    \item  \inl{Locals} must me dereferenceable.
-   \item \inl{Locals->CurrentBitposition} $\leq $ \inl{UINT_MAX}.
 \end{itemize}
 
 \paragraph{Description}
@@ -145,22 +148,31 @@ int Bitwalker_IncrementalWalker_Peek_Finish (T_Bitwalker_Incremental_Locals *Loc
 \clearpage
 
 \section{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Next}}
+
+The function \pokenext writes a sequence into a bit stream 
+and increments the current position in the bit stream by the 
+length of the read bit sequence.\\[1em]
+
+
 \begin{lstlisting}[style=acsl-block]
-int		 Bitwalker_IncrementalWalker_Poke_Next(T_Bitwalker_Incremental_Locals *Locals, unsigned int Length, uint64_t Value);
+int Bitwalker_IncrementalWalker_Poke_Next(
+        T_Bitwalker_Incremental_Locals *Locals,
+        unsigned int Length,
+        uint64_t Value);
 \end{lstlisting}
 
 \paragraph{Arguments}
 
 \begin{itemize}
-    \item  \inl{Locals} holds a bit stream, the start position of the sequence within the bit stream.
+   \item  \inl{Locals} is a dereferenceable pointer.
    \item \inl{Length} is the Length of the sequence.
    \item \inl{Value} is the integer which shall be converted into a bit sequence
 \end{itemize}
 
 \paragraph{Preconditions}
 \begin{itemize}
-    \item  \inl{Locals} is a valid record.
-    \item \inl{Locals.CurrentBitposition} + \inl{Length} is less than \inl{UINT_MAX}
+    \item  \inl{Locals} must me dereferenceable.
+    \item \inl{Locals->CurrentBitposition} + \inl{Length} is less than \inl{UINT_MAX}
 \end{itemize}
 
 \paragraph{Description}
@@ -178,7 +190,7 @@ such that
 
 The function \pokenext tries to store the sequence $(b_0, b_1,\ldots,b_{n - 1})$
 in the bit sequence of \inl{Length} bits that starts
-at bit index \inl{Locals.CurrentBitposition}.
+at bit index \inl{Locals->CurrentBitposition}.
 
 The return value depends on  the following cases:
 \begin{itemize}
@@ -193,13 +205,13 @@ cannot be represented as bit sequence $(b_0, b_1,\ldots,b_{\mathtt{Length} - 1})
 \item
 If $x$ is less the $2^{\mathtt{Length}}$, then  the sequence
 $(\overbrace{0,\ldots,0}^{\mathtt{Length}-n},b_0, b_1,\ldots,b_{n - 1})$
-is stored in the bit stream starting at \inl{Locals.CurrentBitposition}.
-The return value of \pokenext is 0.
+is stored in the bit stream starting at \inl{Locals->CurrentBitposition}.
+The return value of the function \pokenext is 0.
 
 \end{itemize}
 \end{itemize}
 
-Regardless of whether the poke was successful \pokenext sets the value  \inl{Locals.CurrentBitposition} to the first position behind the sequence that it tired to poke.
+Regardless of whether the poke was successful \pokenext sets the value  \inl{Locals->CurrentBitposition} to the first position behind the sequence that it tired to poke.
  All other components of the record \inl{Locals} remain unaltered.
 
 
@@ -228,7 +240,7 @@ int Bitwalker_IncrementalWalker_Poke_Finish(
 
 \paragraph{Description}~
 
-\pokefinish  returns the current bit position of in the bit stream.
+\pokefinish  returns the current bit position of in the bit stream and assigns nothing.
 
 \fxfatal{The functions \peekfinish and \pokefinish have the same specification. -> redundant code\\
 However the return value of \peek and respectively \peeknext does not match the return value of \peekfinish.}

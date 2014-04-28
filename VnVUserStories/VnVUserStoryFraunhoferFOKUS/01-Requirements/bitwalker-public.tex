@@ -124,18 +124,18 @@ int Bitwalker_IncrementalWalker_Peek_Finish (T_Bitwalker_Incremental_Locals *Loc
 \paragraph{Arguments}
 
 \begin{itemize}
-    \item  \inl{Locals} holds a bit stream, the start position and the length of the bit stream.
+   \item  \inl{Locals} is a dereferenceable pointer.
 \end{itemize}
 
 \paragraph{Preconditions}
 \begin{itemize}
-    \item  \inl{Locals} is a valid record.
-    \item \inl{Locals.CurrentBitposition} $\leq $ \inl{UINT_MAX}.
+   \item  \inl{Locals} must me dereferenceable.
+   \item \inl{Locals->CurrentBitposition} $\leq $ \inl{UINT_MAX}.
 \end{itemize}
 
 \paragraph{Description}
 
-\peekfinish  returns the current bit position of the bit stream that is hold by \inl{Locals}.
+\peekfinish  returns the current bit position of the bit stream that is hold by \inl{Locals} and assigns nothing.
 
 \fxfatal{Should the return value be an unsigned type?}
 

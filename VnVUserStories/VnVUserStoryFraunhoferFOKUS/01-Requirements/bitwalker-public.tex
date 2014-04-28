@@ -5,6 +5,8 @@
 \section{The structure \bitwalkertype}
 
 
+In this section we specify the object \locals.  The signature of the object reads:
+
 \begin{lstlisting}[style=acsl-block]
    typedef struct
    {
@@ -14,7 +16,17 @@
    } T_Bitwalker_Incremental_Locals;
 \end{lstlisting}
 
-\fxfatal{briefly describe struct members}
+
+\paragraph{Description}
+
+\begin{itemize}
+
+   \item \inl{Bitstream} is  the start address of a valid bit stream.
+   \item \inl{Length} is the length of the bit stream, that starts at \inl{Bitstream}.
+   \item \inl{CurrentBitposition} is a valid bit index in the bit stream given by \inl{Bitstream} and \inl{Length}
+
+\end{itemize}
+\fxfatal{\inl{Length} should be named \inl{Size}, because it characterizes the Length of \inl{Bitstream} and not of a sequence.}
 
 \clearpage
 
@@ -35,10 +47,10 @@ void Bitwalker_IncrementalWalker_Init(
 
 \paragraph{Arguments}
 \begin{itemize}
-    \item  \inl{Locals} is a dereferenceable pointer.
+   \item  \inl{Locals} is a dereferenceable pointer.
    \item \inl{Bitstream} is  the start address of a valid bit stream.
    \item \inl{Size} is the length of the bit stream, that starts at \inl{Bitstream}.
-   \item \inl{FirstBitposition} is a valid bit index in the bit stream given by \inl{Bitstream} an d \inl{Size}
+   \item \inl{FirstBitposition} is a valid bit index in the bit stream given by \inl{Bitstream} and \inl{Size}
 \end{itemize}
 
 \paragraph{Preconditions}

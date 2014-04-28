@@ -5,7 +5,8 @@
 \section{The structure \bitwalkertype}
 
 
-In this section we specify the object \locals.  The signature of the object reads:
+In this section we describe the type \locals.
+The signature of the object reads:
 
 \begin{lstlisting}[style=acsl-block]
    typedef struct
@@ -23,16 +24,21 @@ In this section we specify the object \locals.  The signature of the object read
 
    \item \inl{Bitstream} is  the start address of a valid bit stream.
    \item \inl{Length} is the length of the bit stream, that starts at \inl{Bitstream}.
-   \item \inl{CurrentBitposition} is a valid bit index in the bit stream given by \inl{Bitstream} and \inl{Length}
+   \item \inl{CurrentBitposition} is a valid bit index in
+              the bit stream given by \inl{Bitstream} and \inl{Length}
 
 \end{itemize}
-\fxfatal{\inl{Length} should be named \inl{Size}, because it characterizes the Length of \inl{Bitstream} and not of a sequence.}
+
+\fxfatal{Shouldn't \inl{Length} be named \inl{BitstreamSize} instead
+         in order to avoid confusion with the argument \inl{Length} of
+         \peek and \poke?}
 
 \clearpage
 
 \section{Informal Specification of \inl{Bitwalker_IncrementalWalker_Init}}
 
-In this section we specify the function \init.  The function  initializes object of the type \locals.
+In this section we specify the function \init.
+ The function  initializes object of the type \locals.
 The function signature reads:
 
 
@@ -65,7 +71,8 @@ The function \init assigns:
     \item \inl{Size} to \inl{Locals->Length}
     \item \inl{FirstBitposition} to \inl{Locals->CurrentBitposition}
 \end{itemize}
-\fxfatal{\inl{Size} is length of the \inl{Bitstream} not of a \inl{sequence}, So \inl{Locals->Length} should be named \inl{Locals.Size}}
+
+\fxfatal{see remark on member \inl{Length} of \bitwalkertype}
 
 \clearpage
 

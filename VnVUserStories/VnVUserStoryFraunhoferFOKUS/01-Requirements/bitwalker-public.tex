@@ -1,8 +1,11 @@
 
 
-\chapter{The public interface of \bitwalker}
+\section{The public interface of \bitwalker}
+\label{sec:bitwalker-public}
 
-\section{The structure \bitwalkertype}
+This section describes the public interface of \bitwalker.
+
+\subsection{The structure \bitwalkertype}
 
 
 The type \bitwalkertype is defined as follows\\[1em]
@@ -34,7 +37,7 @@ The type \bitwalkertype is defined as follows\\[1em]
 
 \clearpage
 
-\section{Informal Specification of \inl{Bitwalker_IncrementalWalker_Init}}
+\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Init}}
 
 In this section we specify the function \init.
  The function  initializes object of the type \bitwalkertype.
@@ -76,7 +79,7 @@ The function \init assigns:
 
 \clearpage
 
-\section{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Next}}
+\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Next}}
 
 The function \peeknext reads a sequence from a bit stream 
 and increments the current position in the bit stream by the 
@@ -118,7 +121,7 @@ The function increments the value \inl{Locals->CurrentBitposition} by \inl{Lengt
 
 \clearpage
 
-\section{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Finish}}
+\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Finish}}
 
 
  The function signature reads:\\[1em]
@@ -147,7 +150,7 @@ int Bitwalker_IncrementalWalker_Peek_Finish(
 
 \clearpage
 
-\section{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Next}}
+\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Next}}
 
 The function \pokenext writes a sequence into a bit stream 
 and increments the current position in the bit stream by the 
@@ -219,7 +222,7 @@ Regardless of whether the poke was successful \pokenext sets the value  \inl{Loc
 
 \clearpage
 
-\section{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Finish}}
+\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Finish}}
 
  The function signature reads:\\[1em]
 
@@ -240,10 +243,10 @@ int Bitwalker_IncrementalWalker_Poke_Finish(
 
 \paragraph{Description}~
 
-\pokefinish  returns the current bit position of in the bit stream and assigns nothing.
+\pokefinish  returns \inl{Locals->CurrentBitposition}.
 
-\fxfatal{The functions \peekfinish and \pokefinish have the same specification. -> redundant code\\
-However the return value of \peek and respectively \peeknext does not match the return value of \peekfinish.}
+\fxfatal{The functions \peekfinish and \pokefinish have the same specification.}
+
 
 
 

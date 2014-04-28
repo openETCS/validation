@@ -4,42 +4,37 @@
 
 The original, high-level description of the \bitwalker software is given here (in German):
 
-\selectlanguage{german}
-
 \begin{quote}
  
-Aufgabe des Bitwalkers:
+Task of the Bitwalker
  
-Sequentielles Lesen eines Bitfeldes und Konvertieren von Teilen in eine natürliche Zahl,
-bzw. invers Schreiben einer Ganzzahl in ein Bitfeld.
+The Bitwalker shall sequentially read a bit field and convert it into a natural number.
+Conversely, the Bitwalker shall read a natural number and write it to a bit field.
  
-Darstellung der Aufgabe
+Description of the task
  
-Gegeben ist ein bitorientiertes Feld im Speicher.
-Bei einer byteorientierten Darstellung im Speicher hätte das höchstwertige Bit
-in Big-Endian Notation den Index 0.
-Der Bit-Index ist streng monoton steigend mit einer Distanz von 1 zwischen den Indices.
-Gelesen und geschrieben werden jeweils natürliche Zahlen in Big-Endian Notation.
-Der Werteberreich der natürlichen Zahlen wird durch die zur Verfügung gestellte Bitbreite
-im Bitfeld begrenzt.
+A bit oriented field in memory is given.
+
+With a byte oriented representation in memory, the most significant bit
+would have the index 0 in Big-endian notation.
+The bit index increases monotonously by 1.
+Natural numbers that are given in Big-endian notation shall be read or written.
+The range of natural numbers is limited by the width of the bit field.
+
+Two access methods shall be provided:
+- Random read/write access to the bit field. 
+- Sequential read/write access to the bit field starting at a given index.
+Each read/write operation shall "consume" the bits that have been accessed.
+The access functions shall be written in plain C and shall be reentrant.
  
-Es sollen zwei Zugriffsmechanismen zur Verfügung gestellt werden:
-Wahlfreier lesender und schreibender Zugriff auf das Bitfeld
-Sequentielles Lesen/Schreiben im Bitfeld startend bei einem definierten Index.
-Jeder Lese-/Schreibvorgang ``verbraucht'' die gerade verwendeten Bits.
+Context of the Bitwalker:
  
-Die Funktionen sollen in plain-C reentrant realisiert werden.
- 
-Kontext des Bitwalkers:
- 
-In ETCS werden Big-Endian notierte Telegramme zur Kommunikation zwischen Fahrzeug und
-Stecke verwendet.
-Im Rahmen von openETCS wird ein Generator entwickelt,
-der die Telegrammspezifikation automatisiert in einen
-Encoder/Decoder umsetzt und hierfür den Bitwalker als Hilfsfunktion nutzt.
+ETCS uses telegrams in Big-endian notation to communicate between vehicle and track.
+In the scope of OpenETCS a generator shall be developed that
+automatically converts the telegram specification into an encoder/decoder.
+The Bitwalker will be used here as an auxiliary function.
 \end{quote}
 
-\selectlanguage{american}
 
 \fxfatal{describe value of this description}
 
@@ -58,7 +53,7 @@ that can be used to manipulate objects this type.
 
 \item
 The private part consists of the functions \peek and \poke
-that implemnet the core functionality of \bitwalker.
+that implement the core functionality of \bitwalker.
 \end{itemize}
 
 Before we informally specify \bitwalker
@@ -71,7 +66,7 @@ and not to one of the many finite representation provided by the type system of 
 
 This distinction is important because it usually makes more sense
 to describe the functionality of a piece of software in a more
-asbtract way.
+abstract way.
 In a later step the realities of specific the \isoc type system
 have to be taken into account.
 

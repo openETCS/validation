@@ -1,0 +1,253 @@
+
+
+\section{The public interface of \bitwalker}
+\label{sec:bitwalker-public}
+
+This section describes the public interface of \bitwalker.
+
+\subsection{The structure \bitwalkertype}
+
+
+The type \bitwalkertype is defined as follows\\[1em]
+
+\begin{lstlisting}[style=acsl-block]
+   struct  T_Bitwalker_Incremental_Locals
+   {
+       uint8_t       *Bitstream;
+       unsigned int  Length;
+       unsigned int  CurrentBitposition;
+   };
+\end{lstlisting}
+
+
+\paragraph{Description}~
+
+\begin{itemize}
+
+   \item \inl{Bitstream} is  the start address of a valid bit stream.
+   \item \inl{Length} is the length of the bit stream, that starts at \inl{Bitstream}.
+   \item \inl{CurrentBitposition} is a valid bit index in
+              the bit stream given by \inl{Bitstream} and \inl{Length}
+
+\end{itemize}
+
+\fxfatal{Shouldn't \inl{Length} be named \inl{BitstreamSize} instead
+         in order to avoid confusion with the argument \inl{Length} of
+         \peek and \poke?}
+
+\clearpage
+
+\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Init}}
+
+In this section we specify the function \init.
+ The function  initializes object of the type \bitwalkertype.
+The function signature reads:\\[1em]
+
+
+\begin{lstlisting}[style=acsl-block]
+void Bitwalker_IncrementalWalker_Init(
+        T_Bitwalker_Incremental_Locals *Locals,
+        uint8_t Bitstream[],
+        unsigned int Size,
+        unsigned int FirstBitposition);
+\end{lstlisting}
+
+
+\paragraph{Arguments}
+\begin{itemize}
+   \item  \inl{Locals} is a dereferenceable pointer.
+   \item \inl{Bitstream} is  the start address of a valid bit stream.
+   \item \inl{Size} is the length of the bit stream, that starts at \inl{Bitstream}.
+   \item \inl{FirstBitposition} is a valid bit index in the bit stream given by \inl{Bitstream} and \inl{Size}
+\end{itemize}
+
+\paragraph{Preconditions}
+\begin{itemize}
+    \item  \inl{Locals} must me dereferenceable.
+\end{itemize}
+
+\paragraph{Description}~
+
+The function \init assigns
+\begin{itemize}
+    \item \inl{Bitstream}  to \inl{Locals->Bitstream}.
+    \item \inl{Size} to \inl{Locals->Length}
+    \item \inl{FirstBitposition} to \inl{Locals->CurrentBitposition}
+\end{itemize}
+
+\fxfatal{see remark on member \inl{Length} of \bitwalkertype}
+
+\clearpage
+
+\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Next}}
+
+The function \peeknext reads a sequence from a bit stream 
+and increments the current position in the bit stream by the 
+length of the read bit sequence.
+Its function signature reads as follows:\\[1em]
+
+
+\begin{lstlisting}[style=acsl-block]
+uint64_t Bitwalker_IncrementalWalker_Peek_Next(
+    T_Bitwalker_Incremental_Locals *Locals,
+    unsigned int Length);
+\end{lstlisting}
+
+
+\paragraph{Arguments}
+\begin{itemize}
+   \item  \inl{Locals} is a dereferenceable pointer.
+   \item \inl{Length} is the length of the bit sequence.
+\end{itemize}
+
+\paragraph{Preconditions}
+\begin{itemize}
+    \item  \inl{Locals} must me dereferenceable.
+    \item \inl{Length} $\leq$ \inl{64} and
+    \item \inl{Locals->CurrentBitposition} $\leq$ \inl{UINT_MAX} $-$ \inl{Length}
+\end{itemize}
+
+\paragraph{Description}~
+
+\peeknext reads a bit sequence from a bit stream and returns it as~64 bit integer.
+
+\fxfatal{describe more precisely, see \peek}
+
+If the bit sequence is not valid the function shall return \inl{0}.
+
+The function increments the value \inl{Locals->CurrentBitposition} by \inl{Length}.
+
+\fxfatal{does it make sense to increment in the case of an invalid bit sequence?}
+
+\clearpage
+
+\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Finish}}
+
+
+ The function signature reads:\\[1em]
+
+\begin{lstlisting}[style=acsl-block]
+int Bitwalker_IncrementalWalker_Peek_Finish(
+        T_Bitwalker_Incremental_Locals *Locals);
+\end{lstlisting}
+
+\paragraph{Arguments}
+
+\begin{itemize}
+   \item  \inl{Locals} is a dereferenceable pointer.
+\end{itemize}
+
+\paragraph{Preconditions}
+\begin{itemize}
+   \item  \inl{Locals} must me dereferenceable.
+\end{itemize}
+
+\paragraph{Description}~
+
+The function  returns \inl{Locals->CurrentBitposition}.
+It does not change any variables.
+
+\fxfatal{Should the return value be an unsigned type?}
+
+\clearpage
+
+\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Next}}
+
+The function \pokenext writes a bit sequence into a bit stream 
+and increments the current position in the bit stream by the 
+length of the read bit sequence.\\[1em]
+
+
+\begin{lstlisting}[style=acsl-block]
+int Bitwalker_IncrementalWalker_Poke_Next(
+        T_Bitwalker_Incremental_Locals *Locals,
+        unsigned int Length,
+        uint64_t Value);
+\end{lstlisting}
+
+\paragraph{Arguments}
+
+\begin{itemize}
+   \item  \inl{Locals} is a dereferenceable pointer.
+   \item \inl{Length} is the length of the bit sequence.
+   \item \inl{Value} is the integer which shall be converted into a bit sequence
+\end{itemize}
+
+\paragraph{Preconditions}
+\begin{itemize}
+    \item  \inl{Locals} must me dereferenceable.
+    \item \inl{Locals->CurrentBitposition} + \inl{Length} is less than \inl{UINT_MAX}
+\end{itemize}
+
+\paragraph{Description}~
+
+We specify \pokenext as follows:
+The function \poke converts a 64-bit unsigned integer to a bit sequence and 
+writes it into a bit stream.
+
+For $0 \leq x$ exists a shortest sequence of~0 and~1
+$(b_0, b_1,\ldots,b_{n - 1})$
+such that
+\begin{align}
+    \sum_{i=0}^{n-1} b_i \cdot 2^{(n - 1) - i} = x.
+\end{align}
+
+The function \pokenext tries to store the sequence $(b_0, b_1,\ldots,b_{n - 1})$
+in the bit sequence of \inl{Length} bits that starts
+at bit index \inl{Locals->CurrentBitposition}.
+
+The return value depends on  the following cases:
+\begin{itemize}
+    \item  If the bit sequence is not valid \peeknext  returns $-1$.
+    \item  If the bit sequence is valid, then there are two cases:
+\begin{itemize}
+\item
+If $x$ is greater or equal than $2^\mathtt{Length}$, then~$x$
+cannot be represented as bit sequence $(b_0, b_1,\ldots,b_{\mathtt{Length} - 1})$.
+\pokenext returns then~$-2$.
+
+\item
+If $x$ is less the $2^{\mathtt{Length}}$, then  the sequence
+$(\overbrace{0,\ldots,0}^{\mathtt{Length}-n},b_0, b_1,\ldots,b_{n - 1})$
+is stored in the bit stream starting at \inl{Locals->CurrentBitposition}.
+The return value of the function \pokenext is 0.
+
+\end{itemize}
+\end{itemize}
+
+Regardless of whether the poke was successful \pokenext sets the value  \inl{Locals->CurrentBitposition} to the first position behind the sequence that it tired to poke.
+ All other components of the record \inl{Locals} remain unaltered.
+
+
+\fxfatal{does it make sense to increment in the case of an invalid bit sequence?}
+
+\clearpage
+
+\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Finish}}
+
+ The function signature reads:\\[1em]
+
+\begin{lstlisting}[style=acsl-block]
+int Bitwalker_IncrementalWalker_Poke_Finish(
+        T_Bitwalker_Incremental_Locals *Locals);
+\end{lstlisting}
+
+\paragraph{Arguments}
+\begin{itemize}
+   \item  \inl{Locals} is a dereferenceable pointer.
+\end{itemize}
+
+\paragraph{Preconditions}
+\begin{itemize}
+    \item  \inl{Locals} must me dereferenceable.
+\end{itemize}
+
+\paragraph{Description}~
+
+The function  returns \inl{Locals->CurrentBitposition}.
+
+\fxfatal{The functions \peekfinish and \pokefinish have the same specification.}
+
+
+
+

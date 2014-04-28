@@ -13,7 +13,7 @@ uint64_t Bitwalker_Peek(unsigned int Start,
 
   /*@
     loop invariant 0 <= i <= Length;
-    loop invariant 0 <= retval < 1 << i;
+    loop invariant 0 <= retval < (1 << i);
     loop assigns i, retval;
     loop variant Length - i;
   */

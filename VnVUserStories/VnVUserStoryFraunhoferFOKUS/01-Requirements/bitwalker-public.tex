@@ -79,7 +79,7 @@ The function \init assigns:
 \section{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Next}}
 
 In this section we examine the function \peeknext in the same manner as we did it for \init.
-The function \peeknext reads a sequence from a bit stream  and sets the index of the bit stream  to the first position behind .
+The function \peeknext reads a sequence from a bit stream  and sets the current index of the bit stream  to the first position behind the sequence.
 stream. Its function signature reads as follows:
 
 
@@ -100,15 +100,18 @@ uint64_t Bitwalker_IncrementalWalker_Peek_Next (
 \begin{itemize}
     \item  \inl{Locals} must me dereferenceable.
     \item \inl{Length} $\leq$ \inl{64} and
-    \item \inl{Locals.CurrentBitposition} $\leq $ \inl{UINT_MAX} $-$ \inl{Length}
+    \item \inl{Locals->CurrentBitposition} $\leq $ \inl{UINT_MAX} $-$ \inl{Length}
 \end{itemize}
 
 \paragraph{Description}
 
-\peeknext reads a sequence from a bit stream and  returns it as $64$ bit integer. If the bit sequence is not valid the function shall return \inl{0}. Furthermore  it sets \inl{Locals.CurrentBitposition} to the first position behind the sequence that was read. All other components of \inl{Locals} are not altered.
+\peeknext reads a sequence from a bit stream and  returns it as $64$ bit integer. If the bit sequence is not valid the function shall return \inl{0}.
 
+The function assigns:
 
-
+\begin{itemize}
+    \item \inl{Locals->CurrentBitposition} to \inl{Locals->CurrentBitposition+Length}
+\end{itemize}
 
 \clearpage
 

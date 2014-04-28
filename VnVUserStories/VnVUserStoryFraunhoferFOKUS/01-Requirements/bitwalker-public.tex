@@ -71,21 +71,27 @@ The function \init assigns:
 
 \section{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Next}}
 
+In this section we examine the function \peeknext in the same manner as we did it for \init.
+The function \peeknext reads a sequence from a bit stream  and sets the index of the bit stream  to the first position behind .
+stream. Its function signature reads as follows:
+
+
 \begin{lstlisting}[style=acsl-block]
-uint64_t Bitwalker_IncrementalWalker_Peek_Next (T_Bitwalker_Incremental_Locals *Locals,
-                                                unsigned int Length);
+uint64_t Bitwalker_IncrementalWalker_Peek_Next (
+    T_Bitwalker_Incremental_Locals *Locals,
+    unsigned int Length);
 \end{lstlisting}
 
 
 \paragraph{Arguments}
 \begin{itemize}
-    \item  \inl{Locals} holds a bit stream, the start position and the length of the bit stream.
+   \item  \inl{Locals} is a dereferenceable pointer.
    \item \inl{Length} is the Length of the sequence.
 \end{itemize}
 
 \paragraph{Preconditions}
 \begin{itemize}
-    \item  \inl{Locals} is a valid record, where \inl{Local.Bitstream} is a valid array of \inl{Locals.Length}.
+    \item  \inl{Locals} must me dereferenceable.
     \item \inl{Length} $\leq$ \inl{64} and
     \item \inl{Locals.CurrentBitposition} $\leq $ \inl{UINT_MAX} $-$ \inl{Length}
 \end{itemize}

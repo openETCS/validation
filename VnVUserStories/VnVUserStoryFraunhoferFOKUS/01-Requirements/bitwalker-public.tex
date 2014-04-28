@@ -209,24 +209,29 @@ Regardless of whether the poke was successful \pokenext sets the value  \inl{Loc
 
 \section{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Finish}}
 
+ The function signature reads:\\[1em]
+
 \begin{lstlisting}[style=acsl-block]
-int		 Bitwalker_IncrementalWalker_Poke_Finish (T_Bitwalker_Incremental_Locals *Locals);
+int Bitwalker_IncrementalWalker_Poke_Finish(
+        T_Bitwalker_Incremental_Locals *Locals);
 \end{lstlisting}
 
 \paragraph{Arguments}
 \begin{itemize}
-    \item  \inl{Locals} holds a bit stream, the start position and the length of the bit stream.
+   \item  \inl{Locals} is a dereferenceable pointer.
 \end{itemize}
 
 \paragraph{Preconditions}
 \begin{itemize}
-    \item  \inl{Locals} is a valid record.
-    \item \inl{Locals.CurrentBitposition} $\leq $ \inl{UINT_MAX}.
+    \item  \inl{Locals} must me dereferenceable.
 \end{itemize}
 
-\paragraph{Description}
+\paragraph{Description}~
 
-\pokefinish  returns the current bit position of the bit stream that is hold by \inl{Locals}.
+\pokefinish  returns the current bit position of in the bit stream.
+
+\fxfatal{The functions \peekfinish and \pokefinish have the same specification. -> redundant code\\
+However the return value of \peek and respectively \peeknext does not match the return value of \peekfinish.}
 
 
 

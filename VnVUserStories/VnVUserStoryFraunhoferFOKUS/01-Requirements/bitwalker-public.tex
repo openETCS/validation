@@ -5,6 +5,8 @@
 \section{The structure \bitwalkertype}
 
 
+In this section we specify the object \locals.  The signature of the object reads:
+
 \begin{lstlisting}[style=acsl-block]
    typedef struct
    {
@@ -14,13 +16,24 @@
    } T_Bitwalker_Incremental_Locals;
 \end{lstlisting}
 
-\fxfatal{briefly describe struct members}
+
+\paragraph{Description}
+
+\begin{itemize}
+
+   \item \inl{Bitstream} is  the start address of a valid bit stream.
+   \item \inl{Length} is the length of the bit stream, that starts at \inl{Bitstream}.
+   \item \inl{CurrentBitposition} is a valid bit index in the bit stream given by \inl{Bitstream} and \inl{Length}
+
+\end{itemize}
+\fxfatal{\inl{Length} should be named \inl{Size}, because it characterizes the Length of \inl{Bitstream} and not of a sequence.}
 
 \clearpage
 
 \section{Informal Specification of \inl{Bitwalker_IncrementalWalker_Init}}
 
-In this section we specify the function \init,  it  initializes a record of the type \locals. Its function signature reads as follows:
+In this section we specify the function \init.  The function  initializes object of the type \locals.
+The function signature reads:
 
 
 \begin{lstlisting}[style=acsl-block]
@@ -34,22 +47,25 @@ void Bitwalker_IncrementalWalker_Init(
 
 \paragraph{Arguments}
 \begin{itemize}
-    \item  \inl{Locals} is pointer to a \inl{struct} of type \locals which is to be initialized.
-   \item \inl{Bitstream} is  the stream which is to be initialized to the component \inl{Bitstream} of \inl{Locals}.
-   \item \inl{Size} is the length of the bit stream.
-   \item \inl{FirstBitposition} is the position where the bit stream begins.
+   \item  \inl{Locals} is a dereferenceable pointer.
+   \item \inl{Bitstream} is  the start address of a valid bit stream.
+   \item \inl{Size} is the length of the bit stream, that starts at \inl{Bitstream}.
+   \item \inl{FirstBitposition} is a valid bit index in the bit stream given by \inl{Bitstream} and \inl{Size}
 \end{itemize}
 
 \paragraph{Preconditions}
 \begin{itemize}
-    \item  \inl{Locals} is a valid \inl{struct}.
+    \item  \inl{Locals} must me dereferenceable.
 \end{itemize}
 
-\paragraph{Description}
-
-\init assigns the values of last three arguments to \inl{Locals}, such that
-\inl{Locals.Bitstream} points to \inl{Bitstream}, the value of \inl{Locals.Length} is the content of \inl{Size} and 
-\inl{Locals.CurrentBitposition} is a copy of \inl{FirstBitposition}. The argument \inl{Bitstream} remains unchanged by the function \init.
+\paragraph{Description}\hfill\\\hfill
+The function \init assigns:
+\begin{itemize}
+    \item \inl{Bitstream}  to \inl{Locals->Bitstream}.
+    \item \inl{Size} to \inl{Locals->Length}
+    \item \inl{FirstBitposition} to \inl{Locals->CurrentBitposition}
+\end{itemize}
+\fxfatal{\inl{Size} is length of the \inl{Bitstream} not of a \inl{sequence}, So \inl{Locals->Length} should be named \inl{Locals.Size}}
 
 \clearpage
 
@@ -164,7 +180,7 @@ The return value of \pokenext is 0.
 \end{itemize}
 \end{itemize}
 
-Regardless of whether the poke was successful \pokenext sets the value  \inl{Locals.CurrentBitpositiontion} to the first position behind the sequence that it tired to poke.
+Regardless of whether the poke was successful \pokenext sets the value  \inl{Locals.CurrentBitposition} to the first position behind the sequence that it tired to poke.
  All other components of the record \inl{Locals} remain unaltered.
 
 

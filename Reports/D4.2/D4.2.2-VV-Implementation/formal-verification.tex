@@ -746,33 +746,32 @@ obligations were discharged by the various provers.
 \clearpage
 
 \section{Open issues}
-\label{issues}
+\label{sec:issues}
 
-\fxfatal{not ready for review}
+At this stage, only \peek and \poke have been formally specified with \acsl.
+Even for these two functions, a proper formalization of bit operations is missing.
+On the other hand, the specification covers already the main operational modes
+and provides a good foundation to show under which
+circumstances no run time errors will occur.
 
+Whereas for \poke the absence of run time errors was established with \framacwp,
+there remain two unproven proof obligations for \peek.
+These obligations are also related to an insufficient formalization of
+bit operations.
 
-We have seen in this section that \wpframac currently does not deal very well with bit operations.
-This is due to the fact that \wpframac's memory models do not provide 
-much information about bit operations.
-As a consequence, the provers have few options to manipulate the proof goal.
-This problem is known and \cealist is working on a solution for the next release of \wpframac.
+It is important to keep in mind that the source code was modified to some extend.
+The main reasons for this are
+\begin{itemize}
+\item the need to rephrase some code construct so that they are less susceptible to run time errors
+\item to simplify, from the point of view of \framacwp, some bit operations
+\item to accommodate loop annotations and static assertions that
+      are necessary for the formal verification
+\end{itemize}
 
-As a workaround one could introduce axioms which provide
-additional facts about bit operations. 
-The problem with using axioms is that one can easily introduce wrong facts
-which lead to contradictions making the whole proof system unsound. 
-Thus, this approach requires a careful review of the added axioms.
-
-Moreover, the chosen automatic theorem provers are generally not very
-good when it comes to mixing arithmetic and bit operations.
-There is, however, an automatic theorem prover, namely \z,
-which can handle arithmetic and bit operations, using a specific syntax.
-\framac's interface for \z does not currently takes advantage of this, 
-but this may change in a future release.
-We therefore expect a better automatic verification rate for the verification of \bitwalker.
-
-Another approach to deal with unproven verification conditions consists in
-applying an \emph{interactive theorem prover} such as \coq.
-Using \coq's rich support for proof manipulation would certainly be very helpful
-for the discharge of more proof obligations.
+\fokus and \cealist will continue to work together to improve \framacwp's
+capabilities to deal with bit operations.
+In this context, we are are also investigating the use of the
+\emph{interactive theorem prover} \coq to deal with unproven verification conditions.
+Using \coq's rich support for proof manipulation will very likely
+simplify the task of discharging the remaining proof obligations.
 

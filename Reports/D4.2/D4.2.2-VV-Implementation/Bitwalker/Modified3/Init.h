@@ -19,14 +19,15 @@ typedef struct
   assigns  Locals->Length;
   assigns  Locals->CurrentBitposition;
 
+  ensures  Locals->Bitstream == Bitstream;
   ensures  Locals->Length == Size;
   ensures  Locals->CurrentBitposition == FirstBitposition;
-  ensures  Locals->Bitstream == Bitstream;
- */
+*/
 
-void	 Bitwalker_IncrementalWalker_Init(T_Bitwalker_Incremental_Locals *Locals,
-                                        uint8_t Bitstream[],
-                                        unsigned int Size,
-                                        unsigned int FirstBitposition);
+void Bitwalker_IncrementalWalker_Init(
+        T_Bitwalker_Incremental_Locals  *Locals,
+        uint8_t                          Bitstream[],
+        unsigned int                     Size,
+        unsigned int                     FirstBitposition);
 
 #endif // INIT_H

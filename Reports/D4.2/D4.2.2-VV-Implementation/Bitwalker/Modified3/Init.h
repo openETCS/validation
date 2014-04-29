@@ -16,9 +16,9 @@
 */
 
 void Bitwalker_IncrementalWalker_Init(
-        T_Bitwalker_Incremental_Locals  *Locals,
-        uint8_t                          Bitstream[],
-        unsigned int                     Size,
-        unsigned int                     FirstBitposition);
+  T_Bitwalker_Incremental_Locals  *Locals,
+  uint8_t                          Bitstream[],
+  unsigned int                     Size,
+  unsigned int                     FirstBitposition);
 
 #endif // INIT_H

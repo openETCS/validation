@@ -2,38 +2,48 @@
 \chapter{Formal verification of the \bitwalker core functionality}
 \label{sec:formal-verification}
 
-\fxfatal[inline]{improve this intro}
 
-In this chapter we describe our work on the formal verification
-of the so-called \bitwalker.
+In this chapter we describe in some detail
+our efforts on formally verifying the \bitwalker using the verification
+to \framacwp.
 The \bitwalker shall read bit sequences from a bit stream 
 and convert them to an integer. Furthermore, it shall
 convert an integer into a bit sequence and write it into a bit stream.
-Therefore, the \bitwalker has a read and a write function, namely \peek and \poke.
 
-Our aim is to verify the functionality of
-\peek and \poke
-as well as their correct interaction.
-Furthermore, we want to verify some robustness cases for \peek and \poke
-and the absence of run time errors for both functions.
-We won't take into account any complexity requirements.
+In Chapter~\ref{sec:frama-c} we had given an introduction
+into the most elementary features in of \framacwp.
+In this chapter we use slightly more complex features of \framacwp
+in order to verify key aspects of the \bitwalker functions \peek and \poke.
+In particular, we formally specify and (almost) completely verify the
+main operational modes of these function and show that that
+with respect to the operations modes no runtime errors will occur.
 
-We introduce a method to achieve these goals in section~\ref{plan}.
-Moreover, it is our intention
-to elaborate the method and in particular the associated tools.
+After shortly describing our verification method in Section~\ref{sec:verification-method},
+we discuss in Section~\ref{sec:bitwalker-first-look}
+the use of \framacwp to detect \emph{potential} runtime errors in \peek and \poke.
 
-Subsequently, we use the method for the functions \peek and \poke.
-We provide an informal specification, an implementation and
-a formal specification for each function and
-present what could have been verified for the implementation.
+In Section~\ref{sec:informal-specification} we present an \emph{informal specification}
+for \peek and \poke.
+This informal specification, together with the knowledge about potential
+run time errors, serves two main reasons.
+\begin{enumerate}
+\item  It allows us to quickly write tests for the \bitwalker functions 
+       (see Section~\ref{sec:bitwalker-tests}).
+\item It serves as a basis for the \emph{formal} specification in the \acsl
+      specification language of \framacwp (see Section~\ref{sec:formal-specification}).
+\end{enumerate}
 
-Finally, we give an overview about the still open issues in section~\ref{sec:issues}.
+In Section~\ref{sec:formal-specification} we also discuss several 
+modifications at the source code that simplify the verification with \framacwp.
 
+In Section~\ref{sec:verification-results} we present 
+preliminary verification results achieved with \framacwp.
+Finally, we give an overview about the open issues in Section~\ref{sec:issues}.
 
 \clearpage
 
 \section{Verification method}
-\label{plan}
+\label{sec:verification-method}
 \label{method}
 
 In this section we introduce our method of choice along with the used tools.
@@ -686,7 +696,7 @@ in Section~\ref{sec:peek-loop-invariants}.
 \clearpage
 
 \section{Results of formal verification with \framacwp}
-\label{sec:verification}
+\label{sec:verification-results}
 
 In this section we present the current state of the verification results 
 for \peek and \poke.

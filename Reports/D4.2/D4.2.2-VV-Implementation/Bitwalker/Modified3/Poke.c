@@ -1,10 +1,10 @@
-#include "Bitwalker_Poke.h"
+#include "Poke.h"
 
-int Bitwalker_Poke (unsigned int Start,
-                    unsigned int Length,
-                    uint8_t Bitstream[],
-                    unsigned int BitstreamSize,
-                    uint64_t Value)
+int Bitwalker_Poke(unsigned int Start,
+                   unsigned int Length,
+                   uint8_t Bitstream[],
+                   unsigned int BitstreamSize,
+                   uint64_t Value)
 {
   if ((Start + Length)  > 8 * BitstreamSize)
   {

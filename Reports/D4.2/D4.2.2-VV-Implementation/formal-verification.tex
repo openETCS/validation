@@ -386,7 +386,7 @@ Note also that we sometimes use shorter names than in the original implementatio
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Bitwalker_Peek.h}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Peek.h}
 \end{minipage}
 \caption{\label{lst:spec-peek} Formal specification of \peek in \acsl}
 \end{listing}
@@ -517,7 +517,7 @@ on we checked both with our test cases (see Section~\ref{sec:bitwalker-tests}).
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Bitwalker_Peek.c}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Peek.c}
 \end{minipage}
 \caption{\label{lst:impl-peek} Implementation of \peek with \acsl loop invariants}
 \end{listing}
@@ -572,7 +572,7 @@ and use for some variables shorter names than in the original implementation.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Bitwalker_Poke.h}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Poke.h}
 \end{minipage}
 \caption{\label{lst:spec-poke} Formal Specification of \poke}
 \end{listing}
@@ -660,7 +660,7 @@ Listing~\ref{lst:impl-poke} shows our modified version of \poke.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Bitwalker_Poke.c}
+\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Modified3/Poke.c}
 \end{minipage}
 \caption{\label{lst:impl-poke} Implementation of \poke with loop invariants}
 \end{listing}
@@ -700,6 +700,26 @@ in Section~\ref{sec:peek-loop-invariants}.
 
 In this section we present the current state of the verification results 
 for \peek and \poke.
+Here is a list of options with which we called the \framacwp analysis.
+For a detailed description of these options we refer to the documentation
+of \framac.
+
+\begin{verbatim}
+    -wp
+    -warn-signed-downcast
+    -warn-signed-overflow
+    -warn-unsigned-downcast
+    -warn-unsigned-overflow
+    -wp-rte
+    -wp-script 'wp0.script'
+    -wp-model Typed+ref
+    -wp-timeout 10
+    -wp-steps 2000
+    -wp-par 1
+    -wp-prover alt-ergo
+    -wp-prover cvc4
+\end{verbatim}
+
 Table~\ref{tbl:results-peek-and-poke} lists how many of the generated proof
 obligations could be verified by theorem provers.
 
@@ -716,19 +736,13 @@ Function & proof obligations
          & Coq\\
 \hline
 \hline
- \peek &  72 & 70 &  97\% & 52 & 18 & 0 & 0  \\
+ \peek &  74 & 72 &  97\% & 52 & 18 & 2 & 0  \\
 \hline
- \poke &  81 & 81 & 100\% & 53 & 26 & 2 & 0  \\
+ \poke &  87 & 85 & 97\% & 53 & 26 & 6 & 0  \\
 \hline
 \end{tabular}
 \caption{\label{tbl:results-peek-and-poke} Verification results for \peek and \poke}
 \end{table}
-
-In the case of \poke all~81 verification conditions were proven
-by automatic theorem provers.
-This means that the implementation of~\poke
-shown in Listing~\ref{lst:impl-poke} satisfies the formal specification
-in Listing~\ref{lst:spec-poke}.
 
 In the case of \peek, two out of 72 proof obligations could not be
 verified automatically and will have to be handled by the interactive
@@ -736,6 +750,8 @@ theorem prover \coq.
 The unproven obligations are related to the loop invariant that
 states that in iteration~$i$ the value \inl{retval} is less than~$2^i$
 (see Listing~\ref{lst:impl-peek}).
+In the case of \poke, the two unproven obligations are related
+to an issue how \framac treats bitwise and operations.
 
 Table~\ref{tbl:results-peek-and-poke} also lists how many proof
 obligations were discharged by the various provers.
@@ -780,6 +796,30 @@ The main reasons for this are
 
 \fokus and \cealist will continue to work together to improve \framacwp's
 capabilities to deal with bit operations.
+Here is a list of issues that Fraunhofer FOKUS came across while verifying the \bitwalker.
+The issues have been reported by Fraunhofer FOKUS in \framac's bug tracking 
+systems.\footnote{See \url{https://bts.frama-c.com}}
+
+\begin{table}[hbt]
+\begin{center}
+\begin{tabular}{|c|p{10cm}|}
+\hline
+\textbf{ID} & \textbf{Description} \\
+\hline
+\hline
+0001750 & \framacwp fails to discharge simple bit operation for small integer types \\
+\hline
+0001751 & \framacwp ``forget'' a proven assertion \\
+\hline
+0001761 & Check that all occurrences of \inl{*p} in assigns are guarded by a \inl{\\valid(p)}
+          in requires\\
+\hline
+0001769 & Unproven rte assertions for bit complement\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
 In this context, we are are also investigating the use of the
 \emph{interactive theorem prover} \coq to deal with unproven verification conditions.
 Using \coq's rich support for proof manipulation will very likely

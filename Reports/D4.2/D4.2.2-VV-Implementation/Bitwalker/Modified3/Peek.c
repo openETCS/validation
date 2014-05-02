@@ -1,4 +1,4 @@
-#include "Bitwalker_Peek.h"
+#include "Peek.h"
 
 uint64_t Bitwalker_Peek(unsigned int Start,
                         unsigned int Length,

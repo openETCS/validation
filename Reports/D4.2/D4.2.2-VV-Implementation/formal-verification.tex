@@ -700,6 +700,26 @@ in Section~\ref{sec:peek-loop-invariants}.
 
 In this section we present the current state of the verification results 
 for \peek and \poke.
+Here is a list of options with which we called the \framacwp analysis.
+For a detailed description of these options we refer to the documentation
+of \framac.
+
+\begin{verbatim}
+    -wp
+    -warn-signed-downcast
+    -warn-signed-overflow
+    -warn-unsigned-downcast
+    -warn-unsigned-overflow
+    -wp-rte
+    -wp-script 'wp0.script'
+    -wp-model Typed+ref
+    -wp-timeout 5
+    -wp-steps 2000
+    -wp-par 1
+    -wp-prover alt-ergo
+    -wp-prover cvc4
+\end{verbatim}
+
 Table~\ref{tbl:results-peek-and-poke} lists how many of the generated proof
 obligations could be verified by theorem provers.
 
@@ -716,19 +736,13 @@ Function & proof obligations
          & Coq\\
 \hline
 \hline
- \peek &  72 & 70 &  97\% & 52 & 18 & 0 & 0  \\
+ \peek &  74 & 72 &  97\% & 52 & 18 & 2 & 0  \\
 \hline
- \poke &  81 & 81 & 100\% & 53 & 26 & 2 & 0  \\
+ \poke &  87 & 85 & 97\% & 53 & 26 & 6 & 0  \\
 \hline
 \end{tabular}
 \caption{\label{tbl:results-peek-and-poke} Verification results for \peek and \poke}
 \end{table}
-
-In the case of \poke all~81 verification conditions were proven
-by automatic theorem provers.
-This means that the implementation of~\poke
-shown in Listing~\ref{lst:impl-poke} satisfies the formal specification
-in Listing~\ref{lst:spec-poke}.
 
 In the case of \peek, two out of 72 proof obligations could not be
 verified automatically and will have to be handled by the interactive
@@ -736,6 +750,8 @@ theorem prover \coq.
 The unproven obligations are related to the loop invariant that
 states that in iteration~$i$ the value \inl{retval} is less than~$2^i$
 (see Listing~\ref{lst:impl-peek}).
+In the case of \poke, the two unproven obligations are related
+to an issue how \framac treats bitwise and operations.
 
 Table~\ref{tbl:results-peek-and-poke} also lists how many proof
 obligations were discharged by the various provers.

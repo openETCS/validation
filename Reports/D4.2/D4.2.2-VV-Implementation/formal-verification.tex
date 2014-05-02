@@ -713,7 +713,7 @@ of \framac.
     -wp-rte
     -wp-script 'wp0.script'
     -wp-model Typed+ref
-    -wp-timeout 5
+    -wp-timeout 10
     -wp-steps 2000
     -wp-par 1
     -wp-prover alt-ergo
@@ -796,6 +796,30 @@ The main reasons for this are
 
 \fokus and \cealist will continue to work together to improve \framacwp's
 capabilities to deal with bit operations.
+Here is a list of issues that Fraunhofer FOKUS came across while verifying the \bitwalker.
+The issues have been reported by Fraunhofer FOKUS in \framac's bug tracking 
+systems.\footnote{See \url{https://bts.frama-c.com}}
+
+\begin{table}[hbt]
+\begin{center}
+\begin{tabular}{|c|p{10cm}|}
+\hline
+\textbf{ID} & \textbf{Description} \\
+\hline
+\hline
+0001750 & \framacwp fails to discharge simple bit operation for small integer types \\
+\hline
+0001751 & \framacwp ``forget'' a proven assertion \\
+\hline
+0001761 & Check that all occurrences of \inl{*p} in assigns are guarded by a \inl{\\valid(p)}
+          in requires\\
+\hline
+0001769 & Unproven rte assertions for bit complement\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
 In this context, we are are also investigating the use of the
 \emph{interactive theorem prover} \coq to deal with unproven verification conditions.
 Using \coq's rich support for proof manipulation will very likely

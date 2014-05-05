@@ -9,7 +9,7 @@ higher-level languages, there is also a substantial part of \emph{supporting} so
 that is developed in the programming language~C.
 
 In this document we report about \emph{preliminary} results on the verification
-of C-code developed in the OpenETCS project.
+of that C-code.
 In particular, we report on the use of static analysis methods (including formal methods)
 on C code that has been developed by the project partner Siemens (Germany).
 Figure~\ref{fig:Bitwalker-Overview} gives an overview on the software that
@@ -23,7 +23,7 @@ is in the focus of this report.
 \end{figure}
 
 The OpenETCS decoder is a large collection of functions dedicated to
-the reading of of ETCS messages.
+the reading of ETCS messages.
 In order to fulfill their task these function rely on the relatively
 small software package \inl{Bitwalker}.
 The \inl{Bitwalker} software, as seen by the OpenETCS decoder,
@@ -31,16 +31,19 @@ is best understood as a ``class'' with a handful of methods.
 Note that this class is implemented in~C as a \inl{struct} where
 the methods are implemented as functions.
 The core functionality  of this class, which consists in converting bit sequences to integers
-and the other way round, depends on two more basic function, namely~\peek and~\poke.
+and vice versa, depends on two more basic function, namely~\peek and~\poke.
 
 This software has been analyzed by the OpenETCS project partners SQS (Spain)
 and Fraunhofer FOKUS (Germany).
 The Frama-C tool, which is developed by the French project partner {CEA LIST},
 has been used for some of the analyses.
+\fxfatal{Hat SQS ebenfalls Frama-C verwendet? 
+	Sonst deren Tool hier erw\"ahnen.}
 
 \clearpage
 
-The ultimate verification goals are the following
+These analyses contribute to
+the ultimate verification goals, which are the following:
 
 \begin{enumerate}
 \item provide evidence that the Bitwalker software satisfies 
@@ -53,9 +56,9 @@ The ultimate verification goals are the following
 \end{enumerate}
 
 We are confident that all these verification goals can be reached.
-For this preliminary verification report, report,
-we only provide partial answers to the first four topics.
-In order to achieve the last goal more development and verification
+For this preliminary verification report,
+we provide partial answers to the first four topics.
+In order to achieve the last goal, more development and verification
 work is currently conducted by Fraunhofer ESK and Fraunhofer FOKUS. 
 
 \section*{Structure of this document}
@@ -71,20 +74,23 @@ the functions \peek and \poke from the Bitwalker core and
 \item formally specify the
       expected functional behavior in the \acsl specification language of {Frama-C}
       and
-\item using the {Frama-C} verification platform to establish a formal proof that these
+\item report on the formal proof 
+	that these
       C~functions do not raise runtime errors when called according to their
-      formal specification.
+      formal specification, established using 
+      the {Frama-C} verification platform.
 \end{enumerate}
 
-In Chapter~\ref{sec:static-analysis} we report about the results of a broad range
+So far only a part of Siemens' \bitwalker has been formalized and verified.
+In the process of this work several enhancements for the \framac verification platform
+have been identified and reported to the developers at {CEA LIST}.
+
+\fxfatal{bezieht sich nicht mehr auf Frama-C?:}
+In Chapter~\ref{sec:static-analysis}, we report about the results of a broad range
 of static analyses. 
 These methods are aimed at finding well-known quality deficiencies that
 might occur in C or \CC\ software.
 
-Thus, so far only a part of Siemens' \bitwalker has been formalized and verified.
-In the process of this work several enhancements for the \framac verification platform
-have been identified and reported to the developers at {CEA LIST}.
-
-In Chapter~\ref{sec:conclusions} we draw conclusions from this preliminary work
+In Chapter~\ref{sec:conclusions}, we draw conclusions from this preliminary work
 and outline the next steps in our verification efforts.
 

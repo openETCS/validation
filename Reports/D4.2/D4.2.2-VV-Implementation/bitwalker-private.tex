@@ -2,9 +2,9 @@
 \subsection{Informal specification of \peek}
 \label{sec:informal-peek}
 
-Now we specify \peek with the introduced auxiliary concepts.
+Now we specify \peek based on the introduced auxiliary concepts.
 The function \peek reads a bit sequence from a bit stream
-and converts it to an integer.
+and converts it to a 64-bit long integer.
 
 Its function signature reads as follows:
 
@@ -13,6 +13,14 @@ uint64_t  Bitwalker_Peek(unsigned int Startposition,
                          unsigned int Length,
                          uint8_t Bitstream[],
                          unsigned int BitstreamSizeInBytes);
+\end{lstlisting}
+
+\fxfatal{Ich w\"urde ja folgende Signatur bevorzugen:}
+\begin{lstlisting}[style=acsl-block]
+uint64_t  Bitwalker_Peek(unsigned int Startposition, 
+                         unsigned int Length,
+                         unsigned int BitstreamSizeInBytes,
+                         uint8_t Bitstream[BitstreamSizeInBytes]);
 \end{lstlisting}
 
 \paragraph{Arguments}
@@ -37,6 +45,8 @@ of \emph{unsigned} integer types.
 \item \inl{Length} $\leq$ \inl{64} and
 
 \item \inl{Startposition} $\leq$ \inl{UINT_MAX} - \inl{Length}.
+      \fxfatal{Besser:  \inl{Startposition} + \inl{Length} $\leq$
+      \inl{BitstreamSizeInBytes}*8 $\leq$ \inl{UINT_MAX}}
       This condition expresses that no arithmetic overflows shall occur
       when evaluating \inl{Startposition + Length}.
 \end{itemize}
@@ -55,8 +65,10 @@ Note that is a higher-level description than what is done in the source code.
 There is, in our opinion, not much point to reflect all of the low-level bit operations
 into the specification if a clearer description is at hand.
 
-If the bit sequence is not valid, then \peek shall return~0.
-We were wondering why the implementation maps an illegal input to a legitimate output.
+If the bit sequence is not valid, then \peek shall return~0 according
+to the Siemens high-level description.
+We were wondering why the implementation maps both an illegal input and
+a legal one to the same output.
 The code providers argued along the lines that this error condition was not
 considered important enough to be properly reported.
 One can interpret this design decision as an attempt to increase the
@@ -68,7 +80,7 @@ and to devise a consistent error detection and error recovery strategy.
 \subsection{Informal specification of \poke}
 \label{sec:informal-poke}
 
-In this section we examine the function \poke
+In this section, we examine the function \poke
 in the same manner as we did it for \peek.
 
 The function \poke converts an integer to a bit sequence and writes it
@@ -88,12 +100,12 @@ The arguments have the following purpose:
 
 \begin{itemize}
     \item \inl{Startposition} is the bit index in the bit stream 
-    where the bit sequence starts.
+    where the bit sequence shall start.
     \item \inl{Length} is the length of the bit sequence.
     \item \inl{Bitstream} is the array which provides the bit stream.
     \item \inl{BitstreamSizeInBytes} is the length of the array 
     containing the bit stream. 
-    \item \inl{Value} is the integer which shall be converted into a bit sequence.
+    \item \inl{Value} is the integer to be converted into the bit sequence.
 \end{itemize}
 
 
@@ -103,7 +115,9 @@ The following conditions shall hold for the function arguments:
 \begin{itemize}
 \item \inl{Bitstream} is a valid array of length \inl{BitstreamSizeInBytes}
 
-\item \inl{Startposition + Length} is less than \verb"UINT_MAX".
+\item \inl{Startposition + Length} is less than, or equal to, \inl{UINT_MAX}.
+\fxfatal{\inl{Startposition + Length} $\leq$
+	\inl{BitstreamSizeInBytes}*8 $\leq$ \inl{UINT_MAX}}
 \end{itemize}
 
 Note that additional constraints are implicitly expressed by the use
@@ -112,11 +126,10 @@ of \emph{unsigned} integer types.
 
 \paragraph{Description}
 Now we can specify \poke as follows:
-The function \poke converts a 64-bit unsigned integer to a bit sequence and 
+The function \poke converts a 64-bit unsigned integer $x$ to a bit sequence and 
 writes it into a bit stream.
 
-For $0 \leq x$ exists a shortest sequence of~0 and~1
-$(b_0, b_1,\ldots,b_{n - 1})$
+For $0 \leq x$, there exists a shortest sequence $(b_0, b_1,\ldots,b_{n - 1})$ of~0es and~1s
 such that
 \begin{align}
     \sum_{i=0}^{n-1} b_i \cdot 2^{(n - 1) - i} = x.
@@ -130,7 +143,8 @@ The return value of \poke depends on the following three cases:
 
 \begin{itemize}
 \item 
-If the bit sequence is not valid, then \poke returns~$-1$.
+If the bit sequence\fxfatal{Welche jetzt? Das Array, in das geschrieben
+werden soll, oder die Sequenz, die hineingeschrieben werden soll?} is not valid, then \poke returns~$-1$.
 
 \item 
 If the bit sequence is valid, then there are two cases:

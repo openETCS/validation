@@ -1,6 +1,10 @@
 
 %\subsection{Basic concepts}
 
+In the following, we present our informal 
+specification as guessed by Fraunhofer
+FOKUS and confirmed by Siemens.
+
 \begin{itemize}
 \item
 A \emph{bit stream} is an array containing elements of type \verb"uint8_t".
@@ -9,13 +13,15 @@ A bit stream of length $n$ contains $8n$ bits.
 
 \item
 A bit stream is \emph{valid} if the array is valid.
+\fxfatal{Ist "valid" ein Begriff von K+R? Oder von Frama-C? (Im
+letzteren Fall hier erkl\"aren.)}
 
 \item 
-A bit stream can be indexed both by its array indices
-and its \emph{bit indices}.
+A bit stream can be indexed both by array indices
+and \emph{bit indices}.
 
 Figure~\ref{fig:bitstream-indices} shows the difference between 
-array indices and bit indices in a bit stream.
+array indices (bottom row) and bit indices (top row) in a bit stream.
 The two bit indices, 0~and~14,
 mark bit positions in the first and second array element, respectively.
 
@@ -31,16 +37,18 @@ The C~programming language neither provides a type \emph{bit}
 nor does it support random access to the bits of a bit stream.
 In order to access the $i$-th bit of a bit sequence one typically
 has to first access the byte with index $j = i/8$ and then access the 
-bit $k = i \pmod{8}$ within this byte.
+bit $k = i \% 8$ \fxfatal{Die vorige Fassung, $k = i \pmod{8}$,
+bedeutet m.E. soviel wie $k \equiv_{\mod 8} i$, w\"ahrend hier eine
+Vorschrift zur Berechnung von $k$ aus $i$ gemeint ist.} within this byte.
 Note that in Figure~\ref{fig:bitstream-indices} 
-bytes and bits are indexed in increasing order from the \emph{left}.
-On the byte level, however, bits are often indexed from the \emph{right}.
+bytes and bits are indexed in increasing order, starting from the \emph{left}.
+%On the byte level, however, bits are often indexed from the \emph{right}.
 For example, to access the $k$-th bit of a byte \inl{a} one can
-shift this bit to the right by $7-k$ and extracts then the now
+shift this byte to the right by $7-k$ bits and then extract the now
 rightmost bit by performing a bit-wise \emph{and} with the value~1
 %
 \begin{verbatim}
-   (a >> (7-k)) & 1
+   (a >> (7-k)) & 1        // get a's k.th left-most bit
 \end{verbatim}
 
 \item
@@ -58,15 +66,15 @@ and its \emph{length}, that is, the number of bits it contains.
 
 \item
 
-A bit sequence that starts at bit index $p$ and that consists of
-length $l \geq 0$ is refered to \emph{valid} (with respect to a bit stream of length $n$)
+A bit sequence that starts at bit index $p$ and has
+length $l \geq 0$ is considered \emph{valid} (with respect to a bit stream of length $n$)
 if the following conditions are satisfied
 \begin{align*}
   0 &\leq p < 8n \\
   0 &\leq p + l \leq 8n
 \end{align*}
 
-Not that only the bits with indices $p \leq i < p + l$ are to be accessed
+Note that only the bits with indices $p \leq i < p + l$ are to be accessed
 but not the bit with index~$p+l$.
 
 \end{itemize}

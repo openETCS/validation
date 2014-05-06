@@ -25,7 +25,7 @@ uint64_t Bitwalker_Peek(unsigned int Start,
 
     // treat as unsigned int for Frama-C
 r   unsigned int shifted = Bitstream[byte_index] >> bit_index;
-    unsigned int bit_as_byte = shift & 1;
+    unsigned int bit_as_byte = shifted & 1;
     //@ assert bit_as_byte == 0 || bit_as_byte == 1;
 
     retval = 2 * retval + bit_as_byte;

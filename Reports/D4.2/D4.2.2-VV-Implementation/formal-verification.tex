@@ -464,10 +464,9 @@ in Listing~\ref{lst:peek-original} used the expression
    ((Start + Length - 1) >> 3) >= BitstreamSize
 \end{verbatim}
 
-The main difference is that we reformulate the division inherent in the shift
+One difference is that we reformulate the division inherent in the shift
 operation as a multiplication.
-\fxfatal{Warum?}
-Moreover, switching to a strict inequality saves us the trouble
+Also, switching to a strict inequality saves us the trouble
 to deal with a potential overflow in the term \inl{(Start + Length - 1)}
 that occurs if both \inl{Start} and \inl{Length} are~0.
 Last but not least, the new expression is also shorter.
@@ -714,9 +713,6 @@ in Section~\ref{sec:peek-loop-invariants}.
       This has the advantage, at least from a verification point of view,
       that we do not have to deal with aliasing issues between this array
       and the array \inl{Bitstream}.
-      From an implementation point of view, shifting is probably faster
-      than accessing the memory \inl{BitwalkerBitMaskTable}.
-	\fxfatal{vermute ich mal so in Blaue...}
 
 \item The loop was rewritten so that loop index starts at~\inl{Length}
       and that no casts to \inl{int} are necessary.
@@ -725,8 +721,7 @@ in Section~\ref{sec:peek-loop-invariants}.
       Section~\ref{sec:peek-loop-invariants}.
 
 \item Instead of testing that \inl{Value} is greater than~$2^\mathtt{Length} - 1$
-      we simply test that it is greater or equal than~$2^\mathtt{Length}$.
-	\fxfatal{warum das?}
+      we use the briefer test that it is greater or equal than~$2^\mathtt{Length}$.
 
 \end{itemize}
 

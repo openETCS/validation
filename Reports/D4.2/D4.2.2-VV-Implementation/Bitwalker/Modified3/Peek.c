@@ -24,7 +24,7 @@ uint64_t Bitwalker_Peek(unsigned int Start,
     unsigned int bit_index  = inverse_modulo(pos, 8);
 
     // treat as unsigned int for Frama-C
-r   unsigned int shifted = Bitstream[byte_index] >> bit_index;
+    unsigned int shifted = Bitstream[byte_index] >> bit_index;
     unsigned int bit_as_byte = shifted & 1;
     //@ assert bit_as_byte == 0 || bit_as_byte == 1;
 

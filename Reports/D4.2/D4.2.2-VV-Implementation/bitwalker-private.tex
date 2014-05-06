@@ -15,14 +15,6 @@ uint64_t  Bitwalker_Peek(unsigned int Startposition,
                          unsigned int BitstreamSizeInBytes);
 \end{lstlisting}
 
-\fxfatal{Ich w\"urde ja folgende Signatur bevorzugen:}
-\begin{lstlisting}[style=acsl-block]
-uint64_t  Bitwalker_Peek(unsigned int Startposition, 
-                         unsigned int Length,
-                         unsigned int BitstreamSizeInBytes,
-                         uint8_t Bitstream[BitstreamSizeInBytes]);
-\end{lstlisting}
-
 \paragraph{Arguments}
 The arguments of \peek have the following purpose:
 \begin{itemize}
@@ -45,8 +37,6 @@ of \emph{unsigned} integer types.
 \item \inl{Length} $\leq$ \inl{64} and
 
 \item \inl{Startposition} $\leq$ \inl{UINT_MAX} - \inl{Length}.
-      \fxfatal{Besser:  \inl{Startposition} + \inl{Length} $\leq$
-      \inl{BitstreamSizeInBytes}*8 $\leq$ \inl{UINT_MAX}}
       This condition expresses that no arithmetic overflows shall occur
       when evaluating \inl{Startposition + Length}.
 \end{itemize}
@@ -115,9 +105,7 @@ The following conditions shall hold for the function arguments:
 \begin{itemize}
 \item \inl{Bitstream} is a valid array of length \inl{BitstreamSizeInBytes}
 
-\item \inl{Startposition + Length} is less than, or equal to, \inl{UINT_MAX}.
-\fxfatal{\inl{Startposition + Length} $\leq$
-	\inl{BitstreamSizeInBytes}*8 $\leq$ \inl{UINT_MAX}}
+\item \inl{Startposition + Length} is less than or equal to \inl{UINT_MAX}.
 \end{itemize}
 
 Note that additional constraints are implicitly expressed by the use
@@ -143,8 +131,7 @@ The return value of \poke depends on the following three cases:
 
 \begin{itemize}
 \item 
-If the bit sequence\fxfatal{Welche jetzt? Das Array, in das geschrieben
-werden soll, oder die Sequenz, die hineingeschrieben werden soll?} is not valid, then \poke returns~$-1$.
+If the bit sequence is not valid, then \poke returns~$-1$.
 
 \item 
 If the bit sequence is valid, then there are two cases:

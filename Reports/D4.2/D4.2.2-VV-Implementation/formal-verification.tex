@@ -423,13 +423,11 @@ can be safely dereferenced for \emph{reading}, but not necessarily for writing.
 
 \item
 The property \inl{valid_length} expresses the requirement that only
-bit sequences with a length less than~64 are to be read.
-\fxfatal{\inl{<=64} w\"are doch auch ok?}
+bit sequences with a length not larger than~64 are to be read.
 \item
 The two \inl{overflow} properties request that no arithmetic overflow
 shall occur for the expressions \inl{Start + Length} and
 \inl{8 * BitstreamSize}.
-\fxfatal{auch hier reicht doch \inl{<=}?}
 In \acsl, an unbounded-precision type \inl{integer} is used
 as default, such that a contract formula can't cause an overflow by
 itself.
@@ -475,7 +473,6 @@ Last but not least, the new expression is also shorter.
 The postcondition of this behavior is that \peek is expected to return~0.
 Not surprisingly, we also request that no external memory locations are
 changed when this behavior is active.
-\fxfatal{zus\"atzliche behavior-lokale assigns-Klausel w\"are nicht n\"otig?}
 
 \end{itemize}
 
@@ -533,7 +530,6 @@ There are several reasons for these modifications:
 \item Some shift operations were rewritten as divisions\slash multiplications
       to be more similar to the specification.
 \item The loop was rewritten so that loop index starts at~0.
-\fxfatal{Warum?}
 \item We felt that the shorter variable names make the source code more legible.
 \end{itemize}
 
@@ -546,11 +542,10 @@ on we checked both with our test cases (see Section~\ref{sec:bitwalker-tests}).
 \end{minipage}
 \caption{\label{lst:impl-peek} Implementation of \peek with \acsl loop invariants}
 \end{listing}
-\fxfatal{Die Konstanten h\"atte ich mit \inl{const} definiert. "shift"
-h\"atte ich "shifted" genannt. Was passiert, wenn sowohl
-\inl{Start+Length} \"uberl\"auft als auich \inl{8*BitstreamSize}?}
+\fxfatal{Was passiert, wenn sowohl
+\inl{Start+Length} \"uberl\"auft als auch \inl{8*BitstreamSize}?}
 
-\clearpage
+%\clearpage
 
 Of course, rewriting the implementation while verifying it may appear odd.
 Ideally, the verification tool should take the code as it is.

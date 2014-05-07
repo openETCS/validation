@@ -305,18 +305,17 @@ Section~\ref{sec:informal-specification}.
 
 We use the \CC\ class \inl{boost::dynamic_bitset} in order to represent
 \inl{bit sequences} in our tests.
-This class\footnote{
+This class, which is part of the \textsf{Boost} libraries, provides a higher-level and 
+easier to use interface to bit sequences than is possible in~C.\footnote{%
   See \url{http://www.boost.org/doc/libs/1_55_0/libs/dynamic_bitset/dynamic_bitset.html}
-},
-which is part of the \textsf{Boost} libraries,
-provides a higher-level and easier to use interface to bit sequences than is possible in~C.
+}
 
 Specifically, we use in our \CC\ test code the following typedefs
 
 \begin{lstlisting}[style = acsl-block]
-  typedef std::vector<uint8_t>           Bytestream;
+    typedef std::vector<uint8_t>              Bytestream;
 
-  typedef boost::dynamic_bitset<uint8_t> Bitstream;
+    typedef boost::dynamic_bitset<uint8_t>    Bitstream;
 \end{lstlisting}
 
 to represent arrays of sequences of bytes and bits, respectively.
@@ -330,15 +329,6 @@ In addition, it allows to
 \item  create a bit stream from an unsigned integer value by a special constructor,
        thus representing the functionality of \poke
 \end{itemize}
-\fxfatal{D.h., hier wird eigentlich die Siemens-Implementierung gegen
-die Boost-Implementierung derselben Spezifikation getestet. Es sollte
-diskutiert werden, wie man bei gr\"o\ss eren (Stichwort ``skaliert die
-Methodik?'') Software-Teilen vorgehen
-w\"urde, f\"ur die es nicht schon woanders eine
-Referenz-Implementierung gibt.}
-
-Listing~\ref{lst:test_peek} and~\ref{lst:test_poke} shows fragments of our test code
-for \peek and \poke, respectively.
 
 While testing the \bitwalker was not our main objective it proved useful for
 the following reasons.
@@ -349,35 +339,7 @@ the following reasons.
 \item It allowed us to quickly detect that the alternative implementation of
       \peek in Listing~\ref{lst:peek-alternative} is not equivalent to the
       original implementation in Listing~\ref{lst:peek-original}.
-
-\item It provided some assurance that our re-implementations of \peek and \poke
-      that we use in Section~\ref{sec:formal-specification} do not behave differently
-      than the original implementations.
 \end{itemize}
-
-\clearpage
-
-\begin{listing}[hbt]
-\begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Tests/test_peek.cpp}
-\end{minipage}
-\caption{\label{lst:test_peek} Test code for \peek}
-\end{listing}
-\fxfatal{Hab ich nicht verstanden:
-Woher kommen die Parameter von "test\_peek"?
-Wo wird die Boost-Implementierung verwendet?
-Was macht "test\_peek\_normal\_case"?
-Was ist "original" und wozu wird es an "test\_peek\_normal\_case"
-gegeben?}
-
-\clearpage
-
-\begin{listing}[hbt]
-\begin{minipage}{\textwidth}
-\lstinputlisting[style=acsl-block, frame=single]{./Bitwalker/Tests/test_poke.cpp}
-\end{minipage}
-\caption{\label{lst:test_poke} Test code for \poke}
-\end{listing}
 
 \clearpage
 

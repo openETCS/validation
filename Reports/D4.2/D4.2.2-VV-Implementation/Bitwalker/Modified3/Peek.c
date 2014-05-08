@@ -6,7 +6,7 @@ uint64_t Bitwalker_Peek(unsigned int Start,
                         unsigned int BitstreamSize)
 {
   if ((Start + Length)  > 8 * BitstreamSize)
-    return 0;	// error: invalid_bit_sequence
+    return 0;   
 
   //@ assert UINT64_MAX == (1 << 64) -1;
   uint64_t retval = 0;
@@ -33,4 +33,5 @@ uint64_t Bitwalker_Peek(unsigned int Start,
 
   return retval;
 }
+
 

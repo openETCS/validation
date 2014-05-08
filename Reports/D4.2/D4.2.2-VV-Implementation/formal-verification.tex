@@ -504,8 +504,6 @@ on we checked both with our test cases (see Section~\ref{sec:bitwalker-tests}).
 \end{minipage}
 \caption{\label{lst:impl-peek} Implementation of \peek with \acsl loop invariants}
 \end{listing}
-\fxfatal{Was passiert, wenn sowohl
-\inl{Start+Length} \"uberl\"auft als auch \inl{8*BitstreamSize}?}
 
 %\clearpage
 
@@ -592,10 +590,6 @@ shall occur for the expressions \inl{Start + Length} and
 The assigns clause expresses that \poke will 
 write into a part of the array passed as argument.
 Apart from this assignment \poke will not have any side effects.
-\fxfatal{Sollte dieses, das globale, \inl{assigns} nicht besser
-weggelassen werden? In den \inl{behavior}s stehen doch schon eigene
-\inl{assigns}-Klauseln.}
-      
 \end{itemize}
 
 \item[Behavior for invalid bit sequences]
@@ -604,9 +598,8 @@ The behavior \inl{invalid_bit_sequence} describes the situation when
 the specified bit sequence does not fit into the underlying bit stream.
 
 The postcondition of this behavior is that \poke is expected to return~$-1$.
-We also request that no external memory locations are changed when this
-behavior applies.
-
+We also strengthen the default assigns clause by requesting that no external memory
+locations are changed when this behavior applies.
 
 \item[Behavior for values that do not fit into the bit sequence]
 

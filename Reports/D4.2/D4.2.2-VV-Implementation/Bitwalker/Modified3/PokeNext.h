@@ -28,8 +28,9 @@
   behavior  normal_case:
     assumes Value < (1 << Length) &&
             (Locals->CurrentBitposition + Length) <= 8 * Locals->Length;
-   assigns  Locals->Bitstream[Locals->CurrentBitposition/8..
+    assigns  Locals->Bitstream[Locals->CurrentBitposition/8..
                              (Locals->CurrentBitposition + Length)/8];
+    ensures \result == 0;
 
   complete behaviors;
   disjoint behaviors;

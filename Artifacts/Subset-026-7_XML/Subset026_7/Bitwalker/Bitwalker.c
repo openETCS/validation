@@ -73,8 +73,8 @@ int Bitwalker_Poke (unsigned int Startposition, unsigned int Length, uint8_t Bit
 
 void Bitwalker_IncrementalWalker_Init (T_Bitwalker_Incremental_Locals *Locals, uint8_t Bitstream[], unsigned int Size, unsigned int FirstBitposition)
 {
-	Locals->Bitstream			= Bitstream;
-	Locals->Length				= Size;
+	Locals->Bitstream		= Bitstream;
+	Locals->Length			= Size;
 	Locals->CurrentBitposition	= FirstBitposition;
 }
 

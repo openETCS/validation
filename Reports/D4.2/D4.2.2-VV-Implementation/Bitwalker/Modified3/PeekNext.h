@@ -10,10 +10,11 @@
   requires Valid(Locals);
   requires 0 <= Length <= 64;
   requires Locals->CurrentBitposition + Length <= UINT_MAX;
+  requires Locals->CurrentBitposition + Length <= 8 * Locals->Length;
 
-  assigns \nothing;
+  assigns  Locals->CurrentBitposition;
 
-  ensures \result < (1 << Length);
+  ensures  \result < (1 << Length);
 */
 uint64_t Bitwalker_IncrementalWalker_Peek_Next(
   T_Bitwalker_Incremental_Locals*  Locals,

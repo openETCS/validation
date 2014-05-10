@@ -2,6 +2,7 @@
 #define LOCALS_H
 
 #include <stdint.h>
+#include <limits.h>
 
 struct BitwalkerLocals
 {

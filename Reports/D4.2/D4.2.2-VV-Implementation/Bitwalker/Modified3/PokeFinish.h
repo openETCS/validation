@@ -15,6 +15,6 @@
 
 // unsigned int Bitwalker_IncrementalWalker_Poke_Finish(
 int Bitwalker_IncrementalWalker_Poke_Finish(
-      T_Bitwalker_Incremental_Locals *Locals);
+  T_Bitwalker_Incremental_Locals *Locals);
 
 #endif // POKE_FINISH_H

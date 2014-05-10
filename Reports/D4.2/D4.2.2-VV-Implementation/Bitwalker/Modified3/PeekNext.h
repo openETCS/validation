@@ -14,7 +14,18 @@
 
   assigns  Locals->CurrentBitposition;
 
-  ensures  \result < (1 << Length);
+  behavior  invalid_bit_sequence:
+    assumes (Locals->CurrentBitposition + Length)  > 8 * Locals->Length;
+    assigns  Locals->CurrentBitposition;
+    ensures \result == 0;
+
+  behavior  normal_case:
+    assumes (Locals->CurrentBitposition + Length) <= 8 * Locals->Length;
+    assigns  Locals->CurrentBitposition;
+    ensures \result < (1 << Length) ;
+
+  complete behaviors;
+  disjoint behaviors;
 */
 uint64_t Bitwalker_IncrementalWalker_Peek_Next(
   T_Bitwalker_Incremental_Locals*  Locals,

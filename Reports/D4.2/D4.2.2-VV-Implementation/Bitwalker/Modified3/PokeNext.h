@@ -8,9 +8,8 @@
 /*@
   requires \valid(Locals);
   requires Valid(Locals);
-  requires 0 <= Length <= 64;
+  requires 0 <= Length <= 63;
   requires Locals->CurrentBitposition + Length <= UINT_MAX;
-  requires Locals->CurrentBitposition + Length <= 8 * Locals->Length;
 
   assigns  Locals->Bitstream[Locals->CurrentBitposition/8..
                             (Locals->CurrentBitposition + Length)/8];
@@ -36,9 +35,9 @@
   disjoint behaviors;
 */
 int  Bitwalker_IncrementalWalker_Poke_Next(
-       T_Bitwalker_Incremental_Locals*  Locals,
-       unsigned int                     Length,
-       uint64_t                         Value);
+  T_Bitwalker_Incremental_Locals*  Locals,
+  unsigned int                     Length,
+  uint64_t                         Value);
 
 #endif
 

@@ -11,9 +11,9 @@
 
   ensures   \result == Locals->CurrentBitposition;
 */
-//unsigned int Bitwalker_IncrementalWalker_Peek_Finish(
-int Bitwalker_IncrementalWalker_Peek_Finish(
+unsigned int Bitwalker_IncrementalWalker_Peek_Finish(
   T_Bitwalker_Incremental_Locals  *Locals);
 
+//int Bitwalker_IncrementalWalker_Peek_Finish(
 
 #endif // PEEK_FINISH_H

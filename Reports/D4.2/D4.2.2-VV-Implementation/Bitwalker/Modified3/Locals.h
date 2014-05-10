@@ -3,12 +3,13 @@
 
 #include <stdint.h>
 
-typedef struct
+struct BitwalkerLocals
 {
   uint8_t *Bitstream;
   unsigned int Length;
   unsigned int CurrentBitposition;
-} T_Bitwalker_Incremental_Locals;
+};
 
+typedef struct BitwalkerLocals T_Bitwalker_Incremental_Locals;
 
 #endif // LOCALS_H

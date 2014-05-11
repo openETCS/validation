@@ -5,14 +5,13 @@
 #include "limits.h"
 
 /*@
-  requires  \valid(Locals);
+  requires \valid(Locals);
 
-  assigns   \nothing;
+  assigns  \nothing;
 
-  ensures   \result == Locals->CurrentBitposition;
+  ensures  \result == Locals->CurrentBitposition;
 */
-//unsigned int Bitwalker_IncrementalWalker_Peek_Finish(
-int Bitwalker_IncrementalWalker_Peek_Finish(
+unsigned int Bitwalker_IncrementalWalker_Peek_Finish(
   T_Bitwalker_Incremental_Locals  *Locals);
 
 

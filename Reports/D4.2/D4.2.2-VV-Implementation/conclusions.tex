@@ -2,6 +2,38 @@
 \chapter{Conclusions}
 \label{sec:conclusions}
 
-\fxfatal{issue 169: As the bitwalker example allows a limited usage of the approach, could you give in conclusion some feedbacks from previous experience ? in which case this approach is efficient to be used ?}
+This report presents experiments with various static analysis techniques:
 
-\fxfatal{issue 169: This report presents experiment swith two complementary approaches, is it possible to have in conclusion some comments on which approach is recommended to be used in the openETCS project, on which artifacts and to cover which objectives of VnV ? Then which steps of VnV are expected to cover EN50128 requirements and are not covered by these approaches ?}
+\begin{enumerate}
+\item formal verification with \framacwp (see Chapters~\ref{sec:frama-c}
+      and~\ref{sec:formal-verification})
+\item static analysis methods (see Chapter~\ref{sec:static-analysis})
+\end{enumerate}
+
+
+Deductive verification with \framacwp allows to prove with mathematical strength
+that software satisfies it functional specification.
+This approach has been applied to railway software before\cite{INDIN2103-FOKUS}.
+The technical challenge for the software analyzed in the report at hand is
+the extensive use of low-level bit operations.
+
+Verification with \framacwp is intended mostly for the level of software components.
+Thus, one can imagine that this approach could replace tests on the 
+level of software components but surely not for software integration
+and software\slash hardware integration.
+
+Moreover, deductive verification with \framacwp works most efficiently
+if there is already a sufficiently precise \emph{informal} specification.
+This was not the case for the \bitwalker which only was accompanied with
+a high-level description of its intended functionality.
+However, neither the admissible inputs nor the expected results (including error conditions)
+were properly described.
+Instead, this information had to be discovered from the implementation and cross checked
+with the software designer.
+
+Since formal verification is a very precise but also relatively expensive technique,
+it does not make sense to use it without using cheaper verification techniques first.
+Specifically, we highly recommend  simpler static analyses from 
+Chapter~\ref{sec:static-analysis} to quickly identify code deficiencies
+and to fix them \emph{before} a tool like \framacwp is applied.
+

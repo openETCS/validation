@@ -24,6 +24,7 @@
     assumes Value < (1 << Length) &&
             (Start + Length) <= 8 * BitstreamSize;
     assigns Bitstream[Start/8..(Start + Length)/8];
+    ensures \result == 0;
 
   complete behaviors;
   disjoint behaviors;

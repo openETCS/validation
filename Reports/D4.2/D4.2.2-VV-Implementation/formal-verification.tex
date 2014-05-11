@@ -682,7 +682,10 @@ in Section~\ref{sec:peek-loop-invariants}.
 
 In this section, we present the current state of the verification results 
 for \peek and \poke.
-Here is a list of options with which we called the \framacwp analysis.
+Here is a list of options with which we called the \framacwp analysis in its
+version \texttt{Neon 20140301}.\footnote{%
+   See \url{http://frama-c.com/download/frama-c-Neon-20140301.tar.gz}
+}
 For a detailed description of these options we refer to the documentation
 of \framac.
 
@@ -751,21 +754,20 @@ obligations were discharged by the various provers.
       will be employed to deal with the two remaining proof obligations of \peek
 \end{itemize}
 
-\clearpage
+%\clearpage
 
 \section{Open issues}
 \label{sec:issues}
 
 At this stage, only \peek and \poke have been formally specified with \acsl.
-Even for these two functions, a detailled formalization of bit operations is missing.
+Even for these two functions, a detailed formalization of bit operations is missing.
+This means, in particular, that we are not in the position to verify that for the
+normal operational modes \peek and \poke are \emph{inverse} to each other.
 On the other hand, the specification covers already the main operational modes
 and provides a good foundation to show under which
 circumstances no run time errors will occur.
-
-Whereas for \poke the absence of run time errors was established with \framacwp,
-there remain two unproven proof obligations for \peek.
-These obligations are also related to an insufficient formalization of
-bit operations.
+Yet, there remain several unproven proof obligations for the \bitwalker functions.
+These obligations are also related to an insufficient formalization of bit operations.
 
 It is important to keep in mind that the source code was modified to some extent.
 The main reasons for this were

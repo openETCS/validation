@@ -8,21 +8,41 @@ While major parts of the functionality of {Subset 026} are modelled in
 higher-level languages, there is also a substantial part of \emph{supporting} software
 that is developed in the programming language~C.
 
-\fxfatal{provide figure on scope of formal verification with OpenETCS}
-
 In this document we report about \emph{preliminary} results on the verification
 of that C-code.
 In particular, we report on the use of static analysis methods (including formal methods)
-on C code that has been developed by the project partner Siemens (Germany).
+on C code that has been developed by the project partner Siemens.
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{figures/scope-of-formalization.pdf}
+\caption{\label{fig:scope-of-formalization} Scope of formal methods with in OpenETCS}
+\end{center}
+\end{figure}
+
+Figure~\ref{fig:scope-of-formalization} outlines the roles of formal methods
+within the OpenETCS project.
+Even a subsystem such as described by \emph{Subset 026} of the ETCS specification
+is usually too complex to be completely formally specified.
+Therefore, \emph{semi-formal modelling techniques} and \emph{tests} and 
+\emph{simulations} play a crucial role to verify that the implementation
+satisfies its specification.
+However, for clearly defined modules and select system properties, formal methods
+can well be applied to establish the correctness of an implementation.
+
+\clearpage
+
 Figure~\ref{fig:Bitwalker-Overview} gives an overview on the software that
 is in the focus of this report.
 
 \begin{figure}[hbt]
 \begin{center}
-\includegraphics[width=0.8\textwidth]{figures/Bitwalker-Overview.pdf}
-\caption{\label{fig:Bitwalker-Overview} The place of \texttt{Bitwalker} with the OpenETCS software}
+\includegraphics[width=0.85\textwidth]{figures/Bitwalker-Overview.pdf}
+\caption{\label{fig:Bitwalker-Overview} The place of \bitwalker with the OpenETCS software}
 \end{center}
 \end{figure}
+
+\FloatBarrier
 
 The OpenETCS decoder is a large collection of functions dedicated to
 the reading of ETCS messages.

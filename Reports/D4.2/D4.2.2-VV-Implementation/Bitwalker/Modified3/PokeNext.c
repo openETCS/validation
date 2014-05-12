@@ -13,6 +13,7 @@ int Bitwalker_IncrementalWalker_Poke_Next(
                               Locals->Bitstream,
                               Locals->Length,
                               Value);
+  //@ assert Locals->CurrentBitposition == \at(Locals->CurrentBitposition, Pre);
   Locals->CurrentBitposition += Length;
   return retval;
 }

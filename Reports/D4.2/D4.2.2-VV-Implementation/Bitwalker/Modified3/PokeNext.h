@@ -11,8 +11,7 @@
   requires 0 <= Length <= 63;
   requires Locals->CurrentBitposition + Length <= UINT_MAX;
 
-  assigns  Locals->Bitstream[Locals->CurrentBitposition/8..
-                            (Locals->CurrentBitposition + Length)/8];
+  assigns  Locals->Bitstream[0..Locals->Length - 1];
 
   behavior  invalid_bit_sequence:
     assumes (Locals->CurrentBitposition + Length)  > 8 * Locals->Length;
@@ -28,8 +27,7 @@
   behavior  normal_case:
     assumes Value < (1 << Length) &&
             (Locals->CurrentBitposition + Length) <= 8 * Locals->Length;
-    assigns  Locals->Bitstream[Locals->CurrentBitposition/8..
-                             (Locals->CurrentBitposition + Length)/8];
+    assigns  Locals->Bitstream[0..Locals->Length - 1];
     ensures \result == 0;
 
   complete behaviors;

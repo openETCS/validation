@@ -6,13 +6,14 @@
 
 /*@
   requires \valid(Locals);
+  requires Locals->CurrentBitposition <= INT_MAX;
 
   assigns  \nothing;
 
   ensures  \result == Locals->CurrentBitposition;
 */
-unsigned int Bitwalker_IncrementalWalker_Peek_Finish(
+int Bitwalker_IncrementalWalker_Peek_Finish(
   T_Bitwalker_Incremental_Locals  *Locals);
 
 
-#endif // PEEK_FINISH_H
+#endif 

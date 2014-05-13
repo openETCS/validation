@@ -13,4 +13,4 @@ struct BitwalkerLocals
 
 typedef struct BitwalkerLocals T_Bitwalker_Incremental_Locals;
 
-#endif // LOCALS_H
+#endif

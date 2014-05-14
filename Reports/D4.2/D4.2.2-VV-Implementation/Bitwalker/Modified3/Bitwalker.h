@@ -10,4 +10,4 @@
 
 
 
-#endif // BITWALKER_H
+#endif

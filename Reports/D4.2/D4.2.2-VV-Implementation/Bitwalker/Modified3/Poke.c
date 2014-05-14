@@ -21,7 +21,7 @@ int Bitwalker_Poke(unsigned int Start,
 
   /*@
     loop invariant 0 <= i <= Length;
-    loop assigns i, Value, Bitstream[Start/8..(Start + Length)/8];
+    loop assigns i, Value, Bitstream[0..BitstreamSize-1];
     loop variant i;
   */
   for (unsigned int i = Length; i > 0; i--)

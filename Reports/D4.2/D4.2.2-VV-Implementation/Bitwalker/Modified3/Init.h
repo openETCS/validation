@@ -25,5 +25,5 @@ void Bitwalker_IncrementalWalker_Init(
   unsigned int                     Size,
   unsigned int                     FirstBitposition);
 
-#endif // INIT_H
+#endif
 

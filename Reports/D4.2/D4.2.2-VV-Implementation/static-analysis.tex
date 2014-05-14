@@ -5,20 +5,21 @@
 \section{Introduction}
 In this chapter we describe our work on the static code analysis of the bitwalker code provided in \href{https://github.com/openETCS/validation/tree/master/Artifacts/Subset-026-7_XML/Subset026_7/Bitwalker}{[validation repository]}
 
-Our aim is to discover programing errors, obtain code metrics (lines of code, lines of code/lines of comments, cyclomatic complexity, class inherance tree and others) and verify the C11 standard and some subset of rules defined in the MISRA C Standard. That is, we focus on the different aspects of the source code to ensure the quality of the code in various perspectives.
+Our aim is to discover programing errors, obtain code metrics (lines of code, lines of code/lines of comments, cyclomatic complexity, Halsted metrics, class inherance tree and others) and verify the C11 standard and some subset of rules defined in the MISRA C Standard. That is, we focus on the different aspects of the source code to ensure the quality of the code in various perspectives.
 
-The code metrics help understanding the complexity of the code and can lead to code changes. For example, the cyclomatic complexity or the number of paths, is a software quality metric that quantifies the complexity of a program and also indicates the number of test cases that would have to be written to execute all paths in a program. However, the cyclomatic complexity only considers the decision structure of a program, not consider the complexity of nesting. There are more complexity metrics that takes into account the degree of nesting of a program. The conjunction of the complexity metrics are an important indicator of the code readability, maintainability and portability, and the more complex the code is, more likely it will contain masked bugs.
+The code metrics help understanding the complexity of the code and can lead to code changes. The complexity metrics allows us to identify particularly complex program areas that it would be desirable to redesign, and where problems that will appear in the maintenance phase are likely focused. For example, the cyclomatic complexity or the number of paths, is a software quality metric that quantifies the complexity of a program and also indicates the number of test cases that would have to be written to execute all paths in a program. However, the cyclomatic complexity only considers the decision structure of a program, not consider the complexity of nesting. There are more complexity metrics that takes into account the degree of nesting of a program or that consider the volumen and the program level like the Halsted metrics. The conjunction of the complexity metrics are an important indicator of the code readability, maintainability and portability, and the more complex the code is, more likely it will contain masked bugs.
 
 CENELEC Standard identifies techniques and measures for 5 levels of software safety integrity and requires the use of a package of techniques and their correct
 application appropriate to the software safety integrity level.
 
-Five different static analysis tools have been used during the code verification activities in order to assess the quality of the results, ensure code quality and cover different techniques and metrics high recommended by CENELEC Standard. The selected tools are:
+Six different static analysis tools have been used during the code verification activities in order to assess the quality of the results, ensure code quality and cover different techniques and metrics high recommended by CENELEC Standard. The selected tools are:
 \begin{itemize}
 \item \textbf{Resource Standard Metrics (\href{http://msquaredtechnologies.com/m2rsm/}{RSM})}: a source code metrics and quality analysis tool
 \item \textbf{\href{http://www.locmetrics.com/}{LocMetrics}}: a simple tool for counting lines of code in C\#, Java, and C++
 \item \textbf{\href{http://www.scitools.com/}{Understand}}: a reverse engineering, documentation and metrics tool for C and C++ source code. It offers code navigation using a detailed cross reference, a syntax colorizing "smart" editor, and a variety of graphical reverse engineering views.                          
 \item \textbf{\href{http://clang-analyzer.llvm.org/}{Clang Static Analyzer}}: The Clang Static Analyzer consists of both a source code analysis framework and a standalone tool that finds bugs in C and Objective-C programs.
 \item \textbf{\href{http://cppcheck.sourceforge.net/}{CPPcheck}}: a static analysis tool for C, C++ code. Unlike C, C++ compilers and many other analysis tools it does not detect syntax errors in the code. Cppcheck primarily detects the types of bugs that the compilers normally do not detect. 
+\item \textbf{\href{http://www.verifysoft.com/en_cmtx.html}{Testwell CMT++}}: Based on the static properties of the program code CMT++ gives estimates how error prone the program source code is due to its complexity, how long it will take to understand the code, what is the logical volume of the code, etc ...
 \end{itemize}
 
 
@@ -36,20 +37,32 @@ Resource Standard Metrics (RSM) is a source code metrics and quality analysis to
 \item Analyze Cyclomatic Complexity
 \end{itemize}
 
-The cyclomatic complexity metric measures the complexity of the code by counting the number of independent paths through a piece of code-by counting the number of decision points. The decision point is where a choice can be made during execution; this gives rise to different paths through the code. Decision points arise through if statements and through while, do while and for loops. A single switch or try statement can also add many more decision points. This metric can either be determined by counting the regions, nodes and edges or number of predicate nodes (branching points) with a flow graph.
+Besides, RSM has intrinsic quality notices, can be extended by the end user with User Defined Quality Notices using regular expressions to analyze code lines and it is mapped to the MISRA C Standard. 
 
-The following equations defined McCabe Cyclomatic Complexity: 
+RSM has been customized to obtain the below metrics and analysis and the corresponding reports that are available into the \href{https://github.com/openETCS/validation/tree/master/VnVUserStories/VnVUserStorySQS/04-Results}{[VnVUserStories folder]}
+
 \begin{itemize}
-\item The number of regions in a flow graph.
-\item V(g) = E - N + 2P, where E are the edges, N are the nodes and P nodes without outgoing path.
+\item Project Functional Metrics and Analysis
+\item Project Class/Struct Metrics and Analysis
+\item Class Inheritance Tree
+\item Project Quality Profile
+\item Quality Notice Density
+\item Files Keywords and Metrics
+\item Project Keywords and Metrics
+\item Files Function Metrics
+\item Class/Struct Metrics
+\item Complexity Metrics
 \end{itemize}
 
-A simplified formula to calcule the cyclomatic complexity is: V(g) = P + 1, where P are the predicate nodes.
+As mentioned previously CENELEC Standard requires the use of a package of techniques. With the use of the RSM tool the following Cenelec Standard techniques have been covered:
+\begin{itemize}
+\item Limited Size and Complexity in Functions, Subroutines and Methods (High Recommended)
+\item Coding Standard (Mandatory): At this point the fulfillment of some of the MISRA-C Standard rules has been checked.
+\end{itemize}
 
+\subsection{Quality Metrics}
 
-Besides, RSM has intrinsic quality notices and can be extended by the end user with User Defined Quality Notices using regular expressions to analyze code lines. 
-
-Furthermore, RSM tool is mapped to the MISRA C Industry Standard. Taking into account the intrisic quality notice and the user defined quality notices the RSM tool covers 40.16\% of \href{http://msquaredtechnologies.com/m2rsm/docs/QualityStandards/MISRA_C_Mapping.htm}{[MISRA C]} rules
+As well as having intrinsic and user definied quality notices, RSM tool is mapped to the MISRA C Industry Standard. Taking into account the intrisic quality notice and the user defined quality notices the RSM tool covers 40.16\% of \href{http://msquaredtechnologies.com/m2rsm/docs/QualityStandards/MISRA_C_Mapping.htm}{[MISRA C]} rules.
 
 The following table shows the intrinsic Quality Notices for C language that RSM tool checks.
 
@@ -350,29 +363,7 @@ Emit a quality notice when a data member in the header file is not of the form m
     \hline
 \end{longtable}}
 
-RSM also allows to customize the desired output providing standard metrics and a combination of features.
-
-RSM has been customized to obtain the below metrics and analysis and the corresponding reports that are available into the \href{https://github.com/openETCS/validation/tree/master/VnVUserStories/VnVUserStorySQS/04-Results}{[VnVUserStories folder]}
-
-\begin{itemize}
-\item Project Functional Metrics and Analysis
-\item Project Class/Struct Metrics and Analysis
-\item Class Inheritance Tree
-\item Project Quality Profile
-\item Quality Notice Density
-\item Files Keywords and Metrics
-\item Project Keywords and Metrics
-\item Files Function Metrics
-\item Class/Struct Metrics
-\item Complexity Metrics
-\end{itemize}
-
-As mentioned previously CENELEC Standard requires the use of a package of techniques. With the use of the RSM tool the Limited Size and Complexity in Functions, Subroutines and Methods high recomended technique and the Coding Standard mandatory technique are covered. At this point the fulfillment of some of the MISRA-C Standard rules has been checked.
-
-At following we provide a summary of the obtained results.
-
-The table below indicates the total quality profile (Summary by notice type) for the bitwalker code which result is especially useful for determining the overall internal code quality.
-         
+Taking into account the quality notices mentioned above, a table that indicates the total quality profile (Summary by notice type) for the bitwalker code is shown. This result is especially useful for determining the overall internal code quality.
            
 \begin{longtable}{||p{.1\textwidth}|p{.1\textwidth}|p{.1\textwidth}|p{.6\textwidth}||}
   \caption{Quality Profile}\\
@@ -429,7 +420,27 @@ The table below indicates the total quality profile (Summary by notice type) for
     \hline
 \end{longtable}
 
-At following some code metrics by file will be shown, but previously an explanation is included. The reason is that there is no standard definition of what a line of code is. Do comments count? Are data declarations included? What happens if a statement extends over several lines? – These are the questions that often arise. 
+More detailed information regarding to in what line, function or file the quality notices have been detected is provided in the \href{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySQS/04-Results/bitwalker_functional_quality_metrics.htm}{[bitwalker\_functional\_quality\_metrics file]}. 
+
+\subsection{Complexity Metrics}
+Reflecting on elements that can contribute to increase the complexity of a program and influencing in its maintenance, four elements are identified:
+\begin{itemize}
+\item Program Size
+\item Data Structure
+\item Data Flow
+\item Control Flow
+\end{itemize}
+
+\subsubsection{Program Size Metrics}
+\label{sec:sizem}
+Very large programs are complex even if only be for the large amount of information to be considered in order to understand them. So a first measure of the code complexity is given by its size. This size can be determined using the following metrics:
+\begin{itemize}
+\item Number of lines
+\item Halsted metrics (See \ref{sec:halsted})
+\end{itemize}
+
+Count the number of code lines in a program is a simple way to measure its size. The main problem with this metric is to decide what we consider as line.
+The reason is that there is no standard definition of what a line of code is. Do comments count? Are data declarations included? What happens if a statement extends over several lines? – These are the questions that often arise. According to the criteria that we follow a different metric will be obtained.
 
 For example, in C language, a line of code can be:
 \begin{itemize}
@@ -446,200 +457,223 @@ As there is no standard definition and the definitions of these metrics are tied
 \item Comments: RSM counts a comment line as any physical line that contains a comment.
 \end{itemize}
 
+Taking into account these criterias the following size metrics are obtained:
 
-\begin{longtable}{||p{.275\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.075\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
+\begin{longtable}{||p{.275\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
   \caption{File Summary}\\
     \hline\hline
-    \textbf{Metrics} & \textbf{Bitwalker.h} & \textbf{Bitwalker.c} & \textbf{main.c} & \textbf{opnETCS.h} & \textbf{opnETCS \_Decoder.h}\\
+    \textbf{Metrics} & \textbf{Bitwalker.h} & \textbf{Bitwalker.c} & \textbf{opnETCS.h} & \textbf{opnETCS \_Decoder.h}\\
     \hline\hline
     \endhead
     \hline\hline
     \endfoot
     \ LOC\footnote{Lines of Code}. & 15
 & 58
-& 45 & 884 & 62
+& 884 & 62
     \\
     \hline
     \ eLOC\footnote{Effective Lines of Codes} & 15
 & 40
-& 40 & 823 & 62
+& 823 & 62
     \\
     \hline
     \ lLOC\footnote{Logical Statements Lines of Code: represent a metrics for those line of code which form code statements.  These statements are terminated with a semi-colon.  The control line for the "for" loop contain two semi-colons but accounts for only one semi colon} & 11
 & 28
-& 23 & 760 & 61
+& 760 & 61
     \\
     \hline
     \ Comment & 16
 & 29
-& 61 & 822 & 15
+& 822 & 15
     \\
     \hline
     \ Lines & 41
 & 109
-& 127 & 1249 & 84
+& 1249 & 84
     \\
     \hline
    \end{longtable}
 
-The table below provides information regarding standard functional metrics such as cyclomatic complexity and others. 
+The following table describes some recommendations for the lines-of-code measures:
 
-The interface complexity is defined by RSM as the number of input parameters to a function plus the number of return states from that function. Class interface complexity is the sum of all function interface complexity metrics within that class. 
+\begin{longtable}{||p{.175\textwidth}|p{.175\textwidth}|p{.675\textwidth}||}
+  \caption{\label{lst:recom} Recommendations}\\
+    \hline\hline
+    \textbf{Measures} & \textbf{Values} & \textbf{Comments}\\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    \ Function length & 4-40 program lines
+& A function definition contains at least a prototype, one line of code, and a pair of braces, which makes 4 lines.
 
-As it was shown previously the cyclomatic complexity metric measures the complexity of the code and it is calculated as V(g) = P + 1, where P are the predicate nodes. 
-The result obtained in the calculation of the cyclomatic complexity defines the number of independent paths within a piece of code and determines the upper bound on the number of tests that must be performed to ensure that each statement is executed at least once.
+A function longer than 40 program lines probably implements many functions. Functions containing one selection statement with many branches are an exception to this rule.
 
-According to McCabe a value of 10 is a practical upper limit for the cyclomatic complexity of a given module. When the complexity exceeds this value, it becomes very difficult to prove, understand and modify the module. However, in some circumstances, it may be appropriate to relax the restriction and permit modules with a complexity as high as 15.
+Decomposing them into smaler functions often decreases readability.
+    \\
+    \hline
+    \ File length & 4-400 program lines
+& The smallest entity that may reasonably occupy a whole source file is a function, and the minimum length of a function is 4 lines. Files longer than 400 program lines (10..40 functions) are usually too long to be understood as a whole.
+    \\
+    \hline
+    \ Comments Percentage & 30\%-75\%
+& If less than one third of a file is comments the file is either very trivial or poorly explained.
+
+If more than 75\% of a file are comments, the file is not a program but a document.
+In a well-documented header file percentage of comments may sometimes exceed 75\%
+    \\
+    \hline
+   \end{longtable}
+
+By analyzing the results, one can observe the Bitwalker.c file fulfills the recommendations in relation to the file length. Although the comments percentage (26\%) is a little bite under the recommended value, this do not indicate a poor documentation of source code.
+
+\subsubsection{Control Flow Metrics}
+\label{sec:cyclo}
+The possibility that the execution flow of a program follows different paths depending on whether or not certain conditions are met, increases the difficulty to understand what the program do in each of the situations that may occur.
+
+One metric that addresses the complexity of the control flow is the \textbf{Cyclomatic complexity}. 
+
+The cyclomatic complexity metric measures the complexity of the code by counting the number of independent paths through a piece of code-by counting the number of decision points. The decision point is where a choice can be made during execution; this gives rise to different paths through the code. Decision points arise through if statements and through while, do while and for loops. A single switch or try statement can also add many more decision points. This metric can either be determined by counting the regions, nodes and edges or number of predicate nodes (branching points) with a flow graph.
+
+
+The following equations defined McCabe Cyclomatic Complexity: 
+\begin{itemize}
+\item The number of regions in a flow graph.
+\item V(g) = E - N + 2P, where E are the edges, N are the nodes and P nodes without outgoing path.
+\item V(g) = P + n, where P are the predicate nodes and n the number of output.
+\end{itemize}
+
+When the graph is strongly connected, a simplified formula to calcule the cyclomatic complexity is use: V(g) = P + 1, where P are the predicate nodes.
+
+The result obtained in the calculation of the cyclomatic complexity also determines the upper bound on the number of tests that must be performed to ensure that each statement is executed at least once.
+
+At following the results of some complexity metrics obtained by the RSM tool are shown:
 
 \begin{longtable}{||p{.275\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.075\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
   \caption{Functional Summary}\\
     \hline\hline
-    \textbf{Metrics} & \textbf{Bitwalker.c} & \textbf{main.c}\\
+    \textbf{Metrics} & \textbf{Bitwalker.c}\\
     \hline\hline
     \endhead
     \hline\hline
     \endfoot
     \ File Function Count
 & 7
-& 1
     \\
     \hline
     \ Total Function LOC
 & 49
-& 40
     \\
     \hline
     \ Total Function eLOC
 & 31
-& 35
     \\
     \hline
     \ Total Function lLOC
 & 27
-& 23
     \\
     \hline
     \ Total Function Params
 & 20
-& 0
     \\
     \hline
     \ Total Cyclo Complexity
 & 13
-& 1
     \\
     \hline
     \ Total Function Pts LOC
 & 0.5
-& 0.4
     \\
     \hline
     \ Total Function Pts eLOC
-& 0.3
 & 0.3
     \\
     \hline
     \ Total Function Pts lLOC
 & 0.2
-& 0.2
     \\
     \hline
     \ Total Function Return
 & 10
-& 1
     \\
     \hline
     \ Total Function Complex
 & 43
-& 2
     \\
     \hline
     \ Max Function LOC
 & 16
-& 40
     \\
     \hline
     \ Max Function eLOC
 & 12
-& 35
     \\
     \hline
     \ Max Function lLOC
 & 9
-& 23
     \\
     \hline
     \ Average Function LOC
 & 7.00
-& 40
     \\
     \hline
     \ Average Function eLOC
 & 4.43
-& 35
     \\
     \hline
     \ Average Function lLOC
 & 3.86
-& 23
     \\
     \hline
     \ Max Function Parameters
 & 5
-& 0
     \\
     \hline
     \ Max Function Returns
 & 3
-& 1
     \\
     \hline
     \ Max Interface Complex
 & 8
-& 1
     \\
     \hline
     \ Max Cyclomatic Complex
 & 5
-& 1
     \\
     \hline
     \ Max Total Complexity
 & 13
-& 2
     \\
     \hline
     \ Avg Function Parameters
 & 2.86
-& 0.00
     \\
     \hline
     \ Avg Function Returns
 & 1.43
-& 1.00
     \\
     \hline
     \ Avg Interface Complex
 & 4.29
-& 1.00
     \\
     \hline
     \ Avg Cyclomatic Complex
 & 1.86
-& 1.00
     \\
     \hline
     \ Avg Total Complexity
 & 6.14
-& 2.00
     \\
     \hline
 \end{longtable}
 
-The Maximun total complexity is the addition of Maximun Interface and Cyclomatic complexities and the total Cyclomatic complexity is calculated as the sumn of the cyclomatic complexity of each function of the file. Due to this, a more detailed Complexity analysis per function is provided at following.
+The interface complexity is defined by RSM as the number of input parameters to a function plus the number of return states from that function. Class interface complexity is the sum of all function interface complexity metrics within that class.
 
-In addition to the Limited Size and Complexity in Functions, Subrutines and Methods and Coding Standard techniques, at following we can see that taking into account the modular approach where one of its rule mentions that it shall specify a restriction for the number of paramenters (normally 5) the Parameter Number Limit is fulfilled.
+The Maximun total complexity is the addition of Maximun Interface and Cyclomatic complexities and the total Cyclomatic complexity is calculated as the sumn of the cyclomatic complexity of each function of the file. 
 
+Knowing that a program has a high value of cyclomatic complexity (total Cyclomatic complexity) does not provide us enough info to decide what actions to take to improve our software. This occurs due to there is not an approximate threshold reference value for total cyclomatic complexity since not all software has the same size. However we can say that the cyclomatic complexity of each function should not exceed a certain value.
+
+Due to this, a more detailed Complexity analysis per function is provided at following.
 
 \begin{longtable}{||p{.125\textwidth}|p{.125\textwidth}|p{.175\textwidth}|p{.175\textwidth}||}
   \caption{Function Metrics}\\
@@ -747,20 +781,40 @@ eLOC: 1 &
 lLOC: 1 &
 Lines: 3
  \\\hline
-\multicolumn{4}{||l||}{\textbf{main}}
-\\\hline
-\ Param: 0 &
-Return: 1 &
-Cyclo Vg: 1 &
-Comment: 47
- \\\hline
-\ LOC: 40 &
-eLOC: 35 &
-lLOC: 23 &
-Lines: 101
- \\\hline
 \end{longtable}
 
+After calculating the cyclomatic complexity the risk involved can be determined using the following table:
+
+{\footnotesize\sffamily\centering
+  \begin{longtable}{||p{.15\textwidth}|p{.40\textwidth}||}
+  \caption{Mc Cabe cyclomatic Complexity Reference table}\\
+    \hline\hline
+    \textbf{Cyclomatic Complexity} & \textbf{Risk Evaluation} \\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    \textbf{1-10}
+& Low risk
+    \\
+    \hline
+    \textbf{11-20}
+& More complex, Moderate risk
+    \\
+    \hline
+    \textbf{21-50}
+& Complex, High Risk
+    \\
+    \hline
+    \textbf{>50}
+& Not testable, Very High Risk
+    \\
+    \hline
+\end{longtable}}
+
+If we cross the values ​​obtained in the analysis with the indicative table we can see that all functions are under 10, so we speak of simple functions with little logic and with low risk.
+
+In addition to the Limited Size and Complexity in Functions, Subrutines and Methods and Coding Standard techniques, at following we can see that taking into account the modular approach where one of its rule mentions that it shall specify a restriction for the number of paramenters (normally 5) the Parameter Number Limit is fulfilled.
 
 Now, an example of the cyclomatic complexity calculation for the bitwalker\_Poke function is shown to compare the correctness of these results .
 
@@ -801,10 +855,6 @@ About the results obtained by LocMetrics tool are the following ones:
     \hline
     Bitwalker.c &
     110 & 58 & 36 & 15 & 24 & 5 & 28 & 217 & 0 & 0
-    \\
-    \hline
-    main.c &
-    128 & 45 & 26 & 1 & 23 & 5 & 60 & 350 & 0 & 0
     \\
     \hline
     opnETCS.h &
@@ -1132,20 +1182,6 @@ In order to understand the tables and to be able to compare the results obtained
  \\\hline
 \ Count Path: & 1
 \\\hline
-\multicolumn{2}{||l||}{\textbf{main}}
-\\\hline
-\ Cyclomatic: & 1
-\\\hline
-\ Modified Cyclomatic: & 1
-\\\hline
-\ Strict Cyclomatic: & 1 
-\\\hline
-\ Essential: & 1
- \\\hline
-\ Max Nesting:   & 0
- \\\hline
-\ Count Path: & 1
-\\\hline
 \end{longtable}
 
 Here are some remarks about how the Understand tool defines and take into account the following code metrics:
@@ -1161,72 +1197,72 @@ Here are some remarks about how the Understand tool defines and take into accoun
 \item Ratio Comment/Code: comment lines / code lines
 \end{itemize}
 
-\begin{longtable}{||p{.275\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.075\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
+\begin{longtable}{||p{.275\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
   \caption{File Metrics}\\
     \hline\hline
-    \textbf{Metrics} & \textbf{Bitwalker.h} & \textbf{Bitwalker.c} & \textbf{main.c} & \textbf{opnETCS.h} & \textbf{opnETCS \_Decoder.h}\\
+    \textbf{Metrics} & \textbf{Bitwalker.h} & \textbf{Bitwalker.c} & \textbf{opnETCS.h} & \textbf{opnETCS \_Decoder.h}\\
     \hline\hline
     \endhead
     \hline\hline
     \endfoot
     \ Lines: & 41
 & 109
-& 127 & 1249 & 84
+& 1249 & 84
     \\
     \hline
     \ Comment Lines: & 20
 & 33
-& 65 & 822 & 20
+& 822 & 20
     \\
     \hline
     \ Blank Lines: & 7
 & 23
-& 22 & 180 & 2
+& 180 & 2
     \\
     \hline
     \ Preprocessor Lines: & 4
 & 1
-& 4 & 1 & 1
+& 1 & 1
     \\
     \hline
     \ Code Lines:  & 11
 & 57
-& 41 & 883 & 61
+& 883 & 61
     \\
     \hline
     \ Inactive Lines:  & 0
 & 0
-& 0 & 0 & 0
+& 0 & 0
     \\
     \hline
     \ Executable Code Lines:  & 0
 & 30
-& 33 & 0 & 0
+& 0 & 0
     \\
     \hline
     \ Declarative Code Lines:  & 11
 & 15
-& 35 & 822 & 61
+& 822 & 61
     \\
     \hline
     \ Execution Statements:  & 0
 & 28
-& 12 & 0 & 0
+& 0 & 0
     \\
     \hline
     \ Declaration Statements:  & 11
 & 15
-& 12 & 760 & 61
+& 760 & 61
     \\
     \hline
     \ Ratio Comment/Code:  & 1.82
 & 0.58
-& 1.59 & 0.93 & 0.33
+& 0.93 & 0.33
     \\
     \hline
     \ Units  & 0
 & 7
-& 1 & 0 & 0
+& 0 & 0
     \\
     \hline
    \end{longtable}
@@ -1462,39 +1498,7 @@ Here are some remarks about how the Understand tool defines and take into accoun
     \ Ratio Comment/Code:  & 0.35
     \\
     \hline
-    \multicolumn{2}{||l||}{\textbf{main}}
-\\\hline
-    \ Lines: & 102
-    \\
-    \hline
-    \ Comment Lines: & 47
-    \\
-    \hline
-    \ Blank Lines: & 19
-    \\
-    \hline
-    \ Code Lines:  & 41
-    \\
-    \hline
-    \ Inactive Lines:  & 0
-    \\
-    \hline
-    \ Executable Code Lines:  & 33
-    \\
-    \hline
-    \ Declarative Code Lines:  & 25
-    \\
-    \hline
-    \ Execution Statements:  & 12
-    \\
-    \hline
-    \ Declaration Statements:  & 11
-    \\
-    \hline
-    \ Ratio Comment/Code:  & 1.15
-    \\
-    \hline
-\end{longtable}
+   \end{longtable}
 
 Taking into account control flow and data flow techniques some Uninitialized Items (items such as variables that are not initialized in the code), Unused Variables and Parameters items (items that are declared (and perhaps initialized) but never referenced other than that) and Unused Program Units have been identified. The Unused Program Units Report identifies program units that are declared but never used. However note that this listing in this report doesnt mean the system doesnt need this program unit.
 
@@ -1759,6 +1763,344 @@ The below figure shows the results commented previously:
 \caption{cppcheck results}
 \end{figure}
 
+\section{Testwell CMT++ Results}
+\label{sec:halsted}
+CMT++, Complexity Measures Tool for C/C++, is an easy-to-use code metrics tool for C and C++ languages. Also assembly code, either inlined in a C/C++ source file or separate assembly file, can be measured.
+
+Based on the static properties of the program code CMT++ gives estimates how error prone the program sorce code is due to its complexity, how long it will take to understand the code, what the logical volume of the code is, how much code you have: physical lines, comment lines, program lines, statements, etc
+
+CMT++ helps to estimate the overall maintainability of the code base and easily locate the complex parts of it. 
+
+In this case CMT++ is used to calculate:
+\begin{itemize}
+\item Basic code complexity metrics
+\begin{itemize}
+\item McCabe's cyclomatic number
+\item Halstead's metrics
+\item Lines of code metrics
+\item Some other metrics like: number of semicolons, number of function parameter, depth of control structure nesting
+\end{itemize}
+\item Maintainability Index
+\end{itemize}
+
+\subsection{Complexity Metrics}
+\subsubsection{Program Size Metrics}
+As it was mentioned in \ref{sec:sizem} the number of lines and the Halsted metrics can be used to determine the program size.
+\begin{description}
+\item \textbf{Number of lines}
+
+The lines of code measures are the most traditional measures used to quantify software complexity. They are simple, easy to count, and very easy to understand. However, they do not take into account the intelligence content and the layout of the code.
+
+CMT++ calculates the following lines-of-code metrics:
+\begin{itemize}
+\item LOCphy: number of physical lines
+\item LOCbl: number of blank lines (a blank line inside a comment block is considered to be a comment line)
+\item LOCpro: number of program lines (declarations, definitions, directives, and code)
+\item LOCcom: number of comment lines
+\end{itemize}
+
+Following the analysis conducted within the tool, the tables below summarizes the results:
+
+\begin{longtable}{||p{.475\textwidth}|p{.115\textwidth}|p{.115\textwidth}|p{.115\textwidth}|p{.115\textwidth}||}
+  \caption{Lines of Code Metrics per file}\\
+    \hline\hline
+    \textbf{File} &\textbf{LOCphy} & \textbf{LOCpro} & \textbf{LOCcom} & \textbf{LOCbl}\\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    Bitwalker.c & 109 & 58 & 33 & 23
+    \\
+    \hline
+   \end{longtable}
+   
+\begin{longtable}{||p{.475\textwidth}|p{.115\textwidth}|p{.115\textwidth}|p{.115\textwidth}|p{.115\textwidth}||}
+  \caption{Lines of Code Metrics per functions}\\
+    \hline\hline
+    \textbf{Function} &\textbf{LOCphy} & \textbf{LOCpro} & \textbf{LOCcom} & \textbf{LOCbl}\\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    Bitwalker\_Peek & 20 & 13 & 5 & 4
+    \\
+    \hline
+    Bitwalker\_Poke & 24 & 17 & 6 & 4
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Init & 6 & 6 & 0 & 0
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Peek\_Next & 7 & 6 & 1 & 0
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Peek\_Finish & 4 & 4 & 0 & 0
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Poke\_Next & 7 & 6 & 1 & 0
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Poke\_Finish & 4 & 4 & 0 & 0
+    \\
+    \hline
+   \end{longtable}
+
+\item \textbf{Halsted metrics}
+
+Halstead complexity metrics were developed by the late Maurice Halstead as a means of determining a quantitative measure of complexity directly from the operators and operands in the module to measure a program module's complexity directly from source code.
+
+Halstead's metrics are based on interpreting the source code as a sequence of tokens and classifying each token to be an operator or an operand. There are based on four basic measures:
+\begin{itemize}
+\item number of unique (distinct) operators ($n_1$)
+\item number of unique (distinct) operands ($n_2$)
+\item total number of operators ($N_1$)
+\item total number of operands ($N_2$).
+\end{itemize}
+
+Taking into account these measures the following metrics will be obtained:
+\begin{itemize}
+\item Program Vocabulary: $n = n_1 + n_2$
+\item Program Length: $N = N_1 + N_2$
+\item Program Difficulty: $D = ( n_1 / 2 ) * ( N_2 / n_2 )$
+\item Program Volume: $V = N * log_2 (n)$
+\item Program Length: L = 1/V
+\item Effort to implement: E = V * D
+\item Time to implement: T = E / 18
+\item Number of delivered bugs: $B = (E^{2/3}) / 3000$
+\end{itemize}
+
+So Halsted metrics provide several metrics that focus on different aspects of software complexity. Furthermore, they allow the estimation of development and testing times (with parameter L*V), and difficulty of understanding (with parameter E). 
+
+Software complexity is usually analyzed with the indicators L, V and E due to:
+\begin{itemize}
+\item the volume is intended being a more accurate measure of the difficulty of understanding a program, taking into account not only its length but also the vocabulary. Halstead's volume (V) describes the size of the implementation of an algorithm.
+\item the program level gives an idea of ​​the level of detail that it has been encoded
+\item effort can be used as a measure of program clarity since the effort required to produce a piece of software is primarily related to the difficulty to understand and implement it.
+\end{itemize}
+
+In the tables below are presented the results obtained per file and per functions:
+
+\begin{longtable}{||p{.475\textwidth}|p{.070\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}||}
+  \caption{Halsted metrics 1 per file}\\
+    \hline\hline
+    \textbf{File} &\textbf{L} & \textbf{n} & \textbf{$n_1$} & \textbf{$n_2$} & \textbf{N} & \textbf{$N_1$} & \textbf{$N_2$}\\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    Bitwalker.c & 0.014 & 72 & 31 & 41 & 378 & 185 & 193
+    \\
+    \hline
+   \end{longtable}
+   
+\begin{longtable}{||p{.475\textwidth}|p{.070\textwidth}|p{.1\textwidth}|p{.085\textwidth}|p{.075\textwidth}|p{.080\textwidth}||}
+  \caption{Halsted metrics 2 per file}\\
+    \hline\hline
+    \textbf{File} &\textbf{B} & \textbf{E} & \textbf{T} & \textbf{D} & \textbf{V}\\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    Bitwalker.c & 1.024 & 170167.578 & 02:37:33 & 72.963 & 2332.232 
+    \\
+    \hline
+   \end{longtable}
+   
+\begin{longtable}{||p{.475\textwidth}|p{.070\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}||}
+  \caption{Halsted metrics 1 per functions}\\
+    \hline\hline
+    \textbf{Function} &\textbf{L} & \textbf{n} & \textbf{$n_1$} & \textbf{$n_2$} & \textbf{N} & \textbf{$N_1$} & \textbf{$N_2$}\\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    Bitwalker\_Peek & 0.041 & 35 & 18 & 17 & 89 & 43 & 46
+    \\
+    \hline
+    Bitwalker\_Poke & 0.028 & 42 & 23 & 19 & 120 & 62 & 58
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Init & 0.143 & 20 & 8 & 12 & 37 & 16 & 21
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Peek\_Next & 0.116 & 20 & 9 & 11 & 39 & 18 & 21
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Peek\_Finish & 0.278 & 11 & 6 & 5 & 12 & 6 & 6
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Poke\_Next & 0.111 & 21 & 9 & 12 & 44 & 20 & 24
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Poke\_Finish & 0.278 & 11 & 6 & 5 & 12 & 6 & 6
+    \\
+    \hline
+   \end{longtable}
+   
+\begin{longtable}{||p{.475\textwidth}|p{.070\textwidth}|p{.1\textwidth}|p{.085\textwidth}|p{.075\textwidth}|p{.080\textwidth}||}
+  \caption{Halsted metrics 2 per functions}\\
+    \hline\hline
+    \textbf{Function} &\textbf{B} & \textbf{E} & \textbf{T} & \textbf{D} & \textbf{V}\\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    Bitwalker\_Peek & 0.166 & 11117.269 & 00:10:17 & 24.353 & 456.506 
+    \\
+    \hline
+    Bitwalker\_Poke & 0.267 & 22715.846 & 00:21:01 & 35.105 & 647.078 
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Init & 0.036 & 1119.379 & 00:01:02 & 7.000 & 159.911 
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Peek\_Next & 0.043 & 1448.042 & 00:01:20 & 8.591 & 168.555 
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Peek\_Finish & 0.009 & 149.447 & 00:00:08 & 3.600 & 41.513 
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Poke\_Next & 0.048 & 1739.358 & 00:01:36 & 9.000 & 193.262 
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Poke\_Finish & 0.009 & 149.447 & 00:00:08 & 3.600 & 41.513 
+    \\
+    \hline
+   \end{longtable}
+
+\end{description}
+
+The volume of a function should be at least 20 and at most 1000. The volume of a parameter less one-line function that is not empty; is about 20. A volume greater than 1000 tells that the function probably does too many things.
+
+The volume of a file should be at least 100 and at most 8000. These limits are based on volumes measured for files whose LOCpro and v(G) are near their recommended limits. The limits of volume can be used for double-checking.
+
+Halstead's delivered bugs (B) is an estimate for the number of errors in the implementation.
+Delivered bugs in a file should be less than 2. Experiences have shown that, when programming with C or C++, a source file almost always contains more errors than B suggests. The number of defects tends to grow more rapidly than B.
+
+By analyzing the results, one can observe that all the Halsted metrics obtained in relation to functions and file are inside the recommendations.
+
+
+\subsubsection{Control Flow Metrics}
+\begin{longtable}{||p{.475\textwidth}|p{.075\textwidth}||}
+  \caption{McCabe Cyclomatic Complexity}\\
+    \hline\hline
+    \textbf{Function} &\textbf{ECC}\\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    Bitwalker\_Peek & 3  
+    \\
+    \hline
+    Bitwalker\_Poke & 5  
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Init & 1
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Peek\_Next & 1  
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Peek\_Finish & 1  
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Poke\_Next & 1  
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Poke\_Finish & 1  
+    \\
+    \hline
+   \end{longtable}
+
+As a first conclusion, taking into account the reference table shown in Section \ref{sec:cyclo} the values from the above table indicate a low risk functions and the matching with the results obtained with the previous tools.
+
+\subsection{Maintainability Index}
+Maintainability Index (MI) is a single-number value for estimating the relative maintainability of the code.
+
+Maintainability Index is calculated with certain formulae from lines-of-code measures, McCabe measure and Halstead measures.
+
+Actually there are three measures:
+\begin{itemize}
+\item MIwoc: Maintainability Index without comments
+\item MIcw: Maintainability Index comment weight
+\item MI: Maintainability Index = MIwoc + MIcw
+\end{itemize}
+
+The general formulae for MI is the following:
+
+MIwoc = 171 - 5.2 * ln(aveV) -0.23 * aveG -16.2 * ln(aveLOC)
+
+MIcw = 50 * sin(sqrt(2.4 * perCM))
+
+MI = MIwoc + MIcw
+
+where:
+\begin{itemize}
+\item aveV = average Halstead Volume per Module
+\item aveG = average extended cyclomatic complexity per Module
+\item aveLOC = average count of lines per Module
+\item perCM = average percent of lines of comments per Module
+\end{itemize}
+
+\begin{longtable}{||p{.475\textwidth}|p{.075\textwidth}|p{.070\textwidth}|p{.070\textwidth}||}
+  \caption{Maintainability Index}\\
+    \hline\hline
+    \textbf{Function} &\textbf{MIwoc} & \textbf{MIcw} & \textbf{MI}\\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    Bitwalker\_Peek & 90 & 35 & 125 
+    \\
+    \hline
+    Bitwalker\_Poke & 85 & 35 & 120 
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Init & 115 & 0 & 115  
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Peek\_Next & 113 & 28 & 140  
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Peek\_Finish & 129 & 0 & 129  
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Poke\_Next & 112 & 28 & 140  
+    \\
+    \hline
+    Bitwalker\_IncrementalWalker\_Poke\_Finish & 129 & 0 & 129  
+    \\
+    \hline
+   \end{longtable}
+
+After calculating the Maintainability Index the maintainability involved can be determined using the following reference table:
+
+{\footnotesize\sffamily\centering
+  \begin{longtable}{||p{.15\textwidth}|p{.40\textwidth}||}
+  \caption{Maintainability Index Reference table}\\
+    \hline\hline
+    \textbf{Maintainability Index} & \textbf{Maintainability Evaluation} \\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    \textbf{85 and more}
+& good maintainability
+    \\
+    \hline
+    \textbf{65-85}
+& moderate maintainability
+    \\
+    \hline
+    \textbf{< 65}
+& difficult to maintain
+with really bad pieces of code (big, uncommented, unstructured) the MI value can be even negative
+    \\
+    \hline
+\end{longtable}}
+
+As a first conclusion, the values from the tables above indicate the functions and file have a good maintanability.
+
 \section{Conclusions}
 
 Static analysis tools are very good due to the detection of several problem/errors at code level that are usually difficult to detect by manual inspection. Furthermore, they help enforce coding standards and keep code complexity low.
@@ -1769,23 +2111,6 @@ In order to ensure the correctness of the obtained results mentioned in the prev
 
 As a result of this comparison we obtain that between the tools there are some small deviations regarding some code metrics like eLOC or comments. Thus it was necessary to check how each aspect/metric is defined into each tool. In relation to the MISRA-C rules, as each tool verifies a subset of the rules defined in this standard, the results are different. However, the violations relationed with rules that are included in both RMS and Understand tool have been detected by both tools.
 
-For example, the table below shows that there is a minimun deviation regarding to the cyclomatic complexity obtained with the RSM or Understand and LocMetrics tools
-
-\begin{longtable}{||p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
-  \caption{File Cyclomatic Complexity comparation}\\
-    \hline\hline
-    \textbf{File} &\textbf{RSM} & \textbf{Understand} & \textbf{LocMetrics}\\
-    \hline\hline
-    \endhead
-    \hline\hline
-    \endfoot
-    Bitwalker.c & 13 & 13 & \textcolor{red}{15}
-    \\
-    \hline
-    main.c & 1 & 1 & 1
-    \\
-    \hline
-\end{longtable}
 
 \begin{longtable}{||p{.475\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
   \caption{function Cyclomatic Complexity comparation}\\
@@ -1823,7 +2148,7 @@ For example, the table below shows that there is a minimun deviation regarding t
 
 Taking into account the obtained results, we can concluded that:
 \begin{itemize}
-\item the complexity of bitwalker.c file is 13 that exceeds the 10 value so the bitwalker code has moderate risk. Thus, we might split it into smaller modules.
+\item the complexity of bitwalker.c functions ............. According to McCabe a value of 10 is a practical upper limit for the cyclomatic complexity of a given module. When the complexity exceeds this value, it becomes very difficult to prove, understand and modify the module. However, in some circumstances, it may be appropriate to relax the restriction and permit modules with a complexity as high as 15.
 \item there are some misra-c rules violations and quality notice. It would be recommendable to modify the specific lines if it is possible in order to improve code quality.
 \end{itemize}
 

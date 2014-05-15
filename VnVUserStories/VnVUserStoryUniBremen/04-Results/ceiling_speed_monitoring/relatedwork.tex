@@ -1,0 +1,91 @@
+\section{Related Work}\label{sec:related}
+% ============================================================
+
+The test method described and illustrated in this technical report is a specific instance of {\it partition testing} approaches, where the input domains of the SUT are divided into subsets, and small numbers of candidates are chosen from each of these sets~\cite{Flammini2}. The formalisation of equivalence classes is typically based on 
+a {\it uniformity hypothesis} as introduced in~\cite{gaudel1995}.
+In the context of safety-relevant applications, the identification of subsets, as well as the selection of representatives from each set,  has to be justified. To this end, heuristic techniques such as 
+  the classification tree method described in~\cite{grochtmann1993classification} have been implemented in interactive test automation tools. They enable users to clearly represent the input combinations taken into account in a test suite.  In absence of a model for the required SUT behaviour, however, no formal justification of this selection could be performed, since internal dependencies between input variables could not be formally analysed. As a consequence, classes have been constructed on a per-input variable basis; this resulted in partitions $X_{i1}, X_{i2}, X_{i3}, \dots$, structuring the domain of input variable $x_i \in I, i = 1,\dots,k$. To increase the confidence into the class selection, heuristics like {\it strong equivalence class testing} have been applied, where it was tried to cover every possible combination 
+  $(X_{1j_1},\dots,X_{kj_k})$   of classes, by choosing representatives from each of these vectors. In~\cite{hybridtest}, this approach to equivalence class testing is applied to an   ATC (automatic train control) system which   comprises functionality similar to the one described in this report, but which is based on a national Italian ATC specification. In order to further increase the confidence into the test strength achieved, a  grey-box test strategy is applied instead of ``purely black-box'', so that a subset of internal communication variables can be observed. In addition, equivalence class partition testing is combined with other techniques, such as robustness tests and worst case tests.
+
+The crucial contributions of model-based testing in this context consists in (1) providing insight into the dependencies between input variables and the expected internal control decisions and data transformations performed by the SUT, and (2) in taking into account the expected internal state of the SUT. Contribution (1) allows us to identify input equivalence class partitions in an automated way and to {\it formally} justify that these classes are adequate for the verification objectives under consideration. Contribution (2) enables us to create an {\it exhaustive} finite test suite, by applying the W-Method on a state machine resulting from an equivalence class abstraction of the  model. A random sequence of input vector applications according to the strong equivalence class testing heuristics only uncovers a certain error, if the vector has been ``accidentally'' applied in a SUT state where the error could be uncovered by the vector under consideration. In contrast to this, our strategy ``drives'' the SUT systematically through its state space, so that -- provided that the SUT is a member of the fault domain  -- it is 
+{\it guaranteed}\ that a suitable (state,input vector) combination revealing the error will be applied in the resulting test suite.
+
+
+In model-based testing, the idea to use data abstraction for the purpose of equivalence class definition has been originally introduced in~\cite{grieskamp2002}, where the classes are denoted as \emph{hyperstates}, and the concept is applied to testing against abstract state machine models. Our results presented here surpass the findings described in~\cite{grieskamp2002} in the following ways: (1) while the authors of~\cite{grieskamp2002} introduce the equivalence class partitioning technique for abstract state machines only, our approach extracts partitions from the models' semantic representation. Therefore an exhaustive equivalence class testing strategy can be elaborated for any formalism whose semantics can be expressed by state transition systems. (2) The authors sketch for white box tests only how an exhaustive test suite could be created~\cite[Section~4]{grieskamp2002}: the transition cover approach discussed there is only applicable for SUT where the internal state (respectively, its abstraction) can be monitored during test execution. (3)   The authors only consider finite input sets whose values have been  fixed \emph{a priori}~\cite[Section~2]{grieskamp2002}, whereas our approach allows for inputs from arbitrary domains. 
+
+
+
+Applications of model-based testing in the railway domain are currently investigated by numerous research groups and enterprises. 
+% Adoption of Model-based Testing and Abstract Interpretation by a Railway Signalling Manufacturer:
+The paper~\cite{ferrari2011adoption} reports on how a railway signalling manufacturer successfully adopted and applied a two-step approach for the verification of two ATP systems reducing their validation costs by about 
+70\%\footnote{In~\cite{peleska2009d} the authors report cost reductions of at least 30\%.}. In the first step MBT was applied by means of the Simulink/Stateflow    platform to test the compliance of the implementation of the ATP
+        system with the requirements, and in the second step abstract interpretation was applied  by means of the Polyspace tool in order to detect runtime errors
+        like buffer overflows. The MBT approach includes a form of automated back-to-back testing and an additional evaluation that no unexpected behaviours have been introduced by the model-to-code translation process. In contrast to our fully automated strategy, the test suites are   created in a manual way (at least one function for each requirement) and equivalence class testing is not covered in this approach. No formal guarantees with respect to the test suites' completeness  have been made.
+
+In~\cite{calame2006ttcn} the TTCN-3 test language is applied in a case study of interlocking systems testing. The results presented there take into account that in this application field the topology of the railway network has to be considered; these aspects have not been covered by our approach presented in this report, which is more applicable to onboard controllers whose behaviour is fairly independent on a specific network topology.
+
+In
+\cite{hieronsICTSS13} the authors describe MBT strategies in a distributed real-time setting. The concepts are applied to speed/distance monitoring for rolling stock trains travelling close to each other on the same track and in the same direction. While their example also involves infinite input domains (distance and speed), the problem of equivalence class selection is not considered. Our approach could be applied ``locally'' to each of the controllers involved in that case study.
+
+
+
+%\cite{hybridtest} -- A Hybrid Testing Methodology for Railway Control Systems
+%The paper~\cite{hybridtest} describes a hybrid testing methodology and its successful application to an Italian ATC system. The methodology combines black-box and white-box testing, based on the identification and reduction of influence variables. Test cases are generated using a tree-based approach while using several reduction rules including equivalence class based reductions. By tree-generating the combinations of influence variables and reducing them with an equivalence class based approach, they implemented what is called an extended SECT coverage
+%criterion. Other test-case reduction techniques (category partitioning, decision tables, cause-effect graphs, etc.) are somehow also implicit in their methodology.
+
+
+
+
+%
+%In
+%\cite{fubICTSS13},  -- Using Logic Coverage to Improve Testing Function Block Diagrams -- jp
+%
+
+
+
+%
+%
+%\cite{di2005simulation} -- The Simulation of Anomalies in the Functional Testing of the ERTMS/ETCS Trackside System.\\ 
+%\emph{Maybe we do not need this paper. Otherwise,  Linh will write something.} 
+%
+%\cite{calame2006ttcn} -- TTCN-3 Testing of Hoorn-Kersenboogerd Railway Interlocking.\\  \emph{Linh's notes:}
+%\begin{verbatim}
+%  Case study: Interlocking
+%  Test method: TTCN-3 (TESTING AND TEST CONTROL NOTATION VERSION 3
+%(TTCN-3)), code simulation
+%
+%  Development steps:
+%  (1) map the general configuration to a particular configuration of the
+%station;
+%  (2) map the initial situation to the stimuli for the system under test
+%(SUT);
+%  (3) map the final situation to the output values expected from the SUT;
+%  (4) define default values for objects of the station that are not
+%involved in the tested situation but still can influence it;
+%  (5) formulate time requirements for tested actions
+%
+%  Test cases are selected using Classification Tree Method, which
+%defines equivalence classes for the data using a uniformity
+%hypothesis\cite{grochtmann1993classification}.
+%\end{verbatim}
+
+%\cite{IGIrailwayBookchap8} -- M$\iota\nu\theta\alpha$: 
+%A Framework for Auto-Programming and Testing of Railway Controllers for Varying Clients. \emph{Linh's notes:} 
+%\begin{verbatim}
+%    The paper presents the prototype of a framework for creating code
+%    generators for application logic for client railway companies. The work
+%    is based on the object-oriented meta-modelling approach.
+%
+%    Case study: interlocking product line.
+%
+%    The interlocking is tested by simulating the movement of trains in a
+%    model of the interlocking. The animation of train movement is driven by
+%    ModelJUnit, while the response of the interlocking is manipulate manually.
+%\end{verbatim}
+
+
+%This is just includes, as it is cited by another paper.
+%\cite{grochtmann1993classification} -- Classification Trees for Partition Testing
+
+
+

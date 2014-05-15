@@ -1,0 +1,32 @@
+\section{Conclusion}\label{sec:conc}
+% ===========================================================================
+
+ 
+
+In this technical report, 
+a SysML model for the Ceiling Speed Monitor of the ETCS onboard controller 
+has been presented and made publicly available on the website www.mbt-benchmarks.org, for the purpose 
+of testing theory evaluation and MBT tool comparisons. 
+The model has been represented in SysML, and a formal model semantics based on state transition systems has been specified by presenting the model's transition relation in propositional form.
+
+
+A novel equivalence class testing strategy 
+has been applied to derive tests from the CSM model in an automated way. This strategy allows 
+test suite creation depending on a given fault model and guarantees completeness of the generated suites for all members of the associated fault domain. The evaluation shows that for certain types of mutants, the equivalence class testing strategy  is significantly stronger than that of other
+test strategies, such as model transition coverage or MC/DC coverage.
+
+
+
+
+\section{Ongoing and Future Work}\label{sec:futurework}
+% ===========================================================================
+
+The mutations used for the evaluation in this technical report were mainly constructed for illustration purposes.
+Currently, we are evaluating the test strength of IECP test suites in comparison with  other model coverage criteria, using large numbers of mutants created by a random generator that mutates models and creates executable ``SUT'' code from each mutation.
+These results will also be published on www.mbt-benchmarks.org.
+
+The test suites described in this technical report focused on the active CSM only. We are currently working on a completion of the ETCS speed supervision functions, elaborating SysML sub-models for target speed monitoring and release speed monitoring. The resulting test suites will then also consider the switching between these three supervision functions.
+
+The CSM test model inspires further investigations with respect to {\it product line testing}~\cite{DBLP:conf/icsoft/LamanchaUV09}: the system depends on a constant parameter $\sbz$ marking the
+availability of a service brake to be used for intervention purposes in case of speed restriction violations (Section~\ref{sec:initialstate}). This parameter is not an input to the SUT, but to be kept  constant throughout a test suite, since it refers to the trains' hardware configurations. The SUT behaviour, however, 
+depends on the value of  $\sbz$, so two different test suites have to be produced and exercised on the SUT, one for $\sbz = 0$, the other for $\sbz = 1$. This results in the challenge to identify in an automated way which test cases do not depend on $\sbz$, so that they have to be executed just once, and which cases have to be exercised for every possible value of $\sbz$.

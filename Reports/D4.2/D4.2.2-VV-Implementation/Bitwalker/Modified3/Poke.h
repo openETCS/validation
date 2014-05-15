@@ -4,10 +4,10 @@
   requires writeable_bitstream:
            \valid(Bitstream + (0..BitstreamSize-1));
   requires valid_length: 0 <= Length < 64;
-  requires no_overflow_1: Start + Length < UINT_MAX;
-  requires no_overflow_2: 8 * BitstreamSize < UINT_MAX;
+  requires no_overflow_1: Start + Length <= UINT_MAX;
+  requires no_overflow_2: 8 * BitstreamSize <= UINT_MAX;
 
-  assigns Bitstream[Start/8..(Start + Length)/8];
+  assigns Bitstream[0..BitstreamSize - 1];
 
   behavior  invalid_bit_sequence:
     assumes (Start + Length)  > 8 * BitstreamSize;
@@ -23,7 +23,8 @@
   behavior  normal_case:
     assumes Value < (1 << Length) &&
             (Start + Length) <= 8 * BitstreamSize;
-    assigns Bitstream[Start/8..(Start + Length)/8];
+    assigns Bitstream[0..BitstreamSize - 1];
+    ensures \result == 0;
 
   complete behaviors;
   disjoint behaviors;

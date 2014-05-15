@@ -4,20 +4,10 @@
 #include <stdint.h>
 #include <limits.h>
 #include "inverse_modulo.h"
-
-
-uint64_t Bitwalker_Peek(unsigned int Startposition,
-                        unsigned int Length,
-                        uint8_t* Bitstream,
-                        unsigned int BitstreamSizeInBytes);
+#include "Peek.h"
+#include "Poke.h"
+#include "Poke.h"
 
 
 
-int      Bitwalker_Poke(unsigned int Startposition,
-                        unsigned int Length,
-                        uint8_t Bitstream[],
-                        unsigned int BitstreamSizeInBytes,
-                        uint64_t Value);
-
-
-#endif // BITWALKER_H
+#endif

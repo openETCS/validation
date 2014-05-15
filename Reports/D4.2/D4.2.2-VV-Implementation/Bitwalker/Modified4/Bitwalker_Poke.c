@@ -6,21 +6,19 @@ int Bitwalker_Poke (unsigned int Start,
                     unsigned int BitstreamSize,
                     uint64_t Value)
 {
-  // plausibility check: is last byte in range
   if ((Start + Length)  > 8 * BitstreamSize)
   {
-    return -1;	// error: index out of range
+    return -1;	// error: invalid_bit_sequence
   }
 
-  // plausibility check: is value in range
+  // compute pow2(Length)
   const uint64_t MaxValue = (((uint64_t) 1) << Length);
 
   if (Value >= MaxValue)
   {
-    return -2;  // error: value to big for bit field
+    return -2;  // error: value_too_big
   }
 
-  // Everything ok, we can iterate bitwise from left to right
   /*@
     loop invariant 0 <= i <= Length;
     loop assigns i, Value, Bitstream[Start/8..(Start + Length)/8];
@@ -43,7 +41,9 @@ int Bitwalker_Poke (unsigned int Start,
     Value /= 2;
   }
 
-  // assert Value == 0; // this should hold here
+  // assert Value == 0;
+  // We should prove this at one point because it would show
+  // that we have consumed all bits of Value.
 
   return 0;
 }

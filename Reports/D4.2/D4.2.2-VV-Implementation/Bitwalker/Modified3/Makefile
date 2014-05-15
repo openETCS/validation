@@ -7,12 +7,27 @@ OBJ := $(SRC:.c=*.o)
 
 obj : $(OBJ)
 
-Bitwalker_Peek.report: Bitwalker_Peek.c
-	@(. ${SCRIPT_DIR}/script_functions.sh; reportWp Bitwalker_Peek;);
-	@ $(RM) fillFull.debug
+Peek.report: Peek.c
+	@(. ${SCRIPT_DIR}/script_functions.sh; reportWp Peek;);
 
-Bitwalker_Poke.report: Bitwalker_Poke.c
-	@(. ${SCRIPT_DIR}/script_functions.sh; reportWp Bitwalker_Poke;);
-	@ $(RM) fillFull.debug
+Poke.report: Poke.c
+	@(. ${SCRIPT_DIR}/script_functions.sh; reportWp Poke;);
 
+Init.report: Init.c
+	@(. ${SCRIPT_DIR}/script_functions.sh; reportWp Init;);
+
+PeekFinish.report: PeekFinish.c
+	@(. ${SCRIPT_DIR}/script_functions.sh; reportWp PeekFinish;);
+
+PokeFinish.report: PokeFinish.c
+	@(. ${SCRIPT_DIR}/script_functions.sh; reportWp PokeFinish;);
+
+PeekNext.report: PeekNext.c
+	@(. ${SCRIPT_DIR}/script_functions.sh; reportWp PeekNext;);
+
+PokeNext.report: PokeNext.c
+	@(. ${SCRIPT_DIR}/script_functions.sh; reportWp PokeNext;);
+
+report: Peek.report Poke.report Init.report PeekFinish.report PokeFinish.report\
+	PeekNext.report PokeNext.report
 

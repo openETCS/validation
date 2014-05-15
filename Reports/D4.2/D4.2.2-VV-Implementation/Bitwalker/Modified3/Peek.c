@@ -1,4 +1,4 @@
-#include "Bitwalker_Peek.h"
+#include "Peek.h"
 
 uint64_t Bitwalker_Peek(unsigned int Start,
                         unsigned int Length,
@@ -6,14 +6,16 @@ uint64_t Bitwalker_Peek(unsigned int Start,
                         unsigned int BitstreamSize)
 {
   if ((Start + Length)  > 8 * BitstreamSize)
-    return 0;	// error: invalid_bit_sequence
+  {
+    return 0;
+  }
 
-  //@ assert UINT64_MAX == (1 << 64) -1;
+  //@ assert UINT64_MAX == (1 << 64) - 1;
   uint64_t retval = 0;
 
   /*@
     loop invariant 0 <= i <= Length;
-    loop invariant 0 <= retval < 1 << i;
+    loop invariant 0 <= retval < (1 << i);
     loop assigns i, retval;
     loop variant Length - i;
   */
@@ -24,8 +26,8 @@ uint64_t Bitwalker_Peek(unsigned int Start,
     unsigned int bit_index  = inverse_modulo(pos, 8);
 
     // treat as unsigned int for Frama-C
-    unsigned int shift = Bitstream[byte_index] >> bit_index;
-    unsigned int bit_as_byte = shift & 1;
+    unsigned int shifted = Bitstream[byte_index] >> bit_index;
+    unsigned int bit_as_byte = shifted & 1;
     //@ assert bit_as_byte == 0 || bit_as_byte == 1;
 
     retval = 2 * retval + bit_as_byte;
@@ -33,4 +35,5 @@ uint64_t Bitwalker_Peek(unsigned int Start,
 
   return retval;
 }
+
 

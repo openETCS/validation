@@ -142,55 +142,23 @@
           <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_5M92ENtoEeOrd8RTFF2x3w" name="SpeedAndDistanceMonitoring">
             <region xmi:type="uml:Region" xmi:id="_6WDlENtoEeOrd8RTFF2x3w" name="Region1">
               <transition xmi:type="uml:Transition" xmi:id="_XiGogNtpEeOrd8RTFF2x3w" name="" source="_91aA0NtoEeOrd8RTFF2x3w" target="_Q8VowN0GEeO9cOPKwEberw"/>
-              <transition xmi:type="uml:Transition" xmi:id="_d1EbYNtpEeOrd8RTFF2x3w" name="CSM_OFF2CSM_ON" guard="_eZWlcNtvEeOrd8RTFF2x3w">
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_eZWlcNtvEeOrd8RTFF2x3w" name="">
-                  <specification xmi:type="uml:OpaqueExpression" xmi:id="_eZXMgNtvEeOrd8RTFF2x3w" name="">
-                    <language>C</language>
-                    <body>csmSwitch &amp;&amp; SBAvailable</body>
-                  </specification>
-                </ownedRule>
-                <effect xmi:type="uml:OpaqueBehavior" xmi:id="_qsd84NtvEeOrd8RTFF2x3w">
-                  <language>C</language>
-                  <body>sbiCmd = 1;</body>
-                </effect>
-              </transition>
-              <transition xmi:type="uml:Transition" xmi:id="_xGmHsNtvEeOrd8RTFF2x3w" name="CSM_OFF2CSM_ON_NOSB" guard="_2dCA4NtvEeOrd8RTFF2x3w">
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_2dCA4NtvEeOrd8RTFF2x3w">
-                  <specification xmi:type="uml:OpaqueExpression" xmi:id="_2dCA4dtvEeOrd8RTFF2x3w">
-                    <language>C</language>
-                    <body>csmSwitch &amp;&amp; !SBAvailable</body>
-                  </specification>
-                </ownedRule>
-                <effect xmi:type="uml:OpaqueBehavior" xmi:id="_5mlLwNtvEeOrd8RTFF2x3w" name="">
-                  <language>C</language>
-                  <body>sbiCmd =0;</body>
-                </effect>
-              </transition>
-              <transition xmi:type="uml:Transition" xmi:id="_CavwENtwEeOrd8RTFF2x3w" name="CMSON2CSMOFF" guard="_KjWO4NtwEeOrd8RTFF2x3w">
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_KjWO4NtwEeOrd8RTFF2x3w">
-                  <specification xmi:type="uml:OpaqueExpression" xmi:id="_KjWO4dtwEeOrd8RTFF2x3w">
-                    <language>C</language>
-                    <body>!csmSwitch</body>
-                  </specification>
-                </ownedRule>
-              </transition>
               <transition xmi:type="uml:Transition" xmi:id="_UyuEcN0GEeO9cOPKwEberw" name="" guard="_c-ZscN0GEeO9cOPKwEberw" source="_Q8VowN0GEeO9cOPKwEberw" target="_j-z6kNxKEeOrd8RTFF2x3w">
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_c-ZscN0GEeO9cOPKwEberw">
-                  <specification xmi:type="uml:OpaqueExpression" xmi:id="_c-Zscd0GEeO9cOPKwEberw">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_c-ZscN0GEeO9cOPKwEberw" name="">
+                  <specification xmi:type="uml:OpaqueExpression" xmi:id="_c-Zscd0GEeO9cOPKwEberw" name="">
                     <language>C</language>
-                    <body>SUTCommand=startSUT</body>
+                    <body>SUTCommand==startSUT</body>
                   </specification>
                 </ownedRule>
-                <effect xmi:type="uml:OpaqueBehavior" xmi:id="_pyTcwN0GEeO9cOPKwEberw">
+                <effect xmi:type="uml:OpaqueBehavior" xmi:id="_pyTcwN0GEeO9cOPKwEberw" name="">
                   <language>C</language>
-                  <body>sbiCmd=SBAvailable</body>
+                  <body>sbiCmd=SBAvailable;</body>
                 </effect>
               </transition>
               <transition xmi:type="uml:Transition" xmi:id="_0YL2UN0GEeO9cOPKwEberw" name="" guard="_482UUN0GEeO9cOPKwEberw" source="_j-z6kNxKEeOrd8RTFF2x3w" target="_Q8VowN0GEeO9cOPKwEberw">
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_482UUN0GEeO9cOPKwEberw">
-                  <specification xmi:type="uml:OpaqueExpression" xmi:id="_482UUd0GEeO9cOPKwEberw">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_482UUN0GEeO9cOPKwEberw" name="">
+                  <specification xmi:type="uml:OpaqueExpression" xmi:id="_482UUd0GEeO9cOPKwEberw" name="">
                     <language>C</language>
-                    <body>SUTCommand=stopSUT</body>
+                    <body>SUTCommand==stopSUT</body>
                   </specification>
                 </ownedRule>
               </transition>
@@ -211,7 +179,7 @@
                       <ownedRule xmi:type="uml:Constraint" xmi:id="_tgPvQNtzEeOrd8RTFF2x3w">
                         <specification xmi:type="uml:OpaqueExpression" xmi:id="_tgPvQdtzEeOrd8RTFF2x3w">
                           <language>C</language>
-                          <body>SimulatedTrainSpeed > V_mrsp+dV_warning(V_mrsp)</body>
+                          <body>SimulatedTrainSpeed > V_mrsp+dV_warning</body>
                         </specification>
                       </ownedRule>
                     </transition>
@@ -219,7 +187,7 @@
                       <ownedRule xmi:type="uml:Constraint" xmi:id="_8UUAgNtzEeOrd8RTFF2x3w" name="">
                         <specification xmi:type="uml:OpaqueExpression" xmi:id="_8UUnkNtzEeOrd8RTFF2x3w">
                           <language>C</language>
-                          <body>SimulatedTrainSpeed > V_mrsp+dV_sbi(V_mrsp)</body>
+                          <body>SimulatedTrainSpeed > V_mrsp+dV_sbi</body>
                         </specification>
                       </ownedRule>
                     </transition>
@@ -235,7 +203,7 @@
                       <ownedRule xmi:type="uml:Constraint" xmi:id="_PLKxwNt0EeOrd8RTFF2x3w">
                         <specification xmi:type="uml:OpaqueExpression" xmi:id="_PLKxwdt0EeOrd8RTFF2x3w">
                           <language>C</language>
-                          <body>SimulatedTrainSpeed > V_mrsp+dV_ebi(V_mrsp)</body>
+                          <body>SimulatedTrainSpeed > V_mrsp+dV_ebi</body>
                         </specification>
                       </ownedRule>
                     </transition>
@@ -294,8 +262,11 @@ ServiceBrakeCommand= SBAvailable;</body>
                       </entry>
                     </subvertex>
                     <subvertex xmi:type="uml:State" xmi:id="_-JJQoNtyEeOrd8RTFF2x3w" name="EMER_BRAKE">
-                      <entry xmi:type="uml:OpaqueBehavior" xmi:id="_HL-jENtzEeOrd8RTFF2x3w" name="SpeedSupervisionStatus = InterventionStatus;EmergencyBrakeCommand= 1;ServiceBrakeCommand= 0;" body="">
+                      <entry xmi:type="uml:OpaqueBehavior" xmi:id="_HL-jENtzEeOrd8RTFF2x3w" name="SpeedSupervisionStatus = InterventionStatus;EmergencyBrakeCommand= 1;ServiceBrakeCommand= 0;">
                         <language>C</language>
+                        <body>SpeedSupervisionStatus = InterventionStatus;
+EmergencyBrakeCommand= 1;
+ServiceBrakeCommand= 0;</body>
                       </entry>
                     </subvertex>
                   </region>
@@ -329,18 +300,6 @@ ServiceBrakeCommand= SBAvailable;</body>
               <value xsi:nil="true"/>
             </defaultValue>
           </ownedAttribute>
-          <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_lAzzANntEeOrd8RTFF2x3w" name="dV_ebi" specification="_6w_-UNnsEeOrd8RTFF2x3w">
-            <language>C</language>
-            <body>return  (V_mrsp &lt;= 110)*7.5 + (V_mrsp > 110 &amp;&amp; V_mrsp &lt;= 210)*(0.075*V_mrsp - 0.75) + (V_mrsp > 210)*15;</body>
-          </ownedBehavior>
-          <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_kXh6kNnvEeOrd8RTFF2x3w" name="dv_sbi" specification="_5iO9wNnvEeOrd8RTFF2x3w">
-            <language>C</language>
-            <body>return (V_mrsp &lt;= 110)*5.5 + (V_mrsp > 110 &amp;&amp; V_mrsp &lt;= 210)*(0.045*V_mrsp + 0.55) + (V_mrsp > 210)*10;</body>
-          </ownedBehavior>
-          <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_jDbBgNtnEeOrd8RTFF2x3w" name="dV_Warning" specification="_Sxcn0NtnEeOrd8RTFF2x3w">
-            <language>C</language>
-            <body>return (vmrsp &lt;= 110)*4 + (vmrsp > 110 &amp;&amp; vmrsp &lt;= 140)*(vmrsp/30 + 1/3) + (vmrsp > 140)*5;</body>
-          </ownedBehavior>
           <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_J1qd0N0CEeO9cOPKwEberw" name="SuperVisionLimit">
             <region xmi:type="uml:Region" xmi:id="_LW-fkN0CEeO9cOPKwEberw" name="Region1">
               <transition xmi:type="uml:Transition" xmi:id="_PknvQN0DEeO9cOPKwEberw" name="" source="_ONtcIN0CEeO9cOPKwEberw" target="_O_T4MN0CEeO9cOPKwEberw"/>
@@ -350,10 +309,22 @@ ServiceBrakeCommand= SBAvailable;</body>
                   <language>C</language>
                   <body>dV_ebi = dV_ebi(V_mrsp);
 dV_sbi = dV_sbi(V_mrsp);
-dV_Warning = dV_Warning(V_mrsp);</body>
+dV_warning = dV_warning(V_mrsp);</body>
                 </doActivity>
               </subvertex>
             </region>
+          </ownedBehavior>
+          <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_lAzzANntEeOrd8RTFF2x3w" name="dV_ebi" specification="_6w_-UNnsEeOrd8RTFF2x3w">
+            <language>C</language>
+            <body>return  (V_mrsp &lt;= 110)*7.5 + (V_mrsp > 110 &amp;&amp; V_mrsp &lt;= 210)*(0.075*V_mrsp - 0.75) + (V_mrsp > 210)*15;</body>
+          </ownedBehavior>
+          <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_kXh6kNnvEeOrd8RTFF2x3w" name="dV_sbi" specification="_5iO9wNnvEeOrd8RTFF2x3w">
+            <language>C</language>
+            <body>return (V_mrsp &lt;= 110)*5.5 + (V_mrsp > 110 &amp;&amp; V_mrsp &lt;= 210)*(0.045*V_mrsp + 0.55) + (V_mrsp > 210)*10;</body>
+          </ownedBehavior>
+          <ownedBehavior xmi:type="uml:FunctionBehavior" xmi:id="_jDbBgNtnEeOrd8RTFF2x3w" name="dV_warning" specification="_Sxcn0NtnEeOrd8RTFF2x3w">
+            <language>C</language>
+            <body>return (vmrsp &lt;= 110)*4 + (vmrsp > 110 &amp;&amp; vmrsp &lt;= 140)*(vmrsp/30 + 1/3) + (vmrsp > 140)*5;</body>
           </ownedBehavior>
           <ownedOperation xmi:type="uml:Operation" xmi:id="_6w_-UNnsEeOrd8RTFF2x3w" name="dV_ebi" method="_lAzzANntEeOrd8RTFF2x3w">
             <ownedComment xmi:type="uml:Comment" xmi:id="_92k8ENxFEeOrd8RTFF2x3w" annotatedElement="_6w_-UNnsEeOrd8RTFF2x3w">
@@ -367,7 +338,10 @@ dV_Warning = dV_Warning(V_mrsp);</body>
             <ownedComment xmi:type="uml:Comment" xmi:id="_Fl6mUNxGEeOrd8RTFF2x3w" annotatedElement="_5iO9wNnvEeOrd8RTFF2x3w">
               <body>3.13.9.2.5</body>
             </ownedComment>
-            <ownedParameter xmi:type="uml:Parameter" xmi:id="_A1JxwNnwEeOrd8RTFF2x3w" name="" type="_sdLewNm9EeO6otb2bpcjcQ"/>
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="_A1JxwNnwEeOrd8RTFF2x3w" name="vmrsp" type="_sdLewNm9EeO6otb2bpcjcQ">
+              <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fLkqQN9ZEeOw4vN1CMT_3w" value="1"/>
+              <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fLl4YN9ZEeOw4vN1CMT_3w" value="1"/>
+            </ownedParameter>
           </ownedOperation>
           <ownedOperation xmi:type="uml:Operation" xmi:id="_Sxcn0NtnEeOrd8RTFF2x3w" name="dV_warning" method="_jDbBgNtnEeOrd8RTFF2x3w">
             <ownedComment xmi:type="uml:Comment" xmi:id="_JvgR4NxGEeOrd8RTFF2x3w" annotatedElement="_Sxcn0NtnEeOrd8RTFF2x3w">
@@ -379,7 +353,7 @@ dV_Warning = dV_Warning(V_mrsp);</body>
         <nestedClassifier xmi:type="uml:Class" xmi:id="_P1BNoN0BEeO9cOPKwEberw" name="LimitInterface">
           <ownedAttribute xmi:type="uml:Property" xmi:id="_-829sN0AEeO9cOPKwEberw" name="dV_ebi" type="_sdLewNm9EeO6otb2bpcjcQ"/>
           <ownedAttribute xmi:type="uml:Property" xmi:id="_EPcRoN0BEeO9cOPKwEberw" name="dV_sbi" type="_sdLewNm9EeO6otb2bpcjcQ"/>
-          <ownedAttribute xmi:type="uml:Property" xmi:id="_HDwMUN0BEeO9cOPKwEberw" name="dV_Warning" type="_sdLewNm9EeO6otb2bpcjcQ"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_HDwMUN0BEeO9cOPKwEberw" name="dV_warning" type="_sdLewNm9EeO6otb2bpcjcQ"/>
         </nestedClassifier>
       </packagedElement>
       <packagedElement xmi:type="uml:Class" xmi:id="_ouaowN0EEeO9cOPKwEberw" name="TestEnviromment">
@@ -442,7 +416,7 @@ dV_Warning = dV_Warning(V_mrsp);</body>
         </ownedAttribute>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_F1GbYNnhEeOrd8RTFF2x3w" name="ControlSUTCommand">
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_Z3wRYNnhEeOrd8RTFF2x3w" name="SUTCommand" type="_HNk3wNnBEeODMeWltefrQg">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_Z3wRYNnhEeOrd8RTFF2x3w" name="SUTCommand" type="_sXTgQNm9EeO6otb2bpcjcQ">
           <defaultValue xmi:type="uml:InstanceValue" xmi:id="_iKSvUNnhEeOrd8RTFF2x3w" type="_HNk3wNnBEeODMeWltefrQg" instance="_YqT0YNnBEeODMeWltefrQg"/>
         </ownedAttribute>
       </packagedElement>
@@ -461,7 +435,7 @@ dV_Warning = dV_Warning(V_mrsp);</body>
         </ownedAttribute>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_dAvwgNm-EeO6otb2bpcjcQ" name="DMIInput">
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_AA4zUNncEeOrd8RTFF2x3w" name="SpeedSupervisionStatus" type="_FUxu0NncEeOrd8RTFF2x3w">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_AA4zUNncEeOrd8RTFF2x3w" name="SpeedSupervisionStatus" type="_sXTgQNm9EeO6otb2bpcjcQ">
           <defaultValue xmi:type="uml:InstanceValue" xmi:id="_QxLHYNnhEeOrd8RTFF2x3w" type="_FUxu0NncEeOrd8RTFF2x3w" instance="_GgTt0NncEeOrd8RTFF2x3w"/>
         </ownedAttribute>
         <ownedAttribute xmi:type="uml:Property" xmi:id="_Y8yv4NnfEeOrd8RTFF2x3w" name="permittedSpeed" type="_sdLewNm9EeO6otb2bpcjcQ">

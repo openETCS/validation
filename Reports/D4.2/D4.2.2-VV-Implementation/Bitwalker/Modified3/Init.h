@@ -9,6 +9,7 @@
   requires \valid(Bitstream + (0..Size-1));
   requires 8 * Size <= UINT_MAX;
   requires 8 * FirstBitposition <= Size;
+  requires \separated(Bitstream + (0..Size-1), Locals);
 
   assigns  Locals->Bitstream;
   assigns  Locals->Length;

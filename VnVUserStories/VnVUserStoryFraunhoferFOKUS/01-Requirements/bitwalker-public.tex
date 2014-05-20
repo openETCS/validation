@@ -53,17 +53,12 @@ void Bitwalker_IncrementalWalker_Init(
 \end{lstlisting}
 
 
-\paragraph{Arguments}
+\paragraph{Preconditions}
 \begin{itemize}
    \item  \inl{Locals} is a dereferenceable pointer.
    \item \inl{Bitstream} is  the start address of a valid bit stream.
    \item \inl{Size} is the length of the bit stream, that starts at \inl{Bitstream}.
    \item \inl{FirstBitposition} is a valid bit index in the bit stream given by \inl{Bitstream} and \inl{Size}
-\end{itemize}
-
-\paragraph{Preconditions}
-\begin{itemize}
-    \item  \inl{Locals} must be dereferenceable.
 \end{itemize}
 
 \paragraph{Description}~
@@ -92,17 +87,11 @@ uint64_t Bitwalker_IncrementalWalker_Peek_Next(
 \end{lstlisting}
 
 
-\paragraph{Arguments}
-\begin{itemize}
-   \item  \inl{Locals} is a dereferenceable pointer.
-   \item \inl{Length} is the length of the bit sequence.
-\end{itemize}
-
 \paragraph{Preconditions}
 \begin{itemize}
-    \item  \inl{Locals} must be dereferenceable.
-    \item \inl{Length} $\leq$ \inl{64} and
-    \item \inl{Locals->CurrentBitposition} $\leq$ \inl{UINT_MAX} $-$ \inl{Length}
+  \item  \inl{Locals} must be dereferenceable
+  \item \inl{Length} is the length of the bit sequence and shall be less or equal~64
+  \item \inl{Locals->CurrentBitposition} $\leq$ \inl{UINT_MAX} $-$ \inl{Length}
 \end{itemize}
 
 \paragraph{Description}~
@@ -129,15 +118,9 @@ int Bitwalker_IncrementalWalker_Peek_Finish(
         T_Bitwalker_Incremental_Locals *Locals);
 \end{lstlisting}
 
-\paragraph{Arguments}
-
-\begin{itemize}
-   \item  \inl{Locals} is a dereferenceable pointer.
-\end{itemize}
-
 \paragraph{Preconditions}
 \begin{itemize}
-   \item  \inl{Locals} must be dereferenceable.
+   \item  \inl{Locals} must be dereferenceable
 \end{itemize}
 
 \paragraph{Description}~
@@ -165,18 +148,11 @@ int Bitwalker_IncrementalWalker_Poke_Next(
         uint64_t Value);
 \end{lstlisting}
 
-\paragraph{Arguments}
-
-\begin{itemize}
-   \item  \inl{Locals} is a dereferenceable pointer.
-   \item \inl{Length} is the length of the bit sequence.
-   \item \inl{Value} is the integer which shall be converted into a bit sequence
-\end{itemize}
 
 \paragraph{Preconditions}
 \begin{itemize}
-    \item  \inl{Locals} must be dereferenceable.
-    \item \inl{Locals->CurrentBitposition} + \inl{Length} is less than \inl{UINT_MAX}
+    \item  \inl{Locals} must be dereferenceable
+    \item \inl{Locals->CurrentBitposition} + \inl{Length} is less than or equal \inl{UINT_MAX}
 \end{itemize}
 
 \paragraph{Description}~
@@ -232,14 +208,9 @@ int Bitwalker_IncrementalWalker_Poke_Finish(
         T_Bitwalker_Incremental_Locals *Locals);
 \end{lstlisting}
 
-\paragraph{Arguments}
-\begin{itemize}
-   \item  \inl{Locals} is a dereferenceable pointer.
-\end{itemize}
-
 \paragraph{Preconditions}
 \begin{itemize}
-    \item  \inl{Locals} must be dereferenceable.
+    \item  \inl{Locals} must be dereferenceable
 \end{itemize}
 
 \paragraph{Description}~

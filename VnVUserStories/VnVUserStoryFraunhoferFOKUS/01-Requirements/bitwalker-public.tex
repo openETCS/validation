@@ -1,5 +1,4 @@
 
-
 \section{The public interface of \bitwalker}
 \label{sec:bitwalker-public}
 
@@ -31,9 +30,10 @@ The type \bitwalkertype is defined as follows\\[1em]
 
 \end{itemize}
 
-\fxfatal{Shouldn't \inl{Length} be named \inl{BitstreamSize} instead
-         in order to avoid confusion with the argument \inl{Length} of
-         \peek and \poke?}
+\paragraph*{Remark}
+The field \inl{Length} will be passed to \peek and \poke as \inl{BitstreamSize}.
+This might be confusing because those functions also have an argument 
+named~\inl{Length}.
 
 \clearpage
 
@@ -74,8 +74,6 @@ The function \init assigns
     \item \inl{Size} to \inl{Locals->Length}
     \item \inl{FirstBitposition} to \inl{Locals->CurrentBitposition}
 \end{itemize}
-
-\fxfatal{see remark on member \inl{Length} of \bitwalkertype}
 
 \clearpage
 
@@ -147,7 +145,9 @@ int Bitwalker_IncrementalWalker_Peek_Finish(
 The function  returns \inl{Locals->CurrentBitposition}.
 It does not change any variables.
 
-\fxfatal{Should the return value be an unsigned type?}
+\paragraph*{Remark} The return value of this function is \inl{int} despite
+the fact that it returns a value of type \inl{unsigned int}.
+This does not make much sense and should best be avoided.
 
 \clearpage
 
@@ -246,7 +246,12 @@ int Bitwalker_IncrementalWalker_Poke_Finish(
 
 The function  returns \inl{Locals->CurrentBitposition}.
 
-\fxfatal{The functions \peekfinish and \pokefinish have the same specification.}
+\paragraph{Remark*}
+The functions \peekfinish and\\
+\pokefinish have the same specification.
+Moreover, both function return an object of type \inl{unsigned int} as \inl{int}
+for which no convincing reason is available.
+
 
 
 

@@ -294,6 +294,18 @@ The safety integrity level (SIL) represented the acceptable risk for every part 
 
 Since software itself does not fails in the way technical equipment does the specific software safety integrity level represent a qualitative measure with respect to the required degree of correctness for the software functionality than a qualitative value for the likelihood of failing. To reach the needed degree of correctness for the software various design, verification and validation methods are required corresponding to the assigned software safety integrity level. This process leads to safety requirements which have to be implemented in the software design as well as verified and validated. Respectively the EN~50126 describes the safety design process as a series of safety tasks for each life cycle phase. This task are related to a number of safety artifacts which are created, used and adapted over time through the different safety design activities.
 
+\subsection{Hazard and Risk Analysis}
+
+Based on the definition of risk as a combination of risk level, exposure to the hazard and damage probability Dulac defines the hazard analysis as "identification of hazards and the assessment of the risk level." (According to [Dulac 2007, p.44] Welte translated into German). Ericson almost this in three main tasks that need to be met by a risk analysis:
+
+• Identify hazards, hazardous effects and hazard origins
+• System risk and hazard significance determined to identify which reduce or eliminate the identified hazards measures
+• Structured analysis of systems, subsystems, equipment, components, software, personnel, and their relations in the light of logistical, workout-related, relating to the maintenance, test-related and operational constraints [Ericson 2005, p.13]
+
+This set of tasks is clear that the hazard analysis must include a structured examination of the existing hazards in a system , whose aim is to find measures to reduce existing risk. Accordingly, the risk analysis is seen as an iterative process of risk reduction and risk assessment carried out repeatedly until the risk in the system could be sufficiently reduced. The general iterative process to achieve the acceptable risk according to [DIN 820-120:2011 ] is shown in Figure 2 6 . The three-step process that builds risk reduction of machines from the standard [ ISO 12100:2011 ] is shown in Appendix A .
+Risk analysis starts with the definition of the system boundaries of the system under consideration and determination of the actual system 's purpose. Then the possible hazards are Based in the second step identified that could be caused by the different components of the system , and estimated the risk of future consequences of the hazards in the third step . The exact assessment of the risks then engages back on the results of risk analysis and forms according to the three steps of the risk analysis along the process of risk evaluation. The resulting evaluation of the risk is then compared with the specified security objectives and if these can not be achieved , a further iteration of risk mitigation and risk assessment must be passed.
+
+Since the risk due to the uncertainty in real systems and due to the multidimensional nature can not be completely evaluated, it is necessary for risk reduction relative size compared to establish itself as the required level of security of a system [Laracy / Leveson 2007, p.215-217; Slovák 2006, p.11]. This is the accepted risk, which describes a remaining risk, which is classified under the operating conditions of the system to be sufficiently low and thus be acceptable. As this residual risk assessed and which limit use of acceptance depends on the chosen acceptance criteria for the respective application from [Slovák 2006 S.10f.]. Figure 1 1 illustrates the shift of the risk in a system in the accepted range of risk reduction
 
 \subsection{Safety Case}
 
@@ -376,6 +388,55 @@ In addition it has to be verified that all hazard and risk analysis methods as w
 
 \chapter{Hazard and Risk Analysis}
 \label{sec:hazardandrisk}
+%4.1 Definition of HRA (short standard summary, could also be done in "Background material"))
+
+\section{General Principals}
+
+4.1.2 Purpose:
+To provide detailed information on dangers which arise from the system/software in its operational, to be able to control the dangers and achieve to limit the risk to an acceptable level.
+
+4.1.2 Scope:
+Start at system level, refine at need at more detailed development stages.
+
+\subsection{Context of EN 50126}
+
+4.1.3 Objectives:
+At system level:
+
+a) to d) from EN 50126 (hazard identification, events for hazards, determine risks, design risk management process)  
+
+At a later stage:
+- refine the hazard description
+- recompute the risk
+(i.e. perform the risk management as defined in d) above)
+
+4.1.4 Activities:
+Define the activities and the methods to be applied (select from 50126)
+
+
+\subsection{ETCS Safety Principals}
+
+4.2 Plan HRA for openETCS
+4.2.1 Purpose: Instantiation of 50126 process for openETCS
+"
+4.2.2 Scope
+- System and Specification 
+   (Object of initial step of HRA, relevant specs)
+- identify later stages (as far as foreseeable)"
+"4.2.3 
+a) Describe methods to identify hazards
+b) ... events
+c) Methods/tools for risk computation (can be incomplete/tentative at the current stage)
+d) Define process"
+"
+4.3 Summary of Proof of Concept
+(refer to the plan from 4.2)"
+
+§ 4.2 : The safety requirements issued from this analysis have been formally specified and proved on an Event-B model : https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/04-Results/d-EventB-VnV/EventB-Rodin-VnV.pdf
+
+
+
+
 The safety design process and the resulting documentation constitute the main documents for the system approval, as it is required by European and national law to do everything reasonable expectable to prevent harm. Accordingly the CENELEC standards build the common technical rules for the development process. The Common Safety Methods present a concept based on the EN50126 how the risk evaluation and management has to be performed. 
 
 Therefore the main references concerning the safety design process are the CENELEC standards, mainly the EN50126 on how the safety aspects have to be handled as part of the RAMS management over the development process. The overall risk evaluation concept is also defined at this point. The specific concerning the safety case preparations are defined in the EN50129 including the Safety Integrity Level concept. 
@@ -431,6 +492,7 @@ Based on the role of ETCS and its respective SIL 4 quantification the maximum al
 The same value is specified for the corresponding track-side.
 
 Adapted form the ETCS system safety analysis presented in SUBSET-88 the Annex A of SUBSET-91 presents the List of Hazardous Events inside ETCS that might cause the ETCS Core Hazard to occur, either alone or in combination with other failures. These are the events not eliminated by the operational analysis. 34 of these hazardous events are allocated to the Kernel, which make them the basis for the on-board software hazard and risk analysis. 
+
 
 
 \section{Proof of concept}

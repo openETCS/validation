@@ -1,0 +1,596 @@
+\documentclass{../template/openetcs_report}
+% Use the option "nocc" if the document is not licensed under Creative Commons
+%\documentclass[nocc]{template/openetcs_article} 
+\usepackage{lipsum,url}
+\usepackage{supertabular}
+\usepackage{multirow}
+\usepackage{color, colortbl}
+\definecolor{gray}{rgb}{0.8,0.8,0.8}
+\usepackage[modulo]{lineno}
+
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{fixme}
+\usepackage{lscape} 
+\usepackage{pgfgantt}
+\usepackage{adjustbox}
+\usepackage{datetime}
+\usepackage{appendix}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{breakurl}
+\usepackage{color, colortbl}
+\definecolor{myblue}{rgb}{0.6,.6,1}
+\definecolor{mydarkblue}{rgb}{0,0,0.5}
+\definecolor{mylightblue}{rgb}{0.8,0.8,1}
+\usetikzlibrary{arrows,shapes,automata,petri,calc}
+
+
+%user specified macros
+\input{../macros.tex}
+\input{../req.tex}
+\def\reqt{R-WP2/D2.6}
+\newenvironment{justif}{
+	\begin{quote}
+	\begin{itshape}Justification. 
+}{
+	\end{itshape}
+	\end{quote}
+}
+
+\renewcommand{\tbd}[1]{\nthng{#1}}
+
+
+\graphicspath{{./template/}{.}{./images/}}
+\begin{document}
+\frontmatter
+\project{openETCS}
+
+%Please do not change anything above this line
+%============================
+% The document metadata is defined below
+\newcommand{\crrntMnVrsn}{01}
+\newcommand{\crrntSbVrsn}{01}
+\newcommand{\crrntVrsn}{\crrntMnVrsn.\crrntSbVrsn}
+
+%assign a report number here
+\reportnum{OETCS/WP4/D4.1V\crrntVrsn}
+
+%define your workpackage here
+\wp{Work Package 4: ``Validation \& Verification Strategy''}
+
+%set a title here
+\title{openETCS Validation \& Verification Plan}
+
+%set a subtitle here
+\subtitle{Version \crrntVrsn}
+
+%set the date of the report here
+\date{22 May, 2014}
+
+%document approval
+%define the name and affiliation of the people involved in the documents approbation here
+\creatorname{Hardi Hungar}
+\creatoraffil{DLR}
+
+\techassessorname{Marc Behrens}
+\techassessoraffil{DLR}
+
+\qualityassessorname{Jens Gerlach}
+\qualityassessoraffil{Fraunhofer FOKUS}
+
+\approvalname{Klaus-R\"udiger Hase}
+\approvalaffil{DB Netz}
+
+
+%define a list of authors and their affiliation here
+
+\author{
+Hardi Hungar (Ed.)\\
+\small
+{\it Contributions by:} \\
+ Frederic Badeau (Systerel), Marc Behrens (DLR),\\
+  Cecile Braunstein (U Bremen), Cyril Cornu (All4Tec),\\
+ Christophe Gaston (CEA), Jens Gerlach (Fraunhofer),\\
+ Ainhoa Gracia (SQS), Hardi Hungar (DLR),\\
+Stephan Jagusch (AEbt), Alexander Nitsch (U Rostock),\\
+ Jan Peleska (U Bremen), Marielle Petit-Doche (Systerel),\\
+ Virgile Prevosto (CEA),  Stefan Rieger (TWT),\\ 
+Izaskun de la Torre (SQS), Jan Welte(TU-BS)}
+
+\affiliation{DLR\\
+  Lilienthalplatz 7\\
+  38108 Brunswick, Germany
+   \\eMail:hardi.hungar@dlr.de }
+
+  
+% define the coverart
+\coverart[width=350pt]{openETCS_EUPL}
+
+%define the type of report
+\reporttype{Deliverable}
+
+
+
+\begin{abstract}
+%define an abstract here
+
+  This document describes strategy and plan of the verification and
+  validation in the project openETCS. It revises the previous version
+  (V01) of this document.
+
+  The overall goal of openETCS is to develop the software of the EVC.
+  It starts from the specification given in Subset~026, formalizes
+  this, provides a software-hardware interface and ends with
+  a software for the EVC. This development is to be done in a FLOSS
+  style, as far as possible. This goal will only partly be achieved
+  within the current ITEA~2 \emph{project}.
+
+  Following some introductory chapters, ths document has three main
+  parts. The first defines verification and validation for the full
+  development. This part shall eveolve into a draft of a verification
+  and validation plan for \emph{activities} which take up the results
+  of the current ITEA~2 project. The second part plans only those
+  activities which will actually be performed within the current
+  project. These will be related to the overall plan in the first
+  part, and they will be described in greater detail.
+
+  Both parts also address the issue of tools to support \vv
+  activities, which is another concern of openETCS. Details of tools
+  and methods, and how they could contribute to achieve the goals of
+  openETCS, are given in the third part of the document.
+  
+  It is planned to further revise this document (V03) after the
+  currently planned round of \vv activities \cmmnt{the second level},
+  and to use it as a basis for deliverable D4.4, the Final Report on
+  \VV.
+
+\bgcmmnt{Some of the revision work needed to be done for this version
+  is indicated in the form of comments like this one. Most of the
+  comments are missing themselves, though.}
+
+ 
+\end{abstract}
+
+%=============================
+%Do not change the next three lines
+\maketitle\tableofcontents
+\listoffiguresandtables
+\newpage
+%=============================
+
+
+
+
+\chapter{Document Control}
+
+\begin{tabular}{|p{4.4cm}|p{8.7cm}|}
+  \hline
+  \multicolumn{2}{|c|}{Document information} \\
+  \hline
+  Work Package &  WP4  \\
+  Deliverable ID or doc.\ ref.\ & D4.1\\
+  \hline
+  Document title & openETCS Validation \& Verification Plan\\
+  Document version & \crrntVrsn \\
+  Document authors (org.)  &  Marc Behrens (DLR),
+  Cecile Braunstein (U Bremen), Cyril Cornu (All4Tec), Christophe
+  Gaston (CEA), Jens Gerlach 
+  (Fraunhofer), Ainhoa Gracia (SQS), Hardi Hungar (DLR), Stephan Jagusch
+  (AEbt), Alexander Nitsch (U Rostock), Jan Peleska (U Bremen),
+  Virgile Prevosto (CEA),
+  Stefan Rieger (TWT), Izaskun de la Torre (SQS),\\
+  Frederic Badeau (Systerel), Marielle Petit-Doche (Systerel)\\
+  \hline
+\end{tabular}
+
+\begin{tabular}{|p{4.4cm}|p{8.7cm}|}
+\hline
+\multicolumn{2}{|c|}{Review information} \\
+\hline
+Last version reviewed & -- \\
+\hline
+Main reviewers & -- \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{2.2cm}|p{4cm}|p{4cm}|p{2cm}|}
+\hline
+\multicolumn{4}{|c|}{Approbation} \\
+\hline
+  &  Name & Role & Date   \\
+\hline  
+Written by    &  Hardi Hungar & WP4-T4.1 Task Leader  & May 2014\\
+\hline
+Approved by & Marc Behrens & WP4 Leader & \emph{tbd}\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{1.5cm}|p{2cm}|p{3.5cm}|p{6cm}|}
+\hline
+\multicolumn{4}{|c|}{Document evolution} \\
+\hline
+Version &  Date & Author(s) & Comment  \\
+\hline  
+01.01 & 22/05/2014 & H. Hungar &  Revision of document structure and
+content (partially) based on V01.00 and preliminary versions of the
+reports D4.2
+\\ 
+\hline
+01.02 & & &
+\\\hline
+01.03 & & &
+\\\hline
+02.00 & dd.mm.2014 & M. Behrens & Review and approval
+\\\hline
+\end{tabular}
+
+% The actual document starts below this line
+%=============================
+
+
+%Start here
+
+\mainmatter
+
+
+\chapter{Introduction}
+
+\section{Purpose and Structure of the Document}
+\label{sec:purpose}
+
+This document describes strategy and plan of the verification and
+validation in openETCS. It revises the previous version (V01) of this
+document.
+
+\bgcmmnt{Perhaps use parts of / refer to the new version of the FPP.}
+
+We distinguish here between the current openETCS project, funded by
+ITEA, and the openETCS activity as a whole, which encompasses the
+project.
+
+\begin{itemize}
+\item The openETCS \emph{activitiy} pursues the vision of a full FLOSS
+  development of the software of the \emph{European Vital Computer}
+  (EVC). That starts from the specification given in Subset~026 with a
+  formalisation of this specification. Then, a software-hardware
+  interface is defined and the requirements on the software are
+  derived. The final software shall come with a development
+  documentation which enables manufacturers to take up the result and
+  use it for the construction of their products. This entails that the
+  whole approach shall be SIL~4 compliant. The software shall as
+  far as possible be \emph{Free, Libre, Open-Source Software}
+  (FLOSS)---that is, it shall be open source, developed with freely
+  accessible tools, including verification and validation.
+\item The openETCS \emph{project} is the current activity funded by
+  ITEA.  The project is a major first step in realising the goals of
+  the activity. It shall demonstrate that the openETCS vision can be
+  realised, and perform some substantial steps towards that
+  realisation. The project will define process and methods, select
+  suitable tools and do some part of the development itself.
+\end{itemize}
+
+Accordingly, the current document addresses, in different parts, both
+the openETCS activity and its ongoing realisation within the project.
+
+\begin{enumerate}
+\item Following some introductory sections, the first part defines
+  verification and validation for the full development. In its final
+  version, it shall be a \qq{nearly complete} CENELEC-compliant plan
+  for verification and validation of the openETCS EVC software.
+\item The second one plans only those activities which will actually
+  be performed within the current project. These will be related to
+  the overall plan in the first part, and they will be described in
+  greater detail.
+\item A third part collects descriptions of methods and tools. Most of
+  these are already available from project partners or third
+  parties. Some of them are subject to adaptations or even further
+  development within openETCS. The first and second part refer to
+  relevant methods and tools which are used or could be used for
+  verification or validation, and, vice versa, the descriptions
+  specify for which activity they can be used.
+\end{enumerate}
+  
+Each of the first two parts defines, in different sections, the \vv
+strategy, the verification plan and the validation plan. Verification
+and validation share some of their methods and tools, and in some case
+are applied to the same design artifacts. Therefore, the plans for
+both are included in this document. Nevertheless, these activities are
+intended to be and remain independent.
+
+The document will refer to the Quality Assurance Plan \cite{QAplan}
+for a definition of development phases and artifact denotations. Since
+this is currently still under review these references will not be
+final and will have to be revised.
+
+Verification and validation play an important role in the safety
+case. This document identifies the V\&V activities which do contribute
+and refers to the safety plan for further details on the additional
+requirements to be met and a precise statement of what has to be
+established.
+
+  
+\textit{It is planned to further revise this document (V03) after the
+currently planned round of \vv activities \fbox{\qq{naming}}, and to
+use it as a basis for deliverable D4.4, the Final Report on \VV. The
+first part shall evolve into }
+
+
+\oldtext{
+There are three main issues which make this plan different from an
+ordinary V\&V plan for a software to develop. First, openETCS is not
+only concerned with the software part of the EVC. As part of the
+activities, a semi-formal model for SS~026 is to be developed and to
+be verified. As the SS~026 covers parts of the ETCS system beyond the
+software, also process steps on the system (not just software) level
+are to be performed. And in particular the design does not start with
+a clearly defined set of requirements on the software.
+
+As a second point, openETCS will not only do development, but
+shall also be concerned with processes, methods and tools with the
+goal of being able to propose a complete SIL~4 compliant approach. As
+part of this, it has to be defined how to handle verification and
+validation. This is done in the sections
+addressing a ``full development''. Due to the limited resources of the
+project, actually performing such a full development is out of the
+project's scope. Instead, only some functions will be implemented, and
+only partial lines of development will be realised. V\&V related to
+these activities is to be planned in the specific sections dedicated
+to  ``openETCS''.  }
+
+
+\section{Background Information}
+\label{sec:backgr-inform}
+
+%\todo{Further Info, perhaps put the project context here }
+
+\subsection{Definitions}
+
+\paragraph{Verification}
+
+Verification is an activity which has to be performed at each step of
+the design. It has to be verified that the design step achieved its
+goals. This consists at least of two parts:
+\begin{itemize}
+\item that the artifacts produced in the step are of the right type
+  and contain all the information they should. E.g., that the SSRS
+  identifies all components addressed in SS~026, specifies their
+  interfaces in sufficient detail and has allocated the functions to
+  the components (this should just serve an example and is based on a
+  guess what the SSRS should do)
+\item that the artifact correctly implements the input requirements of
+  the design step. These typically include the main output artifacts
+  of the previous step. ``Correctly implements'' includes requirement
+  coverage (tracing). This can and should be supported by some
+  tools. Adequacy of such tools depends on things like format
+  compatibility, degree of automation, functionality (e.g., ability to
+  handle m-to-n relations). Depending on the design step (and the
+  nature of the artifacts) different forms of verification will
+  complement requirement coverage, with different levels of
+  support. The step from SS~026 to the SSRS will mainly consist of
+  manual activities besides things like coverage checks. Verifying a
+  formal (executable) model against the SSRS can be supported by
+  animation or simulation to e.g.\ execute test cases which have been
+  designed to check compliance with the SSRS. Even formal proof tools
+  may be employed to check or establish properties. Model-to-code steps
+  offer far more options (and needs) for tool support. And tools or
+  tool sets for unit test will support dynamic testing for requirement
+  or code coverage. This may include test generation, test execution
+  with report generation, test result evaluation and so on. Also, code
+  generator verification (or qualification) may play a role,
+  here. Integration steps mandate still other testing (or
+  verification) techniques.
+\end{itemize}
+Summarizing, one may say that verification subsumes highly diverse
+activities, and may be realized in very many different forms.
+
+\paragraph{Validation}
+%\nocite{*}
+Validation is name for the activity by which the compliance of the end
+result with the initial requirements is shown. In the case of
+openETCS, this means that the demonstrator (or parts of it) are
+checked against the SS~026 or one of its close descendants (i.e.,
+SSRS), taking also further sources of requirements from operational
+scenarios and TSIs into accoutn. This will consist of testing the
+equipment according to a test plan derived from the requirements and
+detailed into concrete test cases at some later stage. Tool support
+for validation will thus mainly concern test execution and evaluation,
+perhaps supplemented by test derivation or test management. Ambitious
+techniques like formal proof are most likely not applicable here.
+
+Thus, the tool support for validation will not differ substantially
+from that for similar verification activities.
+
+One might also consider ``early'' validation activities, e.g.\
+``validating'' an executable model against requirements from the
+SS~026. These are not mandated by the standards and can per se not
+replace  verification of design steps. They may nevertheless be worthwhile
+as means for early defect detection.
+
+Further (mostly complementary) information on V\&V can be found in the
+report on the CENELEC standards (D2.2).
+
+\chapter{Document Evolution}
+
+The verification and validation plan shall be revised in the course of
+the project as the design progresses and gets detailed and experiences
+with verification and validation are made. This is in accordance with
+the EN~50128, where it is required that the plan shall be maintained
+throughout the development cycle.
+
+\begin{description}
+\item[V01, T0+18:] First version of the plan. 
+\item[V02, T0+22:] First revision (this document), based on the 1st
+  V\&V interim reports on applicability of the V\&V approach to model
+  and implementation/code (D4.2.1, D4.2.2), and a definition of the
+  hazard and risk analysis methodology (D4.2.3)
+\item[V03, T0+30:] Second revision, based on the internal reports on
+  the applicability of the V\&V approach to prototypes of design
+  models and code
+\item[V04, T0+42:] Final version as part of the final V\&V report (D4.4) 
+\end{description}
+
+\oldtext{
+The first version of the plan was based on the available information of
+the design process. This is not yet very detailed as also the
+description in Chapter~\ref{cha:vv-design-process} of this report
+shows. In particular, the nature of the SSRS is yet to be defined
+precisely, and the architecture description including the HW/SW
+partitioning needs to be revised.}
+
+\oldtext{Concrete plans of activities are thus still to be made, and methods
+and tools to be applied will have to be selected. Only the first phase
+of V\&V activities is described in Sec.~\ref{sec:first-level-verif}.}
+
+\chapter{\VV in the Design Process}
+\label{cha:vv-design-process}
+
+D2.3 defines the openETCS process on an abstract level. It already
+defines the main steps. A slightly more detailed picture than the one
+given in D2.3 is given in Fig.~\ref{fig:openETCSProcess}. 
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=.9\textwidth]{images/ProcessOpenETCS-BeM.png}
+  \caption{openETCS Process (rough view)}
+  \label{fig:openETCSProcess}
+\end{figure}
+%
+As a basis for planning the V\&V activities, the process sketch
+permits to name the main phases. Planning will need a
+better definition of the stages (scope of the design artifacts,
+level of detail, respective system boundaries), detailed planning a
+specification of the artifacts to be produced. Version V01 of this
+document will in these respects be of an accordingly preliminary
+nature. 
+ 
+
+\part{\VV for a Full Development }
+
+
+\nthng{
+\texttt{Contributors to this chapter:
+  \begin{description}
+  \item[DLR] Overall coherence, Safety interface
+  \item[All4Tec] aspects of model-based development, FLOSS,
+    safety. Mainly in Sec.~\ref{sec:vv-strategy-full} (Full Development).
+  \item[SQS] {Review 4.1 V\&V Strategy for a full development and
+      contribution to 4.2 V\&V Strategy for openETCS}
+  \item[TUBS] Safety interface
+  \item[DB, SNCF, NS] Operator role (scenarios, validation goals)
+  \end{description}
+}
+}
+
+
+\oldtext{
+W.r.t.\ \vv, openETCS shall achieve two goals:
+\begin{enumerate}
+\item Design a tool-supported method with which the EVC software can
+  be developed and maintained so that it is suitable for integration
+  in (SIL-4) certified products. This will be described in
+  Sec.~\ref{sec:vv-strategy-full}, ``\VV Strategy for a Full Development''.
+\item Perform part of the development (including tool and method
+  evaluation and the study of tool qualification questions) on
+  representative parts of the design. The plans for that will be
+  detailed in Sec.~\ref{sec:vv-strategy-project}, ``\VV Strategy for openETCS''.
+\end{enumerate}}
+
+\oldtext{
+In more detail, the verification and validation have to consider the
+following aspects throughout the development process.
+%
+\begin{itemize}
+\item functionalities of the system and the sub-system,
+\item system and sub-system architecture,
+\item external and internal interfaces of the sub-system,
+\item software components,
+\item performance and Safety objectives and constraints,
+\item functional properties,
+\item safety properties.
+\end{itemize}}
+
+
+\chapter{\VV Strategy for a Full Development }
+\label{sec:vv-strategy-full}
+
+\input{WP41-V02-Full-Strategy.tex}
+
+
+\chapter{Verification Plan for a Full Development}
+\label{sec:verification-plan-full}
+
+\input{WP41-V02-Full-Verification-Plan.tex}
+
+\chapter{Validation Plan for a Full Development}
+\label{sec:valid-full-devel}
+
+\input{WP41-V02-Full-Validation-Plan.tex}
+
+
+
+\part{\VV Plan for the Project openETCS}
+
+\chapter{\VV Strategy for the Project openETCS}
+\label{sec:vv-strategy-project}
+
+\input{WP41-V02-Project-Strategy.tex}
+
+%\chapter{\VV Strategy for the Project openETCS}
+
+\nthng{
+\texttt{Contributions to this chapter
+  \begin{description}
+  \item[DLR] overall coherence, lab test description
+  \item[U Bremen] RT Tester application, \qq{more}
+  \item[Siemens] Application story (to be detailed)
+  \item[SQS] Contribution to chapter 6.1 Verification Plan for openETCS
+  \item[CEA] Application story (to be detailed)
+  \item[All4Tec] Application story (to be detailed)
+  \item[DB, SNCF, NS] Validation requirements
+  \end{description}
+}
+}
+
+%\todo{Describe how to proceed in openETCS to achieve the most. Include
+%all partial V\&V instantiations with their relation/potential
+%contribution to a full V\&V.}
+
+
+\chapter{Verification Plan for the Project openETCS}
+\label{sec:verif-plan-open}
+
+\input{WP41-V02-Project-Verification-Plan.tex}
+
+
+\chapter{Validation Plan for the Project openETCS}
+\label{sec:valid-plan-open}
+
+\input{WP41-V02-Project-Validation-Plan}
+
+
+
+\part{Methods and Tools for Verification and Validation}
+\label{sec:methods-and-tools}
+
+\input{WP41-V02-Methods-Tools.tex}
+
+\bibliographystyle{unsrt}
+\bibliography{../bibliography}
+
+
+\appendix
+
+\chapter{Requirements on \VV}
+\label{sec:appendix}
+
+\input{WP41-V02-Appendix.tex}
+
+
+
+\nocite{*}
+%===================================================
+%Do NOT change anything below this line
+
+\end{document}

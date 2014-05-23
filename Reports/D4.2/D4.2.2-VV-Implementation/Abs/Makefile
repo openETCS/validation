@@ -1,6 +1,8 @@
 
 clean::
+	@$(RM) *.eacsl.c
 	@$(RM) test_abs
+	@$(RM) eacsl_test1
 
 include Makefile.template
 
@@ -14,9 +16,16 @@ test_abs: test_abs.o abs.o
 	$(CC) -o $@ $+
 	./test_abs
 
-generated_code.c: abs1.c
-	frama-c -e-acsl abs1.c -then-on e-acsl -print -ocode generated_code.c
 
-eacsl_test: test_abs.c generated_code.c
-	$(CC) -o $@ /usr/local/share/frama-c/e-acsl/e_acsl.c generated_code.c test_abs.c -lgmp
+abs1.eacsl.c: abs1.c
+	frama-c -e-acsl $< -then-on e-acsl -print -ocode $@
+
+eacsl_test1: test_abs.c abs1.eacsl.c
+	$(CC) -o $@ /usr/local/share/frama-c/e-acsl/e_acsl.c $+ -lgmp
+
+abs1a.eacsl.c: abs1a.c
+	frama-c -e-acsl $< -then-on e-acsl -print -ocode $@
+
+eacsl_test1a: test_abs.c abs1a.eacsl.c
+	$(CC) $(CPPFLAGS) -o $@ /usr/local/share/frama-c/e-acsl/e_acsl.c $+ -lgmp
 

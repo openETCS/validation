@@ -42,6 +42,6 @@ eacsl_test1a: test_abs.c abs1a.c
 eacsl_test2: test_abs.c abs3a2.i
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ /usr/local/share/frama-c/e-acsl/e_acsl.c $+ -lgmp
 
-eacsl_test3: test_abs3a2.i
+eacsl_test3: test_abs3a2.c abs3a2.i
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ /usr/local/share/frama-c/e-acsl/e_acsl.c $+ -lgmp
 

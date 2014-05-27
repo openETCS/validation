@@ -816,6 +816,8 @@ If we cross the values ​​obtained in the analysis with the indicative table 
 
 In addition to the Limited Size and Complexity in Functions, Subrutines and Methods and Coding Standard techniques, at following we can see that taking into account the modular approach where one of its rule mentions that it shall specify a restriction for the number of paramenters (normally 5) the Parameter Number Limit is fulfilled.
 
+Furthermore, from the previous definition of recommended values for lines of code measures (see \ref{lst:recom}), we can see there is not documentation for some functions.
+
 Now, an example of the cyclomatic complexity calculation for the bitwalker\_Poke function is shown to compare the correctness of these results .
 
 \begin{listing}[hbt]
@@ -993,8 +995,8 @@ Below the \underline{MISRA-C tested rules} are listed:
 \end{itemize}
 \end{itemize}
 \end{itemize}
-
-After a review of the MISRA-C rules by partners it has been decided that some of them are not to be implemented/approved due to its application can get worse understanbility of the code.
+ 
+After a review of the subset of MISRA-C rules taking into account project requirements and sector standard or best practices it is necessary to decide which of some of them are not to be implemented/approved due to its application can get worse understanbility of the code and which other rules of other standard will be applied.
 
 The table below shows the non approved MISRA-C rules.
 
@@ -1007,6 +1009,10 @@ The table below shows the non approved MISRA-C rules.
     \endhead
     \hline\hline
     \endfoot
+    \textbf{Global 5.1}
+& no recommended
+    \\
+    \hline
     \textbf{Global 5.6}
 & no recommended
     \\
@@ -1893,7 +1899,7 @@ In the tables below are presented the results obtained per file and per function
     \hline
    \end{longtable}
    
-\begin{longtable}{||p{.475\textwidth}|p{.070\textwidth}|p{.1\textwidth}|p{.085\textwidth}|p{.075\textwidth}|p{.080\textwidth}||}
+\begin{longtable}{||p{.475\textwidth}|p{.070\textwidth}|p{.125\textwidth}|p{.085\textwidth}|p{.075\textwidth}|p{.090\textwidth}||}
   \caption{Halsted metrics 2 per file}\\
     \hline\hline
     \textbf{File} &\textbf{B} & \textbf{E} & \textbf{T} & \textbf{D} & \textbf{V}\\
@@ -1975,7 +1981,8 @@ The volume of a function should be at least 20 and at most 1000. The volume of a
 The volume of a file should be at least 100 and at most 8000. These limits are based on volumes measured for files whose LOCpro and v(G) are near their recommended limits. The limits of volume can be used for double-checking.
 
 Halstead's delivered bugs (B) is an estimate for the number of errors in the implementation.
-Delivered bugs in a file should be less than 2. Experiences have shown that, when programming with C or C++, a source file almost always contains more errors than B suggests. The number of defects tends to grow more rapidly than B.
+Delivered bugs in a file should be less than 2. 
+Experiences have shown that, when programming with C or C++, a source file almost always contains more errors than B suggests. The number of defects tends to grow more rapidly than B.
 
 By analyzing the results, one can observe that all the Halsted metrics obtained in relation to functions and file are inside the recommendations.
 
@@ -2109,47 +2116,163 @@ However, these tools sometimes report false positives so it is necessary review 
 
 In order to ensure the correctness of the obtained results mentioned in the previous sections, a comparison of them was executed.
 
-As a result of this comparison we obtain that between the tools there are some small deviations regarding some code metrics like eLOC or comments. Thus it was necessary to check how each aspect/metric is defined into each tool. In relation to the MISRA-C rules, as each tool verifies a subset of the rules defined in this standard, the results are different. However, the violations relationed with rules that are included in both RMS and Understand tool have been detected by both tools.
-
-
-\begin{longtable}{||p{.475\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
-  \caption{function Cyclomatic Complexity comparation}\\
-    \hline\hline
-    \textbf{Function} &\textbf{RSM} & \textbf{Understand} \\
+\begin{longtable}{||p{.225\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
+  \caption{File Size metrics comparation}\\
     \hline\hline
     \endhead
     \hline\hline
     \endfoot
-    Bitwalker\_Peek & 3 & 3 
+\multicolumn{5}{||l||}{\textbf{Bitwalker.c}}
+\\\hline
+\ \textbf{Metric} & \textbf{RSM} & \textbf{LocMetric} & \textbf{Understand} & \textbf{CMT++}
+\\\hline
+\ Total lines: & 109 & \textcolor{red}{110} & 109 & 109
+\\\hline
+\ Code/program lines: & 58 & 58 & 58 & 58
+\\\hline
+\ Comment lines: & \textcolor{red}{29} & 28+5 = 33 & 33 & 33 
+\\\hline
+\ Blank lines: & - & \textcolor{red}{24} & 23 & 23
+ \\\hline
+\end{longtable}
+
+As a result of this comparison we obtain that between the tools there are some small deviations regarding some code metrics like total lines, comments or blank lines. Thus it was necessary to check how each aspect/metric is defined into each tool.
+
+A manual inspection was done and the source of inconsistency is due to LocMetricss counts the last blank line of the file and RSM tool does not count the blank lines that are inside one commented section.
+
+In addition to code size metrics of file, size code metrics per function were compared.
+
+\begin{longtable}{||p{.225\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
+  \caption{Functions Size metrics comparation}\\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+\ \textbf{Metric} & \textbf{RSM} & \textbf{LocMetric} & \textbf{Understand} & \textbf{CMT++}
+\\\hline
+\multicolumn{5}{||l||}{\textbf{Bitwalker\_Peek}}
+\\\hline
+\ Total lines: & \textcolor{red}{19} & - & 20 & 20
+\\\hline
+\ Code/program lines: & \textcolor{red}{12} & - & 13 & 13
+\\\hline
+\ Comment lines: & 5 & - & 5 & 5 
+\\\hline
+\ Blank lines: & - & - & 4 & 4
+ \\\hline
+ \multicolumn{5}{||l||}{\textbf{Bitwalker\_Poke}}
+\\\hline
+\ Total lines: & \textcolor{red}{23} & - & 24 & 24
+\\\hline
+\ Code/program lines: & \textcolor{red}{16} & - & 17 & 17
+\\\hline
+\ Comment lines: & 6 & - & 6 & 6 
+\\\hline
+\ Blank lines: & - & - & 4 & 4
+ \\\hline
+ \multicolumn{5}{||l||}{\textbf{Bitwalker\_IncrementalWalker\_Init}}
+\\\hline
+\ Total lines: & \textcolor{red}{5} & - & 6 & 6
+\\\hline
+\ Code/program lines: & \textcolor{red}{5} & - & 6 & 6
+\\\hline
+\ Comment lines: & 0 & - & 0 & 0 
+\\\hline
+\ Blank lines: & - & - & 0 & 0
+ \\\hline
+ \multicolumn{5}{||l||}{\textbf{Bitwalker\_IncrementalWalker\_Peek\_Next}}
+\\\hline
+\ Total lines: & \textcolor{red}{6} & - & 7 & 7
+\\\hline
+\ Code/program lines: & \textcolor{red}{5} & - & 6 & 6
+\\\hline
+\ Comment lines: & 1 & - & 1 & 1 
+\\\hline
+\ Blank lines: & - & - & 0 & 0
+ \\\hline
+ \multicolumn{5}{||l||}{\textbf{Bitwalker\_IncrementalWalker\_Peek\_Finish}}
+\\\hline
+\ Total lines: & \textcolor{red}{3} & - & 4 & 4
+\\\hline
+\ Code/program lines: & \textcolor{red}{3} & - & 4 & 4
+\\\hline
+\ Comment lines: & 0 & - & 0 & 0 
+\\\hline
+\ Blank lines: & - & - & 0 & 0
+ \\\hline
+ \multicolumn{5}{||l||}{\textbf{Bitwalker\_IncrementalWalker\_Poke\_Next}}
+\\\hline
+\ Total lines: & \textcolor{red}{6} & - & 7 & 7
+\\\hline
+\ Code/program lines: & \textcolor{red}{5} & - & 6 & 6
+\\\hline
+\ Comment lines: & 1 & - & 1 & 1 
+\\\hline
+\ Blank lines: & - & - & 0 & 0
+ \\\hline
+ \multicolumn{5}{||l||}{\textbf{Bitwalker\_IncrementalWalker\_Poke\_Finish}}
+\\\hline
+\ Total lines: & \textcolor{red}{3} & - & 4 & 4
+\\\hline
+\ Code/program lines: & \textcolor{red}{3} & - & 4 & 4
+\\\hline
+\ Comment lines: & 0 & - & 0 & 0 
+\\\hline
+\ Blank lines: & - & - & 0 & 0
+ \\\hline
+\end{longtable}
+
+The total lines and program lines counts produced by some of the tool for the same product differ a little bit. 
+The results clearly demonstrate the effects of existing ambiguities in code counting methodology and a variety of interpretations.
+
+McCabe cyclomatic complexity was another complexity metric calculated by different of the selected tools. 
+
+\begin{longtable}{||p{.475\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
+  \caption{function Cyclomatic Complexity comparation}\\
+    \hline\hline
+    \textbf{Function} &\textbf{RSM} & \textbf{Understand} & \textbf{CMT++} \\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    Bitwalker\_Peek & 3 & 3 & 3
     \\
     \hline
-    Bitwalker\_Poke & 5 & 5 
+    Bitwalker\_Poke & 5 & 5 & 5 
     \\
     \hline
-    Bitwalker\_IncrementalWalker\_Init & 1 & 1 
+    Bitwalker\_IncrementalWalker\_Init & 1 & 1 & 1
     \\
     \hline
-    Bitwalker\_IncrementalWalker\_Peek\_Next & 1 & 1 
+    Bitwalker\_IncrementalWalker\_Peek\_Next & 1 & 1 & 1
     \\
     \hline
-    Bitwalker\_IncrementalWalker\_Peek\_Finish & 1 & 1 
+    Bitwalker\_IncrementalWalker\_Peek\_Finish & 1 & 1 & 1
     \\
     \hline
-    Bitwalker\_IncrementalWalker\_Poke\_Next & 1 & 1 
+    Bitwalker\_IncrementalWalker\_Poke\_Next & 1 & 1 & 1
     \\
     \hline
-    Bitwalker\_IncrementalWalker\_Poke\_Finish & 1 & 1 
-    \\
-    \hline
-    main.c & 1 & 1 
+    Bitwalker\_IncrementalWalker\_Poke\_Finish & 1 & 1 & 1
     \\
     \hline
 \end{longtable}
 
-Taking into account the obtained results, we can concluded that:
+According to McCabe a value of 10 is a practical upper limit for the cyclomatic complexity of a given module. When the complexity exceeds this value, it becomes very difficult to prove, understand and modify the module. However, in some circumstances, it may be appropriate to relax the restriction and permit modules with a complexity as high as 15.
+
+Analyzing the cyclomatic complexity metric measured one can observe the low risk of each function and all tools measured it in the same way.
+
+In relation to the MISRA-C rules, as each tool verifies a subset of the rules defined in this standard, the results are different. However, the violations relationed with rules that are included in both RMS and Understand tool have been detected by both tools.
+
+The accepted values for the metrics are defined based on the specific project requirements, project quality criteria or sector best practices. Depending on the metrics required for a project, one or more tools can be used. By this reason a selection of some MISRA-C and other standard to be applied shall be done and each specific violation and quality notice shall be analysed to check the suitability of applied the rule or not. 
+
+Taking into account all the obtained results, we can concluded that:
 \begin{itemize}
-\item the complexity of bitwalker.c functions ............. According to McCabe a value of 10 is a practical upper limit for the cyclomatic complexity of a given module. When the complexity exceeds this value, it becomes very difficult to prove, understand and modify the module. However, in some circumstances, it may be appropriate to relax the restriction and permit modules with a complexity as high as 15.
-\item there are some misra-c rules violations and quality notice. It would be recommendable to modify the specific lines if it is possible in order to improve code quality.
+\item the functions and file have a good maintanability due to the maintainability Index is >85 in both of them
+\item the functions have little logic and low risk regarding to the cyclomatic complexity values
+\item the functions and file have an appropiate size and inside the recommendations due to line metrics and Halstead metrics.
+\item there are some misra-c rules violations and quality notice although these shall be taken into account only in case they are related to the selected ruled to be applied.
+\item there are some functions never used
 \end{itemize}
 
 In addition to these, as each existing static analysis tool implements different and very specific techniques (code metrics analysis, semantic analysis, context analysis -interactions between multiple functions calls-, creation of new rules, support coding rules/standard rules, ...) to achieve the required assessment or verification objectives, it is recommended to select different static analysis to cover all the commom areas where problems can occur.

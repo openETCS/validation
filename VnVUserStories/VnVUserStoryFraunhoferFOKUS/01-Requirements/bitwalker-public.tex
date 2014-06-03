@@ -1,5 +1,4 @@
 
-
 \section{The public interface of \bitwalker}
 \label{sec:bitwalker-public}
 
@@ -31,13 +30,14 @@ The type \bitwalkertype is defined as follows\\[1em]
 
 \end{itemize}
 
-\fxfatal{Shouldn't \inl{Length} be named \inl{BitstreamSize} instead
-         in order to avoid confusion with the argument \inl{Length} of
-         \peek and \poke?}
+\paragraph*{Remark}
+The field \inl{Length} will be passed to \peek and \poke as \inl{BitstreamSize}.
+This might be confusing because those functions also have an argument 
+named~\inl{Length}.
 
 \clearpage
 
-\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Init}}
+\subsection{\inl{Bitwalker_IncrementalWalker_Init}}
 
 In this section we specify the function \init.
  The function  initializes object of the type \bitwalkertype.
@@ -53,17 +53,12 @@ void Bitwalker_IncrementalWalker_Init(
 \end{lstlisting}
 
 
-\paragraph{Arguments}
+\paragraph{Preconditions}
 \begin{itemize}
    \item  \inl{Locals} is a dereferenceable pointer.
    \item \inl{Bitstream} is  the start address of a valid bit stream.
    \item \inl{Size} is the length of the bit stream, that starts at \inl{Bitstream}.
    \item \inl{FirstBitposition} is a valid bit index in the bit stream given by \inl{Bitstream} and \inl{Size}
-\end{itemize}
-
-\paragraph{Preconditions}
-\begin{itemize}
-    \item  \inl{Locals} must be dereferenceable.
 \end{itemize}
 
 \paragraph{Description}~
@@ -75,11 +70,9 @@ The function \init assigns
     \item \inl{FirstBitposition} to \inl{Locals->CurrentBitposition}
 \end{itemize}
 
-\fxfatal{see remark on member \inl{Length} of \bitwalkertype}
-
 \clearpage
 
-\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Next}}
+\subsection{\inl{Bitwalker_IncrementalWalker_Peek_Next}}
 
 The function \peeknext reads a sequence from a bit stream 
 and increments the current position in the bit stream by the 
@@ -94,17 +87,11 @@ uint64_t Bitwalker_IncrementalWalker_Peek_Next(
 \end{lstlisting}
 
 
-\paragraph{Arguments}
-\begin{itemize}
-   \item  \inl{Locals} is a dereferenceable pointer.
-   \item \inl{Length} is the length of the bit sequence.
-\end{itemize}
-
 \paragraph{Preconditions}
 \begin{itemize}
-    \item  \inl{Locals} must be dereferenceable.
-    \item \inl{Length} $\leq$ \inl{64} and
-    \item \inl{Locals->CurrentBitposition} $\leq$ \inl{UINT_MAX} $-$ \inl{Length}
+  \item  \inl{Locals} must be dereferenceable
+  \item \inl{Length} is the length of the bit sequence and shall be less or equal~64
+  \item \inl{Locals->CurrentBitposition} $\leq$ \inl{UINT_MAX} $-$ \inl{Length}
 \end{itemize}
 
 \paragraph{Description}~
@@ -121,7 +108,7 @@ The function increments the value \inl{Locals->CurrentBitposition} by \inl{Lengt
 
 \clearpage
 
-\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Peek_Finish}}
+\subsection{\inl{Bitwalker_IncrementalWalker_Peek_Finish}}
 
 
  The function signature reads:\\[1em]
@@ -131,15 +118,9 @@ int Bitwalker_IncrementalWalker_Peek_Finish(
         T_Bitwalker_Incremental_Locals *Locals);
 \end{lstlisting}
 
-\paragraph{Arguments}
-
-\begin{itemize}
-   \item  \inl{Locals} is a dereferenceable pointer.
-\end{itemize}
-
 \paragraph{Preconditions}
 \begin{itemize}
-   \item  \inl{Locals} must be dereferenceable.
+   \item  \inl{Locals} must be dereferenceable
 \end{itemize}
 
 \paragraph{Description}~
@@ -147,11 +128,13 @@ int Bitwalker_IncrementalWalker_Peek_Finish(
 The function  returns \inl{Locals->CurrentBitposition}.
 It does not change any variables.
 
-\fxfatal{Should the return value be an unsigned type?}
+\paragraph*{Remark} The return value of this function is \inl{int} despite
+the fact that it returns a value of type \inl{unsigned int}.
+This does not make much sense and should best be avoided.
 
 \clearpage
 
-\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Next}}
+\subsection{\inl{Bitwalker_IncrementalWalker_Poke_Next}}
 
 The function \pokenext writes a bit sequence into a bit stream 
 and increments the current position in the bit stream by the 
@@ -165,18 +148,11 @@ int Bitwalker_IncrementalWalker_Poke_Next(
         uint64_t Value);
 \end{lstlisting}
 
-\paragraph{Arguments}
-
-\begin{itemize}
-   \item  \inl{Locals} is a dereferenceable pointer.
-   \item \inl{Length} is the length of the bit sequence.
-   \item \inl{Value} is the integer which shall be converted into a bit sequence
-\end{itemize}
 
 \paragraph{Preconditions}
 \begin{itemize}
-    \item  \inl{Locals} must be dereferenceable.
-    \item \inl{Locals->CurrentBitposition} + \inl{Length} is less than \inl{UINT_MAX}
+    \item  \inl{Locals} must be dereferenceable
+    \item \inl{Locals->CurrentBitposition} + \inl{Length} is less than or equal \inl{UINT_MAX}
 \end{itemize}
 
 \paragraph{Description}~
@@ -223,7 +199,7 @@ Regardless of whether the poke was successful \pokenext sets the value  \inl{Loc
 
 \clearpage
 
-\subsection{Informal Specification of \inl{Bitwalker_IncrementalWalker_Poke_Finish}}
+\subsection{\inl{Bitwalker_IncrementalWalker_Poke_Finish}}
 
  The function signature reads:\\[1em]
 
@@ -232,21 +208,21 @@ int Bitwalker_IncrementalWalker_Poke_Finish(
         T_Bitwalker_Incremental_Locals *Locals);
 \end{lstlisting}
 
-\paragraph{Arguments}
-\begin{itemize}
-   \item  \inl{Locals} is a dereferenceable pointer.
-\end{itemize}
-
 \paragraph{Preconditions}
 \begin{itemize}
-    \item  \inl{Locals} must be dereferenceable.
+    \item  \inl{Locals} must be dereferenceable
 \end{itemize}
 
 \paragraph{Description}~
 
 The function  returns \inl{Locals->CurrentBitposition}.
 
-\fxfatal{The functions \peekfinish and \pokefinish have the same specification.}
+\paragraph{Remark*}
+The functions \peekfinish and\\
+\pokefinish have the same specification.
+Moreover, both function return an object of type \inl{unsigned int} as \inl{int}
+for which no convincing reason is available.
+
 
 
 

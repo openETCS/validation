@@ -1,80 +1,24 @@
 %% This is openetcs.cls
 %% A LaTeX class based on:
 
-%% LaTeX Style For Technical Information Reports of the
-%%             Engineer Research and Development Center
-%%                    US Army Corps of Engineers
-%%                         2009/07/22 v1.1
-%% Copyright 2008, Boris Veytsman
-%% This work may be distributed and/or modified under the
-%% conditions of the LaTeX Project Public License, either
-%% version 1.3 of this license or (at your option) any
-%% later version.
-
-%% For openETCS ITEA2 Project (To Do: Verify consistency with cc-by-sa
-%% 3.0)
 
 
-%%
-%% This is based on file `erdc.cls',
-%% generated with the docstrip utility.
-%%
-%% The original source files were:
-%%
-%% erdc.dtx  (with options: `class')
-%%
-%% IMPORTANT NOTICE:
-%%
-%% For the copyright see the source file.
-%%
-%% Any modified versions of this file must be renamed
-%% with new filenames distinct from erdc.cls.
-%%
-%% For distribution of the original source see the terms
-%% for copying and modification in the file erdc.dtx.
-%%
-%% This generated file may be distributed as long as the
-%% original source files, as listed above, are part of the
-%% same distribution. (The sources need not necessarily be
-%% in the same archive or directory.)
-%% \CharacterTable
-%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
-%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
-%%   Digits        \0\1\2\3\4\5\6\7\8\9
-%%   Exclamation   \!     Double quote  \"     Hash (number) \#
-%%   Dollar        \$     Percent       \%     Ampersand     \&
-%%   Acute accent  \'     Left paren    \(     Right paren   \)
-%%   Asterisk      \*     Plus          \+     Comma         \,
-%%   Minus         \-     Point         \.     Solidus       \/
-%%   Colon         \:     Semicolon     \;     Less than     \<
-%%   Equals        \=     Greater than  \>     Question mark \?
-%%   Commercial at \@     Left bracket  \[     Backslash     \\
-%%   Right bracket \]     Circumflex    \^     Underscore    \_
-%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
-%%   Right brace   \}     Tilde         \~}
+%% For openETCS ITEA2 Project
 
+
+
+%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{template/openetcs_report}
-[2012/08/03 v0.1 Typesetting Technical Information Reports of
-openETCS project based on ERDC class v1.1]
-% \long\def\erdc@size@warning#1{%
-%   \ClassWarning{erdc}{Size-changing option #1 will not be
-%     honored}}%
-% \DeclareOption{8pt}{\erdc@size@warning{\CurrentOption}}%
-% \DeclareOption{9pt}{\erdc@size@warning{\CurrentOption}}%
-% \DeclareOption{10pt}{\erdc@size@warning{\CurrentOption}}%
-% \DeclareOption{11pt}{\erdc@size@warning{\CurrentOption}}%
-% \DeclareOption{12pt}{\erdc@size@warning{\CurrentOption}}%
-
+\ProvidesClass{openetcs}
+[2012/10/11 v0.1 Typesetting Technical Information Article of
+openETCS project ]
 %% David Mentres FIXME macro
 \newcommand{\FIXME}[1]{\marginpar{FIXME}\textsf{FIXME: #1}}
 \newcommand{\IsLicensedUnderCC}[1]{#1}
-\newcommand{\IsNonPublic}[1]{}
-\DeclareOption{nocc}{\renewcommand{\IsLicensedUnderCC}[1]{ }
-\renewcommand{\IsNonPublic}[1]{#1}}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
+\DeclareOption{nocc}{\renewcommand{\IsLicensedUnderCC}[1]{ }}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions\relax
-\LoadClass[11pt,twoside]{report}
+\LoadClass[11pt,twoside]{article}
 \RequirePackage{graphicx,color,caption,longtable}
 \RequirePackage{dcolumn}
 \RequirePackage{natbib}
@@ -82,9 +26,6 @@ openETCS project based on ERDC class v1.1]
 \setlength{\bibhang}{0.5in}
 \setlength{\bibsep}{12pt}
 \RequirePackage{amsmath}
-%\RequirePackage[originalcommands]{ragged2e}
-%\setlength\RaggedRightParindent{\parindent}
-%\RaggedRight
 \RequirePackage{microtype}
 \RequirePackage[utf8x]{inputenc}
 \normalsize
@@ -92,22 +33,6 @@ openETCS project based on ERDC class v1.1]
 % PdfLaTeX Choix 1 "times Helvet et math" http://www.cuk.ch/articles/4237
 \usepackage[T1]{fontenc}
 \usepackage{txfonts}
-
-% definition of approval variables
-\def\creatorname#1{\gdef\@creatorname{#1}}
-\def\creatoraffil#1{\gdef\@creatoraffil{#1}}
-
-\def\techassessorname#1{\gdef\@techassessorname{#1}}
-\def\techassessoraffil#1{\gdef\@techassessoraffil{#1}}
-
-\def\qualityassessorname#1{\gdef\@qualityassessorname{#1}}
-\def\qualityassessoraffil#1{\gdef\@qualityassessoraffil{#1}}
-
-\def\approvalname#1{\gdef\@approvalname{#1}}
-\def\approvalaffil#1{\gdef\@approvalaffil{#1}}
-
-
-%% \setlength{\textheight}{15cm}%%unsere änderung
 
 
 \def\@projectfont{%
@@ -159,18 +84,15 @@ openETCS project based on ERDC class v1.1]
 \rhead{\textsf{\textbf{\footnotesize\thepage}}}
 \chead{}
 \lfoot{}
-%% \cfoot{\color{blue}\textsf{\textbf{\textit{openETCS}}}\color{black}
-%% \IsLicensedUnderCC{ - \includegraphics[width=3em]{oOLT.png}}}
-\IsLicensedUnderCC{\cfoot{\scriptsize\textit{This work is licensed under the "openETCS Open License Terms" (oOLT).}}} 
-\IsNonPublic{\cfoot{\scriptsize \textit{Confidential -- only for members of the consortium, including ITEA2 services.}}}
-%% \includegraphics[width=30pt]{oOLT.png}}
+\cfoot{\scriptsize \textit{This work is licensed under the "openETCS Open License Terms" (oOLT).}}
+%\cfoot{\color{blue}\textsf{\textbf{\textit{openETCS}}}\color{black}\IsLicensedUnderCC{ - \includegraphics[width=3em]{ccbysa.png}}}
 \rfoot{}
 \newif\if@frontmatter
 \@frontmatterfalse
 \newif\if@appendix
 \@appendixfalse
 \def\frontmatter{%
-  \pagenumbering{roman}%
+  \pagenumbering{arabic}%
   \@frontmattertrue
   \@appendixfalse}
 \def\mainmatter{%
@@ -354,7 +276,6 @@ TERMS AND CONDITIONS.
    \vfill
    \begin{@coverlist}%
      \IsLicensedUnderCC{\@distributionfont\@distribution}
-     \IsNonPublic{\@distributionfont \centering \large Confidential -- only for members of the consortium, including ITEA2 services.}
    \end{@coverlist}%
    \newpage
    This page is intentionally left blank
@@ -376,27 +297,6 @@ TERMS AND CONDITIONS.
       \vspace*{3\p@}%
       \bfseries\@subtitle\par
   \end{minipage}\rule[-0.7in]{\z@}{1in}\par
-  
-% document approbation
-  
-  \large Document approbation
-    
-        \begin{tabular}{ |p{3.6cm}|  p{3.6cm}|  p{3.6cm}| p{3.6cm}|}
-        \hline
-        \normalsize Lead author: & \normalsize Technical assessor: & \normalsize  Quality assessor: & \normalsize Project lead: \\
-        \hline
-        \tiny location / date \vspace{1.2cm} & \tiny location / date &\tiny location / date &\tiny location / date \\
-        \hline
-        \tiny signature \vspace{1.2cm} & \tiny signature &\tiny signature &\tiny signature \\
-        
-        \small \@creatorname & \small\@techassessorname & \small\@qualityassessorname & \small\@approvalname \\
-        
-        \small(\@creatoraffil ) & \small(\@techassessoraffil ) & \small(\@qualityassessoraffil ) & \small(\@approvalaffil ) \\
-        \hline        
-        \end{tabular}
-        \vspace{.5cm}
-          
-          
      \def\author##1{%
        \def\@tempa{##1}%
        \nxandlist{\unskip, }{\unskip{} \@@and~}{\unskip{} \@@and~}\@tempa
@@ -406,7 +306,7 @@ TERMS AND CONDITIONS.
    \end{minipage}\rule[-2.7in]{\z@}{3.7in}\par
    \begin{minipage}{\textwidth}
      \@reporttype\par\vspace*{3\p@}%
-     %{\IsLicensedUnderCC{\@distributionfont\@distribution\par}}%
+%     {\IsLicensedUnderCC{\@distributionfont\@distribution\par}}%
    \end{minipage}
  \end{@titlelist}%
   \vfill
@@ -452,38 +352,8 @@ TERMS AND CONDITIONS.
 \@addtoreset{section}{chapter}%
 \@addtoreset{subsection}{chapter}%
 \@addtoreset{subsection}{section}%
-\renewcommand\chapter{%
-  \clearpage
-  \global\@topnum\z@
-  \@afterindentfalse
-  \secdef\@chapter\@schapter}
-\def\@chapter[#1]#2{%
-  \if@frontmatter
-      \addcontentsline{toc}{chapter}{#1}%
-      \@makechapterhead{#2}%
-  \else
-      \refstepcounter{chapter}%
-      \typeout{\@chapapp\space\thechapter.}%
-      \if@appendix
-         \addcontentsline{toc}{chapter}%
-             {\@chapapp\space\thechapter: #1}%
-         \@makechapterhead{\@chapapp\space\thechapter: #2}%
-      \else
-         \addcontentsline{toc}{chapter}%
-             {\protect\numberline{\thechapter}#1}%
-         \@makechapterhead{\makebox[35\p@]{\thechapter\hfill}#2}%
-      \fi
-  \fi
-  \@afterheading}
-\def\@schapter#1{%
-  \if@appendix
-     \addcontentsline{toc}{chapter}{\@chapapp: #1}%
-     \@makeschapterhead{\@chapapp: #1}%
-  \else
-    \addcontentsline{toc}{chapter}{#1}%
-    \@makeschapterhead{#1}%
-  \fi
-  \@afterheading}
+
+
 \def\@makechapterhead#1{%
   \vspace*{5\p@}%
   {\hskip-35\p@%
@@ -588,22 +458,6 @@ TERMS AND CONDITIONS.
   \@makeschapterhead{#1}\par
   \@afterheading}
 \def\@dotsep{0.5}
-\renewcommand\l@chapter[2]{%
-  \def\numberline##1{\makebox[1.9em]{##1\hfill}}%
-  \addpenalty{-\@highpenalty}%
-  \vskip5\p@
-  \bgroup
-    \parindent\z@\rightskip\@pnumwidth
-    \parfillskip-\@pnumwidth
-    \leavevmode\bfseries
-    \leftskip1.9em%
-    \hskip-\leftskip
-    #1\nobreak\leaders\hbox{$\m@th\mkern\@dotsep
-      mu\hbox{.}\mkern\@dotsep
-      mu$}\hfill\nobreak{\hfil\,#2}\par
-    \vskip5\p@
-      \penalty\@highpenalty
-  \egroup}
 \def\@dottedtocline#1#2#3#4#5{%
   \bgroup
   \def\numberline##1{\makebox[#3]{##1\hfill}}%
@@ -654,18 +508,18 @@ TERMS AND CONDITIONS.
   {\parskip2.5\p@\footnotesize\sffamily\fontseries{k}\selectfont\raggedright
     \@starttoc{toc}}}
 \renewcommand\listoffigures{%
-  \chapter{\listfigurename}%
+  \specialchapter{\listfigurename}%
   \def\numberline##1{Figure ##1. }%
   {\parskip2.5\p@\footnotesize\sffamily\fontseries{k}\selectfont\raggedright
     \@starttoc{lof}}}
 \renewcommand\listoftables{%
-  \chapter{\listtablename}%
+  \specialchapter{\listtablename}%
   \def\numberline##1{Table ##1. }%
   {\parskip2.5\p@\footnotesize\sffamily\fontseries{k}\selectfont\raggedright
     \@starttoc{lot}}}
 \def\listfiguretablename{Figures and Tables}
 \newcommand\listoffiguresandtables{%
-  \chapter{\listfiguretablename}
+  \specialchapter{\listfiguretablename}
   {\sffamily\bfseries\normalsize Figures\par}%
   \vspace*{10pt}%
   \def\numberline##1{Figure ##1. }%
@@ -690,4 +544,4 @@ labelsep=period,aboveskip=3pt}
 \def\tagform@@#1{\maketag@@@@{(\ignorespaces#1\unskip\@@italiccorr)}}
 \endinput
 %%
-%% End of file `openetcs_repport.cls'.
+%% End of file `openetcs_article.cls'.

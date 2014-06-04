@@ -83,7 +83,13 @@
           </defaultValue>
         </ownedAttribute>
         <ownedAttribute xmi:type="uml:Property" xmi:id="_z0qTwNnrEeOrd8RTFF2x3w" name="SpeedAndDistanceMonitoring" type="_k_B8QNnrEeOrd8RTFF2x3w" association="_z0rh4NnrEeOrd8RTFF2x3w"/>
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_-WhDkNxJEeOrd8RTFF2x3w" name="SupervisionLimit" type="_7PbsAOotEeOd_88tSik5UQ" association="_BN0n4NxKEeOrd8RTFF2x3w"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_-WhDkNxJEeOrd8RTFF2x3w" name="SupervisionLimit" visibility="public" type="_7PbsAOotEeOd_88tSik5UQ" association="_BN0n4NxKEeOrd8RTFF2x3w">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LQSagOpwEeOfLsqWvdVN8w" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_LQSagepwEeOfLsqWvdVN8w" value="1"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_LQTBkOpwEeOfLsqWvdVN8w">
+            <value xsi:nil="true"/>
+          </defaultValue>
+        </ownedAttribute>
         <ownedConnector xmi:type="uml:Connector" xmi:id="_u5618NuJEeOrd8RTFF2x3w" name="">
           <end xmi:type="uml:ConnectorEnd" xmi:id="_u57dANuJEeOrd8RTFF2x3w" role="_0WUfINuHEeOrd8RTFF2x3w"/>
           <end xmi:type="uml:ConnectorEnd" xmi:id="_u57dAduJEeOrd8RTFF2x3w" partWithPort="_z0qTwNnrEeOrd8RTFF2x3w" role="_N94SsNuJEeOrd8RTFF2x3w"/>
@@ -196,6 +202,58 @@
                   </specification>
                 </ownedRule>
               </transition>
+              <transition xmi:type="uml:Transition" xmi:id="_a0UlsOZ2EeO67cBiM1-0Hg" name="CSM2TSM" guard="_yjUxoOZ2EeO67cBiM1-0Hg" source="_j-z6kNxKEeOrd8RTFF2x3w" target="_121sENxKEeOrd8RTFF2x3w">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_yjUxoOZ2EeO67cBiM1-0Hg">
+                  <specification xmi:type="uml:OpaqueExpression" xmi:id="_yjUxoeZ2EeO67cBiM1-0Hg">
+                    <language>C</language>
+                    <body>dLocation == PreIndication</body>
+                  </specification>
+                </ownedRule>
+              </transition>
+              <transition xmi:type="uml:Transition" xmi:id="_9fuNwOZ2EeO67cBiM1-0Hg" name="TSM2RSM" guard="_IzfoEOZ3EeO67cBiM1-0Hg" source="_121sENxKEeOrd8RTFF2x3w" target="_4iMfENxKEeOrd8RTFF2x3w">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_IzfoEOZ3EeO67cBiM1-0Hg">
+                  <specification xmi:type="uml:OpaqueExpression" xmi:id="_IzfoEeZ3EeO67cBiM1-0Hg">
+                    <language>C</language>
+                    <body>dLocation == StartRSM</body>
+                  </specification>
+                </ownedRule>
+                <effect xmi:type="uml:OpaqueBehavior" xmi:id="_rpQtEOZ3EeO67cBiM1-0Hg" name="ServiceBrakeCommand = 0;">
+                  <language>C</language>
+                  <body>ServiceBrakeCommand = 0;</body>
+                </effect>
+              </transition>
+              <transition xmi:type="uml:Transition" xmi:id="_8hq0oOZ3EeO67cBiM1-0Hg" name="TSM2CSM" guard="_FF44cOZ4EeO67cBiM1-0Hg" source="_121sENxKEeOrd8RTFF2x3w" target="_j-z6kNxKEeOrd8RTFF2x3w">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_FF44cOZ4EeO67cBiM1-0Hg">
+                  <specification xmi:type="uml:OpaqueExpression" xmi:id="_FF44ceZ4EeO67cBiM1-0Hg">
+                    <language>C</language>
+                    <body>dLocation == None &amp;&amp; isTargetUpdated</body>
+                  </specification>
+                </ownedRule>
+              </transition>
+              <transition xmi:type="uml:Transition" xmi:id="_L1DfIOZ4EeO67cBiM1-0Hg" name="RSM2CSM" guard="_QNjJYOZ4EeO67cBiM1-0Hg" source="_4iMfENxKEeOrd8RTFF2x3w" target="_j-z6kNxKEeOrd8RTFF2x3w">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_QNjJYOZ4EeO67cBiM1-0Hg">
+                  <specification xmi:type="uml:OpaqueExpression" xmi:id="_QNjJYeZ4EeO67cBiM1-0Hg">
+                    <language>C</language>
+                    <body>dLocation == None &amp;&amp; isTargetUpdated</body>
+                  </specification>
+                </ownedRule>
+              </transition>
+              <transition xmi:type="uml:Transition" xmi:id="_6PzDMOZ4EeO67cBiM1-0Hg" name="CSM2RSM" guard="_Wt6poOZ5EeO67cBiM1-0Hg" source="_j-z6kNxKEeOrd8RTFF2x3w" target="_4iMfENxKEeOrd8RTFF2x3w">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_Wt6poOZ5EeO67cBiM1-0Hg">
+                  <specification xmi:type="uml:OpaqueExpression" xmi:id="_Wt6poeZ5EeO67cBiM1-0Hg" name="">
+                    <language>C</language>
+                    <body>dLocation == StartRSM &amp;&amp; isTargetUpdated</body>
+                  </specification>
+                </ownedRule>
+              </transition>
+              <transition xmi:type="uml:Transition" xmi:id="_oDEXkOZ5EeO67cBiM1-0Hg" name="" guard="_ywarEOZ5EeO67cBiM1-0Hg" source="_4iMfENxKEeOrd8RTFF2x3w" target="_121sENxKEeOrd8RTFF2x3w">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_ywarEOZ5EeO67cBiM1-0Hg">
+                  <specification xmi:type="uml:OpaqueExpression" xmi:id="_ywarEeZ5EeO67cBiM1-0Hg">
+                    <language>C</language>
+                    <body>dLocation == PreIndication &amp;&amp; isTargetUpdated </body>
+                  </specification>
+                </ownedRule>
+              </transition>
               <subvertex xmi:type="uml:Pseudostate" xmi:id="_91aA0NtoEeOrd8RTFF2x3w" name="SnD_ON"/>
               <subvertex xmi:type="uml:State" xmi:id="_j-z6kNxKEeOrd8RTFF2x3w" clientDependency="_z25H4OJ8EeOCPs1Cakkz2g" name="CSM" visibility="private">
                 <ownedRule xmi:type="uml:Constraint" xmi:id="_0nqBAOJ9EeOCPs1Cakkz2g" clientDependency="_34EMYOJ-EeOCPs1Cakkz2g" name="Constraint_03">
@@ -216,61 +274,61 @@
                     <body>Finally [EMER_BRAKE and not SBAvailable and V_est > 0 and V_est &lt;=  V_mrsp and not allowRevokeEB] </body>
                   </specification>
                 </ownedRule>
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_MzPzkOKEEeOCPs1Cakkz2g" clientDependency="_YNfCQOKEEeOCPs1Cakkz2g" name="Constraint_08">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_MzPzkOKEEeOCPs1Cakkz2g" name="Constraint_08">
                   <specification xmi:type="uml:OpaqueExpression" xmi:id="_TApxAOKEEeOCPs1Cakkz2g">
                     <language>C</language>
                     <body>Finally ([NORMAL and V_est &lt;= V_mrsp] and ([NORMAL and V_est &lt;= V_mrsp] Until [NORMAL and V_est > V_mrsp + dV_warning and V_est &lt;= V_mrsp + dV_sbi]))</body>
                   </specification>
                 </ownedRule>
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_h9sYEOKEEeOCPs1Cakkz2g" clientDependency="_GOZKAOKFEeOCPs1Cakkz2g" name="Constraint_10">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_h9sYEOKEEeOCPs1Cakkz2g" name="Constraint_10">
                   <specification xmi:type="uml:OpaqueExpression" xmi:id="_vIygYOKEEeOCPs1Cakkz2g">
                     <language>C</language>
                     <body>Finally ([NORMAL and V_est &lt;= V_mrsp] and ([NORMAL and V_est &lt;= V_mrsp] Until [NORMAL and V_est > V_mrsp + dV_ebi]))</body>
                   </specification>
                 </ownedRule>
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_z3j8oOKEEeOCPs1Cakkz2g" clientDependency="_FSlpEOKFEeOCPs1Cakkz2g" name="Constraint_09">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_z3j8oOKEEeOCPs1Cakkz2g" name="Constraint_09">
                   <specification xmi:type="uml:OpaqueExpression" xmi:id="__LyC4OKEEeOCPs1Cakkz2g">
                     <language>C</language>
                     <body>Finally ([NORMAL and V_est &lt;= V_mrsp] and ([NORMAL and V_est &lt;= V_mrsp] Until [NORMAL and V_est > V_mrsp + dV_sbi and V_est &lt;= V_mrsp + dV_ebi]))</body>
                   </specification>
                 </ownedRule>
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_Kp6TEOKFEeOCPs1Cakkz2g" clientDependency="_eSrCYOKFEeOCPs1Cakkz2g" name="Constraint_11">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_Kp6TEOKFEeOCPs1Cakkz2g" name="Constraint_11">
                   <specification xmi:type="uml:OpaqueExpression" xmi:id="_OiUIAOKFEeOCPs1Cakkz2g">
                     <language>C</language>
                     <body>Finally ([OVERSPEED and V_est &lt;= V_mrsp + dV_warning] and ([OVERSPEED and V_est &lt;= V_mrsp + dV_warning] Until [OVERSPEED and V_est > V_mrsp + dV_sbi and V_est &lt;= V_mrsp + dV_ebi]))</body>
                   </specification>
                 </ownedRule>
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_QzaA4OKFEeOCPs1Cakkz2g" clientDependency="_fIugoOKFEeOCPs1Cakkz2g" name="Constraint_12">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_QzaA4OKFEeOCPs1Cakkz2g" name="Constraint_12">
                   <specification xmi:type="uml:OpaqueExpression" xmi:id="_WrGNAOKFEeOCPs1Cakkz2g">
                     <language>C</language>
                     <body>Finally ([OVERSPEED and V_est &lt;= V_mrsp + dV_warning] and ([OVERSPEED and V_est &lt;= V_mrsp + dV_warning] Until [OVERSPEED and V_est > V_mrsp + dV_ebi]))</body>
                   </specification>
                 </ownedRule>
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_jZUMEOKFEeOCPs1Cakkz2g" clientDependency="_5QesoOKFEeOCPs1Cakkz2g" name="Constraint_13">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_jZUMEOKFEeOCPs1Cakkz2g" name="Constraint_13">
                   <specification xmi:type="uml:OpaqueExpression" xmi:id="_m8v2kOKFEeOCPs1Cakkz2g">
                     <language>C</language>
                     <body>Finally ([WARNING and V_est &lt;= V_mrsp + dV_sbi] and ([WARNING and V_est &lt;= V_mrsp + dV_sbi] Until [WARNING and V_est > V_mrsp + dV_ebi]))</body>
                   </specification>
                 </ownedRule>
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_DHqNIOKGEeOCPs1Cakkz2g" clientDependency="_xVpHkOKGEeOCPs1Cakkz2g _zF6yYOKGEeOCPs1Cakkz2g" name="Constraint_04">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_DHqNIOKGEeOCPs1Cakkz2g" clientDependency="_xVpHkOKGEeOCPs1Cakkz2g" name="Constraint_04">
                   <specification xmi:type="uml:OpaqueExpression" xmi:id="_JiSuQOKGEeOCPs1Cakkz2g">
                     <language>C</language>
                     <body>Finally [CSM_OFF and csmSwitch and V_est > V_mrsp and V_est &lt;= V_mrsp + dV_warning]</body>
                   </specification>
                 </ownedRule>
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_V0QPIOKGEeOCPs1Cakkz2g" clientDependency="_AD1aUOKHEeOCPs1Cakkz2g _No4TsOKHEeOCPs1Cakkz2g" name="Constraint_05">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_V0QPIOKGEeOCPs1Cakkz2g" name="Constraint_05">
                   <specification xmi:type="uml:OpaqueExpression" xmi:id="_Z8J4oOKGEeOCPs1Cakkz2g">
                     <language>C</language>
                     <body>Finally [CSM_OFF and csmSwitch and V_est > V_mrsp + dV_warning and V_est &lt;= V_mrsp + dV_sbi]</body>
                   </specification>
                 </ownedRule>
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_cLdo0OKGEeOCPs1Cakkz2g" clientDependency="_yVJcwOKGEeOCPs1Cakkz2g _z_llUOKGEeOCPs1Cakkz2g" name="Constraint_06">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_cLdo0OKGEeOCPs1Cakkz2g" clientDependency="_z_llUOKGEeOCPs1Cakkz2g" name="Constraint_06">
                   <specification xmi:type="uml:OpaqueExpression" xmi:id="_hbcUsOKGEeOCPs1Cakkz2g">
                     <language>C</language>
                     <body>Finally [CSM_OFF and csmSwitch and V_est > V_mrsp + dV_sbi and V_est &lt;= V_mrsp + dV_ebi]</body>
                   </specification>
                 </ownedRule>
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_kkPRoOKGEeOCPs1Cakkz2g" clientDependency="_23u3IOKGEeOCPs1Cakkz2g _5xn1YOKGEeOCPs1Cakkz2g" name="Constraint_07">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_kkPRoOKGEeOCPs1Cakkz2g" name="Constraint_07">
                   <specification xmi:type="uml:OpaqueExpression" xmi:id="_oA6z4OKGEeOCPs1Cakkz2g">
                     <language>C</language>
                     <body>Finally [CSM_OFF and csmSwitch and V_est > V_mrsp + dV_ebi]</body>
@@ -279,7 +337,7 @@
                 <doActivity xmi:type="uml:StateMachine" xmi:id="_b64icNtwEeOrd8RTFF2x3w" clientDependency="_Dsbq8OKCEeOCPs1Cakkz2g" name="CSM_ON">
                   <region xmi:type="uml:Region" xmi:id="_ckuwsNtwEeOrd8RTFF2x3w" name="CSM_ON">
                     <transition xmi:type="uml:Transition" xmi:id="_BYxgQNtxEeOrd8RTFF2x3w" name="" source="_x_VRENtwEeOrd8RTFF2x3w" target="_XquWoOKIEeOCPs1Cakkz2g"/>
-                    <transition xmi:type="uml:Transition" xmi:id="_UZbb0NtzEeOrd8RTFF2x3w" clientDependency="_HgLXcOKEEeOCPs1Cakkz2g" name="N2OVP" guard="_bV9JENtzEeOrd8RTFF2x3w" source="_ys9MENtwEeOrd8RTFF2x3w" target="_vFs8ENtxEeOrd8RTFF2x3w">
+                    <transition xmi:type="uml:Transition" xmi:id="_UZbb0NtzEeOrd8RTFF2x3w" name="N2OVP" guard="_bV9JENtzEeOrd8RTFF2x3w" source="_ys9MENtwEeOrd8RTFF2x3w" target="_vFs8ENtxEeOrd8RTFF2x3w">
                       <ownedRule xmi:type="uml:Constraint" xmi:id="_bV9JENtzEeOrd8RTFF2x3w">
                         <specification xmi:type="uml:OpaqueExpression" xmi:id="_bV9JEdtzEeOrd8RTFF2x3w">
                           <language>C</language>
@@ -287,7 +345,7 @@
                         </specification>
                       </ownedRule>
                     </transition>
-                    <transition xmi:type="uml:Transition" xmi:id="_j9zIoNtzEeOrd8RTFF2x3w" clientDependency="_cWgGEOKEEeOCPs1Cakkz2g" name="OVP2WARN" guard="_tgPvQNtzEeOrd8RTFF2x3w" source="_vFs8ENtxEeOrd8RTFF2x3w" target="_8GwXkNtxEeOrd8RTFF2x3w">
+                    <transition xmi:type="uml:Transition" xmi:id="_j9zIoNtzEeOrd8RTFF2x3w" name="OVP2WARN" guard="_tgPvQNtzEeOrd8RTFF2x3w" source="_vFs8ENtxEeOrd8RTFF2x3w" target="_8GwXkNtxEeOrd8RTFF2x3w">
                       <ownedRule xmi:type="uml:Constraint" xmi:id="_tgPvQNtzEeOrd8RTFF2x3w">
                         <specification xmi:type="uml:OpaqueExpression" xmi:id="_tgPvQdtzEeOrd8RTFF2x3w">
                           <language>C</language>
@@ -295,7 +353,7 @@
                         </specification>
                       </ownedRule>
                     </transition>
-                    <transition xmi:type="uml:Transition" xmi:id="_ytLHINtzEeOrd8RTFF2x3w" clientDependency="_59hY0OKFEeOCPs1Cakkz2g" name="WARN2SB" guard="_8UUAgNtzEeOrd8RTFF2x3w" source="_8GwXkNtxEeOrd8RTFF2x3w" target="_Eu0ZkNtyEeOrd8RTFF2x3w">
+                    <transition xmi:type="uml:Transition" xmi:id="_ytLHINtzEeOrd8RTFF2x3w" name="WARN2SB" guard="_8UUAgNtzEeOrd8RTFF2x3w" source="_8GwXkNtxEeOrd8RTFF2x3w" target="_Eu0ZkNtyEeOrd8RTFF2x3w">
                       <ownedRule xmi:type="uml:Constraint" xmi:id="_8UUAgNtzEeOrd8RTFF2x3w" name="">
                         <specification xmi:type="uml:OpaqueExpression" xmi:id="_8UUnkNtzEeOrd8RTFF2x3w">
                           <language>C</language>
@@ -303,7 +361,7 @@
                         </specification>
                       </ownedRule>
                     </transition>
-                    <transition xmi:type="uml:Transition" xmi:id="_8j1DMNtzEeOrd8RTFF2x3w" clientDependency="_PkiE4OKDEeOCPs1Cakkz2g _AthX4OKEEeOCPs1Cakkz2g" name="OVP2N" guard="_Et0CENt0EeOrd8RTFF2x3w" source="_vFs8ENtxEeOrd8RTFF2x3w" target="_ys9MENtwEeOrd8RTFF2x3w">
+                    <transition xmi:type="uml:Transition" xmi:id="_8j1DMNtzEeOrd8RTFF2x3w" name="OVP2N" guard="_Et0CENt0EeOrd8RTFF2x3w" source="_vFs8ENtxEeOrd8RTFF2x3w" target="_ys9MENtwEeOrd8RTFF2x3w">
                       <ownedRule xmi:type="uml:Constraint" xmi:id="_Et0CENt0EeOrd8RTFF2x3w">
                         <specification xmi:type="uml:OpaqueExpression" xmi:id="_Et0CEdt0EeOrd8RTFF2x3w" name="SimulatedTrainSpeed &lt;= V_mrsp">
                           <language>C</language>
@@ -319,7 +377,7 @@
                         </specification>
                       </ownedRule>
                     </transition>
-                    <transition xmi:type="uml:Transition" xmi:id="_THJfINt0EeOrd8RTFF2x3w" clientDependency="_Q5MKsOKDEeOCPs1Cakkz2g _BltkIOKEEeOCPs1Cakkz2g" name="WARN2N" guard="_qEasINt0EeOrd8RTFF2x3w" source="_8GwXkNtxEeOrd8RTFF2x3w" target="_ys9MENtwEeOrd8RTFF2x3w">
+                    <transition xmi:type="uml:Transition" xmi:id="_THJfINt0EeOrd8RTFF2x3w" name="WARN2N" guard="_qEasINt0EeOrd8RTFF2x3w" source="_8GwXkNtxEeOrd8RTFF2x3w" target="_ys9MENtwEeOrd8RTFF2x3w">
                       <ownedRule xmi:type="uml:Constraint" xmi:id="_qEasINt0EeOrd8RTFF2x3w">
                         <specification xmi:type="uml:OpaqueExpression" xmi:id="_qEasIdt0EeOrd8RTFF2x3w" name="">
                           <language>C</language>
@@ -327,7 +385,7 @@
                         </specification>
                       </ownedRule>
                     </transition>
-                    <transition xmi:type="uml:Transition" xmi:id="_rao4MNt0EeOrd8RTFF2x3w" clientDependency="__tOcsOJ8EeOCPs1Cakkz2g _6Vn-gOJ_EeOCPs1Cakkz2g _XG0KkOKDEeOCPs1Cakkz2g _CUD34OKEEeOCPs1Cakkz2g _7ssQYOKFEeOCPs1Cakkz2g" name="SB2N" guard="_uZIpoNt0EeOrd8RTFF2x3w" source="_Eu0ZkNtyEeOrd8RTFF2x3w" target="_ys9MENtwEeOrd8RTFF2x3w">
+                    <transition xmi:type="uml:Transition" xmi:id="_rao4MNt0EeOrd8RTFF2x3w" clientDependency="_6Vn-gOJ_EeOCPs1Cakkz2g _XG0KkOKDEeOCPs1Cakkz2g _2CRdQOpyEeOfLsqWvdVN8w" name="SB2N" guard="_uZIpoNt0EeOrd8RTFF2x3w" source="_Eu0ZkNtyEeOrd8RTFF2x3w" target="_ys9MENtwEeOrd8RTFF2x3w">
                       <ownedRule xmi:type="uml:Constraint" xmi:id="_uZIpoNt0EeOrd8RTFF2x3w">
                         <specification xmi:type="uml:OpaqueExpression" xmi:id="_uZIpodt0EeOrd8RTFF2x3w">
                           <language>C</language>
@@ -335,7 +393,7 @@
                         </specification>
                       </ownedRule>
                     </transition>
-                    <transition xmi:type="uml:Transition" xmi:id="_u_-nMNt0EeOrd8RTFF2x3w" clientDependency="_AW32oOJ9EeOCPs1Cakkz2g _wnZlsOJ_EeOCPs1Cakkz2g _7X_acOJ_EeOCPs1Cakkz2g _CxvH0OKDEeOCPs1Cakkz2g _T9CWMOKDEeOCPs1Cakkz2g _C17O0OKEEeOCPs1Cakkz2g" name="EB2N" visibility="public" guard="_zDBl4Nt0EeOrd8RTFF2x3w" source="_-JJQoNtyEeOrd8RTFF2x3w" target="_ys9MENtwEeOrd8RTFF2x3w">
+                    <transition xmi:type="uml:Transition" xmi:id="_u_-nMNt0EeOrd8RTFF2x3w" clientDependency="_wnZlsOJ_EeOCPs1Cakkz2g _7X_acOJ_EeOCPs1Cakkz2g _T9CWMOKDEeOCPs1Cakkz2g _2o1uAOpyEeOfLsqWvdVN8w" name="EB2N" visibility="public" guard="_zDBl4Nt0EeOrd8RTFF2x3w" source="_-JJQoNtyEeOrd8RTFF2x3w" target="_ys9MENtwEeOrd8RTFF2x3w">
                       <ownedRule xmi:type="uml:Constraint" xmi:id="_zDBl4Nt0EeOrd8RTFF2x3w">
                         <specification xmi:type="uml:OpaqueExpression" xmi:id="_zDBl4dt0EeOrd8RTFF2x3w">
                           <language>C</language>
@@ -359,7 +417,7 @@
                         </specification>
                       </ownedRule>
                     </transition>
-                    <transition xmi:type="uml:Transition" xmi:id="_PPNtcOKJEeOCPs1Cakkz2g" clientDependency="_CPmKcOKLEeOCPs1Cakkz2g" name="CSM2SB" guard="_U4dN4OKJEeOCPs1Cakkz2g" source="_XquWoOKIEeOCPs1Cakkz2g" target="_Eu0ZkNtyEeOrd8RTFF2x3w">
+                    <transition xmi:type="uml:Transition" xmi:id="_PPNtcOKJEeOCPs1Cakkz2g" name="CSM2SB" guard="_U4dN4OKJEeOCPs1Cakkz2g" source="_XquWoOKIEeOCPs1Cakkz2g" target="_Eu0ZkNtyEeOrd8RTFF2x3w">
                       <ownedRule xmi:type="uml:Constraint" xmi:id="_U4dN4OKJEeOCPs1Cakkz2g" name="EmergencyBrakeCommand !=  1 &amp;&amp; ServiceBrakeCommand == 1">
                         <specification xmi:type="uml:OpaqueExpression" xmi:id="_U4dN4eKJEeOCPs1Cakkz2g">
                           <language>C</language>
@@ -368,7 +426,7 @@
                       </ownedRule>
                     </transition>
                     <subvertex xmi:type="uml:Pseudostate" xmi:id="_x_VRENtwEeOrd8RTFF2x3w" name="CSM_ON"/>
-                    <subvertex xmi:type="uml:State" xmi:id="_ys9MENtwEeOrd8RTFF2x3w" clientDependency="_sp1nIOKDEeOCPs1Cakkz2g _voVRMOKGEeOCPs1Cakkz2g" name="NORMAL">
+                    <subvertex xmi:type="uml:State" xmi:id="_ys9MENtwEeOrd8RTFF2x3w" clientDependency="_sp1nIOKDEeOCPs1Cakkz2g" name="NORMAL">
                       <doActivity xmi:type="uml:OpaqueBehavior" xmi:id="_04iDsOTwEeOJ3pCOWvvzwQ" name="permittedSpeed = V_mrsp;displayPermittedSpeed=true;displaySBI = false;">
                         <language>C</language>
                         <body>permittedSpeed = V_mrsp;displayPermittedSpeed=true;displaySBI = false;</body>
@@ -392,7 +450,7 @@ ServiceBrakeCommand=0;
                         <body>SpeedSupervisionStatus = OverspeedStatus;</body>
                       </entry>
                     </subvertex>
-                    <subvertex xmi:type="uml:State" xmi:id="_8GwXkNtxEeOrd8RTFF2x3w" clientDependency="_VRNJQOKCEeOCPs1Cakkz2g _t-Lj4OKDEeOCPs1Cakkz2g" name="WARNING">
+                    <subvertex xmi:type="uml:State" xmi:id="_8GwXkNtxEeOrd8RTFF2x3w" clientDependency="_t-Lj4OKDEeOCPs1Cakkz2g" name="WARNING">
                       <doActivity xmi:type="uml:OpaqueBehavior" xmi:id="_nnlyEOTwEeOJ3pCOWvvzwQ" name="permittedSpeed = V_mrsp;displayPermittedSpeed=true;displaySBI = true;">
                         <language>C</language>
                         <body>permittedSpeed = V_mrsp;
@@ -417,7 +475,7 @@ EmergencyBrakeCommand= !SBAvailable;
 ServiceBrakeCommand= SBAvailable;</body>
                       </entry>
                     </subvertex>
-                    <subvertex xmi:type="uml:State" xmi:id="_-JJQoNtyEeOrd8RTFF2x3w" clientDependency="_XREIMOKCEeOCPs1Cakkz2g _vHKlMOKDEeOCPs1Cakkz2g" name="EMER_BRAKE">
+                    <subvertex xmi:type="uml:State" xmi:id="_-JJQoNtyEeOrd8RTFF2x3w" name="EMER_BRAKE">
                       <doActivity xmi:type="uml:OpaqueBehavior" xmi:id="_8GQ1sOTwEeOJ3pCOWvvzwQ" name="permittedSpeed  =V_mrsp;displayPermittedSpeed=true;displaySBI = true;">
                         <language>C</language>
                         <body>permittedSpeed  = V_mrsp;displayPermittedSpeed=true;displaySBI = true;</body>
@@ -443,7 +501,7 @@ ServiceBrakeCommand= 0;</body>
             </region>
           </ownedBehavior>
         </nestedClassifier>
-        <nestedClassifier xmi:type="uml:Class" xmi:id="_7PbsAOotEeOd_88tSik5UQ" name="SupervisionsLimit" classifierBehavior="_R0-NIOo8EeOd_88tSik5UQ">
+        <nestedClassifier xmi:type="uml:Class" xmi:id="_7PbsAOotEeOd_88tSik5UQ" name="SupervisionLimitsCalc">
           <ownedAttribute xmi:type="uml:Port" xmi:id="_CsLfgOowEeOd_88tSik5UQ" name="LimitInterface" visibility="public" type="_u5W1QOovEeOd_88tSik5UQ" aggregation="composite">
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FuNGEOowEeOd_88tSik5UQ" value="1"/>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FuOUMOowEeOd_88tSik5UQ" value="1"/>
@@ -451,53 +509,258 @@ ServiceBrakeCommand= 0;</body>
               <value xsi:nil="true"/>
             </defaultValue>
           </ownedAttribute>
-          <ownedAttribute xmi:type="uml:Port" xmi:id="_Te0SEOo3EeOd_88tSik5UQ" name="Speedrestriction" visibility="public" type="_7PbsAOotEeOd_88tSik5UQ" aggregation="composite">
+          <ownedAttribute xmi:type="uml:Port" xmi:id="_Te0SEOo3EeOd_88tSik5UQ" name="Speedrestriction" visibility="public" type="_AcYYINm-EeO6otb2bpcjcQ" aggregation="composite">
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_T3R1YOo3EeOd_88tSik5UQ" value="1"/>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_T3TDgOo3EeOd_88tSik5UQ" value="1"/>
             <defaultValue xmi:type="uml:LiteralString" xmi:id="_T3TqkOo3EeOd_88tSik5UQ">
               <value xsi:nil="true"/>
             </defaultValue>
           </ownedAttribute>
-          <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CxQoQOo6EeOd_88tSik5UQ" clientDependency="_JEkugOo8EeOd_88tSik5UQ" name="dV_ebi" specification="_kKXXcOo5EeOd_88tSik5UQ">
-            <language>C</language>
-            <body>return  (V_mrsp &lt;= 110)*7.5 + (V_mrsp > 110 &amp;&amp; V_mrsp &lt;= 210)*(0.075*V_mrsp - 0.75) + (V_mrsp > 210)*15;</body>
-          </ownedBehavior>
-          <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_R_JHsOo6EeOd_88tSik5UQ" clientDependency="_KM2lMOo8EeOd_88tSik5UQ" name="dV_sbi" specification="_JGaMcOo6EeOd_88tSik5UQ">
-            <language>C</language>
-            <body>return (V_mrsp &lt;= 110)*5.5 + (V_mrsp > 110 &amp;&amp; V_mrsp &lt;= 210)*(0.045*V_mrsp + 0.55) + (V_mrsp > 210)*10;</body>
-          </ownedBehavior>
-          <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_dvLnQOo6EeOd_88tSik5UQ" clientDependency="_L-gJAOo8EeOd_88tSik5UQ" name="dV_warning" specification="_XgyyYOo6EeOd_88tSik5UQ">
-            <language>C</language>
-            <body>return (vmrsp &lt;= 110)*4 + (vmrsp > 110 &amp;&amp; vmrsp &lt;= 140)*(vmrsp/30 + 1/3) + (vmrsp > 140)*5;</body>
-          </ownedBehavior>
-          <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_R0-NIOo8EeOd_88tSik5UQ" name="SuperVisionLimit">
-            <region xmi:type="uml:Region" xmi:id="_S23vAOo8EeOd_88tSik5UQ" name="Region1">
-              <transition xmi:type="uml:Transition" xmi:id="_aVSBUOo8EeOd_88tSik5UQ" name="INIT_SVL" source="_VsZxsOo8EeOd_88tSik5UQ" target="_WaRkUOo8EeOd_88tSik5UQ"/>
-              <subvertex xmi:type="uml:Pseudostate" xmi:id="_VsZxsOo8EeOd_88tSik5UQ" name="Initial0"/>
-              <subvertex xmi:type="uml:State" xmi:id="_WaRkUOo8EeOd_88tSik5UQ" name="ComputeSupervision">
-                <doActivity xmi:type="uml:OpaqueBehavior" xmi:id="_U8PYsOo_EeOd_88tSik5UQ" name="ComputeEBI_SBI_WARNING">
-                  <language>C</language>
-                  <body>dV_ebi = dV_ebi(V_mrsp);
-dV_sbi = dV_sbi(V_mrsp);
-dV_warning = dV_warning(V_mrsp);</body>
-                </doActivity>
-              </subvertex>
-            </region>
-          </ownedBehavior>
-          <ownedOperation xmi:type="uml:Operation" xmi:id="_kKXXcOo5EeOd_88tSik5UQ" name="dV_ebi" method="_CxQoQOo6EeOd_88tSik5UQ">
-            <ownedParameter xmi:type="uml:Parameter" xmi:id="_6mpXQOo5EeOd_88tSik5UQ" name="vmrsp" type="_sdLewNm9EeO6otb2bpcjcQ"/>
-          </ownedOperation>
-          <ownedOperation xmi:type="uml:Operation" xmi:id="_JGaMcOo6EeOd_88tSik5UQ" name="dV_sbi" method="_R_JHsOo6EeOd_88tSik5UQ">
-            <ownedParameter xmi:type="uml:Parameter" xmi:id="_MJuMcOo6EeOd_88tSik5UQ" name="vmrsp" type="_sdLewNm9EeO6otb2bpcjcQ"/>
-          </ownedOperation>
-          <ownedOperation xmi:type="uml:Operation" xmi:id="_XgyyYOo6EeOd_88tSik5UQ" name="dV_warning" method="_dvLnQOo6EeOd_88tSik5UQ">
-            <ownedParameter xmi:type="uml:Parameter" xmi:id="_aDLPkOo6EeOd_88tSik5UQ" name="vmrsp" type="_sdLewNm9EeO6otb2bpcjcQ"/>
-          </ownedOperation>
+          <nestedClassifier xmi:type="uml:Class" xmi:id="_Capo0OprEeOfLsqWvdVN8w" clientDependency="_XzxzcOp0EeO5avDdivRdzg" name="WarningCalc" classifierBehavior="_Mzz1AOprEeOfLsqWvdVN8w">
+            <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_Mzz1AOprEeOfLsqWvdVN8w" name="WarningCalc">
+              <region xmi:type="uml:Region" xmi:id="_Nk6h0OprEeOfLsqWvdVN8w" name="Region1">
+                <transition xmi:type="uml:Transition" xmi:id="_8180sOprEeOfLsqWvdVN8w" name="INIT" source="_XSVpYOprEeOfLsqWvdVN8w" target="_Z8sW0OprEeOfLsqWvdVN8w"/>
+                <transition xmi:type="uml:Transition" xmi:id="__FPWwOprEeOfLsqWvdVN8w" name="MIN2MAX" guard="_Fue7oOpsEeOfLsqWvdVN8w" source="_Z8sW0OprEeOfLsqWvdVN8w" target="_bn6igOprEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_Fue7oOpsEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_Fue7oepsEeOfLsqWvdVN8w" name="">
+                      <language>C</language>
+                      <body>V_mrsp > 140</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_IOdlEOpsEeOfLsqWvdVN8w" name="MAX2MIN" guard="_NBE_gOpsEeOfLsqWvdVN8w" source="_bn6igOprEeOfLsqWvdVN8w" target="_Z8sW0OprEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_NBE_gOpsEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_NBE_gepsEeOfLsqWvdVN8w" name="V_mrsp &lt;= 110">
+                      <language>C</language>
+                      <body>V_mrsp &lt;= 110</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_OphkAOpsEeOfLsqWvdVN8w" name="BTW2MIN" guard="_RVwgwOpsEeOfLsqWvdVN8w" source="_ch9v8OprEeOfLsqWvdVN8w" target="_Z8sW0OprEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_RVwgwOpsEeOfLsqWvdVN8w" name="">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_RVwgwepsEeOfLsqWvdVN8w" name="V_mrsp &lt;= 110">
+                      <language>C</language>
+                      <body>V_mrsp &lt;= 110</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_VpHMUOpsEeOfLsqWvdVN8w" name="BTW2MAX" guard="_cMs1IOpsEeOfLsqWvdVN8w" source="_ch9v8OprEeOfLsqWvdVN8w" target="_bn6igOprEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_cMs1IOpsEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_cMs1IepsEeOfLsqWvdVN8w" name="V_mrsp > 140">
+                      <language>C</language>
+                      <body>V_mrsp > 140</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_edZFYOpsEeOfLsqWvdVN8w" name="MIN2BTW" guard="_jH00MOpsEeOfLsqWvdVN8w" source="_Z8sW0OprEeOfLsqWvdVN8w" target="_ch9v8OprEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_jH00MOpsEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_jH00MepsEeOfLsqWvdVN8w">
+                      <language>C</language>
+                      <body>110&lt; V_mrsp  &amp;&amp; V_mrsp &lt;= 140</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_rVTL8OpsEeOfLsqWvdVN8w" name="MAX2BTW" guard="_0ucsoOpsEeOfLsqWvdVN8w" source="_bn6igOprEeOfLsqWvdVN8w" target="_ch9v8OprEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_0ucsoOpsEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_0ucsoepsEeOfLsqWvdVN8w" name="110 &lt; V_mrsp &amp;&amp; V_mrsp &lt;= 140">
+                      <language>C</language>
+                      <body>110 &lt; V_mrsp &amp;&amp; V_mrsp &lt;= 140</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <subvertex xmi:type="uml:Pseudostate" xmi:id="_XSVpYOprEeOfLsqWvdVN8w" name="INIT_WARN_CALC"/>
+                <subvertex xmi:type="uml:State" xmi:id="_Z8sW0OprEeOfLsqWvdVN8w" name="MIN">
+                  <entry xmi:type="uml:OpaqueBehavior" xmi:id="_n1nOcOprEeOfLsqWvdVN8w" name="dV_warning = 4;">
+                    <language>C</language>
+                    <body>dV_warning = 4;</body>
+                  </entry>
+                </subvertex>
+                <subvertex xmi:type="uml:State" xmi:id="_bn6igOprEeOfLsqWvdVN8w" name="MAX">
+                  <entry xmi:type="uml:OpaqueBehavior" xmi:id="_rMWgwOprEeOfLsqWvdVN8w" name="dV_warning = 5;">
+                    <language>C</language>
+                    <body>dV_warning = 5;</body>
+                  </entry>
+                </subvertex>
+                <subvertex xmi:type="uml:State" xmi:id="_ch9v8OprEeOfLsqWvdVN8w" name="BETWEEN">
+                  <doActivity xmi:type="uml:OpaqueBehavior" xmi:id="_4DlR4OprEeOfLsqWvdVN8w" name="dV_warning = (V_mrsp/30) + (1/3);">
+                    <language>C</language>
+                    <body>dV_warning = (V_mrsp/30) + (1/3);</body>
+                  </doActivity>
+                  <entry xmi:type="uml:OpaqueBehavior" xmi:id="_wsaQAOprEeOfLsqWvdVN8w" name="dV_warning = (V_mrsp/30) + (1/3);">
+                    <language>C</language>
+                    <body>dV_warning = (V_mrsp/30) + (1/3);</body>
+                  </entry>
+                </subvertex>
+              </region>
+            </ownedBehavior>
+          </nestedClassifier>
+          <nestedClassifier xmi:type="uml:Class" xmi:id="_EjzGoOprEeOfLsqWvdVN8w" clientDependency="_rBuy4OpwEeOfLsqWvdVN8w" name="SBICalc" classifierBehavior="_FoUz0OptEeOfLsqWvdVN8w">
+            <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_FoUz0OptEeOfLsqWvdVN8w" name="SBICalc">
+              <region xmi:type="uml:Region" xmi:id="_G9qPEOptEeOfLsqWvdVN8w" name="">
+                <transition xmi:type="uml:Transition" xmi:id="_lHMOcOptEeOfLsqWvdVN8w" name="MIN2MAX" guard="_1-pTwOptEeOfLsqWvdVN8w" source="_SYqSwOptEeOfLsqWvdVN8w" target="_TgGb8OptEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_1-pTwOptEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_1-pTweptEeOfLsqWvdVN8w">
+                      <language>C</language>
+                      <body>V_mrsp > 210</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_lxqHwOptEeOfLsqWvdVN8w" name="MAX2MIN" guard="_9pWVoOptEeOfLsqWvdVN8w" source="_TgGb8OptEeOfLsqWvdVN8w" target="_SYqSwOptEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_9pWVoOptEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_9pWVoeptEeOfLsqWvdVN8w">
+                      <language>C</language>
+                      <body>V_mrsp &lt;= 110</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_mTaJ8OptEeOfLsqWvdVN8w" name="INIT" source="_QnnL4OptEeOfLsqWvdVN8w" target="_SYqSwOptEeOfLsqWvdVN8w"/>
+                <transition xmi:type="uml:Transition" xmi:id="_qaKj8OptEeOfLsqWvdVN8w" name="MAX2BTW" guard="_MXoH8OpuEeOfLsqWvdVN8w" source="_TgGb8OptEeOfLsqWvdVN8w" target="_UeBcwOptEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_MXoH8OpuEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_MXoH8epuEeOfLsqWvdVN8w">
+                      <language>C</language>
+                      <body>110&lt; V_mrsp  &amp;&amp; V_mrsp &lt;= 210</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_s_NTkOptEeOfLsqWvdVN8w" name="MIN2BTW" guard="_GmnyoOpuEeOfLsqWvdVN8w" source="_SYqSwOptEeOfLsqWvdVN8w" target="_UeBcwOptEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_GmnyoOpuEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_GmnyoepuEeOfLsqWvdVN8w">
+                      <language>C</language>
+                      <body>110&lt; V_mrsp  &amp;&amp; V_mrsp &lt;= 210</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_wneawOptEeOfLsqWvdVN8w" name="BTW2MIN" guard="_CTwPQOpuEeOfLsqWvdVN8w" source="_UeBcwOptEeOfLsqWvdVN8w" target="_SYqSwOptEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_CTwPQOpuEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_CTwPQepuEeOfLsqWvdVN8w">
+                      <language>C</language>
+                      <body>V_mrsp &lt;= 110</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_xV5nAOptEeOfLsqWvdVN8w" name="BTW2MAX" guard="_5w3BIOptEeOfLsqWvdVN8w" source="_UeBcwOptEeOfLsqWvdVN8w" target="_TgGb8OptEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_5w3BIOptEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_5w3BIeptEeOfLsqWvdVN8w">
+                      <language>C</language>
+                      <body>V_mrsp > 210</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <subvertex xmi:type="uml:Pseudostate" xmi:id="_QnnL4OptEeOfLsqWvdVN8w" name="INIT_SBI"/>
+                <subvertex xmi:type="uml:State" xmi:id="_SYqSwOptEeOfLsqWvdVN8w" name="MIN">
+                  <entry xmi:type="uml:OpaqueBehavior" xmi:id="_aFI2QOptEeOfLsqWvdVN8w" name="dV_sbi = 5.5;">
+                    <language>C</language>
+                    <body>dV_sbi = 5.5;</body>
+                  </entry>
+                </subvertex>
+                <subvertex xmi:type="uml:State" xmi:id="_TgGb8OptEeOfLsqWvdVN8w" name="MAX">
+                  <entry xmi:type="uml:OpaqueBehavior" xmi:id="_d3REEOptEeOfLsqWvdVN8w" name="dV_sbi = 10;">
+                    <language>C</language>
+                    <body>dV_sbi = 10;</body>
+                  </entry>
+                </subvertex>
+                <subvertex xmi:type="uml:State" xmi:id="_UeBcwOptEeOfLsqWvdVN8w" name="BETWEEN">
+                  <doActivity xmi:type="uml:OpaqueBehavior" xmi:id="_jE5mkOptEeOfLsqWvdVN8w" name="dV_sbi = 0.045*V_mrsp + 0.55;">
+                    <language>C</language>
+                    <body>dV_sbi = 0.045*V_mrsp + 0.55;</body>
+                  </doActivity>
+                  <entry xmi:type="uml:OpaqueBehavior" xmi:id="_hrzssOptEeOfLsqWvdVN8w" name="dV_sbi = 0.045*V_mrsp + 0.55;">
+                    <language>C</language>
+                    <body>dV_sbi = 0.045*V_mrsp + 0.55;</body>
+                  </entry>
+                </subvertex>
+              </region>
+            </ownedBehavior>
+          </nestedClassifier>
+          <nestedClassifier xmi:type="uml:Class" xmi:id="_GEnZIOprEeOfLsqWvdVN8w" clientDependency="_qGaaIOpwEeOfLsqWvdVN8w" name="EBICalc" classifierBehavior="_XM0I0OpuEeOfLsqWvdVN8w">
+            <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_XM0I0OpuEeOfLsqWvdVN8w" name="EBICalc">
+              <region xmi:type="uml:Region" xmi:id="_XwYv8OpuEeOfLsqWvdVN8w" name="Region1">
+                <transition xmi:type="uml:Transition" xmi:id="_xaBckOpuEeOfLsqWvdVN8w" name="MIN2MAX" guard="_F-WcQOpvEeOfLsqWvdVN8w" source="_b31tgOpuEeOfLsqWvdVN8w" target="_culIQOpuEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_F-WcQOpvEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_F-WcQepvEeOfLsqWvdVN8w">
+                      <language>C</language>
+                      <body>V_mrsp > 210</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_yACTsOpuEeOfLsqWvdVN8w" name="MAX2MIN" guard="_PLwnAOpvEeOfLsqWvdVN8w" source="_culIQOpuEeOfLsqWvdVN8w" target="_b31tgOpuEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_PLwnAOpvEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_PLwnAepvEeOfLsqWvdVN8w">
+                      <language>C</language>
+                      <body>V_mrsp &lt;= 110</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_y0XToOpuEeOfLsqWvdVN8w" name="INIT" source="_aOLBAOpuEeOfLsqWvdVN8w" target="_b31tgOpuEeOfLsqWvdVN8w"/>
+                <transition xmi:type="uml:Transition" xmi:id="_0hvbcOpuEeOfLsqWvdVN8w" name="BTW2MAX" guard="_KQOhIOpvEeOfLsqWvdVN8w" source="_dnBzMOpuEeOfLsqWvdVN8w" target="_culIQOpuEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_KQOhIOpvEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_KQOhIepvEeOfLsqWvdVN8w">
+                      <language>C</language>
+                      <body>V_mrsp > 210</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_1dIssOpuEeOfLsqWvdVN8w" name="MAX2BTW" guard="_V6g-AOpvEeOfLsqWvdVN8w" source="_culIQOpuEeOfLsqWvdVN8w" target="_dnBzMOpuEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_V6g-AOpvEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_V6g-AepvEeOfLsqWvdVN8w">
+                      <language>C</language>
+                      <body>110 &lt; V_mrsp &amp;&amp; V_mrsp &lt;= 210</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_2DZbcOpuEeOfLsqWvdVN8w" name="BTW2MIN" guard="_SMWDIOpvEeOfLsqWvdVN8w" source="_dnBzMOpuEeOfLsqWvdVN8w" target="_b31tgOpuEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_SMWDIOpvEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_SMWDIepvEeOfLsqWvdVN8w">
+                      <language>C</language>
+                      <body>V_mrsp &lt;= 110</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <transition xmi:type="uml:Transition" xmi:id="_2uBFwOpuEeOfLsqWvdVN8w" name="MIN2BTW" guard="_Z2g5gOpvEeOfLsqWvdVN8w" source="_b31tgOpuEeOfLsqWvdVN8w" target="_dnBzMOpuEeOfLsqWvdVN8w">
+                  <ownedRule xmi:type="uml:Constraint" xmi:id="_Z2g5gOpvEeOfLsqWvdVN8w">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="_Z2g5gepvEeOfLsqWvdVN8w">
+                      <language>C</language>
+                      <body>110 &lt; V_mrsp &amp;&amp; V_mrsp &lt;= 210</body>
+                    </specification>
+                  </ownedRule>
+                </transition>
+                <subvertex xmi:type="uml:Pseudostate" xmi:id="_aOLBAOpuEeOfLsqWvdVN8w" name="INIT_EBI"/>
+                <subvertex xmi:type="uml:State" xmi:id="_b31tgOpuEeOfLsqWvdVN8w" name="MIN">
+                  <entry xmi:type="uml:OpaqueBehavior" xmi:id="_huqW8OpuEeOfLsqWvdVN8w" name="dV_ebi = 7.5;">
+                    <language>C</language>
+                    <body>dV_ebi = 7.5;</body>
+                  </entry>
+                </subvertex>
+                <subvertex xmi:type="uml:State" xmi:id="_culIQOpuEeOfLsqWvdVN8w" name="MAX">
+                  <entry xmi:type="uml:OpaqueBehavior" xmi:id="_lbpmEOpuEeOfLsqWvdVN8w" name="dV_ebi = 15;">
+                    <language>C</language>
+                    <body>dV_ebi = 15;</body>
+                  </entry>
+                </subvertex>
+                <subvertex xmi:type="uml:State" xmi:id="_dnBzMOpuEeOfLsqWvdVN8w" name="BETWEEN">
+                  <doActivity xmi:type="uml:FunctionBehavior" xmi:id="_rGY7UOpuEeOfLsqWvdVN8w" name="dV_ebi = 0.075*V_mrsp - 0.75;">
+                    <language>C</language>
+                    <body>dV_ebi = 0.075*V_mrsp - 0.75;</body>
+                  </doActivity>
+                  <entry xmi:type="uml:OpaqueBehavior" xmi:id="_pzSUsOpuEeOfLsqWvdVN8w" name="dV_ebi = 0.075*V_mrsp - 0.75;">
+                    <language>C</language>
+                    <body>dV_ebi = 0.075*V_mrsp - 0.75;</body>
+                  </entry>
+                </subvertex>
+              </region>
+            </ownedBehavior>
+          </nestedClassifier>
         </nestedClassifier>
         <nestedClassifier xmi:type="uml:Class" xmi:id="_u5W1QOovEeOd_88tSik5UQ" name="LimitInterface">
-          <ownedAttribute xmi:type="uml:Property" xmi:id="_2Cy9IOovEeOd_88tSik5UQ" name="dV_ebi" type="_sdLewNm9EeO6otb2bpcjcQ"/>
-          <ownedAttribute xmi:type="uml:Property" xmi:id="_67JMIOovEeOd_88tSik5UQ" name="dV_sbi" type="_sdLewNm9EeO6otb2bpcjcQ"/>
-          <ownedAttribute xmi:type="uml:Property" xmi:id="_9poysOovEeOd_88tSik5UQ" name="dV_warning" type="_sdLewNm9EeO6otb2bpcjcQ"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_2Cy9IOovEeOd_88tSik5UQ" name="dV_ebi" type="_sdLewNm9EeO6otb2bpcjcQ">
+            <defaultValue xmi:type="uml:LiteralReal" xmi:id="_kIIFgOpqEeOfLsqWvdVN8w" value="7.5"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_67JMIOovEeOd_88tSik5UQ" name="dV_sbi" type="_sdLewNm9EeO6otb2bpcjcQ">
+            <defaultValue xmi:type="uml:LiteralReal" xmi:id="_nCZeQOpqEeOfLsqWvdVN8w" value="5.5"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_9poysOovEeOd_88tSik5UQ" name="dV_warning" type="_sdLewNm9EeO6otb2bpcjcQ">
+            <defaultValue xmi:type="uml:LiteralReal" xmi:id="_ow944OpqEeOfLsqWvdVN8w" value="4.0"/>
+          </ownedAttribute>
         </nestedClassifier>
       </packagedElement>
       <packagedElement xmi:type="uml:Class" xmi:id="_ouaowN0EEeO9cOPKwEberw" name="TestEnviromment">
@@ -562,56 +825,34 @@ dV_warning = dV_warning(V_mrsp);</body>
         <ownedAttribute xmi:type="uml:Property" xmi:id="_SFSIgNm-EeO6otb2bpcjcQ" name="SBAvailable" type="_rqW6sNm9EeO6otb2bpcjcQ"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_0H6FINuGEeOrd8RTFF2x3w" name="TracksideInputs">
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_X-EsoNuGEeOrd8RTFF2x3w" name="RevocationEmergencyBrake" type="_rqW6sNm9EeO6otb2bpcjcQ">
-          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_pfbDgNuGEeOrd8RTFF2x3w"/>
-        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_X-EsoNuGEeOrd8RTFF2x3w" name="RevocationEmergencyBrake" type="_rqW6sNm9EeO6otb2bpcjcQ"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_F1GbYNnhEeOrd8RTFF2x3w" name="ControlSUTCommand">
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_Z3wRYNnhEeOrd8RTFF2x3w" name="SUTCommand" type="_sXTgQNm9EeO6otb2bpcjcQ">
-          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_iKSvUNnhEeOrd8RTFF2x3w" type="_HNk3wNnBEeODMeWltefrQg" instance="_YqT0YNnBEeODMeWltefrQg"/>
-        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_Z3wRYNnhEeOrd8RTFF2x3w" name="SUTCommand" type="_sXTgQNm9EeO6otb2bpcjcQ"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_n5Km8OZ0EeO67cBiM1-0Hg" name="AbstractPosition">
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_vvPyYOZ0EeO67cBiM1-0Hg" name="dLocation" type="_zF_hMOZzEeO67cBiM1-0Hg">
-          <defaultValue xmi:type="uml:InstanceValue" xmi:id="__sWIQOZ0EeO67cBiM1-0Hg" type="_zF_hMOZzEeO67cBiM1-0Hg" instance="_2GvVYOZzEeO67cBiM1-0Hg"/>
-        </ownedAttribute>
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_xEEa0OZ1EeO67cBiM1-0Hg" name="isTargetUpdated" type="_rqW6sNm9EeO6otb2bpcjcQ">
-          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_2fKKgOZ1EeO67cBiM1-0Hg"/>
-        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_vvPyYOZ0EeO67cBiM1-0Hg" name="dLocation" type="_zF_hMOZzEeO67cBiM1-0Hg"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_xEEa0OZ1EeO67cBiM1-0Hg" name="isTargetUpdated" type="_rqW6sNm9EeO6otb2bpcjcQ"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_cHJPANm-EeO6otb2bpcjcQ" name="TrainInterfaceInput">
         <ownedAttribute xmi:type="uml:Property" xmi:id="_r54vANm-EeO6otb2bpcjcQ" name="EmergencyBrakeCommand" type="_sXTgQNm9EeO6otb2bpcjcQ">
           <ownedComment xmi:type="uml:Comment" xmi:id="_Keh-QNnZEeOrd8RTFF2x3w" annotatedElement="_r54vANm-EeO6otb2bpcjcQ">
             <body>0 -Information not available; 1- Apply emergency brake; 2 - Release emergency brake; 3 - fail state</body>
           </ownedComment>
-          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_SFLmkNnZEeOrd8RTFF2x3w"/>
         </ownedAttribute>
         <ownedAttribute xmi:type="uml:Property" xmi:id="_egOyANnZEeOrd8RTFF2x3w" name="ServiceBrakeCommand" type="_sXTgQNm9EeO6otb2bpcjcQ">
           <ownedComment xmi:type="uml:Comment" xmi:id="_h2NPUNnZEeOrd8RTFF2x3w" annotatedElement="_egOyANnZEeOrd8RTFF2x3w">
             <body>0 - Indormation not available; 1- Apply service brake; 2 - Release service brake; 3 - Fail state</body>
           </ownedComment>
-          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_jR0RsNnZEeOrd8RTFF2x3w"/>
         </ownedAttribute>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_dAvwgNm-EeO6otb2bpcjcQ" name="DMIInput">
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_AA4zUNncEeOrd8RTFF2x3w" name="SpeedSupervisionStatus" type="_sXTgQNm9EeO6otb2bpcjcQ">
-          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_QxLHYNnhEeOrd8RTFF2x3w" type="_FUxu0NncEeOrd8RTFF2x3w" instance="_GgTt0NncEeOrd8RTFF2x3w"/>
-        </ownedAttribute>
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_Y8yv4NnfEeOrd8RTFF2x3w" name="permittedSpeed" type="_sdLewNm9EeO6otb2bpcjcQ">
-          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_dC30cNnfEeOrd8RTFF2x3w"/>
-        </ownedAttribute>
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_fShi4NnfEeOrd8RTFF2x3w" name="targetSpeed" type="_sdLewNm9EeO6otb2bpcjcQ">
-          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_iOjPINnfEeOrd8RTFF2x3w"/>
-        </ownedAttribute>
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_i1jn8NnjEeOrd8RTFF2x3w" name="currentSpeed" type="_sdLewNm9EeO6otb2bpcjcQ">
-          <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_ow0FcNnjEeOrd8RTFF2x3w"/>
-        </ownedAttribute>
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_yqVVgOTqEeOQrOtmX3weFA" name="displayPermittedSpeed" type="_rqW6sNm9EeO6otb2bpcjcQ">
-          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_4UNIEOTqEeOQrOtmX3weFA"/>
-        </ownedAttribute>
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_5l6AgOTqEeOQrOtmX3weFA" name="displaySBI" type="_rqW6sNm9EeO6otb2bpcjcQ">
-          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_8eXbYOTqEeOQrOtmX3weFA"/>
-        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_AA4zUNncEeOrd8RTFF2x3w" name="SpeedSupervisionStatus" type="_sXTgQNm9EeO6otb2bpcjcQ"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_Y8yv4NnfEeOrd8RTFF2x3w" name="permittedSpeed" type="_sdLewNm9EeO6otb2bpcjcQ"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fShi4NnfEeOrd8RTFF2x3w" name="targetSpeed" type="_sdLewNm9EeO6otb2bpcjcQ"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_i1jn8NnjEeOrd8RTFF2x3w" name="currentSpeed" type="_sdLewNm9EeO6otb2bpcjcQ"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_yqVVgOTqEeOQrOtmX3weFA" name="displayPermittedSpeed" type="_rqW6sNm9EeO6otb2bpcjcQ"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_5l6AgOTqEeOQrOtmX3weFA" name="displaySBI" type="_rqW6sNm9EeO6otb2bpcjcQ"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Association" xmi:id="_z0rh4NnrEeOrd8RTFF2x3w" name="Association1" memberEnd="_z0qTwNnrEeOrd8RTFF2x3w _z0rh49nrEeOrd8RTFF2x3w">
         <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_z0rh4dnrEeOrd8RTFF2x3w" source="org.eclipse.papyrus">
@@ -638,8 +879,6 @@ dV_warning = dV_warning(V_mrsp);</body>
         <packagedElement xmi:type="uml:DataType" xmi:id="_si7hcNm9EeO6otb2bpcjcQ" name="double"/>
         <packagedElement xmi:type="uml:DataType" xmi:id="_skXE0Nm9EeO6otb2bpcjcQ" name="void"/>
       </packagedElement>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="__tOcsOJ8EeOCPs1Cakkz2g" name="" client="_rao4MNt0EeOrd8RTFF2x3w" supplier="_tc7egOJjEeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_AW32oOJ9EeOCPs1Cakkz2g" name="" client="_u_-nMNt0EeOrd8RTFF2x3w" supplier="_tc7egOJjEeOCPs1Cakkz2g"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_1UsQsOJ-EeOCPs1Cakkz2g" name="" client="_0YL2UN0GEeO9cOPKwEberw" supplier="_0ms9kOJjEeOCPs1Cakkz2g"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_3QMUEOJ-EeOCPs1Cakkz2g" name="" client="_Eu0ZkNtyEeOrd8RTFF2x3w" supplier="_0ms9kOJjEeOCPs1Cakkz2g"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_34EMYOJ-EeOCPs1Cakkz2g" name="" client="_0nqBAOJ9EeOCPs1Cakkz2g" supplier="_0ms9kOJjEeOCPs1Cakkz2g"/>
@@ -648,50 +887,24 @@ dV_warning = dV_warning(V_mrsp);</body>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_xnIkYOJ_EeOCPs1Cakkz2g" name="" client="_a03GcOJ_EeOCPs1Cakkz2g" supplier="_7D5DcOJjEeOCPs1Cakkz2g"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_6Vn-gOJ_EeOCPs1Cakkz2g" name="" client="_rao4MNt0EeOrd8RTFF2x3w" supplier="_0x1OgOJuEeOCPs1Cakkz2g"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_7X_acOJ_EeOCPs1Cakkz2g" name="" client="_u_-nMNt0EeOrd8RTFF2x3w" supplier="_0x1OgOJuEeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_Dsbq8OKCEeOCPs1Cakkz2g" name="" client="_b64icNtwEeOrd8RTFF2x3w" supplier="_R7gogOJxEeOCPs1Cakkz2g"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_MILvQOKCEeOCPs1Cakkz2g" name="" client="_vFs8ENtxEeOrd8RTFF2x3w" supplier="_XH6b8OJxEeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_VRNJQOKCEeOCPs1Cakkz2g" name="" client="_8GwXkNtxEeOrd8RTFF2x3w" supplier="_XH6b8OJxEeOCPs1Cakkz2g"/>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_Dsbq8OKCEeOCPs1Cakkz2g" name="" client="_b64icNtwEeOrd8RTFF2x3w" supplier="_R7gogOJxEeOCPs1Cakkz2g"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_W4YicOKCEeOCPs1Cakkz2g" name="" client="_Eu0ZkNtyEeOrd8RTFF2x3w" supplier="_XH6b8OJxEeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_XREIMOKCEeOCPs1Cakkz2g" name="" client="_-JJQoNtyEeOrd8RTFF2x3w" supplier="_XH6b8OJxEeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_CxvH0OKDEeOCPs1Cakkz2g" name="" client="_u_-nMNt0EeOrd8RTFF2x3w" supplier="_d22jsOJyEeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_PkiE4OKDEeOCPs1Cakkz2g" name="" client="_8j1DMNtzEeOrd8RTFF2x3w" supplier="_hMPyMOJyEeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_Q5MKsOKDEeOCPs1Cakkz2g" name="" client="_THJfINt0EeOrd8RTFF2x3w" supplier="_hMPyMOJyEeOCPs1Cakkz2g"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_T9CWMOKDEeOCPs1Cakkz2g" name="" client="_u_-nMNt0EeOrd8RTFF2x3w" supplier="_hMPyMOJyEeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_XG0KkOKDEeOCPs1Cakkz2g" name="" client="_rao4MNt0EeOrd8RTFF2x3w" supplier="_hMPyMOJyEeOCPs1Cakkz2g"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_sp1nIOKDEeOCPs1Cakkz2g" name="" client="_ys9MENtwEeOrd8RTFF2x3w" supplier="_P5UcYOJzEeOCPs1Cakkz2g"/>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_XG0KkOKDEeOCPs1Cakkz2g" name="" client="_rao4MNt0EeOrd8RTFF2x3w" supplier="_hMPyMOJyEeOCPs1Cakkz2g"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_tZErsOKDEeOCPs1Cakkz2g" name="" client="_vFs8ENtxEeOrd8RTFF2x3w" supplier="_g6eQQOJzEeOCPs1Cakkz2g"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_t-Lj4OKDEeOCPs1Cakkz2g" name="" client="_8GwXkNtxEeOrd8RTFF2x3w" supplier="_RXangOJyEeOCPs1Cakkz2g"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_uiOsIOKDEeOCPs1Cakkz2g" name="" client="_Eu0ZkNtyEeOrd8RTFF2x3w" supplier="_VMhQ0OJyEeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_vHKlMOKDEeOCPs1Cakkz2g" name="" client="_-JJQoNtyEeOrd8RTFF2x3w" supplier="_Y3pewOJyEeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_AthX4OKEEeOCPs1Cakkz2g" name="" client="_8j1DMNtzEeOrd8RTFF2x3w" supplier="_PDIwYOJ1EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_BltkIOKEEeOCPs1Cakkz2g" name="" client="_THJfINt0EeOrd8RTFF2x3w" supplier="_VDTjEOJ1EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_CUD34OKEEeOCPs1Cakkz2g" name="" client="_rao4MNt0EeOrd8RTFF2x3w" supplier="_dCF-kOJ1EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_C17O0OKEEeOCPs1Cakkz2g" name="" client="_u_-nMNt0EeOrd8RTFF2x3w" supplier="_dCF-kOJ1EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_HgLXcOKEEeOCPs1Cakkz2g" name="" client="_UZbb0NtzEeOrd8RTFF2x3w" supplier="_XTzJkOJ2EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_YNfCQOKEEeOCPs1Cakkz2g" name="" client="_MzPzkOKEEeOCPs1Cakkz2g" supplier="_wbwlIOJ5EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_cWgGEOKEEeOCPs1Cakkz2g" name="" client="_j9zIoNtzEeOrd8RTFF2x3w" supplier="_2Z5-kOJ5EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_FSlpEOKFEeOCPs1Cakkz2g" name="" client="_z3j8oOKEEeOCPs1Cakkz2g" supplier="_mapQEOJ6EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_GOZKAOKFEeOCPs1Cakkz2g" name="" client="_h9sYEOKEEeOCPs1Cakkz2g" supplier="_mapQEOJ6EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_eSrCYOKFEeOCPs1Cakkz2g" name="" client="_Kp6TEOKFEeOCPs1Cakkz2g" supplier="_qypyIOJ6EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_fIugoOKFEeOCPs1Cakkz2g" name="" client="_QzaA4OKFEeOCPs1Cakkz2g" supplier="_qypyIOJ6EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_5QesoOKFEeOCPs1Cakkz2g" name="" client="_jZUMEOKFEeOCPs1Cakkz2g" supplier="_u672IOJ6EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_59hY0OKFEeOCPs1Cakkz2g" name="" client="_ytLHINtzEeOrd8RTFF2x3w" supplier="_u672IOJ6EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_7ssQYOKFEeOCPs1Cakkz2g" name="" client="_rao4MNt0EeOrd8RTFF2x3w" supplier="_u672IOJ6EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_voVRMOKGEeOCPs1Cakkz2g" name="" client="_ys9MENtwEeOrd8RTFF2x3w" supplier="_fcKlkOJ7EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_xVpHkOKGEeOCPs1Cakkz2g" name="" client="_DHqNIOKGEeOCPs1Cakkz2g" supplier="_fcKlkOJ7EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_yVJcwOKGEeOCPs1Cakkz2g" name="" client="_cLdo0OKGEeOCPs1Cakkz2g" supplier="_rCSUIOJ7EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_zF6yYOKGEeOCPs1Cakkz2g" name="" client="_DHqNIOKGEeOCPs1Cakkz2g" supplier="_rCSUIOJ7EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_z_llUOKGEeOCPs1Cakkz2g" name="" client="_cLdo0OKGEeOCPs1Cakkz2g" supplier="_fcKlkOJ7EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_23u3IOKGEeOCPs1Cakkz2g" name="" client="_kkPRoOKGEeOCPs1Cakkz2g" supplier="_rCSUIOJ7EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_5xn1YOKGEeOCPs1Cakkz2g" name="" client="_kkPRoOKGEeOCPs1Cakkz2g" supplier="_fcKlkOJ7EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_AD1aUOKHEeOCPs1Cakkz2g" name="" client="_V0QPIOKGEeOCPs1Cakkz2g" supplier="_fcKlkOJ7EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_No4TsOKHEeOCPs1Cakkz2g" name="" client="_V0QPIOKGEeOCPs1Cakkz2g" supplier="_rCSUIOJ7EeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_CPmKcOKLEeOCPs1Cakkz2g" name="" client="_PPNtcOKJEeOCPs1Cakkz2g" supplier="__s2WUOKJEeOCPs1Cakkz2g"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_qpav4OTmEeOQrOtmX3weFA" name="" client="_e7MTkOKIEeOCPs1Cakkz2g" supplier="__s2WUOKJEeOCPs1Cakkz2g"/>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_qGaaIOpwEeOfLsqWvdVN8w" name="" client="_GEnZIOprEeOfLsqWvdVN8w" supplier="_w-iYEOo6EeOd_88tSik5UQ"/>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_rBuy4OpwEeOfLsqWvdVN8w" name="" client="_EjzGoOprEeOfLsqWvdVN8w" supplier="_LM14AOo7EeOd_88tSik5UQ"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_q30Q4OTpEeOQrOtmX3weFA" name="" client="_plneoOToEeOQrOtmX3weFA" supplier="_FzzLoOTpEeOQrOtmX3weFA"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_JEkugOo8EeOd_88tSik5UQ" name="" client="_CxQoQOo6EeOd_88tSik5UQ" supplier="_w-iYEOo6EeOd_88tSik5UQ"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_KM2lMOo8EeOd_88tSik5UQ" name="" client="_R_JHsOo6EeOd_88tSik5UQ" supplier="_LM14AOo7EeOd_88tSik5UQ"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_L-gJAOo8EeOd_88tSik5UQ" name="" client="_dvLnQOo6EeOd_88tSik5UQ" supplier="_qfyWgOo7EeOd_88tSik5UQ"/>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_qpav4OTmEeOQrOtmX3weFA" name="" client="_e7MTkOKIEeOCPs1Cakkz2g" supplier="__s2WUOKJEeOCPs1Cakkz2g"/>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_z_llUOKGEeOCPs1Cakkz2g" name="" client="_cLdo0OKGEeOCPs1Cakkz2g" supplier="_fcKlkOJ7EeOCPs1Cakkz2g"/>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_xVpHkOKGEeOCPs1Cakkz2g" name="" client="_DHqNIOKGEeOCPs1Cakkz2g" supplier="_fcKlkOJ7EeOCPs1Cakkz2g"/>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_2CRdQOpyEeOfLsqWvdVN8w" name="" client="_rao4MNt0EeOrd8RTFF2x3w" supplier="_tc7egOJjEeOCPs1Cakkz2g"/>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_2o1uAOpyEeOfLsqWvdVN8w" name="" client="_u_-nMNt0EeOrd8RTFF2x3w" supplier="_tc7egOJjEeOCPs1Cakkz2g"/>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_XzxzcOp0EeO5avDdivRdzg" name="" client="_Capo0OprEeOfLsqWvdVN8w" supplier="_qfyWgOo7EeOd_88tSik5UQ"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_FSaiYOJjEeOCPs1Cakkz2g" name="requirements">
       <packagedElement xmi:type="uml:Class" xmi:id="_FzzLoOTpEeOQrOtmX3weFA" name="REQ-3.13.9.2.2"/>
@@ -885,8 +1098,6 @@ dV_warning = dV_warning(V_mrsp);</body>
   <Requirements:Requirement xmi:id="_fcTvgOJ7EeOCPs1Cakkz2g" text="When the speed and distance monitoring function becomes active and the ceiling speed monitoring is the first one entered, the triggering condition t1 defined in Table 5 shall be checked in order to determine whether the Normal status applies. If it is notthe case, the on-board shall immediately set the supervision status to the relevantvalue, applying a transition from the Normal status according to Table 7." id="3.13.10.3.5" base_Class="_fcKlkOJ7EeOCPs1Cakkz2g"/>
   <Requirements:Requirement xmi:id="_rCbeEOJ7EeOCPs1Cakkz2g" text="The Indication status is not used in ceiling speed monitoring. However, in case the ceiling speed monitoring is entered and the supervision status was previously set to Indication, the on-board equipment shall immediately execute one of the transitions from the Indication status, as described in Table 7." id="3.13.10.3.6" base_Class="_rCSUIOJ7EeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_z3PtMOJ8EeOCPs1Cakkz2g" base_Abstraction="_z25H4OJ8EeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="__tY0wOJ8EeOCPs1Cakkz2g" base_Abstraction="__tOcsOJ8EeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_AXAZgOJ9EeOCPs1Cakkz2g" base_Abstraction="_AW32oOJ9EeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_1U1aoOJ-EeOCPs1Cakkz2g" base_Abstraction="_1UsQsOJ-EeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_3QVeAOJ-EeOCPs1Cakkz2g" base_Abstraction="_3QMUEOJ-EeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_34MIMOJ-EeOCPs1Cakkz2g" base_Abstraction="_34EMYOJ-EeOCPs1Cakkz2g"/>
@@ -897,44 +1108,44 @@ dV_warning = dV_warning(V_mrsp);</body>
   <Requirements:Satisfy xmi:id="_7YGvMOJ_EeOCPs1Cakkz2g" base_Abstraction="_7X_acOJ_EeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_DsjmwOKCEeOCPs1Cakkz2g" base_Abstraction="_Dsbq8OKCEeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_MITrEOKCEeOCPs1Cakkz2g" base_Abstraction="_MILvQOKCEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_VRVFEOKCEeOCPs1Cakkz2g" base_Abstraction="_VRNJQOKCEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_VRVFEOKCEeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_W4geQOKCEeOCPs1Cakkz2g" base_Abstraction="_W4YicOKCEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_XRMEAOKCEeOCPs1Cakkz2g" base_Abstraction="_XREIMOKCEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_Cx6G8OKDEeOCPs1Cakkz2g" base_Abstraction="_CxvH0OKDEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_PkrO0OKDEeOCPs1Cakkz2g" base_Abstraction="_PkiE4OKDEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_Q5V7sOKDEeOCPs1Cakkz2g" base_Abstraction="_Q5MKsOKDEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_XRMEAOKCEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_Cx6G8OKDEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_PkrO0OKDEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_Q5V7sOKDEeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_T9LgIOKDEeOCPs1Cakkz2g" base_Abstraction="_T9CWMOKDEeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_XG9UgOKDEeOCPs1Cakkz2g" base_Abstraction="_XG0KkOKDEeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_sp-KAOKDEeOCPs1Cakkz2g" base_Abstraction="_sp1nIOKDEeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_tZMAcOKDEeOCPs1Cakkz2g" base_Abstraction="_tZErsOKDEeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_t-UGwOKDEeOCPs1Cakkz2g" base_Abstraction="_t-Lj4OKDEeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_uiWn8OKDEeOCPs1Cakkz2g" base_Abstraction="_uiOsIOKDEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_vHR58OKDEeOCPs1Cakkz2g" base_Abstraction="_vHKlMOKDEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_AtrI4OKEEeOCPs1Cakkz2g" base_Abstraction="_AthX4OKEEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_Bl044OKEEeOCPs1Cakkz2g" base_Abstraction="_BltkIOKEEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_CUMawOKEEeOCPs1Cakkz2g" base_Abstraction="_CUD34OKEEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_C2CjkOKEEeOCPs1Cakkz2g" base_Abstraction="_C17O0OKEEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_HgT6UOKEEeOCPs1Cakkz2g" base_Abstraction="_HgLXcOKEEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_YNm-EOKEEeOCPs1Cakkz2g" base_Abstraction="_YNfCQOKEEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_cWoo8OKEEeOCPs1Cakkz2g" base_Abstraction="_cWgGEOKEEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_FStk4OKFEeOCPs1Cakkz2g" base_Abstraction="_FSlpEOKFEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_GOgewOKFEeOCPs1Cakkz2g" base_Abstraction="_GOZKAOKFEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_eSyXIOKFEeOCPs1Cakkz2g" base_Abstraction="_eSrCYOKFEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_fI11YOKFEeOCPs1Cakkz2g" base_Abstraction="_fIugoOKFEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_5QmocOKFEeOCPs1Cakkz2g" base_Abstraction="_5QesoOKFEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_59qiwOKFEeOCPs1Cakkz2g" base_Abstraction="_59hY0OKFEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_7s1aUOKFEeOCPs1Cakkz2g" base_Abstraction="_7ssQYOKFEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_vod0EOKGEeOCPs1Cakkz2g" base_Abstraction="_voVRMOKGEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_vHR58OKDEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_AtrI4OKEEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_Bl044OKEEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_CUMawOKEEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_C2CjkOKEEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_HgT6UOKEEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_YNm-EOKEEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_cWoo8OKEEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_FStk4OKFEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_GOgewOKFEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_eSyXIOKFEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_fI11YOKFEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_5QmocOKFEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_59qiwOKFEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_7s1aUOKFEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_vod0EOKGEeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_xVxDYOKGEeOCPs1Cakkz2g" base_Abstraction="_xVpHkOKGEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_yVRYkOKGEeOCPs1Cakkz2g" base_Abstraction="_yVJcwOKGEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_zGCuMOKGEeOCPs1Cakkz2g" base_Abstraction="_zF6yYOKGEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_yVRYkOKGEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_zGCuMOKGEeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_z_thIOKGEeOCPs1Cakkz2g" base_Abstraction="_z_llUOKGEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_232y8OKGEeOCPs1Cakkz2g" base_Abstraction="_23u3IOKGEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_5xvxMOKGEeOCPs1Cakkz2g" base_Abstraction="_5xn1YOKGEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_AD8vEOKHEeOCPs1Cakkz2g" base_Abstraction="_AD1aUOKHEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_NpAPgOKHEeOCPs1Cakkz2g" base_Abstraction="_No4TsOKHEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_232y8OKGEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_5xvxMOKGEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_AD8vEOKHEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_NpAPgOKHEeOCPs1Cakkz2g"/>
   <Requirements:Requirement xmi:id="__s29YOKJEeOCPs1Cakkz2g" text="If a transition of speed and distance monitoring occurs while a brake command is already applied, the concerned command shall be maintained until the revocation condition, if specified for the newly entered speed and distance monitoring, is fulfilled" id="3.13.10.6.2" base_Class="__s2WUOKJEeOCPs1Cakkz2g"/>
-  <Requirements:Satisfy xmi:id="_CPuGQOKLEeOCPs1Cakkz2g" base_Abstraction="_CPmKcOKLEeOCPs1Cakkz2g"/>
+  <Requirements:Satisfy xmi:id="_CPuGQOKLEeOCPs1Cakkz2g"/>
   <Requirements:Satisfy xmi:id="_qpu48OTmEeOQrOtmX3weFA" base_Abstraction="_qpav4OTmEeOQrOtmX3weFA"/>
   <Requirements:Requirement xmi:id="_Fz0ZwOTpEeOQrOtmX3weFA" text="From an MRSP element or from the LOA, the Permitted speed, Warning, Service brake intervention and Emergency brake intervention supervision limits are defined(see Figure 43)." id="3.13.9.2.2" base_Class="_FzzLoOTpEeOQrOtmX3weFA"/>
   <Requirements:Satisfy xmi:id="_q38MsOTpEeOQrOtmX3weFA" base_Abstraction="_q30Q4OTpEeOQrOtmX3weFA"/>
@@ -951,7 +1162,16 @@ dV_warning = dV_warning(V_mrsp);</body>
   <Requirements:Requirement xmi:id="_w-ulUOo6EeOd_88tSik5UQ" text="For dv_ebi, the following formula shall be applied: when V MRSP > V ebi min :" id="3.13.3.9.2.3" base_Class="_w-iYEOo6EeOd_88tSik5UQ"/>
   <Requirements:Requirement xmi:id="_LM-a4Oo7EeOd_88tSik5UQ" text="For dV_sbi, the same formula as for dV_ebi shall apply, dV_sbi_min, dV_sbi_max,V_sbi_min and V_sbi_max being also defined as fixed values (See Appendix A3.1)" id="3.13.9.2.5" base_Class="_LM14AOo7EeOd_88tSik5UQ"/>
   <Requirements:Requirement xmi:id="_qf6SUOo7EeOd_88tSik5UQ" text="For dV_warning, the same formula as for dV_ebi shall apply, dV_warning_min, dV_warning_max, V_warning_min and V_warning_max being also defined as fixed values (See Appendix A3.1)" id="3.13.9.2.6" base_Class="_qfyWgOo7EeOd_88tSik5UQ"/>
-  <Requirements:Satisfy xmi:id="_JEtRYOo8EeOd_88tSik5UQ" base_Abstraction="_JEkugOo8EeOd_88tSik5UQ"/>
-  <Requirements:Satisfy xmi:id="_KM958Oo8EeOd_88tSik5UQ" base_Abstraction="_KM2lMOo8EeOd_88tSik5UQ"/>
-  <Requirements:Satisfy xmi:id="_L-m2sOo8EeOd_88tSik5UQ" base_Abstraction="_L-gJAOo8EeOd_88tSik5UQ"/>
+  <Requirements:Satisfy xmi:id="_JEtRYOo8EeOd_88tSik5UQ"/>
+  <Requirements:Satisfy xmi:id="_KM958Oo8EeOd_88tSik5UQ"/>
+  <Requirements:Satisfy xmi:id="_L-m2sOo8EeOd_88tSik5UQ"/>
+  <Blocks:Block xmi:id="_Caq28OprEeOfLsqWvdVN8w" base_Class="_Capo0OprEeOfLsqWvdVN8w"/>
+  <Blocks:Block xmi:id="_EjztsOprEeOfLsqWvdVN8w" base_Class="_EjzGoOprEeOfLsqWvdVN8w"/>
+  <Blocks:Block xmi:id="_GEoAMOprEeOfLsqWvdVN8w" base_Class="_GEnZIOprEeOfLsqWvdVN8w"/>
+  <Requirements:Satisfy xmi:id="_qGmnYOpwEeOfLsqWvdVN8w" base_Abstraction="_qGaaIOpwEeOfLsqWvdVN8w"/>
+  <Requirements:Satisfy xmi:id="_rB380OpwEeOfLsqWvdVN8w" base_Abstraction="_rBuy4OpwEeOfLsqWvdVN8w"/>
+  <Requirements:Satisfy xmi:id="_zmhzkOpyEeOfLsqWvdVN8w"/>
+  <Requirements:Satisfy xmi:id="_2CsUAOpyEeOfLsqWvdVN8w" base_Abstraction="_2CRdQOpyEeOfLsqWvdVN8w"/>
+  <Requirements:Satisfy xmi:id="_2pQkwOpyEeOfLsqWvdVN8w" base_Abstraction="_2o1uAOpyEeOfLsqWvdVN8w"/>
+  <Requirements:Satisfy xmi:id="_X0IYwOp0EeO5avDdivRdzg" base_Abstraction="_XzxzcOp0EeO5avDdivRdzg"/>
 </xmi:XMI>

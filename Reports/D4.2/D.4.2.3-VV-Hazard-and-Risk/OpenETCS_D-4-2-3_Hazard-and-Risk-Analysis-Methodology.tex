@@ -264,13 +264,13 @@ These dependences between the local and global system characteristics and the st
 \end{figure}
 
 
-\subsection{Probabilistic Safety Concept}
+\subsection{Probabilistic Functional Safety Concept}
 
 The EN~50128 standard defines safety as the ``freedom from unacceptable levels of risk of harm to people", which shows that the safety approach required by the CENELEC standards is risk-based.
 
 \paragraph{Risk}
 
- As the risk is defined as the ``combination of the rate of occurrence of accidents and incidents resulting in harm (caused by a hazard) and the degree of severity  of that harm" this approach is based on a probabilistic understanding of event occurrence. The overall relations between all these safety-related terms used to define the safety properties, characteristics and quantities are outlined by the Risk-Genesis-Model of Schnieder, which is shown in the following figure \ref{fig:Risiko-Genese-Modell-eng} \cite{Schnieder.2010}.
+ As the risk is defined as the ``combination of the rate of occurrence of accidents and incidents resulting in harm (caused by a hazard) and the degree of severity  of that harm" in the EN 50128 this approach is based on a probabilistic understanding of event occurrence. The overall relations between all these safety-related terms used to define the safety properties, characteristics and quantities are outlined by the Risk-Genesis-Model of Schnieder, which is shown in the following figure \ref{fig:Risiko-Genese-Modell-eng} \cite{Schnieder.2010}.
 
 \begin{figure}[htbp]
 \centering
@@ -279,7 +279,58 @@ The EN~50128 standard defines safety as the ``freedom from unacceptable levels o
 \label{fig:Risiko-Genese-Modell-eng}
 \end{figure}
 
-This demonstrates that the first step is to define the system properties, specifically identifying the harms and their related hazardous situations. This has to be performed during a system hazard analysis. Afterwards the respective properties have to be determined by assessing the risk concerning the identified hazards. Based on this work safety integrity levels can be assigned to all system functionalities which are then allocated during the design to certain parts of the operational equipment. As this work is closely related to all design decisions, it has to be done iteratively for all abstraction levels during the system design. 
+This demonstrates that for every specific hazardous situation a
+
+ 
+
+\subsection{Hazard and Risk Analysis}
+
+This demonstrates that the first step is to define the system properties, specifically identifying the harms and their related hazardous situations. This has to be performed during a system hazard analysis. Afterwards the respective properties have to be determined by assessing the risk concerning the identified hazards.
+
+
+Definition hazard analysis 
+
+    the process of identifying hazards and analysing their causes, and the derivation of requirements to limit the likelihood and consequences of hazards to a tolerable level
+EN 50129
+
+Definition risk analysis 
+systematic use of available information to identify hazards and to estimate the risk (ISO/IEC Guide 51)
+
+The following procedure should be used to reduce risks to a tolerable level (see Figure 2): 
+a)  identify the likely users for the product or system including vulnerable consumers; 
+b)  identify the intended use and assess the reasonably foreseeable misuse of the product or system; 
+c)  identify each hazard (including reasonably foreseeable hazardous situations and events) arising in the 
+stages and conditions for the use of the product or system including installation, maintenance, repair and 
+destruction/disposal; 
+d) estimate and evaluate the risk to the affected user group arising from the hazard(s)  identified;. 
+Consideration should be given to products or systems used by different user groups; evaluation can also 
+be made by comparison with similar products or systems; 
+e)  if the risk is not tolerable, reduce the risk until it becomes tolerable
+
+
+This demonstrates that the first step is to define the system properties, specifically identifying the harms and their related hazardous situations. This has to be performed during a system hazard analysis. Afterwards the respective properties have to be determined by assessing the risk concerning the identified hazards. 
+
+Ericson almost this in three main tasks that need to be met by a risk analysis:
+
+• Identify hazards, hazardous effects and hazard origins
+• System risk and hazard significance determined to identify which reduce or eliminate the identified hazards measures
+• Structured analysis of systems, subsystems, equipment, components, software, personnel, and their relations in the light of logistical, workout-related, relating to the maintenance, test-related and operational constraints [Ericson 2005, p.13]
+
+This set of tasks is clear that the hazard analysis must include a structured examination of the existing hazards in a system , whose aim is to find measures to reduce existing risk. Accordingly, the risk analysis is seen as an iterative process of risk reduction and risk assessment carried out repeatedly until the risk in the system could be sufficiently reduced. The general iterative process to achieve the acceptable risk according to [DIN 820-120:2011 ] is shown in Figure 2 6 . The three-step process that builds risk reduction of machines from the standard [ ISO 12100:2011 ] is shown in Appendix A .
+Risk analysis starts with the definition of the system boundaries of the system under consideration and determination of the actual system 's purpose. Then the possible hazards are Based in the second step identified that could be caused by the different components of the system , and estimated the risk of future consequences of the hazards in the third step . The exact assessment of the risks then engages back on the results of risk analysis and forms according to the three steps of the risk analysis along the process of risk evaluation. The resulting evaluation of the risk is then compared with the specified security objectives and if these can not be achieved , a further iteration of risk mitigation and risk assessment must be passed.
+
+Since the risk due to the uncertainty in real systems and due to the multidimensional nature can not be completely evaluated, it is necessary for risk reduction relative size compared to establish itself as the required level of security of a system [Laracy / Leveson 2007, p.215-217; Slovák 2006, p.11]. This is the accepted risk, which describes a remaining risk, which is classified under the operating conditions of the system to be sufficiently low and thus be acceptable. As this residual risk assessed and which limit use of acceptance depends on the chosen acceptance criteria for the respective application from [Slovák 2006 S.10f.]. Figure 1 1 illustrates the shift of the risk in a system in the accepted range of risk reduction
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\linewidth]{ISO-Guide-51-risk-analysis-and-assessment}
+\caption{Risk analysis and assessment process \cite{ISO-Guide-51}}
+\label{fig:risk-analysis}
+\end{figure}
+
+
+Based on this work safety integrity levels can be assigned to all system functionalities which are then allocated during the design to certain parts of the operational equipment. As this work is closely related to all design decisions, it has to be done iteratively for all abstraction levels during the system design. 
 
 \begin{figure}[htbp]
 \centering
@@ -294,18 +345,6 @@ The safety integrity level (SIL) represented the acceptable risk for every part 
 
 Since software itself does not fails in the way technical equipment does the specific software safety integrity level represent a qualitative measure with respect to the required degree of correctness for the software functionality than a qualitative value for the likelihood of failing. To reach the needed degree of correctness for the software various design, verification and validation methods are required corresponding to the assigned software safety integrity level. This process leads to safety requirements which have to be implemented in the software design as well as verified and validated. Respectively the EN~50126 describes the safety design process as a series of safety tasks for each life cycle phase. This task are related to a number of safety artifacts which are created, used and adapted over time through the different safety design activities.
 
-\subsection{Hazard and Risk Analysis}
-
-Based on the definition of risk as a combination of risk level, exposure to the hazard and damage probability Dulac defines the hazard analysis as "identification of hazards and the assessment of the risk level." (According to [Dulac 2007, p.44] Welte translated into German). Ericson almost this in three main tasks that need to be met by a risk analysis:
-
-• Identify hazards, hazardous effects and hazard origins
-• System risk and hazard significance determined to identify which reduce or eliminate the identified hazards measures
-• Structured analysis of systems, subsystems, equipment, components, software, personnel, and their relations in the light of logistical, workout-related, relating to the maintenance, test-related and operational constraints [Ericson 2005, p.13]
-
-This set of tasks is clear that the hazard analysis must include a structured examination of the existing hazards in a system , whose aim is to find measures to reduce existing risk. Accordingly, the risk analysis is seen as an iterative process of risk reduction and risk assessment carried out repeatedly until the risk in the system could be sufficiently reduced. The general iterative process to achieve the acceptable risk according to [DIN 820-120:2011 ] is shown in Figure 2 6 . The three-step process that builds risk reduction of machines from the standard [ ISO 12100:2011 ] is shown in Appendix A .
-Risk analysis starts with the definition of the system boundaries of the system under consideration and determination of the actual system 's purpose. Then the possible hazards are Based in the second step identified that could be caused by the different components of the system , and estimated the risk of future consequences of the hazards in the third step . The exact assessment of the risks then engages back on the results of risk analysis and forms according to the three steps of the risk analysis along the process of risk evaluation. The resulting evaluation of the risk is then compared with the specified security objectives and if these can not be achieved , a further iteration of risk mitigation and risk assessment must be passed.
-
-Since the risk due to the uncertainty in real systems and due to the multidimensional nature can not be completely evaluated, it is necessary for risk reduction relative size compared to establish itself as the required level of security of a system [Laracy / Leveson 2007, p.215-217; Slovák 2006, p.11]. This is the accepted risk, which describes a remaining risk, which is classified under the operating conditions of the system to be sufficiently low and thus be acceptable. As this residual risk assessed and which limit use of acceptance depends on the chosen acceptance criteria for the respective application from [Slovák 2006 S.10f.]. Figure 1 1 illustrates the shift of the risk in a system in the accepted range of risk reduction
 
 \subsection{Safety Case}
 

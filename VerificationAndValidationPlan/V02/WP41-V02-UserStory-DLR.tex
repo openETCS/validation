@@ -1,0 +1,126 @@
+%\documentclass{article}
+
+%\title{Proposal for a Subsection Describing a VnV User Story in the
+%  Verification Plan:\\Instantiated for a DLR Verification Activity}
+%\author{Hardi Hungar}
+%\date{July 16, 2014}
+
+%\newcommand{\tbi}[1]{$<$\textit{#1}$>$}
+
+
+%\begin{document}
+%\maketitle
+
+%\begin{abstract}
+%  This document presents an the V\&V user story of the DLR for
+%  Verification Level~2, to exemplify how the provided template can be
+%  instantiated.
+%\end{abstract}
+
+%\subsection{Applying RT-Tester to a
+% Model of a Component Handling the Acknowledgment  of a Level Transition Order }
+
+This section describes the verification activity of the DLR during
+Verification Level 2. The object of verification is 
+a model of a component handling the acknowledgment  of a level
+transition order by the driver. This component shall trigger braking if
+the driver does not acknowledge the level change as required. The goal
+of the activity is mainly to evaluate the RT Tester tool as a
+component of the secondary tool chain. The verification object itself
+will be created as part of the activity. It is intended to contribute
+it to WP~3 (Modelling) as a byproduct of this activity.
+
+
+\paragraph{Object of verification}
+The object of verification will be available in the modeling
+repository on GitHub after it has reached a certain degree of
+maturity. It is intended to constitute a \emph{module design
+  specification}, i.e., a specification to be implemented using SCADE
+to generate code in a subsequent development step. It will be
+developed as a SysML model with C annotations to make it
+executable. It describes how the OBU monitors potentially
+necessary driver acknowledgments after a \texttt{Level Transition
+  Order} (LTO) has been received.  The term LTO Monitor will be used
+to refer to the component in the ensuing description.
+
+\paragraph{Available specification}
+Section~5.10.4 of Subset~026 is taken as functional
+specification. Details like the interface objects of the LTO Monitor
+and functionalities of other OBU components which the monitor relies
+on will be defined based on a general understanding of the workings of the
+OBU and a discussion with project contributors (lacking a SW
+architecture and component design so far).
+
+\paragraph{Methods and Means}
+
+The main tools employed in this activity are Papyrus for SysML
+modeling (Primary toolchain, deliverable D7.1) and RT Tester,
+Sec.~\ref{sec:RTTester}. For modeling, we adhere to the language
+restrictions of the RT-Tester manual [\emph{add citation}] in order to
+be able to use the model as a \emph{simulation}. This way, we can
+compile the LTO Monitor and run tests on it. Tests are to be generated
+from \emph{test models} focusing on parts of the monitor
+functionality.  
+
+\paragraph{Results to be achieved}
+
+The intention is get a feeling for the capabilities of RT-Tester to be
+able to assess its potential for implementing the openETCS
+workflow. Findings and conclusions shall be entered into a report, to
+be discussed with U Bremen (who contribute the RT Tester) and
+potential users of it. 
+
+\paragraph{Timeline}
+
+\begin{itemize}
+\item Modeling the LTO Monitor, writing test models and applying the tests
+to the monitor shall be done during the second level of
+verification. The activity shall be completed by October 2014.
+\item There are no results so far as the activity has started with
+Verification Level~2.
+\item No plans for continuing the activity in Verification~Level~3 have been
+made. 
+\end{itemize}
+
+
+
+
+
+
+\paragraph{Maturity Classification}
+
+The tools applied have the following TRLs (Technology Readiness
+Levels):
+\begin{description}
+\item[Papyrus:] TRL~4 (tentative estimation). Papyrus SysML modeling
+  has been employed by the developers and potentially also in an
+  industrial context, but not in the form it is done here. WP~7 will
+  be in a better position to judge that.
+\item[RT Tester:] TRL between 4 and 8. According to U Bremen (Jan
+  Peleska), RT Tester has been assessed for use in the development
+  regulated by relevant standards. More details on that will be
+  provided by U Bremen. Wrt.\ the current usage context (Papyrus
+  SysML), the evidence would have to be evaluated to assign a similar
+  TRL (higher than 4).
+\end{description}
+
+
+This activity shall not comply to the requirements of a SIL~4
+development, as it is intended to evaluate the tools. A positive
+outcome of the evaluation would contribute to an argument that RT
+Tester is appropriate to perform a part of the verification of design
+specifications which take the form of executable models. This relies on:
+\begin{enumerate}
+\item A potentially high maturity of RT Tester (its
+qualification)
+\item The fact that systematic dynamic testing with high
+coverage is an element of an approved combination of techniques for
+code verification. And that executable models would be adequately
+treated similar to code.
+\end{enumerate}
+This is of course a preliminary statement to be substantiated at the
+end of the activity.  
+
+%\eod
+
+%\end{document}

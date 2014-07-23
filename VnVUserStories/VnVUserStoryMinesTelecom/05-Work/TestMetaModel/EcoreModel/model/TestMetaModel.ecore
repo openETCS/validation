@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="testmetamodel" nsURI="http://openetcs.org/testmm" nsPrefix="testmetamodel">
+  <eClassifiers xsi:type="ecore:EClass" name="TestProcedure">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="id" lowerBound="1" eType="#//ID"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="testItems" lowerBound="1"
+        upperBound="-1" eType="#//TestCase"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="histories" lowerBound="1"
+        upperBound="-1" eType="#//History"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="glosaries" upperBound="-1"
+        eType="#//Glossary"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="scopes" lowerBound="1"
+        upperBound="-1" eType="#//Description"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="references" upperBound="-1"
+        eType="#//Description"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contexts" lowerBound="1"
+        upperBound="-1" eType="#//Description"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="notions" upperBound="-1"
+        eType="#//Description"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ID">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="date" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="organization" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="author" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="status" eType="#//Status"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TestCase">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="objective" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="id" lowerBound="1" eType="#//ID"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inputs" lowerBound="1"
+        upperBound="-1" eType="#//Input"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="output" lowerBound="1"
+        upperBound="-1" eType="#//Outcome"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="environments" eType="#//OrderedDescription"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="specialProcedures" upperBound="-1"
+        eType="#//OrderedDescription"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependencies" upperBound="-1"
+        eType="#//OrderedDescription"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="History">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="issueNumber" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="date" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sectionNumber" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="author" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Status">
+    <eLiterals name="DRAFT"/>
+    <eLiterals name="REVIEWED" value="1"/>
+    <eLiterals name="CORRECTED" value="2"/>
+    <eLiterals name="FINAL" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Glossary">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="acronym" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="definition" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Description">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Input" eSuperTypes="#//Message">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="delay" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Outcome" eSuperTypes="#//Message">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="responseTime" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OrderedDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="order" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Message">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="humainAction" upperBound="-1"
+        eType="#//OrderedDescription"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="data" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="conditions" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEList"/>
+  </eClassifiers>
+</ecore:EPackage>

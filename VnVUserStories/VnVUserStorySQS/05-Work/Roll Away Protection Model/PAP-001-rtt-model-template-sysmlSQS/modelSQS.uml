@@ -2,6 +2,9 @@
 <xmi:XMI xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Blocks="http://www.eclipse.org/papyrus/0.7.0/SysML/Blocks" xmlns:PortAndFlows="http://www.eclipse.org/papyrus/0.7.0/SysML/PortAndFlows" xmlns:RTTMBTProfile="http:///schemas/RTTMBTProfile/_9VP38MScEeOauIhDge3vUw/19" xmlns:Requirements="http://www.eclipse.org/papyrus/0.7.0/SysML/Requirements" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xsi:schemaLocation="http://www.eclipse.org/papyrus/0.7.0/SysML/Blocks http://www.eclipse.org/papyrus/0.7.0/SysML#//blocks http://www.eclipse.org/papyrus/0.7.0/SysML/PortAndFlows http://www.eclipse.org/papyrus/0.7.0/SysML#//portandflows http:///schemas/RTTMBTProfile/_9VP38MScEeOauIhDge3vUw/19 ../RTT-MBTProfile/model.profile.uml#_9VRtIMScEeOauIhDge3vUw http://www.eclipse.org/papyrus/0.7.0/SysML/Requirements http://www.eclipse.org/papyrus/0.7.0/SysML#//requirements">
   <uml:Model xmi:id="_nyWz0L4xEeOYwe19PtKaEA" name="SysMLmodel">
     <packagedElement xmi:type="uml:Package" xmi:id="_Bilo0L_AEeO-BYJZqtgvRg" name="Template">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_ti89wEVaEeSh3sItO3HJfw">
+        <body>ROLL AWAY PROTECTION MODEL</body>
+      </ownedComment>
       <packagedElement xmi:type="uml:Class" xmi:id="_15j_EL4xEeOYwe19PtKaEA" name="SystemUnderTest">
         <ownedAttribute xmi:type="uml:Port" xmi:id="_jJlLgB1gEeSVl6MsEUejiw" name="ControllerPositionValue" visibility="public" type="_8ek6UB1fEeSVl6MsEUejiw" aggregation="composite">
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_j5FV0B1gEeSVl6MsEUejiw" value="1"/>
@@ -143,10 +146,10 @@
               </transition>
               <transition xmi:type="uml:Transition" xmi:id="_FG0AkB4SEeSLDoRbDGt7JA" name="Transition1" source="_MBRK4B4KEeSLDoRbDGt7JA"/>
               <transition xmi:type="uml:Transition" xmi:id="_0pfnoB4TEeSLDoRbDGt7JA" clientDependency="_NoCWgCFOEeSJMd3MVZRfOA" name="CalculateRollAwayDistance2Brake" guard="_oeFwwCE_EeSumti2eg8_jg" source="_MBRK4B4KEeSLDoRbDGt7JA" target="_Cgp7EOyYEeO_w6JP9WLw7w">
-                <ownedRule xmi:type="uml:Constraint" xmi:id="_oeFwwCE_EeSumti2eg8_jg" name="abs(TrainLocationStartRollAway - TrainLocationNotRollAway) > D_NVROLL">
+                <ownedRule xmi:type="uml:Constraint" xmi:id="_oeFwwCE_EeSumti2eg8_jg" name="abs(TrainLocation - TrainLocationLastStandstill) > D_NVROLL">
                   <specification xmi:type="uml:OpaqueExpression" xmi:id="_qofy0CE_EeSumti2eg8_jg">
                     <language>C</language>
-                    <body>abs(TrainLocationStartRollAway - TrainLocationNotRollAway) > D_NVROLL</body>
+                    <body>abs(TrainLocation - TrainLocationLastStandstill) > D_NVROLL</body>
                   </specification>
                 </ownedRule>
               </transition>
@@ -154,7 +157,7 @@
                 <ownedRule xmi:type="uml:Constraint" xmi:id="_QKCXACE_EeSumti2eg8_jg">
                   <specification xmi:type="uml:OpaqueExpression" xmi:id="_SOPqcCE_EeSumti2eg8_jg">
                     <language>C</language>
-                    <body>VEqual2Zero == 0</body>
+                    <body>VEqual2Zero</body>
                   </specification>
                 </ownedRule>
               </transition>
@@ -186,21 +189,21 @@
                 <ownedRule xmi:type="uml:Constraint" xmi:id="_bSxJgCFAEeSumti2eg8_jg">
                   <specification xmi:type="uml:OpaqueExpression" xmi:id="_d43pECFAEeSumti2eg8_jg">
                     <language>C</language>
-                    <body>VEqual2Zero == 0</body>
+                    <body>VEqual2Zero</body>
                   </specification>
                 </ownedRule>
               </transition>
               <subvertex xmi:type="uml:Pseudostate" xmi:id="_A-_UAOyYEeO_w6JP9WLw7w" name="Initial0"/>
-              <subvertex xmi:type="uml:State" xmi:id="_CJeKIOyYEeO_w6JP9WLw7w" name="StandBy">
-                <doActivity xmi:type="uml:OpaqueBehavior" xmi:id="_0j09IB4WEeSLDoRbDGt7JA" name="Brake = FALSE;RAPAckReq=&quot;&quot;;">
+              <subvertex xmi:type="uml:State" xmi:id="_CJeKIOyYEeO_w6JP9WLw7w" clientDependency="_3yqrkETBEeSxzpX7b79vPw" name="Standstill">
+                <doActivity xmi:type="uml:OpaqueBehavior" xmi:id="_0j09IB4WEeSLDoRbDGt7JA" name="RAPAckReq=&quot;&quot;;RAPAck=&quot;&quot;;TrainLocationLastStandstill = TrainLocation;BrakeCommand = FALSE;BrakingIndicator = FALSE;">
                   <language>C</language>
-                  <body>Brake = FALSE;RAPAckReq=&quot;&quot;;</body>
+                  <body>RAPAckReq=&quot;&quot;;RAPAck=&quot;&quot;;TrainLocationLastStandstill = TrainLocation;BrakeCommand = FALSE;BrakingIndicator = FALSE;</body>
                 </doActivity>
               </subvertex>
               <subvertex xmi:type="uml:State" xmi:id="_Cgp7EOyYEeO_w6JP9WLw7w" clientDependency="_RYrhICFPEeSJMd3MVZRfOA" name="Brake">
-                <doActivity xmi:type="uml:OpaqueBehavior" xmi:id="_OZqIIB4WEeSLDoRbDGt7JA" name="RAPAckReq = &quot;Acknowledge Request&quot;;Brake = TRUE;">
+                <doActivity xmi:type="uml:OpaqueBehavior" xmi:id="_OZqIIB4WEeSLDoRbDGt7JA" name="RAPAckReq = &quot;Acknowledge Request&quot;;BrakeCommand = TRUE;BrakingIndicator = TRUE;">
                   <language>C</language>
-                  <body>RAPActivated = TRUE;Brake = TRUE;</body>
+                  <body>RAPAckReq = &quot;Acknowledge Request&quot;;BrakeCommand = TRUE;BrakingIndicator = TRUE;</body>
                 </doActivity>
                 <entry xmi:type="uml:OpaqueBehavior" xmi:id="_mpxB0OyZEeO_w6JP9WLw7w" name="SetBrakeCommandOn">
                   <language>C</language>
@@ -212,9 +215,9 @@
                 </exit>
               </subvertex>
               <subvertex xmi:type="uml:State" xmi:id="_MBRK4B4KEeSLDoRbDGt7JA" name="CalculateRollAwayDistance">
-                <doActivity xmi:type="uml:OpaqueBehavior" xmi:id="_AqKrkB4REeSLDoRbDGt7JA" name="TrainLocationNotRollAway = TrainLocation;">
+                <doActivity xmi:type="uml:OpaqueBehavior" xmi:id="_AqKrkB4REeSLDoRbDGt7JA" name="">
                   <language>C</language>
-                  <body>TrainLocationNotRollAway = TrainLocation;</body>
+                  <body></body>
                 </doActivity>
               </subvertex>
               <subvertex xmi:type="uml:State" xmi:id="_B_GxUB4pEeSLDoRbDGt7JA" name="TrainMovement"/>
@@ -228,8 +231,10 @@
           <nestedClassifier xmi:type="uml:Class" xmi:id="_8cVfgCFNEeSJMd3MVZRfOA" name="REQ-3.14.2.4"/>
           <nestedClassifier xmi:type="uml:Class" xmi:id="_sKelICFOEeSJMd3MVZRfOA" name="REQ-3.14.2.6"/>
           <nestedClassifier xmi:type="uml:Class" xmi:id="_k1q98CFSEeSJMd3MVZRfOA" name="REQ-3.14.2.2"/>
+          <nestedClassifier xmi:type="uml:Class" xmi:id="_6m9fgES-EeSxzpX7b79vPw" name="REQ-3.14.2.7"/>
         </packagedElement>
         <packagedElement xmi:type="uml:Class" xmi:id="_p7-30CFPEeSJMd3MVZRfOA" name="REQ-3.14.1.5"/>
+        <packagedElement xmi:type="uml:Component" xmi:id="_ij2Z4ETAEeSxzpX7b79vPw" name="Component1"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Package" xmi:id="_RjA5cMDGEeODHcUIerYrag" name="Datatypes">
         <packagedElement xmi:type="uml:DataType" xmi:id="_ZCaDMMDGEeODHcUIerYrag" name="timer" isLeaf="true"/>
@@ -256,12 +261,10 @@
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_UJSxQB1iEeSVl6MsEUejiw" name="ROLLAWAY">
         <ownedAttribute xmi:type="uml:Property" xmi:id="_cp7VkB1iEeSVl6MsEUejiw" name="D_NVROLL" type="_4ABK4MDGEeODHcUIerYrag"/>
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_DjPfkB4TEeSLDoRbDGt7JA" name="CheckDistance" type="_2-HB8MDGEeODHcUIerYrag"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_DjPfkB4TEeSLDoRbDGt7JA" name="TrainLocationLastStandstill" type="_4LnW4MDGEeODHcUIerYrag"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_9k4eQB1jEeSVl6MsEUejiw" name="Odometry">
         <ownedAttribute xmi:type="uml:Property" xmi:id="_Asa28B1kEeSVl6MsEUejiw" name="TrainLocation" type="_4LnW4MDGEeODHcUIerYrag"/>
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_yIXWYB4NEeSLDoRbDGt7JA" name="TrainLocationNotRollAway" type="_4LnW4MDGEeODHcUIerYrag"/>
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_UqFeAB4OEeSLDoRbDGt7JA" name="TrainLocationStartRollAway" type="_4LnW4MDGEeODHcUIerYrag"/>
         <ownedAttribute xmi:type="uml:Property" xmi:id="_5Eq9AB4UEeSLDoRbDGt7JA" name="TrainSpeed" type="_4LnW4MDGEeODHcUIerYrag"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_wTj8sB1kEeSVl6MsEUejiw" name="DMI_TE">
@@ -270,18 +273,19 @@
         </ownedAttribute>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_cRKv8B1lEeSVl6MsEUejiw" name="BrakeCommand">
-        <ownedAttribute xmi:type="uml:Property" xmi:id="_fDmbUB1lEeSVl6MsEUejiw" name="Brake" type="_2-HB8MDGEeODHcUIerYrag"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fDmbUB1lEeSVl6MsEUejiw" name="BrakeCommand" type="_2-HB8MDGEeODHcUIerYrag"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_ghB00B4kEeSLDoRbDGt7JA" name="DMI_SUT">
         <ownedAttribute xmi:type="uml:Property" xmi:id="_zj1-cB4kEeSLDoRbDGt7JA" name="RAPAckReq">
           <type xmi:type="uml:PrimitiveType" href="pathmap://UML_METAMODELS/Ecore.metamodel.uml#EString"/>
         </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_r8qgMES8EeSxzpX7b79vPw" name="BrakingIndicator" type="_2-HB8MDGEeODHcUIerYrag"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_dgkx8CFNEeSJMd3MVZRfOA" name="neutral&amp;&amp;VGreaterThanZero" client="_dB5k4B4LEeSLDoRbDGt7JA" supplier="_3XL1gCFLEeSJMd3MVZRfOA"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_mA1i0CFNEeSJMd3MVZRfOA" name="neutral&amp;&amp;VLowerThanZero" client="_p0cDQB4LEeSLDoRbDGt7JA" supplier="_3XL1gCFLEeSJMd3MVZRfOA"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_NoCWgCFOEeSJMd3MVZRfOA" name="abs(TrainLocationStartRollAway-TrainLocationNotRollAway) > D_NVROLL" client="_0pfnoB4TEeSLDoRbDGt7JA" supplier="_8cVfgCFNEeSJMd3MVZRfOA"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_RYrhICFPEeSJMd3MVZRfOA" name="RAPAckReq" client="_Cgp7EOyYEeO_w6JP9WLw7w" supplier="_sKelICFOEeSJMd3MVZRfOA"/>
-      <packagedElement xmi:type="uml:Abstraction" xmi:id="_ErQW0CFQEeSJMd3MVZRfOA" name="RAPAck" client="_QBZnYB4pEeSLDoRbDGt7JA" supplier="_p7-30CFPEeSJMd3MVZRfOA"/>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_NoCWgCFOEeSJMd3MVZRfOA" name="abs(TrainLocation - TrainLocationLastStandstill) > D_NVROLL" client="_0pfnoB4TEeSLDoRbDGt7JA" supplier="_8cVfgCFNEeSJMd3MVZRfOA"/>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_RYrhICFPEeSJMd3MVZRfOA" name="RAPAckReq = &quot;Acknowledge Request&quot;, BrakingIndicator == TRUE" client="_Cgp7EOyYEeO_w6JP9WLw7w" supplier="_sKelICFOEeSJMd3MVZRfOA"/>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_ErQW0CFQEeSJMd3MVZRfOA" name="RAPAck ==&quot;Acknowledged&quot;" client="_QBZnYB4pEeSLDoRbDGt7JA" supplier="_p7-30CFPEeSJMd3MVZRfOA"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_H4ckMCFTEeSJMd3MVZRfOA" name="forward&amp;&amp;VLowerThanZero" client="_wacjYB4KEeSLDoRbDGt7JA" supplier="_k1q98CFSEeSJMd3MVZRfOA"/>
       <packagedElement xmi:type="uml:Abstraction" xmi:id="_eUsu0CFTEeSJMd3MVZRfOA" name="backwards&amp;&amp;VGreaterThanZero" client="_Oo2bsB4LEeSLDoRbDGt7JA" supplier="_k1q98CFSEeSJMd3MVZRfOA"/>
       <packagedElement xmi:type="uml:Association" xmi:id="_mecDkCH3EeSH-PqbT7kZBQ" name="Association1" memberEnd="_meiKMiH3EeSH-PqbT7kZBQ _meiKMyH3EeSH-PqbT7kZBQ">
@@ -289,6 +293,7 @@
           <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_meiKMSH3EeSH-PqbT7kZBQ" key="nature" value="SysML_Nature"/>
         </eAnnotations>
       </packagedElement>
+      <packagedElement xmi:type="uml:Abstraction" xmi:id="_3yqrkETBEeSxzpX7b79vPw" name="TrainLocationLastStandstill = TrainLocation" client="_CJeKIOyYEeO_w6JP9WLw7w" supplier="_6m9fgES-EeSxzpX7b79vPw"/>
     </packagedElement>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ny8CoL4xEeOYwe19PtKaEA">
       <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ny930L4xEeOYwe19PtKaEA" source="http://www.eclipse.org/uml2/2.0.0/UML">
@@ -392,7 +397,7 @@
   <PortAndFlows:FlowPort xmi:id="_iks4oB1nEeSVl6MsEUejiw" base_Port="_iksRkB1nEeSVl6MsEUejiw" direction="out"/>
   <PortAndFlows:FlowPort xmi:id="_qdy70B1nEeSVl6MsEUejiw" base_Port="_qdyUwB1nEeSVl6MsEUejiw" direction="in"/>
   <RTTMBTProfile:SUT2TE xmi:id="_Pd_8MB4lEeSLDoRbDGt7JA" base_Interface="_ghB00B4kEeSLDoRbDGt7JA"/>
-  <Requirements:Requirement xmi:id="_OoGzwCFLEeSJMd3MVZRfOA" id="" base_Class="_Onz40CFLEeSJMd3MVZRfOA"/>
+  <Requirements:Requirement xmi:id="_OoGzwCFLEeSJMd3MVZRfOA" id="&quot;3.14.2&quot;" base_Class="_Onz40CFLEeSJMd3MVZRfOA"/>
   <Requirements:Requirement xmi:id="_3XhMsCFLEeSJMd3MVZRfOA" id="&quot;3.14.2.3&quot;" base_Class="_3XL1gCFLEeSJMd3MVZRfOA"/>
   <Requirements:Satisfy xmi:id="_dg47ACFNEeSJMd3MVZRfOA" base_Abstraction="_dgkx8CFNEeSJMd3MVZRfOA"/>
   <Requirements:Satisfy xmi:id="_mBNWQCFNEeSJMd3MVZRfOA" base_Abstraction="_mA1i0CFNEeSJMd3MVZRfOA"/>
@@ -405,4 +410,6 @@
   <Requirements:Requirement xmi:id="_k2I4ACFSEeSJMd3MVZRfOA" id="&quot;3.14.2.2&quot;" base_Class="_k1q98CFSEeSJMd3MVZRfOA"/>
   <Requirements:Satisfy xmi:id="_H4vfICFTEeSJMd3MVZRfOA" base_Abstraction="_H4ckMCFTEeSJMd3MVZRfOA"/>
   <Requirements:Satisfy xmi:id="_eVFwYCFTEeSJMd3MVZRfOA" base_Abstraction="_eUsu0CFTEeSJMd3MVZRfOA"/>
+  <Requirements:Requirement xmi:id="_6n56sES-EeSxzpX7b79vPw" id="&quot;3.14.2.7&quot;" base_Class="_6m9fgES-EeSxzpX7b79vPw"/>
+  <Requirements:Satisfy xmi:id="_3zCfAETBEeSxzpX7b79vPw" base_Abstraction="_3yqrkETBEeSxzpX7b79vPw"/>
 </xmi:XMI>

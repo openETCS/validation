@@ -2251,6 +2251,111 @@ MISRA-C Rule 7.1 Description: Functions shall have prototype declarations and th
 
 Mü8004 standard includes at Rule 0.2.15 that function prototypes shall be used for every function whenever the compiler supports it. It would be useful to set the visibility of prototypes for the integrity of function definitions and calls.
 
+\paragraph{MISRA –C Declarations and Definitions 8.2}
+MISRA-C Rule 8.2 Description: Whenever an object or function is declared or defined, its type shall be explicitly stated
+
+Mü8004 standard includes at Rule 0.2.15 that function header have to define the function type.
+
+\paragraph{MISRA –C Declarations and Definitions 8.3}
+MISRA-C Rule 8.3 Description: For each function parameter the type given in the declaration and definition shall be identical, and the return types shall also be identical
+
+Mü8004 standard does not include this rule, but this rule should be necessary for the proper operation of the function. 
+
+\paragraph{MISRA –C Declarations and Definitions 8.4}
+MISRA-C Rule 8.4 Description: If objects or functions are declared more than once their types shall be compatible
+
+Mü8004 standard does not include this rule. It might be good to add this rule to the proper functioning of the code, even though it would be recommendable not to declare objects or functions more than once in order to reduce the number of mistakes made.
+
+\paragraph{MISRA –C Declarations and Definitions 8.5}
+MISRA-C Rule 8.5 Description: There shall be no definitions of objects or functions in a header file
+
+Mü8004 standard does not include this rule.  Although Mü8004 Rule 0.2.5 establishes that function prototypes shall only be used in header files, there is no reference to the definition of objects and functions. To prohibit the definition of objects and functions in the header file would be a good programming rule.
+
+\paragraph{MISRA –C Declarations and Definitions 8.6}
+MISRA-C Rule 8.6 Description: Functions shall be declared at file scope
+
+There is a restriction in Mü8004 standard Rule 0.2.5 when declaring functions at file scope, because it establishes that function prototypes shall only be used in header files.
+
+\paragraph{MISRA –C Declarations and Definitions 8.7}
+MISRA-C Rule 8.7 Description: Objects shall be defined at block scope if they are only accessed from within a single function
+
+Mü8004 standard Rule 0.2.14 establishes that global definitions of structures shall be defined in header files. It would be interesting to add MISRA-C Rule 8.7 for objects that are only used in functions or in block scope.  
+
+\paragraph{MISRA –C Declarations and Definitions 8.8}
+MISRA-C Rule 8.8 Description: An external object or function shall be declared in one and only one (external) file
+
+This rule can be added to Mü8004 standard to improve 0.2.14 Rule, as it defines that global definition of structures shall be defined in header files
+
+\paragraph{MISRA –C Declarations and Definitions 8.9}
+MISRA-C Rule 8.9 Description: An identifier with external linkage shall have exactly one external definition
+
+Mü8004 does not include this rule. It is necessary to add this rule to fix the work with extern parameter.
+
+\paragraph{MISRA –C Declarations and Definitions 8.10, 8.11}
+MISRA-C Rule 8.10 Description: All declarations and definitions of objects or functions at file scope shall have internal linkage unless external linkage is required
+
+MISRA-C Rule8.11 Description: The static storage class specifier shall be used in definitions and declarations of objects and functions that have internal linkage
+
+Mü8004 does not include these rules. It would be useful to avoid confusion between objects with internal scope and objects with external scope.
+
+\paragraph{MISRA –C Declarations and Definitions 8.12}
+MISRA-C Rule 8.12 Description: When an array is declared with external linkage, its size shall be stated explicitly or defined implicitly by initialization 
+
+Mü8004 does not include this rule. It could be interesting to add this rule to Mü8004 standard to establish the work with arrays when they are declared with external linkage.
+
+
+\begin{center}
+\textsc{\underline{INITIALIZATION:}}
+\end{center}
+
+\paragraph{MISRA –C Initialization 9.1}
+MISRA-C Rule 9.1 Description: All automatic variables shall have been assigned a value before being used 
+
+Mü8004 standard includes at Rule 0.2.12 that all variables and fields shall be initialized before they are used the first time.
+
+\paragraph{MISRA –C Initialization 9.2}
+MISRA-C Rule 9.2 Description: Braces shall be used to indicate and match the structure in the non-zero initialization of arrays and structures
+
+The use of braces is included in Mü8004 standard Rule 0.2.6, as it establishes that for clearness, the initialization shall be put in curly brackets.
+
+\paragraph{MISRA –C Initialization 9.3}
+MISRA-C Rule 9.3 Description: In an enumerator list, the “=” construct shall not be used to explicitly initialize members other than the first, unless all items are explicitly initialized
+
+Mü8004 does not include this rule. It is necessary to avoid making mistakes when initializing enumerators.
+
+
+\begin{center}
+\textsc{\underline{EXPRESSIONS:}}
+\end{center}
+
+\paragraph{MISRA –C Expressions 12.1}
+MISRA-C Rule 12.1 Description: Limited dependence should be placed on C’s operator precedence rules in expressions
+
+Mü8004 does not include this rule. This could be a good advisory rule for the developer that has to be careful with made mistakes because of precedence rule of C. Parentheses should be used to reduce made mistakes.
+
+\paragraph{MISRA –C Expressions 12.2}
+MISRA-C Rule 12.2 Description: The value of an expression shall be the same under any order of evaluation that the standard permits
+
+Mü8004 standard makes reference to the importance of the influence of evaluation order in expressions.  That’s why Mü8004 Rule 0.2.13 establishes that assignments inside expressions are forbidden and Mü8004 Rule12.2 establishes that post increment and post decrement operators are only allowed if they are placed in a separate expression. However, an advice should be made to the influence of access order in expressions where functions calls, access to volatile objects… are used.
+
+\paragraph{MISRA –C Expressions 12.3}
+MISRA-C Rule 12.3 Description: The sizeof operator shall not be used on expressions that contain side effects
+
+Mü8004 Rule 0.2.4 establishes that sizeof operator must not be used after \#if. This operator cannot be used to evaluate an expression. It shall only be applied to an operand which is a type or object.
+
+\paragraph{MISRA –C Expressions 12.4}
+MISRA-C Rule 12.4 Description: The right-hand operand of a logical \&\& or || operator shall not contain side effects
+
+Mü8004 standard does not include this rule. This could be a good rule for the developer that has to be careful with side effects when working with these operators.
+
+\paragraph{MISRA –C Expressions 12.5}
+MISRA-C Rule 12.5 Description: The operands of a logical \&\& or || shall be primary-expressions
+Mü8004 standard does not include this rule. This could be a good rule for both readability of code and for ensuring that the behavior is as the programmer intended.
+
+\paragraph{MISRA –C Expressions 12.6}
+MISRA-C Rule 12.6 Description: The operands of logical operators (\&\&, || and !) should be effectively Boolean. Expressions that are effectively Boolean should not be used as operands to operators other than (\&\&, ||, !, =, ==, != and ?:)
+
+Mü8004 Rule 0.2.4 establishes the difference between logical operators (\&\&, ||, !, =, ==, != and ?:) and bitwise (\&=, |, \^, -, >>, <<) operators
 
 
 \section{Conclusions}

@@ -2221,7 +2221,7 @@ This rule is not included in Mü8004 standard. This rule could be useful to make
 \paragraph{MISRA –C Types 6.3}
 MISRA-C Rule 6.3 Description: Typedefs that indicate size and signedness should be used in place of the basic numerical types
 
-Mü8004 standard does not show how to use typedef with different data types. However, it shows that float and double data types are not supported. This could be a drawback for the precision of variables and operations between them.
+Mü8004 standard does not show how to use typedef with different data types. However, it shows in Rule 0.2.6 that float and double data types are not supported. This could be a drawback for the precision of variables and operations between them.
 
 \paragraph{MISRA –C Types 6.4}
 MISRA-C Rule 6.4 Description: Bit fields shall only be defined to be of type unsigned int or signed int.
@@ -2356,6 +2356,171 @@ Mü8004 standard does not include this rule. This could be a good rule for both 
 MISRA-C Rule 12.6 Description: The operands of logical operators (\&\&, || and !) should be effectively Boolean. Expressions that are effectively Boolean should not be used as operands to operators other than (\&\&, ||, !, =, ==, != and ?:)
 
 Mü8004 Rule 0.2.4 establishes the difference between logical operators (\&\&, ||, !, =, ==, != and ?:) and bitwise (\&=, |, \^, -, >>, <<) operators
+
+\paragraph{MISRA –C Expressions 12.7}
+MISRA-C Rule 12.7 Description: Bitwise operators shall not be applied to operands whose underlying type is signed
+
+Mü8004 Rule 0.2.4 establishes that bitwise operators and right shift operators shall only be used with unsigned variables.
+
+\paragraph{MISRA –C Expressions 12.8}
+MISRA-C Rule 12.8 Description: The right-hand operand of a shift operator shall lie between zero and one less than the width in bits of the underlying type of the left-hand operand
+
+Mü8004 standard does not include this rule. It could be useful to add this rule and others that talk about the limitations in the work with different operands.
+
+\paragraph{MISRA –C Expressions 12.9}
+MISRA-C Rule 12.9 Description: The unary minus operator shall not be applied to an expression whose underlying type is unsigned
+
+Mü8004 Rule 0.2.6 explains the problematic of combining signed and unsigned variables in arithmetic operations. However, this should be extended to explain the problems generated when doing operations as applying operators like unary minus to unsigned variables.
+
+\paragraph{MISRA –C Expressions 12.10}
+MISRA-C Rule 12.10 Description: The comma operator shall not be used
+
+Mü8004 Rule 0.2.4 establishes that Mü8004 standard does not support the work with comma operator. 
+
+\paragraph{MISRA –C Expressions 12.11}
+MISRA-C Rule 12.11 Description: Evaluation of constant unsigned integer expressions should not lead to wrap-around
+
+Mü8004 standard does not include this rule. This could be a helpful rule to avoid the overflow of unsigned integer expressions.
+
+\paragraph{MISRA –C Expressions 12.12}
+MISRA-C Rule 12.12 Description: The underlying bit representations of floating-point values shall not be used
+
+Mü8004 standard does not include this rule. This could be an interesting rule to avoid the errors caused by the way floating-point values are stored, in case this data types would be supported by the compiler.
+
+\paragraph{MISRA –C Expressions 12.13}
+MISRA-C Rule 12.13 Description: The increment (++) and decrement (--) operators should not be mixed with other operators in an expression
+
+Mü8004 Rule 0.2.4 establishes the restrictions when working with these operators. Post increment and post decrement operators are only allowed if they are placed in a separate expression.
+
+
+\begin{center}
+\textsc{\underline{CONTROL STATEMENT EXPRESSIONS:}}
+\end{center}
+
+\paragraph{MISRA –C Control statement expressions 13.1}
+MISRA-C Rule 13.1 Description: Assignment operators shall not be used in expressions that yield a Boolean value
+
+Mü8004 Rule 0.2.13 establishes that assignment operators shall not be used inside expressions that are considered to have a Boolean value.
+
+\paragraph{MISRA –C Control statement expressions 13.2}
+MISRA-C Rule 13.2 Description: Tests of a value against cero should be made explicit, unless the operand is effectively Boolean
+
+Mü8004 standard does not include this rule. It could be useful to add this rule for the appropriate work with “not equal” operator.
+
+\paragraph{MISRA –C Control statement expressions 13.3}
+MISRA-C Rule 13.3 Description: Floating-point expressions shall not be tested for equality or inequality
+
+Mü8004 standard does not include this rule. This could be an interesting rule if floating-point values are allowed.
+
+\paragraph{MISRA –C Control statement expressions 13.4}
+MISRA-C Rule 13.4 Description: The controlling expression of a for statement shall not contain any object of floating type
+
+Mü8004 standard does not include this rule. This could be an interesting rule to avoid making mistakes with for statement, if floating-point values are allowed.
+
+\paragraph{MISRA –C Control statement expressions 13.5}
+MISRA-C Rule 13.5 Description: The three expressions of a for statement shall be concerned only with loop control
+
+Mü8004 standard does not include this rule. This is a necessary rule that explains how to work correctly with for statement.
+
+\paragraph{MISRA –C Control statement expressions 13.6}
+MISRA-C Rule 13.6 Description: Numeric variables being used within a for loop for iteration counting shall not be modified in the body of the loop
+
+Mü8004 standard does not include this rule. This is a basic rule for the correct work of for loop.
+
+\paragraph{MISRA –C Control statement expressions 13.7}
+MISRA-C Rule 13.7 Description: Boolean operations whose results are invariant shall not be permitted
+
+Mü8004 standard does not include this rule. This could be a good rule to avoid the propagation of errors in the program due to wrongly implemented Boolean operations.
+
+
+\begin{center}
+\textsc{\underline{CONTROL FLOW:}}
+\end{center}
+
+\paragraph{MISRA –C Control flow 14.1}
+MISRA-C Rule 14.1 Description: There shall be no unreachable code
+
+Mü8004 standard does not include this rule, but it is a necessary to avoid mistakes due to code that it is never executed.
+
+\paragraph{MISRA –C Control flow 14.2}
+MISRA-C Rule 14.2 Description: All non-null statements shall either: (a) have at least one side-effect however executed, or (b) cause control flow to change
+
+Mü8004 standard does not include this rule. This is a necessary rule to avoid making errors when creating statements.
+
+\paragraph{MISRA –C Control flow 14.3}
+MISRA-C Rule 14.3 Description: Before preprocessing, a null statement shall only occur on a line by itself; it may be followed by a comment provided that the first character following the null statement is a white-space character
+
+Mü8004 standard does not include this rule. This is a necessary rule if null statements are allowed to be used. However, the safest way would be not to permit embedding null statements in the code. 
+
+\paragraph{MISRA –C Control flow 14.4}
+MISRA-C Rule 14.4 Description: The \textit{goto} statement shall not be used
+
+Mü8004 standard does not include this statement in the list of permitted statements.
+
+\paragraph{MISRA –C Control flow 14.5}
+MISRA-C Rule 14.5 Description: The \textit{continue} statement shall not be used
+
+Mü8004 Rule 0.2.3 includes this statement in the list of permitted statements, even though it is recommended to avoid working with it, if possible.
+
+\paragraph{MISRA –C Control flow 14.6}
+MISRA-C Rule 14.6 Description: For any iteration statement there shall be at most one break statement used for loop termination
+
+Mü8004 Rule 0.2.3 establishes that every case branch must contain a statement and end with break. This rule is in the interest of good structured programming.
+
+\paragraph{MISRA –C Control flow 14.7}
+MISRA-C Rule 14.7 Description: A function shall have a single point of exit at the end of the function
+
+Mü8004 Rule 0.2.3 includes this restriction, as it establishes the use, once per function, of the return statement as the exit point of the function. 
+
+\paragraph{MISRA –C Control flow 14.8}
+MISRA-C Rule 14.8 Description: The statement forming the body of a \textit{switch, while, do … while} or \textit{for} statement shall be a compound statement.
+
+Mü8004 Rule 0.2.3 establishes that to facilitate the examination, the program shall be structured with brackets and indentation of lines. This rule should be extended to mention specific cases as, \textit{switch, while, do … while} and \textit{for} cases.
+
+\paragraph{MISRA –C Control flow 14.9}
+MISRA-C Rule 14.9 Description: An \textit{if} (expression) construct shall be followed by a compound statement. The \textit{else} keyword shall be followed by either a compound statement, or another \textit{if} statement
+
+Mü8004 Rule 0.2.3 defines the construction of \textit{if} expression. However, it is less restrictive as for an \textit{if} expression with a single statement, braces are not required.
+
+\paragraph{MISRA –C Control flow 14.10}
+MISRA-C Rule 14.10 Description: All \textit{if … else if} construct shall be terminated with an else clause
+
+Mü8004 Rule 0.2.3 defines the construction of \textit{if} expression. However, it does not establish how it is the work with this advanced structure. 
+
+
+\begin{center}
+\textsc{\underline{SWITCH STATEMENTS:}}
+\end{center}
+
+\paragraph{MISRA –C Switch Statement 15.0}
+MISRA-C Rule 15.0 Description: The MISRA C \textit{switch} syntax shall be used
+
+Mü8004 Rule 0.2.3 includes, in a less detailed way, how the construction of a \textit{switch} statement is. 
+
+\paragraph{MISRA –C Switch Statement 15.1}
+MISRA-C Rule 15.1 Description: A \textit{switch} label shall only be used when the most closely-enclosing compound statement is the body of a \textit{switch} statement
+
+Mü8004 Rule 0.2.3 includes how \textit{switch, case} and \textit{default} labels have to be used in a \textit{switch} statement.
+
+\paragraph{MISRA –C Switch Statement 15.2}
+MISRA-C Rule 15.2 Description: An unconditional \textit{break} statement shall terminate every non-empty \textit{switch} clause
+
+Mü8004 Rule 0.2.3 establishes that every case branch in a \textit{switch} statement must contain a statement and end with \textit{break}.
+
+\paragraph{MISRA –C Switch Statement 15.3}
+MISRA-C Rule 15.3 Description: The final clause of a \textit{switch} statement shall be the default clause
+
+Mü8004 Rule 0.2.3 establishes that a default case must be defined in a \textit{switch} statement, and that this is the last statement in the \textit{switch} block.
+
+\paragraph{MISRA –C Switch Statement 15.4}
+MISRA-C Rule 15.4 Description: A \textit{switch} expression shall not represent a value that is effectively Boolean
+
+Mü8004 standard does not include this rule. It could be a useful rule to know which data types can be used with \textit{switch} statement, and avoid making mistakes when the \textit{switch} statement is 
+
+\paragraph{MISRA –C Switch Statement 15.5}
+MISRA-C Rule 15.5 Description: Every \textit{switch} statement shall have at least one \textit{case} clause
+
+Mü8004 standard does not include this rule. It could be useful to add this rule to clarify the necessity of adding at least one case clause in every \textit{switch} statement.
 
 
 \section{Conclusions}

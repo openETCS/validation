@@ -1,4 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/openETCS/validation.png?label=ready&title=Ready)](https://waffle.io/openETCS/validation)
+[![Stories in "In Progress"](https://badge.waffle.io/openETCS/validation.png?label=In Progress&title=In Progress)](https://waffle.io/openETCS/validation)
 management
 ==========
 

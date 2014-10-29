@@ -2,7 +2,7 @@
 by Bernd Gonska
 
 \subsubsection{Description of the developed train positioning system}
-The train positioning system clearly deviates from the SRS on purpose. It is intended increase safety and accuracy.
+The train positioning system clearly deviates from the SRS on purpose. This is justified by the intended operational performance.
 
 It basically implements the following concepts:
 \begin{itemize}
@@ -10,16 +10,18 @@ It basically implements the following concepts:
 
 \item The estimated position, (also named nominal position) is calculated to be the middle of the maximum safe position and the minimum safe position.
 
-\item Each BG has a an own accuracy and position, relative to the LRBG and the LRBG accuracy. Locations do not change their reference BG.
+\item Each Balise Group (BG) has a an own accuracy and position, relative to the Last Relevant Balise Group (LRBG) and the LRBG accuracy. Locations do not change their reference BG.
   
 \item Linking distances and accuracies are used to improve the accuracy when ever possible.
 
-\item Accuracy of a distance is calculated in a restrictive safe manner. For example: The accuracy of the distance between two ends of a linking chain includes the first and the last BG accuracy. The distance between two BG without linking is the odometry measured distance. The accuracy is the odometry acuracy during that distance. This inaccuracy is not reseted later.
+\item Accuracy of a distance is calculated taking the worst possible case into account. For example: The accuracy of the distance between two ends of a linking chain includes the first and the last BG accuracy. The distance between two BG without linking is the odometry measured distance. The accuracy is the odometry acuracy during that distance. This inaccuracy is not reseted later.
 
 \item The confidence interval of an announced location never increases when a new BG is accepted. Always use the most accurate information. The odometry error estimation is trustworthy enough to optimize linking accuracy and distances.
 \end{itemize}
 
 \subsubsection{Deviations}
+Within this paragraph the deviations to the specification is described by first mentioning the number of the Subset-026 paragraph \FIXME{Add TSI reference} and then stating how the design deviates:
+
 3.6.4.1 REMARK: There are several confidence intervals: They depend on the announced location.//
 
 3.6.4.2: In addition, the odometry inaccuracy of older track areas and older linking accuracy can be taken into account to widen a the confidence interval for safety reasons. The location accuracy of the LRBG is shortened on if the detected Balise group position is extreme. An old confidence interval can be taken instead of a larger new one.//

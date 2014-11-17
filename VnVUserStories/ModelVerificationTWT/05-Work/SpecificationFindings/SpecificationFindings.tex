@@ -108,18 +108,18 @@ Do I read each row of such a table as ``If transition condition holds and a vari
 \subsection{Subset 026 5.4 Procedure Start of Mission}
 
 \issue{5.4.2.2 Train Data}
-It is not clear what the train data consists of.
+In addition to the data listed, the control flow also depends on the status of the virtual balise cover and the radio network ID.
 
-\issue{5.4.3.2 State S0 - Driver starts a mission} We assume that this also refers to a signal sent by the driver to the on-board unit (e.g., by pushing a button).
+%\issue{5.4.3.2 State S0 - Driver starts a mission} We assume that this also refers to a signal sent by the driver to the on-board unit (e.g., by pushing a button).
 
 \issue{5.4.3.2 State S0 - communication session}
-Can there be active communication session other than with the RIU and the RBC?
+Can there be an active communication session other than with the RIU and the RBC?
 
 \issue{5.4.3.2 State S1 - Driver-ID Validation}
-The specification states that the driver revalidates the Driver-ID. So it can be assumed that the system relies on correct validation by the driver. Is this true? When does the Driver-ID become invalid or unknown? At End of Mission? The same holds for the \emph{train running number}.
+The specification states that the driver revalidates the Driver-ID. So it can be assumed that the system relies on correct validation by the driver. Is this true? In other words, what happens if the driver enters an invalid Driver-ID? When does the Driver-ID become invalid or unknown? At End of Mission? The same holds for the \emph{train running number}.
 
 \issue{5.4.3.2 State S1 - Virtual Balise Cover}
-Virtual balise cover is not properly specified. The same holds for the process of setting/removing virtual balise cover.
+Virtual balise cover is not properly specified. The same holds for the process of setting/removing virtual balise cover. How does setting and removing a virtual balise cover change the status of the virtual balise cover? Our guess is that setting results in a valid virtual balise cover whereas removing changes the status to unknown.
 
 \issue{5.4.3.2 State S1 - Transition E1}
 Last paragraph, S1: How do I understand ``possibly further to Train running number ...''?
@@ -150,6 +150,9 @@ In item 2 in S3, the driver sets a radio network ID and RBC-ID to unknown but in
 
 \issue{5.4.3.2 State S3 - EIRENE Short Number}
 The option to use the EIRENE short number is unclear: I assume the RBC is triggered to send an RBC-ID (i.e., the respective variable is set to valid). However, what happens if something goes wrong? We read in 3.18.4.3.4.1:  ``... does not direct to a RBC with the stored RBC ID, the connection will be terminated''. So how does the flow continue and which state do we enter in this case?
+
+\issue{5.4.3.2 State S3 - missing cases}
+How do we proceed if the driver decides not to reenter the radio network ID? Likewise, how do we proceed if no mobile terminal is registered?
 
 \issue{5.4.3.2 State D7 - Mobile Terminal registered}
 The definition of a mobile terminal is missing. How many mobile terminals are there? Is this equivalent to radio network registration (see state S3)? The latter is assumed for the initial models.

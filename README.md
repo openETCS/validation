@@ -12,3 +12,5 @@ You can find a guide below:
 If you have any questions concerning this top level project, feel free to contact [@MarcBehrens](https://github.com/MarcBehrens)
 
 
+
+[![Throughput Graph](https://graphs.waffle.io/openETCS/validation/throughput.svg)](https://waffle.io/openETCS/validation/metrics) 

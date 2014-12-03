@@ -1,0 +1,72 @@
+/** RTTL SWI TEST SPECIFICATION FILE 
+ */
+ 
+
+/* ==============================================================
+ * Include section
+ * (Only for test2-specific include files. Project-wide includes 
+ * are automatically added from the test2 project file)
+ * =============================================================*/
+
+// <insert include directives here>
+
+
+/* ==============================================================
+ * Global or static C declarations and definitions: 
+ * #define's, global/static variables, auxiliary functions etc.
+ * ==============================================================*/
+
+// @func void sub_routine(void){  }
+
+/* ==============================================================
+ * Abstract machine declaration.
+ * For unit tests, we just need one of them. 
+ * ==============================================================*/
+
+@abstract machine director_main(){
+
+// @input  queuing port Write_IN on channel_name_IN;
+// @ouput  queuing port Write_IN on channel_name_IN;
+
+ /* -------------------------------------------------------------
+  * Initialisation section
+  *   This section is executed once to setup the test execution
+  *--------------------------------------------------------------*/
+ @INIT:
+
+
+ /* -------------------------------------------------------------
+  * Termination section
+  *  This section is executed once to terminate the test procedure
+  *--------------------------------------------------------------*/
+ @FINIT:
+
+
+ /* --------------------------------------------------------------
+  * Process section
+  *    This section contains the proper test execution commands
+  *---------------------------------------------------------------*/
+ @PROCESS:
+  
+    @rttBeginTestStep; // --------------------------------------------------
+    {
+      // create situation to be tested
+
+      /** @rttPrint
+       * (DESCRIPTION OF TEST STEP)
+       *
+       * @tag        MY_TESTCASE_TAG
+       * @condition  My condition
+       * @event      My event
+       * @expected   My expected result
+       */
+      
+      // @rttAssert(<expected_result>);
+
+    }
+    @rttEndTestStep; // ----------------------------------------------------
+
+    @rttStopTest;
+
+}
+

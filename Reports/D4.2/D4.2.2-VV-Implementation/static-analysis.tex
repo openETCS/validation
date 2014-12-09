@@ -2109,7 +2109,7 @@ with really bad pieces of code (big, uncommented, unstructured) the MI value can
 As a first conclusion, the values from the tables above indicate the functions and file have a good maintanability.
 
 \section{MISRA and Mü8004 Rules Comparation}
-This section analyses the requirements designed in MISRA-C : 2004 standard and Mü8004 standard and makes a comparison between rules the might have in common.
+This section analyses the requirements designed in MISRA-C : 2004 standard and Mü8004 standard and makes a comparison between rules the might have in common and describes the most important features of the ones they don’t have in common. 
 
 \begin{center}
 \textsc{\underline{ENVIRONMENT:}}
@@ -2241,6 +2241,9 @@ This rule is not included in Mü8004 standard
 MISRA-C Rule 7.1 Description: Octal constants (other than zero) and octal escape sequences shall not be used
 
 This rule is not included in Mü8004 standard for the definition of constants. Although it defines how to create constants using “const” keyword, it could be interesting not to mix constants and octal, because of potential errors when working with fixed length constants
+
+\paragraph{Mü8004 – 0.2.10 Constants}
+Mü8004 – 0.2.10 Constants Rule: Although MISRA-C adds 7.1 Rule that describes the work with octal constants in the standard, Mü8004 - 0.2.10 Constants rule specifies better which is the way to define constants of different type, and the way to use them along the code.
 
 \begin{center}
 \textsc{\underline{DECLARATIONS AND DEFINITIONS:}}
@@ -2522,6 +2525,122 @@ MISRA-C Rule 15.5 Description: Every \textit{switch} statement shall have at lea
 
 Mü8004 standard does not include this rule. It could be useful to add this rule to clarify the necessity of adding at least one case clause in every \textit{switch} statement.
 
+\begin{center}
+\textsc{\underline{POINTERS AND ARRAYS:}}
+\end{center}
+
+\paragraph{MISRA –C Pointers and Arrays 17.1}
+MISRA-C Rule 17.1 Description: Pointer arithmetic shall only be applied to pointers that address an array or array element
+
+Mü8004 standard does not include this rule. This is a necessary rule to determine how pointers arithmetic has to be applied in order to have an expected behaviour.
+
+\paragraph{MISRA –C Pointers and Arrays 17.2}
+MISRA-C Rule 17.2 Description: Pointer subtraction shall only be applied to pointers that address elements of the same array
+
+Mü8004 standard does not include this rule. This is a necessary rule if the result we want to get is the number of elements separating the pointers.
+
+\paragraph{MISRA –C Pointers and Arrays 17.3}
+MISRA-C Rule 17.3 Description: >, >=, <, <= shall not be applied to pointer types except where they point to the same array
+
+Mü8004 standard does not include this rule. This is a necessary rule if the behavior we want to obtain after the comparison of the pointers it is a well-defined behavior.
+
+\paragraph{MISRA –C Pointers and Arrays 17.4}
+MISRA-C Rule 17.4 Description: Array indexing shall be the only allowed form of pointer arithmetic
+
+Mü8004 standard does not include this rule. This rule would help to avoid making mistakes like accessing to invalid memory addresses after manipulation of pointers.
+
+\paragraph{MISRA –C Pointers and Arrays 17.5}
+MISRA-C Rule 17.5 Description: The declaration of objects should contain no more than 2 levels of pointer indirection
+
+Mü8004 standard does not include this rule. Although this would not be a required rule, it would help to improve the readability of the code and avoid making mistakes because of the complexity of instructions.
+
+\paragraph{MISRA –C Pointers and Arrays 17.6}
+MISRA-C Rule 17.6 Description: The address of an object with automatic storage shall not be assigned to another object that may persist after the first object has ceased to exist
+
+Mü8004 Rule 0.2.17 does include this rule, as it establishes that addresses of auto variables shall only be stored in auto variables of the same visibility. 
+
+\paragraph{Mü8004 – 0.2.17 Pointer}
+Mü8004 – 0.2.17 Pointer Rule: Although MISRA-C includes rules about Pointers, it is necessary to establish the limitation of the relation between pointers and the functions, and pointers and the definition of some variables.
+
+\begin{center}
+\textsc{\underline{STRUCTURES AND UNIONS:}}
+\end{center}
+
+\paragraph{MISRA –C Structures and Unions 18.1}
+MISRA-C Rule 18.1 Description: All structure and union types shall be complete at the end of a translation unit
+
+Mü8004 standard does not include this rule. This is a basic rule that shows how the definition of structures has to be made.
+
+\paragraph{MISRA –C Structures and Unions 18.2}
+MISRA-C Rule 18.2 Description: An object shall not be assigned to an overlapping object
+
+Mü8004 standard does not include this rule. Although this rule refers to low-level programming, it could be useful in case it is permitted to create two objects having some overlap in memory.
+
+\paragraph{MISRA –C Structures and Unions 18.3}
+MISRA-C Rule 18.3 Description: An area of memory shall not be reused for unrelated purposes
+
+Mü8004 standard does not include this rule. This could be an interesting rule to avoid making mistakes by storing unrelated data in the same piece of memory. However, exceptions should be made for requirements of memory efficiency.
+
+\paragraph{MISRA –C Structures and Unions 18.4}
+MISRA-C Rule 18.4 Description: Unions shall not be used
+
+Mü8004 Rule 0.2.6 contradicts this rule. Unions could be used in situations in which the use of unions is advisable for an implementation that has to be efficient in terms of memory.
+
+
+\begin{center}
+\textsc{\underline{DOCUMENTATION:}}
+\end{center}
+
+\paragraph{MISRA –C Documentation 3.1}
+MISRA-C Rule 3.1 Description: All usage of implementation-defined behavior shall be documented
+
+Mü8004 standard does not include this rule. This could be a useful rule to guarantee that the standard’s behavior is completely documented and covered by the defined rules.
+
+\paragraph{MISRA –C Documentation 3.2}
+MISRA-C Rule 3.2 Description: The character set and the corresponding encoding shall be documented
+
+Mü8004 standard does not include this rule. As standard’s requirements have to be documented, same thing should be made with encoding of permitted character sets.
+
+\paragraph{MISRA –C Documentation 3.3}
+MISRA-C Rule 3.3 Description: The implementation of integer division in the chosen compiler should be determined, documented and taken into account
+
+Mü8004 standard does not include this rule. It should be documented the way arithmetic operations are done, and what are the limitations of operators and the expected behavior.
+
+\paragraph{MISRA –C Documentation 3.4}
+MISRA-C Rule 3.4 Description: All uses of \textit{\#pragma} directive shall be documented and explained
+
+Mü8004 standard does not include this rule. Although Mü8004 Rule 0.2.5 establishes that the use of the \textit{\#pragma} command requires a special explanation in the proof of functionality, it doesn’t require documenting its use. 
+
+\paragraph{MISRA –C Documentation 3.5}
+MISRA-C Rule 3.5 Description: If it is being relied upon, the implementation defined behavior and packing of bitfields shall be documented
+
+Mü8004 standard does not include this rule. It could be a useful rule to settle how the work with bit fields has to be done. 
+
+\paragraph{MISRA –C Documentation 3.6}
+MISRA-C Rule 3.6 Description: All libraries used in production code shall be written to comply with the provisions of this document, and shall have been subject to appropriate validation
+
+Mü8004 standard does not include this rule. It could be a useful rule to document what libraries have been used in the production of the code, or the ones supplied by the compiler.
+
+\paragraph{Mü8004 – 0.2.3 Coding of Basic Structures}
+Mü8004 – 0.2.3 Coding of Basic Structures Rule: Although MISRA-standard includes the way of working with basic structures like if-else, switch-case and do-while, Mü8004 standard defines clearly how this structures have to be defined.
+
+\paragraph{Mü8004 – 0.2.4 Operators}
+Mü8004 – 0.2.4 Operator Rule: Although MISRA-standard includes explanation for the most important operators, it is helpful to have a general overview of them within a table.
+
+\paragraph{Mü8004 – 0.2.11 Variables}
+Mü8004 – 0.2.11 Variables Rule: Mü8004 - 0.2.11 Variables rule explains the correct way of defining variables. Although the content of this rule has been treated in MISRA-C standard, it is appropriate to use a specific section to explain the work with variables.
+
+\paragraph{Mü8004 – 0.2.19 Data References}
+Mü8004 – 0.2.19 Data References Rule: Although MISRA-C includes rules about Documentation, it is necessary to make a reference to the documentation of data related and not related to the project planning, and not only to the data and to the libraries used along the code.
+
+\paragraph{Mü8004 – 0.2.20 Cross Reference List}
+Mü8004 – 0.2.20 Cross Reference List Rule: MISRA-C doesn’t include the necessity of using cross reference list for the data of the code. It also could be useful to add the characteristics that need to have the development tools used for this purpose.
+
+\paragraph{Mü8004 – 0.2.21 Assembler Coding}
+Mü8004 – 0.2.21 Assembler Coding Rule: MISRA-C doesn’t include the necessity of justifying the use of assembler coding. It is helpful to specifying that assembler could be useful in time critical programming.
+
+\paragraph{Mü8004 – 0.2.25 Optimization}
+Mü8004 – 0.2.25 Optimization Rule: Although MISRA-standard includes the importance of the characteristics of compiler used in the development environment, it is useful to explain the influence of optimization in the compiler.
 
 \section{Conclusions}
 

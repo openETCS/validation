@@ -108,7 +108,10 @@ Do I read each row of such a table as ``If transition condition holds and a vari
 \subsection{Subset 026 5.4 Procedure Start of Mission}
 
 \issue{5.4.2.2 Train Data}
+The specification seems to be inconsistent:
 In addition to the data listed, the control flow also depends on the status of the virtual balise cover and the radio network ID.
+
+Our guess: radio network ID = RBC-ID
 
 %\issue{5.4.3.2 State S0 - Driver starts a mission} We assume that this also refers to a signal sent by the driver to the on-board unit (e.g., by pushing a button).
 
@@ -116,7 +119,14 @@ In addition to the data listed, the control flow also depends on the status of t
 Can there be an active communication session other than with the RIU and the RBC?
 
 \issue{5.4.3.2 State S1 - Driver-ID Validation}
-The specification states that the driver revalidates the Driver-ID. So it can be assumed that the system relies on correct validation by the driver. Is this true? In other words, what happens if the driver enters an invalid Driver-ID? When does the Driver-ID become invalid or unknown? At End of Mission? The same holds for the \emph{train running number}.
+The specification states that the driver revalidates the Driver-ID. So it can be assumed that the system relies on correct validation by the driver. Is this true? 
+In other words, what happens if the driver enters an invalid Driver-ID?
+
+\resolution It is true. There are up to three iterations of asking the driver for a correct ID.
+
+\issue{5.4.3.2 State S1 - Driver-ID Validation}
+ When does the Driver-ID become invalid or unknown? At End of Mission? The same holds for the \emph{train running number}.
+
 
 \issue{5.4.3.2 State S1 - Virtual Balise Cover}
 Virtual balise cover is not properly specified. The same holds for the process of setting/removing virtual balise cover. How does setting and removing a virtual balise cover change the status of the virtual balise cover? Our guess is that setting results in a valid virtual balise cover whereas removing changes the status to unknown.
@@ -125,7 +135,9 @@ Virtual balise cover is not properly specified. The same holds for the process o
 Last paragraph, S1: How do I understand ``possibly further to Train running number ...''?
 
 \issue{5.4.3.2 State S2 - Missing case: level data is valid}
-This case is possible, see D2 but it is not mentioned how to proceed. We assume that also in this case para 3 and 4 in S2 are applied.
+There seems to be an inconsistency: It is not explicitly mentioned, that the paragraphs 3 \& 4 are related to the 'valid' case. This case is possible, see D2 but it is not mentioned how to proceed. We assume that also in this case para 3 and 4 in S2 are applied.
+
+
 
 \issue{5.4.3.2 State S2 - Enter/Re-validate Level}
 The specification distinguishes the following three cases:
@@ -136,14 +148,18 @@ The specification distinguishes the following three cases:
 \end{enumerate}
 The purpose of this distinction is not clear as entering the level suffices (the current setting is invalid or unknown and thus irrelevant).
 
+\resolution It depends on the actual interface of the driver whether we need to distinguish between validation and reentering.
+
 \issue{5.4.3.2 State S3 - Selection of Radio Network}
-It is not mentioned that a valid \emph{radio network ID} must be stored in the on-board unit, but this seems to be necessary because the driver may not select a new radio network. The type of the radio network IDs is not mentioned.
+Inconsistency in the specification: It is not mentioned that a valid \emph{radio network ID} must be stored in the on-board unit, but this seems to be necessary because the driver may not select a new radio network. The type of the radio network IDs is not mentioned.
 
 \issue{5.4.3.2 State S3 - Mobile terminal}
 What happens if no Mobile terminal is registered to a Radio Network (or can we assume that at least one mobile terminal is always registered); see 2nd para in S3.
 
 \issue{5.4.3.2 State S3 - RBC-ID}
 What is the difference between the \emph{RBC-ID} that may be invalid and the \emph{last stored RBC-ID}? Why can the latter not be invalid?
+
+
 
 \issue{5.4.3.2 State S3}
 In item 2 in S3, the driver sets a radio network ID and RBC-ID to unknown but in item 3, it is assumed that the RBC-ID is invalid. So is it possible to skip the first two items? In addition, after applying item 3 (i.e., using the last stored RBC-ID number) is the RBC-ID set to valid?
@@ -158,7 +174,7 @@ How do we proceed if the driver decides not to reenter the radio network ID? Lik
 The definition of a mobile terminal is missing. How many mobile terminals are there? Is this equivalent to radio network registration (see state S3)? The latter is assumed for the initial models.
 
 \issue{5.4.3.2 State D33}
-Does the RBC send a signal showing whether it can validate the position report (see para 1 and 3 in D33)? Should not there be a timeout as the position may become invalid after some time?
+Does the RBC send a signal showing whether it can validate the position report (see para 1 and 3 in D33)?
 
 \issue{5.4.3.2 State S10}\label{i:s10}
 The point in time when item 4 takes place is unclear for E12 (i.e., item 1): I assume the driver selects SH (i.e., the mode is changed), then item 4 is applied (invalid position is set to unknown), then the level check (see item 1) is performed, and based on this check procedure shunting is called or the process goes back to S10. 
@@ -168,7 +184,8 @@ Moreover, how do I read the last sentence in item 1: Does the RBC reject the req
 The same question arises at 5.4.5.3.g.
 
 \issue{5.4.3.2 State S11 - RBC acknowledgment}
-Can we always expect an acknowledgment? (Sometimes it is specified that the RBC is, after some timeout, triggered again.)
+Can we always expect an acknowledgment? (Sometimes it is specified that the RBC is, after some timeout, triggered again.) 
+\marginpar{Stephan}
 
 \issue{5.4.3.3, last row on p.17}
 I assume that if the driver chooses to re-enter the level (see 5.4.5.3.e), then the values are set according to the table, and after he entered the level, at least the status of the ETCS level should be set to valid.
@@ -208,7 +225,7 @@ We call the train trip procedure which itself calls Shunting. How do we ensure t
 What is an ongoing mission?
 
 \issue{5.6.4.1.2 -- termination}
-What happens after the driver has been informed; that is, do we continue as we would do in case the session was not terminated (i.e., as in A220)?
+What happens after the driver has been informed; that is, do we continue as we would do in case the session was not terminated (i.e., as in A220)? The same question arises for the situation described in 5.6.4.3.
 
 \issue{5.6.4.1.3}
 Does this item refer to a transition directly after A220 or to 5.6.4.1.2?

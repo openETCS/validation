@@ -79,7 +79,7 @@
 
 \begin{abstract}
 This document describes the overall concepts for hazard and risk analysis and for the development of the resulting safety case as it has been identified during the first iteration of WP 4.
-After the introduction defining the overall context of the document, the combination of methods are presented to identify hazards inside the openETCS software and to assess the risk resulting from these hazards for the system and subsystems. The sequence of activities is detailed on the proof of concept performed during the first WP 4 iteration. In the second part of this document the plan for the openETCS safety case is described. This includes the compilation of documents resulting from the performed openETCS software development as well as the derivation of a generic safety case structure for the development of an on-board unit using the openETCS software.
+After the introduction defining the overall context of the document, the combination of methods is presented to identify hazards inside the openETCS software and to assess the risk resulting from these hazards for the system and subsystems. The sequence of activities is detailed on the proof of concept performed during the first WP 4 iteration. In the second part of this document the plan for the openETCS safety case is described. This includes the compilation of documents resulting from the performed openETCS software development as well as the derivation of a generic safety case structure for the development of a ETCS on-board unit using the openETCS software development process.
 \end{abstract}
 
 %=============================
@@ -100,7 +100,7 @@ Work Package &  WP4  \\
 Deliverable ID & D 4.2.3\\
 \hline
 Document title & openETCS Hazard and Risk Analysis and Safety Case Methodology \\
-Document version & 00.3 \\
+Document version & 01.0 \\
 Document authors (org.)  & Jan Welte (TU-BS) and Merlin Pokam (AEbt)\\
 \hline
 \end{tabular}
@@ -111,7 +111,7 @@ Document authors (org.)  & Jan Welte (TU-BS) and Merlin Pokam (AEbt)\\
 \hline
 Last version reviewed & 00.2 \\
 \hline
-Main reviewers (org.) & Olivier Hervillard	(Systerel), Stephan Jagusch (Aebt), Hardi Hunger (DLR) and Marielle Petit-Doche (Systerel) \\
+Main reviewers (org.) & Olivier Hervillard	(Systerel), Hardi Hunger (DLR), Stephan Jagusch (Aebt) and Marielle Petit-Doche (Systerel) \\
 \hline
 \end{tabular}
 
@@ -121,7 +121,7 @@ Main reviewers (org.) & Olivier Hervillard	(Systerel), Stephan Jagusch (Aebt), H
 \hline
   &  Name & Role & Date   \\
 \hline  
-Written by    &  Jan Welte & WP4-T4.4 Task Leader  &  April 2014\\
+Written by    &  Jan Welte & WP4-T4.4 Task Leader  &  February 2015\\
 \hline
 Approved by & -- & -- & \\
 \hline
@@ -138,7 +138,7 @@ Version &  Date & Author(s) & Justification  \\
 00.1 & 28/01/2014 & Jan Welte &  Extended Introduction  \\
 00.2 & 19/03/2014 & Jan Welte &  Reworded document structure to incorporate review comments from internal assessment \\
 00.3 & 16/04/2014 & Jan Welte &  Incorporated Review comments \\
-0103 & 26/02/2015 & Jan Welte &  Incorporated new Design and changes in WP 3 work \\
+01.0 & 26/02/2015 & Jan Welte &  Incorporated new Design and changes in WP 3 work \\
 \hline  
 \end{tabular}
 \newpage
@@ -151,12 +151,12 @@ Version &  Date & Author(s) & Justification  \\
 \chapter{Introduction}
 \label{sec:introduction}
 
-During system development the system limits and components have to be established before the necessary steps can be taken to ensure that the system behavior is not unsafe. In this context safety is understood as protecting the environment from hazards coming from the system as distinguished from security which covers protecting the system itself from hazards coming from the outside. Respectively, safety and security are comparative terms which have to be specified in context of the system for which they shall be proven. The standards for system development like EN 50126, EN 50128 and EN 50129 provide only guidelines how safety for a system shall be determined and assured by providing certain management principles and methods for the respective system development. As the openETCS project is related to a number of different system definitions like the overall railway system, the on-board unit, the Kernel software and the development tool chain different safety aspects have to be taken in consideration. Only a small number of these can actually be determined in the openETCS context alone.
+During system development the system limits and components have to be established before the necessary steps can be taken to ensure that the system behavior is not unsafe. In this context safety is understood as protecting humans from harm resulting from the system as distinguished from security which covers protecting the system itself from hazards coming from the outside. Respectively, safety and security are comparative terms which have to be specified in context of the system for which they shall be proven. With respect to the definition of safety used in the EN 50128 hazards are only taken in account with respect to direct harm to humans, not to the environment overall, as it is considered in other contexts. The standards for system development like EN 50126, EN 50128 and EN 50129 provide only guidelines how safety for a system shall be determined and assured by providing certain management principles and methods for the respective system development. As the openETCS project is related to a number of different system definitions like the overall railway system, the on-board unit, the Kernel software and the development tool chain different safety aspects have to be taken in consideration. Only a small number of these can actually be determined in the openETCS context alone. Respectively, this document and all considerations concerning safety in openETCS are focusing on the principal functional safety of the openETCS software and principals which have to be applied if the resulting model and software code shall be used in a specific context.
 
 \section{Purpose}
 \label{sec:purpose}
 
-The hazard and risk analysis activities are part of the overall safety process which is defined in the EN 50129 as "the series of procedures that are followed to enable all safety requirements of a product to be identified and met". To ensure that the safety process is implemented in a proper way the EN 50129 requires a safety management which is consistent process for RAMS presented in the EN 50126. To do this the management has to present and control all related activities and documentations over the life-cycle taking into account the approval mile-stones and review requirements. As the product life-cycle is an ongoing process and iterative changes are taking place, the management system has to ensure that the respective safety effects of every change is considered. As the openETCS project does not cover the full development of an ETCS on-board unit, the safety related activities in WP 4 do not cover all required parts of a EN 50129 complaint safety process and management. Hence, the purpose of this document is to present the basic concepts for hazard and risk analysis and safety case development derived respectively evaluated during the first iteration of WP 4. 
+The hazard and risk analysis activities are part of the overall safety process which is defined in the EN 50129 as "the series of procedures that are followed to enable all safety requirements of a product to be identified and met". To ensure that the safety process is implemented in a proper way the EN 50129 requires a safety management which is consistent process for RAMS presented in the EN 50126. To do this the management has to present and control all related activities and documentations over the life-cycle taking into account the approval mile-stones and review requirements. As the product life-cycle is an ongoing process and iterative changes are taking place, the management system has to ensure that the respective safety effects of every change is considered. As the openETCS project does not cover the full development of an ETCS on-board unit, the safety related activities in WP 4 do not cover all required parts of a EN 50129 complaint safety process and management. Hence, the purpose of this document is to present the basic concepts for hazard and risk analysis and safety case development evaluated and derived during the first iteration of WP 4. As openETCS constitutes a research project planning and responsibilities can not be derived and confined as it would be expected in a pure development project. Respectively, this document is not intended to document all required roles, documents and responsibilities as it would be required for safety documentation according to EN 50126 and EN 50129. This report only intends to present concepts and principals which would fit the needs for openETCS and how these have to be applied up to this point in the project.
 
 As the movement characteristics of a train set specific limits in which a driver alone is able to avoid derailment or any kind of collisions railway signaling and protection systems have been developed to ensure safe train movements. Respectively, the mayor parts of a train control system like ETCS include functionalities which shall guarantee that the overall railway system does not get in a hazardous situation. Correspondingly,this document illustrates the concepts for hazard and risk analysis which has been defined during the first WP 4 iteration to identify hazards or allocate them from the overall system analysis if the are related to the openETCS software. In addition the resulting risk for these hazards has to be evaluated to deduce specific safety requirements which have to be considered during the development process to reduce the risk. To support the concept presentation the results of the first proof of concept activities performed during this iteration are presented in section \ref{sec:Proofofconcept}.
 

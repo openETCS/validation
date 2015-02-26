@@ -1,0 +1,246 @@
+% \appendix
+
+% \chapter{Requirements on \VV}
+% \label{sec:appendix}
+
+
+\section{Requirements on \VV from D2.9}
+\label{sec:requirements-vv-D29}
+%\todo{Adapt the intro text} 
+
+The already provided requirements require a
+safety plan compliant to the CENELEC EN~50126, 50128 and 50129.  This
+pulls a number of requirements on V\&V, including Verification and
+Validation plans. On the topic of compliance to EN~50128, one shall
+also refer to the D2.2 document.
+
+
+\reqfixed{02}{061}{A Verification plan shall be issued and complied
+  with.}  
+\subreqfixed{02}{061}{01}{The verification plan shall
+  provide a method to demonstrate the requirements covering all the
+  development artifacts.}  
+\subreqfixed{02}{061}{02}{The verification
+  plan shall state all verification activities required for each of
+  these development artifacts.} 
+ \reqfixed{02}{062}{A Validation Plan
+  shall be issued and complied with.}  
+\subreqfixed{02}{062}{01}{The
+  validation plan shall provide a method to validate all functional
+  and safety requirements over all development artifacts.}
+\subreqfixed{02}{062}{02}{The validation plan shall state all
+  validation activities required for each of these development
+  artifacts.}
+
+\reqfixed{01}{021}{The test plan shall comply the mandatory documents
+  of the SUBSET-076, restricted to the scope of the OpenETCS project.}
+\begin{justif}
+  It will possibly be difficult to model all the tests in the course
+  of the project, but the test plan should at least be complete.
+\end{justif}
+
+
+\reqfixed{02}{063}{Each design artifact needs a reference artifact
+  which it implements (\emph{e.g.} code to detailed model, SFM to SSRS
+  model\dots)} 
+
+\subreqfixed{02}{063}{01}{The implementation between them relation
+  shall be specified in detail.}  e.g.\ for state machine and a higher
+level state machine mapping of interfaces, states and transition is
+required.  This includes additional invariants, input assumptions and
+further restrictions. This informaiton is the basis for verification
+activities.
+
+\subreqfixed{02}{063}{02}{The design of the artifacts shall be made
+  such to allow verifiability as far as possible.}
+
+\reqfixed{02}{064}{The findings from the verification shall be traced,
+  and will be adequately addressed (taken into consideration, or
+  postponed or discarded with a justification).}
+
+
+
+\section{General Requirements on Verification}
+
+\tbd{Reformulate text taken from the EN~50128 to avoid copyright infringements.}
+{\footnotesize\sffamily\centering
+  \begin{longtable}{||p{.15\textwidth}|p{.4\textwidth}|p{.4\textwidth}||}
+    \hline\hline
+    \bfseries Excerpt from EN~50128:2011 [N01] & \bfseries
+    Requirement & \bfseries Project Relevance\\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    5.3.2.7 & For each document, traceability shall be provided in
+    terms of a unique reference number and a defined and documented
+    relationship with other documents.  &
+    fully applicable\\
+    \hline 5.3.2.8 & Each term, acronym or abbreviation shall have the
+    same meaning in every document.  If, for historical reasons, this
+    is not possible, the different meanings shall be listed and the
+    references given.  &
+    \\
+    \hline 5.3.2.9 & Except for documents relating to pre-existing
+    software (see 7.3.4.7), each document shall be written according
+    to the following rules:
+    \begin{itemize}
+    \item it shall contain or implement all applicable conditions and
+      requirements of the preceding document with which it has a
+      hierarchical relationship;
+    \item it shall not contradict the preceding document.
+    \end{itemize}
+    &
+    \\
+    \hline 5.3.2.10 & Each item or concept shall be referred to by the
+    same name or description in every document.  &
+    \\
+    \hline 6.5.4.14 & Traceability to requirements shall be an
+    important consideration in the validation of a safety-related
+    system and means shall be provided to allow this to be
+    demonstrated throughout all phases of the lifecycle.  &
+    \\
+    \hline 6.5.4.15 & Within the context of this European Standard,
+    and to a degree appropriate to the specified software safety
+    integrity level, traceability shall particularly address
+    \begin{enumerate}[a)]
+    \item traceability of requirements to the design or other objects
+      which fulfil them,
+    \item traceability of design objects to the implementation objects
+      which instantiate them.
+    \item traceability of requirements and design objects to the tests
+      (component, integration, overall test) and analyses that verify
+      them.
+    \end{enumerate}
+
+    Traceability shall be the subject of configuration management.  &
+    \\
+    \hline 6.5.4.16 & In special cases, e.g. pre-existing software or
+    prototyped software, traceability may be established after the
+    implementation and/or documentation of the code, but prior to
+    verification/validation.  In these cases, it shall be shown that
+    verification/validation is as effective as it would have been with
+    traceability over all phases.  & This requirement does not apply to
+    the project.
+    \\
+    \hline 6.5.4.17 & Objects of requirements, design or
+    implementation that cannot be adequately traced shall be
+    demonstrated to have no bearing upon the safety or integrity of
+    the system.  &
+    \\
+    \hline
+\end{longtable}}
+
+
+{\footnotesize\sffamily\centering
+  \begin{longtable}{||p{.15\textwidth}|p{.8\textwidth}||}
+    \hline\hline
+    \textbf{Excerpt from EN~50128:2011 [N01]} & \textbf{Requirement} \\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    6.1.4.1 & Tests performed by other parties such as the
+    Requirements Manager, Designer or Implementer, if fully documented
+    and complying with the following requirements, may be accepted by
+    the Verifier.
+    \\
+    \hline 6.1.4.2 & Measurement equipment used for testing shall be
+    calibrated appropriately.  Any tools, hardware or software, used
+    for testing shall be shown to be suitable for the purpose.
+    \\
+    \hline 6.1.4.3 & Software testing shall be documented by a Test
+    Specification and a Test Report, as defined in the following.
+    \\
+    \hline 6.2.4.2 & A Software Verification Plan shall be written,
+    under the responsibility of the Verifier, on the basis of the
+    necessary documentation.
+    \\
+    \hline 6.2.4.3 & The Software Verification Plan shall describe the
+    activities to be performed to ensure proper verification and that
+    particular design or other verification needs are suitably
+    provided for
+    \\
+    \hline 6.2.4.4 & During development (and depending upon the size
+    of the system) the plan may be sub-divided into a number of child
+    documents and be added to, as the detailed needs of verification
+    become clearer.
+    \\
+    \hline 6.2.4.5 & The Software Verification Plan shall document all
+    the criteria, techniques and tools to be used in the verification
+    process.  The Software Verification Plan shall include techniques
+    and measures chosen from Table A.5, Table A.6, Table A.7 and Table
+    A.8.  The selected combination shall be justified as a set
+    satisfying 4.8, 4.9 and 4.10
+    \\
+    \hline 6.2.4.6 & The Software Verification Plan shall describe the
+    activities to be performed to ensure correctness and consistency
+    with respect to the input to that phase. These include reviewing,
+    testing and integration.
+    \\
+    \hline 6.2.4.7 & In each development phase it shall be shown that
+    the functional, performance and safety requirements are met.
+    \\
+    \hline 6.2.4.8 & The results of each verification shall be
+    retained in a format defined or referenced in the Software
+    Verification Plan.
+    \\
+    \hline 6.2.4.9 & The Software Verification Plan shall address the
+    following:
+    \begin{enumerate}[a)]
+    \item the selection of verification strategies and techniques (to
+      avoid undue complexity in the assessment of the verification and
+      testing, preference shall be given to the selection of
+      techniques which are in themselves readily analysable);
+    \item selection of techniques from Table A.5, Table A.6, Table A.7
+      and Table A.8;
+    \item  the selection and documentation of verification activities;  
+    \item  the evaluation of verification results gained;   
+    \item  the evaluation of the safety and robustness requirements;  
+    \item the roles and responsibilities of the personnel involved in
+      the verification process;
+    \item the degree of the functional based test coverage required to
+      be achieved;
+    \item the structure and content of each verification step,
+      especially for the Software Requirement Verification (7.2.4.22),
+      Software Architecture and Design Verification (7.3.4.41,
+      7.3.4.42), Software Components Verification (7.4.4.13), Software
+      Source Code Verification (7.5.4.10) and Integration Verification
+      (7.6.4.13) in a way that facilitates review against the Software
+      Verification Plan.
+    \end{enumerate}
+    \\
+    \hline
+\end{longtable}}
+
+%\todo{Insert other tables.}
+
+\section{Glossary}
+\label{sec:glossary}
+
+\begin{description}
+\item[API:] Application Programming Interface. In the project, the API
+  defines the interface of the EVC software to the operating system
+  and hardware. \textit{The exact nature of the API still needs to be
+    defined, whether it should be seen as a specification or as an
+    implementation has yet to be resolved.}
+\item[ATAM:] Architecture Tradeoff Analysis Method
+\item [DAS2V:] Design Artifact Subject to Verification or Validation,
+  e.g.\ some model or code fragment which has to be verified against
+  its specification.
+\item[EVC:] European Vital Computer
+\item[FLOSS:] Free/Libre/Open Source Software
+\item[FFM:] Fully Formal Model. Sometimes called ``Strictly Formal
+  Model''.  A model of a part of the design which has a fully formal
+  semantics and can thus be subjeced to rigorous analysis methods from
+  the domain of mathematical or computational logic.
+\item[HW:] Hardware
+\item[SAAM:] Software Architecture Analysis Method 
+\item[SFM:] Semi Formal Model. A model of some part of the design
+  whose semantical interpretation is either not fully fixed or is
+  similar to that of a program. I.e., the interpretation might depend
+  on variations in the code generation or compilation, or it does not
+  resolve ``semantic variation points'' (UML).
+\item[SW:] Software
+\end{description}
+

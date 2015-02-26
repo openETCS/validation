@@ -1,29 +1,32 @@
 
-\documentclass{template/openetcs_article}
+\documentclass{template/openetcs_report}
 % Use the option "nocc" if the document is not licensed under Creative Commons
 %\documentclass[nocc]{template/openetcs_article} 
-\usepackage[pdftex]{hyperref}
-\usepackage{lipsum,url}
 \usepackage{xspace}
 \usepackage{graphicx}
-\usepackage{fixme}
+\usepackage[draft,nomargin,inline]{fixme}
 \usepackage{lscape} 
-\usepackage{pgfgantt}
-\usepackage{adjustbox}
-\usepackage{datetime}
 \usepackage{listings}
 \usepackage{placeins}
+\usepackage{framed}
 \usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage[pdftex]{hyperref}
 
-\numberwithin{figure}{section}
-\numberwithin{table}{section}
+\numberwithin{figure}{chapter}
+\numberwithin{table}{chapter}
 \usepackage{float}
 \floatstyle{plain}
-\newfloat{listing}{thp}{lop1}[section]
+\newfloat{listing}{thp}{lop1}[chapter]
 \floatname{listing}{Listing}
 
-
-\def\CC{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\tiny\bf ++}}}
+\renewcommand\floatpagefraction{.90}
+\renewcommand\topfraction{.90}
+\renewcommand\bottomfraction{.90}
+\renewcommand\textfraction{.1}
+\setlength{\unitlength}{1mm}
 
 
 %user specified macros
@@ -46,13 +49,13 @@
 \wp{Work Package 4: ``Validation \& Verification Strategy''}
 
 %set a title here
-\title{First Validation and Verification Report on Implementation/Code}
+\title{Preliminary Validation and Verification Report on Implementation/Code}
 
 %set a subtitle here
 %\subtitle{Description of Work}
 
 %set the date of the report here
-\date{December 2013}
+\date{May 2014}
 
 %define a list of authors and their affiliation here
 
@@ -62,7 +65,11 @@
  
 \author{Jens Gerlach, Kim Völlinger, Andreas Carben}
 
-\affiliation{Fraunhofer FOKUS, WP4.3 Task Leader (Validation and Verification of Implementation/Code)}
+\affiliation{Fraunhofer FOKUS\\
+  Kaiserin-Augusta-Allee 31 \\
+  10589 Berlin, Germany\\
+  jens.gerlach@fokus.fraunhofer.de \\
+  www.fokus.fraunhofer.de}
 
 \author{Izaskun de la Torre}
 \affiliation{Software Quality Systems S.A.}
@@ -71,7 +78,7 @@
 \coverart[width=350pt]{openETCS_EUPL}
 
 %define the type of report
-\reporttype{Description of work}
+\reporttype{Intermediate report}
 
 
 \begin{abstract}
@@ -89,19 +96,23 @@
 \maketitle
 \tableofcontents
 \listoffiguresandtables
-\newpage
+\clearpage
+\listof{listing}{List of code examples}
+\listoffixmes
+\cleardoublepage
 %=============================
 
 % The actual document starts below this line
 %=============================
 
-
+\mainmatter
 %Start here
 
 \include{introduction}\cleardoublepage
-\include{sqs}\cleardoublepage
-\include{fraunhofer-fokus}\clearpage
-%\include{conclusions}\cleardoublepage
+\include{frama-c}\cleardoublepage
+\include{formal-verification}\cleardoublepage
+\include{static-analysis}\cleardoublepage
+\include{conclusions}\cleardoublepage
 
 
 \bibliographystyle{unsrt}

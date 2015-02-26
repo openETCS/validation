@@ -4,9 +4,22 @@
 \usepackage{listings}
 \usepackage{color} 
 
-% 1.3.10 jb:
-% commented-out unused colors and styles,
-% changed color names to logical ones
+% fix bug with listing under texlive-2014
+% see https://lists.debian.org/debian-tex-maint/2014/06/msg00209.html
+
+\makeatletter
+\renewcommand\lstinline[1][]{%
+  \leavevmode\bgroup % \hbox\bgroup --> \bgroup
+  \def\lst@boxpos{b}%
+  \lsthk@PreSet\lstset{flexiblecolumns,#1}%
+  \lsthk@TextStyle
+  \ifnum\iffalse{\fi`}=\z@\fi
+  \@ifnextchar\bgroup{%
+  \ifnum`{=\z@}\fi%
+  \afterassignment\lst@InlineG \let\@let@token}{%
+  \ifnum`{=\z@}\fi\lstinline@}}
+\makeatother
+
 
 %\definecolor{darkred}		{rgb}{0.60,0.00,0.00}
 \definecolor{coACSLBehavior}	{rgb}{0.30,0.00,0.00}
@@ -67,7 +80,7 @@
 }
 
 \lstdefinestyle{inline}
-{ basicstyle = \ttfamily\small\color{coASCL},
+{      % basicstyle = \ttfamily\small\color{coASCL},
 	keywordstyle = \ttfamily\small\color{coASCL},
 	stringstyle=\color{coASCL},
 	style=acsl-inline,

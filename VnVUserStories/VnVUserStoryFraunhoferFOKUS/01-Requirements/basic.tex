@@ -1,0 +1,84 @@
+
+\section{Basic concepts}
+\label{sec:basic}
+
+\begin{itemize}
+\item
+A \emph{bit stream} is an array containing elements of type \verb"uint8_t".
+
+A bit stream of length $n$ contains $8n$ bits.
+
+\item
+A bit stream is \emph{valid} if the array is valid.
+
+\item 
+A bit stream can be indexed both by its array indices
+and its \emph{bit indices}.
+
+Figure~\ref{fig:bitstream-indices} shows the difference between 
+array indices and bit indices in a bit stream.
+The two bit indices, 0~and~14,
+mark bit positions in the first and second array element, respectively.
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.65\textwidth]{figures/byte-and-bit-indices.pdf}
+\caption{\label{fig:bitstream-indices} Byte indices and bit indices in a bit stream}
+\end{center}
+\end{figure}
+
+\item 
+The C~programming language neither provides a type \emph{bit}
+nor does it support random access to the bits of a bit stream.
+In order to access the $i$-th bit of a bit sequence one typically
+has to first access the byte with index $j = i/8$ and then access the 
+bit $k = i \pmod{8}$ within this byte.
+Note that in Figure~\ref{fig:bitstream-indices} 
+bytes and bits are indexed in increasing order from the \emph{left}.
+On the byte level, however, bits are often indexed from the \emph{right}.
+For example, to access the $k$-th bit of a byte \inl{a} one can
+shift this bit to the right by $7-k$ and extracts then the now
+rightmost bit by performing a bit-wise \emph{and} with the value~1
+%
+\begin{verbatim}
+   (a >> (7-k)) & 1
+\end{verbatim}
+
+\item
+A \emph{bit sequence} is a consecutive sequence of bits within a bit stream
+as represented in Figure~\ref{fig:bitsequence}.
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.40\textwidth]{figures/bit_sequence.pdf}
+\caption{\label{fig:bitsequence} A bit sequence within a bit stream}
+\end{center}
+\end{figure}
+
+A bit sequence is given by the position of its first bit (a bit index in the bit stream)
+and its \emph{length}, that is, the number of bits it contains.
+
+\item
+
+A bit sequence that starts at bit index $p$ and that consists of
+length $l \geq 0$ is refered to \emph{valid} (with respect to a bit stream of length $n$)
+if the following conditions are satisfied
+\begin{align*}
+  0 &\leq p < 8n \\
+  0 &\leq p + l \leq 8n
+\end{align*}
+
+Not that only the bits with indices $p \leq i < p + l$ are to be accessed
+but not the bit with index~$p+l$.
+
+\end{itemize}
+
+We assume that the C-types \inl{unsigned int} and \inl{int}, which
+are used in the implementation to represent indices, counting and error codes,
+have a width of~32~bits.
+We point this out here because we conducted the verification on a platform with
+these characteristics.
+
+As an aside, MISRA-C discourages the use of ``generic'' integer types
+such as \inl{int} and \inl{unsigned int} and recommends the use of integer types whose names
+contain the exact width.
+

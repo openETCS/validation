@@ -302,6 +302,7 @@ The EN~50128 standard defines safety as the ``freedom from unacceptable levels o
 This demonstrates that for every specific hazardous situation a harmful event can be identified which will result in harm. The probability of occurrence for this event combined with the probable extent of harm is defined as risk.
 
 \subsection{Hazard and Risk Analysis}
+\label{sec:HandR-Ana}
 
 Based on the probabilistic safety concept the first step to evaluate the existing risk is to define the system properties, specifically identifying the harms and their related hazardous situations. This has to be performed during a system hazard analysis. Afterwards the respective properties have to be determined by assessing the risk concerning the identified hazards. Respectively, a risk analysis and assessment is defined in the ISO/IEC Guide 51 as a systematic use of available information to identify hazards and to estimate the risk. The EN 50129 states a hazard analysis as the process of identifying hazards and analysing their causes, and the derivation of requirements to limit the likelihood and consequences of hazards to a tolerable level. This extends the ISO/IEC Guide 51 definition by adding a risk reduction. As this demonstrates that the terms hazard and risk analysis are used synonymous to represent the respective process, containing the following tasks, to reduce risks to a tolerable level:
 
@@ -322,7 +323,7 @@ Accordingly, the hazard and risk analysis represents an iterative process of ris
 \label{fig:risk-analysis}
 \end{figure}
 
-\paragraph{Safety Integrity Level}
+\subsection{Safety Integrity Level}
 
 Since risk, due to  uncertainty in real systems and to its multidimensional nature, cannot be eliminated completely, it is necessary for risk reduction to identify a relative level  as the required level of safety for a system. This is the accepted risk, which is classified under the operating conditions of the system to be sufficiently low and thus be acceptable. The safety integrity level (SIL) represented the acceptable risk for every part of the system. The risk control process as it is presented in figure \ref{fig:Risk-control-modell-eng} is then performed to ensure that the safety integrity levels are reach by every part of the system.
 
@@ -349,13 +350,13 @@ Therefore, the British Ministry of Defence defines a safety case as “a structu
 \chapter{OpenETCS Development Process}
 \label{sec:development-process}
 
-The main products of the openETCS project will be the OpenETCS specification model used to generate the OpenETCS on-board software and the OpenETCS tool chain development, which is used to formalize the ERA Specifications for ETCS, generate the Software Code and perform verification and validation activities. Both parts have their own development process, but the focus for the hazard and risk analysis and the safety case shall be on the software development process. The openETCS tool chain shall only be considered with respect to its role in the software development process as the openETCS project spends the effort to provide a qualifiable tool chain, but will not be able to provide all evidence for a complete qualification.
+The main products of the openETCS project will be the openETCS specification model used to generate the openETCS on-board software and the openETCS tool chain development, which is used to formalize the ERA Specifications for ETCS, generate the Software Code and perform verification and validation activities. Both parts have their own development process, but the focus for the hazard and risk analysis and the safety case shall be on the software development process. The openETCS tool chain shall only be considered with respect to its role in the software development process as the openETCS project spends the effort to provide a qualifiable tool chain, but will not be able to provide all evidence for a complete qualification.
 
 \section{Formalization and Software Development}
 
-The software development in the OpenETCS project shall be performed as an open, model-based, agile Software development. The respective combination of methods used during the development process shall comply with a SIL 4 development process according to EN~50128 for which the requirements are analyzed and shown in detail in D2.2. The overall OpenETCS Software development process presenting the development principles how the on-board unit requirements for ETCS shall be formalized first in a semi-formal SysML architecture model and afterwards in a detailed formal SCADE behavior model, which is the basis for the automatic source code generation, are outlined in WP 2 D2.3 and D2.4. 
+The software development in the OpenETCS project shall be performed as an open, model-based, agile Software development using the SCRUM methodology. The respective combination of methods used during the development process shall comply with a SIL 4 development process according to EN~50128 for which the requirements are analyzed and shown in detail in D2.2. The overall OpenETCS Software development process presenting the development principles are outlined in WP 2 D2.3 and D2.4. Accordingly, the on-board unit requirements for ETCS shall be extracted from all ETCS system documents. These are mainly the SUBSET 26  and for specific parts further parts of the TSI CCS Annex A. In context of the EN 50128 development the the ETCS specification managed by the ERA mainly SUBSET 26 represents the basis for System Requirement Specifications and System Architecture Description. Nevertheless, those documents have to be adopted to derive the Requirement Specifications for the openETCS on-board Software. Based on these requirements specifications, which will be specified using the tool ProR by creating various ReqIf Requirement Specification files, the following work will be done using different model-based approaches. Software Architecture and Design will be documented by a formalized Software Architecture Model as a SysML  model. Afterwards the Software Design and Software Interfaces will be documented in detail by a formal SCADE behavior model, which is in an agile way process combined from a number of component Design Models in SCADE. Respectively Software and Component Design are a combination of top-down and bottom-up work in a congenerous model environment to ensure component integration. As the integrated SCADE model is the basis for the automatic source code generation the functional integration will be performed exclusively during the SCADE component model integration. Only wrapper parts shall be integrated on source code level. All supporting documentation is generated directly or with main support by the model-based tool-chain.
 
-The detailed principals and phases of this development process including all related artifacts and used tools have to be presented in the Quality Assurance Plan.  As the project continues this development process and the supporting tools are still evolving, respectively the detailed development description has to be updated in the Quality Assurance Plan continuously.
+Figure \ref{fig:DevopmentProcess} shows the general artifacts for the openETCS Software development mapped to the EN~50128 V-model development life cycle. As the Verification and Validation activities are specific to the design artifacts further details are not available at this point. The Verification and Validation plan describes a number of methods which can be applied for different properties in the context of the openETCS development principals.
 
 \begin{figure}[htbp]
 \centering
@@ -364,7 +365,7 @@ The detailed principals and phases of this development process including all rel
 \label{fig:DevopmentProcess}
 \end{figure}
 
-Figure \ref{fig:DevopmentProcess} shows the general artifacts for the openETCS Software development mapped to the EN~50128 V-model development life cycle. As the Verification and Validation activities are specific to the design artifacts further details are not available at this point. The Verification and Validation plan describes a number of methods which can be applied for different properties in the context of the openETCS development principals.
+The detailed principals and phases of this development process including all related artifacts and used tools have to be presented in the Quality Assurance Plan.  As the project continues this development process and the supporting tools are still evolving, respectively the detailed development description has to be updated in the Quality Assurance Plan continuously.
 
 Corresponding to the development artifacts the openETCS development process has 5 main distinguishable phases show in table \ref{tab:DevelopmentPhases}. Every phase besides the validation phase is mostly supported by one means of description and one corresponding tool, but the overall traceability of the development requires linking requirements and design elements between all phases. 
 
@@ -376,13 +377,19 @@ Corresponding to the development artifacts the openETCS development process has 
 \hline \textbf{Phase} & \textbf{Name} & \textbf{Description} & \textbf{Main Tool component} \\ 
 \hline P1 & Software Requirement Phase & Requirement input documents converted to a ReqIF format and informally analyses. The analysis specifies relationships between requirements and revises parts of the requirements to obtain a detail and atomic abstraction level usable for moralization. To support thus the requirements are categorized and grouped. & ProR \\ 
 \hline P2 & Software Architecture Modeling Phase & Building a SysML based on the informal analysis using the categorization of requirements. The architecture model focuses on functional blocks and data flows. & SysML Papyrus \\ 
-\hline P3 & Software Behavior Modeling Phase & Building the SCADE model for the separated basic functional blocks. The SCADE model describes the detailed behavior for the function using the data flows. & SCADE Suite \\ 
+\hline P3 & Software Behavior Modeling and Integration Phase & Building the SCADE model for the separated basic functional blocks. The SCADE model describes the detailed behavior for the function using the data flows. & SCADE Suite \\ 
 \hline P4 & Code Generation Phase & Based on the SCADE Behavior Model C code will be automatically generated. This C code is than compiled to executable code which runs on the EVC. & SCADE Suite + C Code compiler\\
-\hline P5 & Formal Validation phase & Using test models and model checking techniques, to validate the correct model behavior.  & Various tools \\ 
+\hline P5 & Formal Validation Phase & Using test models and model checking techniques, to validate the correct model behavior.  & Various tools \\ 
 \hline 
 \end{tabular} 
 \label{tab:DevelopmentPhases}
 \end{table}
+
+The phase P1 Software Requirement Phase covers the development activities required by the EN~50128 during its lifecycle phase Software Requirements Phase (7.2). The SUBSET 26 and further System Specifications are the Input of this work. The resulting ReqIF Requirement file shall represents the Software Requirement Specifications. The Software Overall Test Specification will be derived with respect to this, but a method is not defined at this point.
+
+The phase P2 Software Architecture Modeling Phase and P3 Software Behavior Modeling and Integration Phase cover activities of Software Arch. \& Design Phase (7.3), Software Component Design Phase (7.4) and Software Component Implementation Phase (7.5) by the EN~50128 development lifecycle. The SysML model represents the Software Architecture Specifications and a first version of Software Interface Specifications. The Output SysML model is in the following phase transformed into a SCADE model which will be refined and enhanced to completely represent Design and Interface Specifications as well as all Component Design Specifications. As the overall SCADE model is composed of serveral compoent SCADE models and the defined interfaces the integration is performed and documented in the SCADE model. Input for all architecture and design tasks are the Software Requirement Specifications based on the SUBSET 26. Source Code in C is generated automatically via the certified SCADE Code Generator and combined with required wrapper software. For these wrapper parts specific development methods have to be defined as these parts are specified.
+
+The phase P5 Formal Validation Phase has to cover activities of the Software Component Testing Phase (7.5), Integration Phase (7.6) and mainly Software Validation Phase (7.7) by using simulation, testing and model checking methods already available in the SCADE environment as well as additional tools. The Input for these activities are the SysML and SCADE models and the C Code.
 
 Although the phase represent different working steps in the life cycle according to EN~50128 the agile development process applied in openETCS induces that the phases are performed iteratively during the development process. Respectively, the traceability linking in combination with the verification methods has to ensure that changes in one phase of the development are adopted for all linked artifacts up- and downwards in the development process.
 
@@ -410,13 +417,17 @@ To be able to respect the system safety requirement these have to be apportioned
 
 \subsection{Interface to Verification and Validation}
 
-Design verification activities will ensure that all system requirements including the safety requirements have been apportioned and implemented correctly at the respective software component. Software validation will ensure that the overall software implementation matches all specified requirements which implicates requirements derived from the hazard and risk analysis. Respectively, the verification and validation plan shall specify the appropriate methods for these design and implementation verification and validation activities. All resulting reports are evidence for the qualified software development and become part of the safety case.
+Design verification activities will ensure that all system requirements including the safety requirements have been apportioned and implemented correctly at the respective software component. Software validation will ensure that the overall software implementation matches all specified requirements which implicates requirements derived from the hazard and risk analysis. To do so all requirements concerning SIL and SSIL development level and their respective accepted risk have to be taken into account in a hazard and risk analysis process. The resulting risk reduction tasks have to be represented as explicit technical specifications. The process requirements resulting from SSIL level have to be incorporated in the quality assurance process. In addition it has to be verified that all hazard and risk analysis methods as well as the methods for assembling the safety case have been chosen and applied appropriately. This has to be done against the methodology requirements specified in the Quality Assurance Plan and further referenced documentation as a safety plan.
+Respectively, the verification and validation plan shall specify the appropriate methods for these design and implementation verification and validation activities. All resulting reports are evidence for the qualified software development and become part of the safety case.
 
-In addition it has to be verified that all hazard and risk analysis methods as well as the methods for assembling the safety case have been chosen and applied appropriately. This has to be done against the methodology requirements specified in the Quality Assurance Plan and further referenced documentation as a safety plan.
+
 
 \chapter{Hazard and Risk Analysis}
 \label{sec:hazardandrisk}
-%4.1 Definition of HRA (short standard summary, could also be done in "Background material"))
+
+As presented in subsection \ref{sec:HandR-Ana} hazard and risk analysis are required to identify hazards, estimated and evaluate the resulting risk for the assumable use of the design object. This respective risk has to be evaluated against an acceptable risk level determined based on use and context of the system and its environment. If the risk exceeds the acceptable level risk reduction steps have to be incorporated until an acceptable level can be reach conclusively. 
+
+This chapter presents a basic concept how those activities shall to be addresses during the openETCS project activities and which results are provided in this way to support the development and further use of openETCS results.
 
 \section{General Principals}
 

@@ -427,92 +427,95 @@ Respectively, the verification and validation plan shall specify the appropriate
 
 As presented in subsection \ref{sec:HandR-Ana} hazard and risk analysis are required to identify hazards, estimated and evaluate the resulting risk for the assumable use of the design object. This respective risk has to be evaluated against an acceptable risk level determined based on use and context of the system and its environment. If the risk exceeds the acceptable level risk reduction steps have to be incorporated until an acceptable level can be reach conclusively. 
 
-This chapter presents a basic concept how those activities shall to be addresses during the openETCS project activities and which results are provided in this way to support the development and further use of openETCS results.
+This chapter presents a basic concept how those activities shall to be addresses during the openETCS project activities and which results are provided in this way to support the development and further use of openETCS results. 
 
-\section{General Principals}
+\section{Risk Analysis in Context of EN 50126}
 
-4.1.2 Purpose:
-To provide detailed information on dangers which arise from the system/software in its operational, to be able to control the dangers and achieve to limit the risk to an acceptable level.
+The EN 50126 as main norm for the RAMS system development of railway applications uses in subsection 4.6 the term risk analysis to introduce the general concept of hazard identification and risk reduction as it has been detailed in subsection \ref{sec:HandR-Ana}. Thereby, the standard clearly states that the concept of assigning SIL levels to components of a system can only be done in context of the system risk analysis, as the hazard propagation can only be considered through the overall system structure. 
 
-4.1.2 Scope:
-Start at system level, refine at need at more detailed development stages.
+\subsection{Purpose and Scope}
 
-\subsection{Context of EN 50126}
+The EN 50126 establishes the risk analysis as phase 3 of the system lifecycle during which a System Hazard and Safety Risk Analysis shall be performed. This shall establish the Hazard Log to collect all identified hazards and their respective analysis and a respective risk assessment. The standard clear states risk analysis has to be repeated at various points during the system development to accommodate for refinements and changes done in the following lifecycle phases. 
 
-4.1.3 Objectives:
-At system level:
+Respectively, the purpose of risk assessment is to provide detailed analysis for hazards and resulting risk arising from the system - in case of openETCS the ETCS on-board kernel software -  in its operational environment. Risk control measures have to be established and refined at more detailed during the development phases to ensure that the existing risk is limited to an acceptable level. 
 
-a) to d) from EN 50126 (hazard identification, events for hazards, determine risks, design risk management process)  
+\subsection{Objectives}
 
-At a later stage:
-- refine the hazard description
-- recompute the risk
-(i.e. perform the risk management as defined in d) above)
+For the risk analysis lifecycle phase the EN 50126 states the following objectives to be achieved on system level:
+\begin{enumerate}
+\item identify hazards associated with the system.
+\item identify the events leading to the hazards.
+\item determine the risk associated with the hazards.
+\item establish a process for on-going risk management.
+\end{enumerate}
 
-4.1.4 Activities:
-Define the activities and the methods to be applied (select from 50126)
+The fourth point basically requiring the continuous risk analysis process which has to be established on the beginning of system development and to be refined over the lifecycle and for component development. Hereby, the Hazard Log is the central deliverable by recording all hazard related information , their respective risks assessment and taken control measures. These information have to be considered and extended with all key inputs from subsequent lifecycle phases.
 
+\subsection{Activities}
 
-\subsection{ETCS Safety Principals}
+To fulfill the requirements for a risk management process as stated in EN 50126 methods and tools for the following activities have to chosen and applied:
 
-4.2 Plan HRA for openETCS
-4.2.1 Purpose: Instantiation of 50126 process for openETCS
-"
-4.2.2 Scope
-- System and Specification 
-   (Object of initial step of HRA, relevant specs)
-- identify later stages (as far as foreseeable)"
-"4.2.3 
-a) Describe methods to identify hazards
-b) ... events
-c) Methods/tools for risk computation (can be incomplete/tentative at the current stage)
-d) Define process"
-"
-4.3 Summary of Proof of Concept
-(refer to the plan from 4.2)"
+\begin{itemize}
+\item establishing a Hazard Log and continuously manage it over time
+\item identifying hazardous situations on various levels
+\item estimate consequences and frequencies associated with each identified hazardous situation
+\item calculate risk these hazardous situations and their respective combinations
+\item estimate the acceptable risk for the system and its various components
+\item identify and evaluate control measures to reduce or eliminate the risk for these hazardous situations
+\item continuously reevaluate refine and reevaluate hazardous situations, risk and control measures
+\item document results, assumptions and limits for all activities performed
+\end{itemize}
 
-§ 4.2 : The safety requirements issued from this analysis have been formally specified and proved on an Event-B model : https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/04-Results/d-EventB-VnV/EventB-Rodin-VnV.pdf
+All these activities have to be done considering quality and change management processes and the results have to be verified according to the general rules. A wide range of methods for hazard and risk analysis exists and examples like the risk graphs, severity matrices, FTA or FMEA are common and used for different activities.
 
 
-
+\section{Plan Hazard and Risk Analysis for openETCS}
 
 The safety design process and the resulting documentation constitute the main documents for the system approval, as it is required by European and national law to do everything reasonable expectable to prevent harm. Accordingly the CENELEC standards build the common technical rules for the development process. The Common Safety Methods present a concept based on the EN50126 how the risk evaluation and management has to be performed. 
 
 Therefore the main references concerning the safety design process are the CENELEC standards, mainly the EN50126 on how the safety aspects have to be handled as part of the RAMS management over the development process. The overall risk evaluation concept is also defined at this point. The specific concerning the safety case preparations are defined in the EN50129 including the Safety Integrity Level concept. 
 
-Since the ETCS system specification for the on-board unit shall be formalized and implemented in the software during the openETCS software development, the specific safety requirements for the on-board unit have to be determined according to the overall system requirements. These are mainly given by the following two parts of the CCS TSI:
+\subsection{Purpose and Scope}
 
-\begin{itemize}
-\item UNISIG SUBSET-026	System Requirements Specification 	(Version 3.3.0)
-\item UNISIG SUBSET-091 Safety Requirements for the Technical Interoperability of ETCS in Levels 1 and 2 	(Version 3.2.0)
-\end{itemize}
+ Instantiation of 50126 process for openETCS
+ 
+ - System and Specification 
+    (Object of initial step of HRA, relevant specs)
+ - identify later stages (as far as foreseeable)"
+ 
+ Since the ETCS system specification for the on-board unit shall be formalized and implemented in the software during the openETCS software development, the specific safety requirements for the on-board unit have to be determined according to the overall system requirements. These are mainly given by the following two parts of the CCS TSI:
+ 
+ \begin{itemize}
+ \item UNISIG SUBSET-026	System Requirements Specification 	(Version 3.3.0)
+ \item UNISIG SUBSET-091 Safety Requirements for the Technical Interoperability of ETCS in Levels 1 and 2 	(Version 3.2.0)
+ \end{itemize}
+ 
+ In relation to SUBSET-91 further documents should be take into account to derive specify safety aspect:
+ 
+ \begin{itemize}
+ \item Part of TSI Annex A
+ 	\begin{itemize}
+ 	\item SUBSET-036
+ 	\item SUBSET-037
+ 	\item SUBSET-040
+ 	\item SUBSET-041
+ 	\item SUBSET-098
+ 	\end{itemize}
+ 	
+ \item Not part of TSI Annex A
+ 	\begin{itemize}
+ 	\item SUBSET-039
+ 	\item SUBSET-078
+ 	\item SUBSET-079
+ 	\item SUBSET-080
+ 	\item SUBSET-081
+ 	\item SUBSET-088
+ 	\end{itemize}
+ \end{itemize}
+ 
 
-In relation to SUBSET-91 further documents should be take into account to derive specify safety aspect:
+\subsection{Objectives}
 
-\begin{itemize}
-\item Part of TSI Annex A
-	\begin{itemize}
-	\item SUBSET-036
-	\item SUBSET-037
-	\item SUBSET-040
-	\item SUBSET-041
-	\item SUBSET-098
-	\end{itemize}
-	
-\item Not part of TSI Annex A
-	\begin{itemize}
-	\item SUBSET-039
-	\item SUBSET-078
-	\item SUBSET-079
-	\item SUBSET-080
-	\item SUBSET-081
-	\item SUBSET-088
-	\end{itemize}
-\end{itemize}
-
-Based on these overall safety goals as specific hazard and risk analysis for the software subsystem has to be performed to allocate the requirements and set-up the openETCS hazard log as shown in figure \ref{fig:SafetyProcess}. Cased on the principle software architecture the risk can be assess, which then leads to the definition of risk control measures. These are the basis for specific safety requirements for the on-board unit software design and its verification and validation. During the development these requirements are adopted if necessary for the different abstraction levels from the high level model down to the source code. The safety case, which shall be supported by a Goal Structured Notation (GSN) \cite{GSNwebsite} model as presented in chapter \ref{sec:safetycase} has to present all needed documentation to show that these leads to the required risk level.
-
-\section{General ETCS Safety Principals}
 \label{sec:ETCS-safety}
 
 Based on the ETCS reference architecture SUBSET-91 gives the role of ETCS as train protection as the following:
@@ -532,9 +535,18 @@ The same value is specified for the corresponding track-side.
 
 Adapted form the ETCS system safety analysis presented in SUBSET-88 the Annex A of SUBSET-91 presents the List of Hazardous Events inside ETCS that might cause the ETCS Core Hazard to occur, either alone or in combination with other failures. These are the events not eliminated by the operational analysis. 34 of these hazardous events are allocated to the Kernel, which make them the basis for the on-board software hazard and risk analysis. 
 
+\subsection{Activities}
 
 
-\section{Proof of concept}
+"4.2.3 
+a) Describe methods to identify hazards
+b) ... events
+c) Methods/tools for risk computation (can be incomplete/tentative at the current stage)
+d) Define process"
+
+Based on these overall safety goals as specific hazard and risk analysis for the software subsystem has to be performed to allocate the requirements and set-up the openETCS hazard log as shown in figure \ref{fig:SafetyProcess}. Cased on the principle software architecture the risk can be assess, which then leads to the definition of risk control measures. These are the basis for specific safety requirements for the on-board unit software design and its verification and validation. During the development these requirements are adopted if necessary for the different abstraction levels from the high level model down to the source code. The safety case, which shall be supported by a Goal Structured Notation (GSN) \cite{GSNwebsite} model as presented in chapter \ref{sec:safetycase} has to present all needed documentation to show that these leads to the required risk level.
+
+\section{Summary of Proof of Concept}
 \label{sec:Proofofconcept}
 
 To evaluate the hazard and risk analysis process in the openETCS development environment a proof of concept has been performed during the VnV Level 1 activities in WP 4 by project partners Systerel, All4Tec and AEbt. As the respective design artifact for the proof of concept a SysML modeled formalizing one part of SUBSET-26 has been chosen: 
@@ -585,9 +597,10 @@ Both results have been compared at the end to validate the results.
 For functions coming from the Subset 026 a hazard and rick analysis has been already performed, including a SIL allocation as presented in Subset 091. All these functions have a SIL 4 safety requirement; therefore sub function from these functions shall have also a SIL 4 safety requirement. For functions and corresponding sub function coming from others sources than the SUBSET-26 a SIL allocation on the basis of techniques described in the standards EN~50126, 50129 or IEC 61508-5 shall be performed.
  
 The third Task of the process consists in performing a Safety Assessment, which implies derivation of safety requirements and the following assessment of the model against these safety requirements. The derivation of the Safety requirements required knowledge in the function being analyzed, the interfaced components, the ETCS in general and CENELEC standard.
- 
- 
+  
 The details results for the Proof of Concept can be found at \url{https://github.com/openETCS/validation/tree/master/VnVUserStories/VnVUserStoryAll4Tec-AEbt}. 
+
+The safety requirements issued from this analysis have been formally specified and proved on an Event-B model by Systerel. The resulting models and documents are available at \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/04-Results/d-EventB-VnV/EventB-Rodin-VnV.pdf}.
 
 Overall the Proof of Concept has confirmed the correctness of the model as far as this has been possible in the limited scope. 
 

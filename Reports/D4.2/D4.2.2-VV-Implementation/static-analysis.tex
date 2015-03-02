@@ -2109,13 +2109,29 @@ with really bad pieces of code (big, uncommented, unstructured) the MI value can
 As a first conclusion, the values from the tables above indicate the functions and file have a good maintanability.
 
 \section{MISRA and Mü8004 Rules Comparation}
-This section analyses the requirements designed in MISRA-C : 2004 standard and Mü8004 standard and makes a comparison between rules the might have in common and describes the most important features of the ones they don’t have in common. 
+This section analyses the requirements designed in MISRA-C : 2004 standard and Mü8004 standard and makes a comparison between rules they might have in common and describes the most important features of the ones they don’t have in common. 
 
 \begin{center}
 \textsc{\underline{ENVIRONMENT:}}
 \end{center}
 
-\paragraph{MISRA –C Environment Rule 1.3 vs Mü8004 Change of Programming Language Rule 0.2.22}
+%% Debut FRR
+\paragraph{MISRA –C Environment Rule 1.1}
+MISRA-C Rule 1.1 All code shall conform to ISO/IEC 9899:1990
+“Programming languages — C”, amended and corrected by
+ISO/IEC 9899/COR1:1995, ISO/IEC 9899/AMD1:1995, and
+ISO/IEC 9899/COR2:1996.
+
+This rule is not included in Mü8004 standard. It never mentions which version of C is applied.
+
+\paragraph{MISRA –C Environment Rule 1.2}
+MISRA-C Rule 1.2 No reliance shall be placed on undefined or unspecified
+behaviour.
+
+This rule is not included in Mü8004 standard. No requirement on behaviour is specifyed
+%% Fin FRR
+
+\paragraph{MISRA –C Environment Rule 1.3}
 MISRA-C Rule 1.3 Description: If a module is to be implemented in a language other than C, or compiled on a different C compiler, then it is essential to ensure that the module will integrate correctly with other modules.
 
 This rule is not included in Mü8004 standard. Mü8004 standard establishes in rule 0.2.22 that it is not allowed to change the programming language inside a program module, but not between different modules.
@@ -2128,7 +2144,7 @@ This rule is not included in Mü8004 standard, although in 0.2.9 rule it is refe
 \paragraph{MISRA –C Environment Rule 1.5}
 MISRA-C Rule 1.5 Description: Floating-point implementations should comply with a defined floating-point standard.
 
-This rule is not included in Mü8004 standard and it would be useful to overcome a wide range of problems associated with the use of floating-point arithmetics.
+This rule is not included in Mü8004 standard and it would be useful adding it to overcome a wide range of problems associated with the use of floating-point arithmetics.
 
 \begin{center}
 \textsc{\underline{LANGUAGE EXTENSION:}}
@@ -2145,54 +2161,73 @@ MISRA-C Rule 2.2 Description: Source code shall only use /*…*/ style comments.
 This is less restrictive in Mü8004 standard, as // comments are allowed in Mü8004 Rule 0.2.8 if it is supported by compiler. This is correctly focused as this way consistency is not in danger.
 
 \paragraph{MISRA –C Language extensions 2.3}
-MISRA-C Rule 2.2 Description: The character sequence /* shall not be used within a comment
+MISRA-C Rule 2.2 Description: The character sequence /* shall not be used within a comment.
 
-This rule is included in Mü8004 Rule 0.2.8, as it establishes that comments must not be nested. This is an important requirement, as the omission would cause critical errors otherwise.
+This rule is included in Mü8004 Rule 0.2.8, as it establishes that comments must not be nested. This is an important requirement whom omission would cause critical errors otherwise.
 
-\paragraph{MISRA –C Language extensions 2.3}
-MISRA-C Rule 2.3 Description: Sections of code should not be “commented out”
+\paragraph{MISRA –C Language extensions 2.4}
+MISRA-C Rule 2.4 Description: Sections of code should not be “commented out”
 
 This rule is not included in Mü8004 standard. It would be useful to use conditional compilation (\#if or \#ifdef) for sections of source code not to be compiled, as start and end comment markers for this purpose is dangerous because C does not support nested comments.
+
+%%% debut FRR
+\begin{center}
+\textsc{\underline{CHARACTER SETS:}}
+\end{center}
+
+\paragraph{MISRA –C Character sets 4.1}
+MISRA-C Rule 4.1 Only those escape sequences that are defined in the ISO C
+standard shall be used.
+
+Mü8004 standard does not include this rule. This rules is useful for code portabiliy.
+ 
+\paragraph{MISRA –C Character sets 4.2}
+MISRA-C Rule 4.2 Trigraphs shall not be used
+
+
+Mü8004 standard does not include this rule. This rules is useful for code understanding. This rule should be mandatory.
+
+%% Fin FRR
 
 \begin{center}
 \textsc{\underline{IDENTIFIERS:}}
 \end{center}
 
 \paragraph{MISRA –C Identifiers 5.1}
-MISRA-C Rule 5.1 Description: Identifiers (internal and external) shall not rely on the significance of more than 31 characters
+MISRA-C Rule 5.1 Description: Identifiers (internal and external) shall not rely on the significance of more than 31 characters.
 
 This rule is included in Mü8004 Rule 0.2.9, as it establishes that names and identifiers must be chosen in a way that they differ significantly in the first 31 positions.
 
 \paragraph{MISRA –C Identifiers 5.2}
 MISRA-C Rule 5.2 Description: Identifiers in an inner scope shall not use the same name as an identifier in an outer scope, and therefore hide that identifier.
 
-This rule is not included in Mü8004 standard, but it would be useful to avoid confusion between identifiers in the code.
+This rule is not included in Mü8004 standard, but it would be useful adding it to avoid confusion between identifiers in the code.
 
 
 \paragraph{MISRA –C Identifiers 5.3}
 MISRA-C Rule 5.3 Description: A typedef name shall be a unique identifier.
 
-This rule is not included in Mü8004 standard, but it would be useful to avoid the reuse this names within a program
+This rule is not included in Mü8004 standard, but it would be useful adding it to avoid the reuse this names within a program.
 
 
 \paragraph{MISRA –C Identifiers 5.4}
 MISRA-C Rule 5.4 Description: A tag name shall be a unique identifier.
 
-This rule is not included in Mü8004 standard. Although Mü8004 Rule 0.2.9 establishes that same variables should not serve different purposes, it would be useful to avoid the reuse of names within a program for same purposes. This would be useful to avoid confusion.
+This rule is not included in Mü8004 standard. Although Mü8004 Rule 0.2.9 establishes that same variables should not serve different purposes and it would be useful to avoid the reuse of names within a program for same purposes. This would be useful adding it to avoid confusion.
 
 
 \paragraph{MISRA –C Identifiers 5.5}
-MISRA-C Rule 5.5 Description: No object or function identifier with static storage duration should be reused
+MISRA-C Rule 5.5 Description: No object or function identifier with static storage duration should be reused.
 
-This rule is not included in Mü8004 standard. This rule would be useful, because the possibility exists for the user to incorrectly associate unrelated variables with the same name.
+This rule is not included in Mü8004 standard. It would be useful adding it because the possibility exists for the user to incorrectly associate unrelated variables with the same name.
 
 \paragraph{MISRA –C Identifiers 5.6}
-MISRA-C Rule 5.6 Description: No identifier in one name space should have the same spelling as an identifier in another name space, with the exception of structure member and union member names
+MISRA-C Rule 5.6 Description: No identifier in one name space should have the same spelling as an identifier in another name space, with the exception of structure member and union member names.
 
 This rule is not included in Mü8004 standard. It extends the avoidance of using same names for same or different purposes. It could be an advisory request to avoid confusion.
 
 \paragraph{MISRA –C Identifiers 5.7}
-MISRA-C Rule 5.7 Description: No identifier name should be reused (across any files in the system)
+MISRA-C Rule 5.7 Description: No identifier name should be reused (across any files in the system).
 
 This rule is not included in Mü8004 standard. It incorporated the Rules 5.2, 5.3, 5.4, 5.5 and 5.6. It would be an extremely severe requirement to avoid confusion between names.
 
@@ -2326,6 +2361,83 @@ MISRA-C Rule 9.3 Description: In an enumerator list, the “=” construct shall
 
 Mü8004 does not include this rule. It is necessary to avoid making mistakes when initializing enumerators.
 
+%% Debut FRR
+\begin{center}
+\textsc{\underline{CONVERSIONS:}}
+\end{center}
+
+\paragraph{MISRA -C Conversions 10.1}
+MISRA-C Rule 10.1 Description: The value of an expression of integer type shall not be implicitly
+converted to a different underlying type if:\\
+(a)it is not a conversion to a wider integer type of the same
+signedness, or \\
+(b)the expression is complex, or \\
+(c)the expression is not constant and is a function argument, or \\
+(d)the expression is not constant and is a return expression
+
+Mü8004 include this rule. It is a precision of the third phrase of the chapter 0.2.18.
+
+\paragraph{MISRA -C Conversions 10.2}
+MISRA-C Rule 10.2 Description: The value of an expression of floating type shall not be implicitly
+converted to a different type if:\\
+(a) it is not a conversion to a wider floating type, or\\
+(b) the expression is complex, or\\
+(c) the expression is a function argument, or\\
+(d) the expression is a return expression
+
+Mü8004 include this rule. It is a precision of the thrid phrase of the chapter 0.2.18.
+
+\paragraph{MISRA -C Conversions 10.3}
+MISRA-C Rule 10.3 Description: The value of a complex expression of integer type shall only be
+cast to a type of the same signedness that is no wider than the
+underlying type of the expression.
+
+Mü8004 include this rule. It is a precision of the thrid phrase of the chapter 0.2.18.
+
+\paragraph{MISRA -C Conversions 10.4}
+MISRA-C Rule 10.4 Description: The value of a complex expression of floating type shall only be cast to a floating type that is narrower or of the same size.
+
+Mü8004 include this rule. It is a precision of the thrid phrase of the chapter 0.2.18.
+
+\paragraph{MISRA -C Conversions 10.5}
+MISRA-C Rule 10.4 Description: If the bitwise operators
+\~ and $<<$ are applied to an operand of underlying type
+unsigned char or unsigned short, the result shall
+be immediately cast to the underlying type of the operand.
+
+Mü8004 does not include this rule. This operators in this small type then it is a source bug. When type forcing allow the good comportement.
+
+\paragraph{MISRA -C Conversions 10.6}
+MISRA-C Rule 10.6 Description: A “U” suffix shall be applied to all constants of unsigned type.
+
+Mü8004 does not include this rule. This rule is for the maintenability and code review.
+
+\paragraph{MISRA -C Conversions 11.1}
+MISRA-C Rule 11.1 Description: Conversions shall not be performed between a pointer to a function and any type other than an integral type.
+
+Mü8004 does not include this rule. If this rule was not respected, the code has an undefined behavior. This rule must be mandatory. In addition, the code becomes independent of the compiler.
+
+\paragraph{MISRA -C Conversions 11.2}
+MISRA-C Rule 11.2 Description: Conversions shall not be performed between a pointer to object and any type other than an integral type, another pointer to object type or a pointer to void.
+
+Mü8004 does not include this rule. This rule is for the cast system is determinist. And this rules indicates which does not mix pointer and object.
+
+\paragraph{MISRA -C Conversions 11.3}
+MISRA-C Rule 11.3 Description: A cast should not be performed between a pointer type and an integral type. 
+
+Mü8004 does not include this rule. This rule is used for not mixing data and pointer. this two object is different.
+
+\paragraph{MISRA -C Conversions 11.4}
+MISRA-C Rule 11.4 Description: A cast should not be performed between a pointer to object type and a different pointer to object type.
+
+Mü8004 does not include this rule. This rule is used for not mix different pointer type for data alignement. This rule may execute the code in the safety.
+
+\paragraph{MISRA -C Conversions 11.5}
+MISRA-C Rule 11.5 Description: A cast shall not be performed that removes any {\it const} or {\it volatile} qualification from the type addressed by a pointer.
+
+Mü8004 does not include this rule. This rule is used for not modified a constant data or a volatile. This rule may execute the code in the safety.
+
+%% end FRR
 
 \begin{center}
 \textsc{\underline{EXPRESSIONS:}}

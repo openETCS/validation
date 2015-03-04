@@ -4,7 +4,10 @@ export ASPELL=aspell check --lang=en --encoding=utf-8
 
 
 all: FORCE
-	latexmk -pdf D4.2.2.tex
+	pdflatex D4.2.2
+	bibtex D4.2.2
+	pdflatex D4.2.2
+	pdflatex D4.2.2
 
 
 clean:

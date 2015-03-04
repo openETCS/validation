@@ -3,11 +3,8 @@
 export ASPELL=aspell check --lang=en --encoding=utf-8
 
 
-all: D4.2.2.tex FORCE
-	latexmk -pdf $<
-
-
-FORCE:
+all: FORCE
+	latexmk -pdf D4.2.2.tex
 
 
 clean:
@@ -28,4 +25,6 @@ clean:
 
 %.spell: %.tex
 	$(ASPELL) $<
+
+FORCE:
 

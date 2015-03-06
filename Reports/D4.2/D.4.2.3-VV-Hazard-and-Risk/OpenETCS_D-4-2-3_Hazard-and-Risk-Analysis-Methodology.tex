@@ -430,7 +430,7 @@ As presented in subsection \ref{sec:HandR-Ana} hazard and risk analysis are requ
 This chapter presents a basic concept how those activities shall to be addresses during the openETCS project activities and which results are provided in this way to support the development and further use of openETCS results. 
 
 \section{Risk Analysis in Context of EN 50126}
-
+\label{sec:EN50126-risk-analysis}
 The EN 50126 as main norm for the RAMS system development of railway applications uses in subsection 4.6 the term risk analysis to introduce the general concept of hazard identification and risk reduction as it has been detailed in subsection \ref{sec:HandR-Ana}. Thereby, the standard clearly states that the concept of assigning SIL levels to components of a system can only be done in context of the system risk analysis, as the hazard propagation can only be considered through the overall system structure. 
 
 \subsection{Purpose and Scope}
@@ -537,14 +537,32 @@ Adapted form the ETCS system safety analysis presented in SUBSET-88 the Annex A 
 
 \subsection{Activities}
 
-
-"4.2.3 
-a) Describe methods to identify hazards
-b) ... events
-c) Methods/tools for risk computation (can be incomplete/tentative at the current stage)
-d) Define process"
-
 Based on these overall safety goals as specific hazard and risk analysis for the software subsystem has to be performed to allocate the requirements and set-up the openETCS hazard log as shown in figure \ref{fig:SafetyProcess}. Cased on the principle software architecture the risk can be assess, which then leads to the definition of risk control measures. These are the basis for specific safety requirements for the on-board unit software design and its verification and validation. During the development these requirements are adopted if necessary for the different abstraction levels from the high level model down to the source code. The safety case, which shall be supported by a Goal Structured Notation (GSN) \cite{GSNwebsite} model as presented in chapter \ref{sec:safetycase} has to present all needed documentation to show that these leads to the required risk level.
+
+The openETCS hazard and risk analysis covers the relevant activities presented in section \ref{sec:EN50126-risk-analysis} at least in a way to demonstrate that the model-based openETCS development process is sufficient to support all required activities to comply to EN 50128 SSIL 4. As the development process is still not specified in all a details this document can only present a concept and has to be enhance during the ongoing work.
+
+\textbf{Hazard Log}
+
+The Hazard Log as the central artifact for the hazard and risk control will be established and managed as a structured list via the github document management system as all openETCS artifact to ensure version and configuration management. The artifact will include the list of all identified hazards and their relations as well as derived risk assessment and control measures. To provide the complete documentation links to the detailed analysis documents will be include as well as for required V\&V reports. Doing so the changes will be managed by issues as only the core commiters for V\&V are managing the artifact. 
+
+\textbf{Identifying Hazardous Situations and Estimation of Consequences and Frequencies}
+
+The analysis to identify hazards and hazardous situations will be addressed via a combination of top-down and bottom-up analysis. The top-down analysis will be performed by FTA based on the system analysis presented in SUBSET-88 and SUBSET-91. Thereby, only measure concerning the actual software functionality and the development can be applied in the openETCS context. Constraints for the hardware implementation have to be provided as for further use.
+Based on the openETCS Architecture partners will apply model based FMEA and -if applicable - HAZOP analysis as bottom-up approach. 
+
+Hazard consequences and occurrence will be evaluated based on the FTA and FMEA results. As openETCS mainly deals with functionality specified by the software most hazards have to be circumvented completely. This has to be done throughout a structured analysis performed by a group of different stakeholders from system, design and V\&V.
+
+\textbf{Risk Calculation and Evaluation}
+
+A qualitative risk evaluation will be performed by Frequency - Consequence Matrix. As quantitative risk calculations are based on operational circumstances, which can change for ETCS on-board units due to different operator procedures, the openETCS activities can only use generic quantitative values provided by via ERA system evaluations. The same limitation has to be stated for the implementation, as the risk calculation can only use assumptions for hardware, but is not able to use any specific information.
+
+\textbf{Identifying and Evaluating Control Measures}
+
+As openETCS mainly deals with control software, which shall exhibit a deterministic behavior, the control measure will mainly be derived by creating boundaries to avoid conditions under which the system reaches the unsafe state. The main measures to ensure this will be to ensure data consistence for the cycle calculation process used and forcing the software functions to go into fail safe states if unexpected or inconsistent inputs are received. 
+
+\textbf{Documentation}
+
+The hazard Log as the central artifact will provide the relations for all documents and ensure completeness for a related documents. These will be provided by the responsible partner for respective analysis and as far as possible generated by the respective tool. All documents have to follow the review and quality process of openETCS.
 
 \section{Summary of Proof of Concept}
 \label{sec:Proofofconcept}
@@ -562,8 +580,8 @@ To do so the following hazardous event given in SUBSET-91 has been identified as
 \textbf{“KERNEL-6 Manage communication session failure” which results an “RADIO (INFILL) Transmission data consistency failure (safety related transmission function)”.}
 \end{center}
 
-The following task have been performed during the Proof of Concept as examples for the activities during a hazard and risk analysis. 
- 
+The following task have been performed during the Proof of Concept as examples for the activities during a hazard and risk analysis. The first part represents the basic verification needed for the assess functionality models. The second part represents hazard identification with respect to the core hazard and the related harm. The derivation of safety targets represents the risk calculation an evaluation for the identified functions. Respective control measures are presented by all derived safety requirements.
+The third part then demonstrates the check and evaluation of these general control measures for the specific model under review.
  
 \begin{enumerate}
 \item Conformity comparison for the MoRC
@@ -594,7 +612,7 @@ The second task Safety Analysis was performed using methods for three different 
 risk estimation and evaluation, derivation of the Safety requirements. In general hazard identification and risk analysis are performed using traditional approaches like FMECA or HAZOP. In the case of openETCS since models are available a model-based, computer supported approach (based on the Tool “Safety Architect” from the company ALL4TEC) for hazard identification has been used in addition.
 Both results have been compared at the end to validate the results.
  
-For functions coming from the Subset 026 a hazard and rick analysis has been already performed, including a SIL allocation as presented in Subset 091. All these functions have a SIL 4 safety requirement; therefore sub function from these functions shall have also a SIL 4 safety requirement. For functions and corresponding sub function coming from others sources than the SUBSET-26 a SIL allocation on the basis of techniques described in the standards EN~50126, 50129 or IEC 61508-5 shall be performed.
+For functions coming from the Subset 026 a hazard and rick analysis has been already performed, including a SIL allocation as presented in Subset 091. All these functions have a SIL 4 safety requirement; therefore sub function from these functions shall also a SIL 4 safety requirement. For functions and corresponding sub function coming from others sources than the SUBSET-26 a SIL allocation on the basis of techniques described in the standards EN~50126, 50129 or IEC 61508-5 shall be performed.
  
 The third Task of the process consists in performing a Safety Assessment, which implies derivation of safety requirements and the following assessment of the model against these safety requirements. The derivation of the Safety requirements required knowledge in the function being analyzed, the interfaced components, the ETCS in general and CENELEC standard.
   

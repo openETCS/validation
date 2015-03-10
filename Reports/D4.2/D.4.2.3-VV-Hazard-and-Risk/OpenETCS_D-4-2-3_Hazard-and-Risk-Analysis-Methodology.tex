@@ -40,8 +40,8 @@
 \techassessorname{Abdelnasir Mohamed}
 \techassessoraffil{AEbt}
 
-\qualityassessorname{?}
-\qualityassessoraffil{SQS}
+\qualityassessorname{Veronique Gontier}
+\qualityassessoraffil{All4Tec}
 
 \approvalname{Klaus-R\"udiger Hase}
 \approvalaffil{DB Netz}
@@ -79,7 +79,7 @@
 
 \begin{abstract}
 This document describes the overall concepts for hazard and risk analysis and for the development of the resulting safety case as it has been identified during the first iteration of WP 4.
-After the introduction defining the overall context of the document, the combination of methods is presented to identify hazards inside the openETCS software and to assess the risk resulting from these hazards for the system and subsystems. The sequence of activities is detailed on the proof of concept performed during the first WP 4 iteration. In the second part of this document the plan for the openETCS safety case is described. This includes the compilation of documents resulting from the performed openETCS software development as well as the derivation of a generic safety case structure for the development of a ETCS on-board unit using the openETCS software development process.
+After the introduction defining the overall context of the document, the combination of methods are presented to identify hazards inside the openETCS software and to assess the risk resulting from these hazards for the system and subsystems. The sequence of activities is detailed on the proof of concept performed during the first WP 4 iteration. In the second part of this document the plan for the openETCS safety case is described. This includes the compilation of documents resulting from the performed openETCS software development as well as the derivation of a generic safety case structure for the development of an on-board unit using the openETCS software.
 \end{abstract}
 
 %=============================
@@ -214,9 +214,10 @@ of ETCS in Levels 1 \& 2}
 \begin{tabular}{rl}
 \textbf{ACedit} & Assurance Case Editor \\ 
 \textbf{ARM} & Argumentation  Metamodel \\ 
-\textbf{FMEA} & Failure Mode Effect Analysis \\ 
+\textbf{ETCS} & European Train Control System \\ \textbf{ERA} & European Railway Agency \\ \textbf{FMEA} & Failure Mode Effect Analysis \\ 
 \textbf{GSN} & Goal Structured Notation \\ 
 \textbf{MoRC} & Management of Radio Communication \\ 
+\textbf{RAMS} & Reliability, Availability, Maintainability and Safety \\
 \textbf{SIL} & Safety Integrity Level \\ 
 \textbf{SRS} & System Requirement Specification \\ 
 \textbf{THR} & Tolerable Hazard Rate \\ 
@@ -262,8 +263,8 @@ usability in use, flexibility in use and safety in use (see figure \ref{fig:Soft
 This distinction between local and system quality characteristics shows that functional correctness and safety is closely related for a safety relevant system, but with respect to the development these have to be addressed different to evaluate their quality.
 
 \subsection{Railway RAMS}
-
-Safety in the railway development as defined in the EN~50126 is in considered in the over all context of Quality of Service and the specific relations between reliability, availability, maintainability and safety, short RAMS. These aspects represent the major contributions to the overall quality of service and have to be evaluated throughout the whole life cycle.
+% figure 2 is set in § 5.1.4 but referenced in § 5.1.3
+Safety in the railway development as defined in the EN~50126 is considered in the over all context of Quality of Service and the specific relations between reliability, availability, maintainability and safety, short RAMS. These aspects represent the major contributions to the overall quality of service and have to be evaluated throughout the whole life cycle.
 
 As represented in figure \ref{fig:RAMS-EN50126} reliability and maintainability are characteristics which can be applied to the local system as these are specific to the application of this system. In contrast availability and safety are global characteristics as both depend on the behavior and dependences between different components of the overall system.
 
@@ -334,7 +335,14 @@ Since risk, due to  uncertainty in real systems and to its multidimensional natu
 \label{fig:Risk-control-modell-eng}
 \end{figure}
 
-Since software itself does not fail in the way technical equipment fails, the specific software safety integrity level can be better understood as a qualitative measure with respect to the required degree of correctness for the software functionality than as a quantitative value for the likelihood of failing. To reach the needed degree of correctness for the software various design, verification and validation methods are required corresponding to the assigned software safety integrity level. This process leads to safety requirements which have to be implemented in the software design as well as verified and validated. Respectively the EN~50126 describes the safety design process as a series of safety tasks for each life cycle phase. This task are related to a number of safety artifacts which are created, used and adapted over time through the different safety design activities.
+\paragraph{Safety Integrity Level}
+
+The safety integrity level (SIL) represented the acceptable risk for every part of the system. The risk control process as it is presented in figure \ref{fig:Risk-control-modell-eng} is then performed to ensure that the safety integrity levels are reached by every part of the system.
+
+Since software itself does not fail in the way technical equipment does the specific software safety integrity level represent a qualitative measure with respect to the required degree of correctness for the software functionality than a qualitative value for the likelihood of failing. 
+% I don't understand this sentence
+To reach the needed degree of correctness for the software various design, verification and validation methods are required corresponding to the assigned software safety integrity level. This process leads to safety requirements which have to be implemented in the software design as well as verified and validated. Respectively the EN~50126 describes the safety design process as a series of safety tasks for each life cycle phase. These tasks are related to a number of safety artifacts which are created, used and adapted over time through the different safety design activities.
+
 
 \subsection{Safety Case}
 
@@ -364,6 +372,10 @@ Figure \ref{fig:DevopmentProcess} shows the general artifacts for the openETCS S
 \caption{Overall openETCS software development process}
 \label{fig:DevopmentProcess}
 \end{figure}
+% The integration is not mentioned in the figure
+% Figure 5 and table 1 could be linked (phases name and number)
+
+
 
 The detailed principals and phases of this development process including all related artifacts and used tools have to be presented in the Quality Assurance Plan.  As the project continues this development process and the supporting tools are still evolving, respectively the detailed development description has to be updated in the Quality Assurance Plan continuously.
 

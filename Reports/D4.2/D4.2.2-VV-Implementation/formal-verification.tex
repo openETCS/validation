@@ -296,21 +296,18 @@ is faced with the problem that it
 \input{informal-specifications}
 \clearpage
 
-\section{Tests for \peek and \poke}
+\section{Relationship with \inl{boost::dynamic_bitset}}
 \label{sec:bitwalker-tests}
 
-In this section we show some tests for \peek and \poke.
-These tests were derived from the informal specification in 
-Section~\ref{sec:informal-specification}.
-
-We use the \CC\ class \inl{boost::dynamic_bitset} in order to represent
-\inl{bit sequences} in our tests.
+While analyzing \peek and \poke
+we also had a look at the \CC\ class \inl{boost::dynamic_bitset}.
 This class, which is part of the \textsf{Boost} libraries, provides a higher-level and 
 easier to use interface to bit sequences than is possible in~C.\footnote{%
   See \url{http://www.boost.org/doc/libs/1_55_0/libs/dynamic_bitset/dynamic_bitset.html}
 }
 
-Specifically, we use in our \CC\ test code the following typedefs
+Specifically, we have used \inl{boost::dynamic_bitset}
+with the following typedefs
 
 \begin{lstlisting}[style = acsl-block]
     typedef std::vector<uint8_t>              Bytestream;
@@ -330,7 +327,7 @@ In addition, it allows to
        thus representing the functionality of \poke
 \end{itemize}
 
-While testing the \bitwalker was not our main objective it proved useful for
+While systematic testing the \bitwalker was not our main objective it proved useful for
 the following reasons.
 
 \begin{itemize}
@@ -340,6 +337,11 @@ the following reasons.
       \peek in Listing~\ref{lst:peek-alternative} is not equivalent to the
       original implementation in Listing~\ref{lst:peek-original}.
 \end{itemize}
+
+If \inl{boost:dynamic_bitset} did not, as its name already suggests, rely
+on dynamic memory allocation, it would be a more suitable candidate
+to represent the \bitwalker functionality, than the hand-crafted
+and somewhat contrived code at hand.
 
 \clearpage
 

@@ -7,7 +7,7 @@ In this chapter we describe our work on the static code analysis of the bitwalke
 
 Our aim is to discover programing errors, obtain code metrics (lines of code, lines of code/lines of comments, cyclomatic complexity, Halsted metrics, class inherance tree and others) and verify the C11 standard and some subset of rules defined in the MISRA C Standard. That is, we focus on the different aspects of the source code to ensure the quality of the code in various perspectives.
 
-The code metrics help understanding the complexity of the code and can lead to code changes. The complexity metrics allows us to identify particularly complex program areas that it would be desirable to redesign, and where problems that will appear in the maintenance phase are likely focused. For example, the cyclomatic complexity or the number of paths, is a software quality metric that quantifies the complexity of a program and also indicates the number of test cases that would have to be written to execute all paths in a program. However, the cyclomatic complexity only considers the decision structure of a program, and not the complexity of nesting. There are more complexity metrics that takes into account the degree of nesting of a program or that consider the volumen and the program level like the Halstead metrics. The conjunction of the complexity metrics are an important indicator of the code readability, maintainability and portability, and the more complex the code is, the more likely it contains masked bugs.
+The code metrics help understanding the complexity of the code and can lead to code changes. The complexity metrics allows us to identify particularly complex program areas that it would be desirable to redesign, and where problems that will appear in the maintenance phase are likely focused. For example, the cyclomatic complexity or the number of paths, is a software quality metric that quantifies the complexity of a program and also indicates the number of test cases that would have to be written to execute all paths in a program. However, the cyclomatic complexity only considers the decision structure of a program, not consider the complexity of nesting. There are more complexity metrics that takes into account the degree of nesting of a program or that consider the volumen and the program level like the Halsted metrics. The conjunction of the complexity metrics are an important indicator of the code readability, maintainability and portability, and the more complex the code is, more likely it will contain masked bugs.
 
 CENELEC Standard identifies techniques and measures for 5 levels of software safety integrity and requires the use of a package of techniques and their correct
 application appropriate to the software safety integrity level.
@@ -62,7 +62,7 @@ As mentioned previously CENELEC Standard requires the use of a package of techni
 
 \subsection{Quality Metrics}
 
-As well as having intrinsic and user defined quality notices, RSM tool is mapped to the MISRA C Industry Standard. Taking into account the intrisic quality notice and the user defined quality notices the RSM tool covers 40.16\% of \href{http://msquaredtechnologies.com/m2rsm/docs/QualityStandards/MISRA_C_Mapping.htm}{[MISRA C]} rules.
+As well as having intrinsic and user definied quality notices, RSM tool is mapped to the MISRA C Industry Standard. Taking into account the intrisic quality notice and the user defined quality notices the RSM tool covers 40.16\% of \href{http://msquaredtechnologies.com/m2rsm/docs/QualityStandards/MISRA_C_Mapping.htm}{[MISRA C]} rules.
 
 The following table shows the intrinsic Quality Notices for C language that RSM tool checks.
 
@@ -83,7 +83,7 @@ Rationale:  \textcolor{red}{Reproducing source code on devices that are limited 
 
 Emit a quality notice when the function name length is greater than the specified number of characters.  
 
-Rationale:  \textcolor{red}{Long function names may be a portability issue especially when code has to be cross compiled onto embedded platforms.  This difficulty is typically seen with older hardware and operating systems.}
+Rationale:  \textcolor{red}{Long function names may be a portability issue especially when code has to be cross compiled onto embedded platforms.  This difficultly is typically seen with older hardware and operating systems.}
     \\
     \hline \textbf{Quality Notice No. 3}
     
@@ -135,12 +135,12 @@ Rationale:  \textcolor{red}{Older C code can be written in a style that does not
     \\
     \hline \textbf{Quality Notice No. 11}
     
-Emit a quality notice when open and closed brackets '[ ]' are not balanced within a file.
+Emit a quality notice when open and closed brackets '[ ]' are not balance within a file.
 
 Rationale:  \textcolor{red}{This type of error is always caught by the compiler as a syntax error.  However, a compiler can be told to ignore source code by using preprocessor directives like \#if ... \#endif.  This is a way to "comment" out large blocks of code.  However, the code still looks like operational code to the maintainer as it is not a comment.  Many hours can be wasted working on dead code.  This quality notice serves to warn you of this dead code that should be removed or converted to actual comment form.}
  & \textbf{Quality Notice No. 12}
  
-Emit a quality notice when open and closed parentheses '( )' are not balanced within a file.
+Emit a quality notice when open and closed parenthesis '( )' are not balance within a file.
 
 Rationale:  \textcolor{red}{This type of error is always caught by the compiler as a syntax error.  However, a compiler can be told to ignore source code by using preprocessor directives like \#if ... \#endif.  This is a way to "comment" out large blocks of code.  However, the code still looks like operational code to the maintainer as it is not a comment.  Many hours can be wasted working on dead code.  This quality notice serves to warn you of this dead code that should be removed or converted to actual comment form.}.
     \\
@@ -220,7 +220,7 @@ Rationale: \textcolor{red}{ A *.h file can be either a C or C++ source file.  If
 Emit a quality notice when a void * is identified
 within a source file.
 
-Rationale:  \textcolor{red}{A "void *" is a type-less pointer.  ANSI C and C++ strive to be type strict.  In C++ a "void *" breaks the type strict nature of the language which can give rise to anomalous run-time defects.}
+Rationale:  \textcolor{red}{A "void *" is a type-less pointer.  ANSI C and C++ strives to be type strict.  In C++ a "void *" breaks the type strict nature of the language which can give rise to anomalous run-time defects.}
     \\
     \hline
     \textbf{Quality Notice No. 27}
@@ -276,7 +276,7 @@ Rationale: \textcolor{red}{The amount of blank lines in a file can indicate the 
         
 Emit a quality notice when a function has no logical lines of code. 
  
-Rationale: \textcolor{red}{This condition indicates a no-op or stubbed out function with no operational code. Many code generators create such no-op functions which contribute to code bloat and unnecessary resource utilization.}
+Rationale: \textcolor{red}{This condition indicates a no-op or stubbed out function with no operational code.Many code generators create such no-op functions which contribute to code bloat and unnecessary resource utilization.}
  & \textbf{Quality Notice No. 49}
  
 Emit a quality notice when a function has no parameters in the parameter list.
@@ -436,16 +436,16 @@ Reflecting on elements that can contribute to increase the complexity of a progr
 Very large programs are complex even if only be for the large amount of information to be considered in order to understand them. So a first measure of the code complexity is given by its size. This size can be determined using the following metrics:
 \begin{itemize}
 \item Number of lines
-\item Halstead metrics (See \ref{sec:halsted})
+\item Halsted metrics (See \ref{sec:halsted})
 \end{itemize}
 
-Counting the number of code lines in a program is a simple way to measure its size. The main problem with this metric is to decide what we consider as line.
+Count the number of code lines in a program is a simple way to measure its size. The main problem with this metric is to decide what we consider as line.
 The reason is that there is no standard definition of what a line of code is. Do comments count? Are data declarations included? What happens if a statement extends over several lines? – These are the questions that often arise. According to the criteria that we follow a different metric will be obtained.
 
 For example, in C language, a line of code can be:
 \begin{itemize}
-\item a statement, instruction finished in a jump line
-\item a statement, instruction terminated with a semi-colon
+\item an statement, instruction finished in a jump line
+\item an statement, instruction terminated with a semi-colon
 \item any line of the program terminated with a new line (comments included)
 \end{itemize}
 
@@ -496,10 +496,8 @@ Taking into account these criterias the following size metrics are obtained:
 
 The following table describes some recommendations for the lines-of-code measures:
 
-\clearpage
-
 \begin{longtable}{||p{.175\textwidth}|p{.175\textwidth}|p{.675\textwidth}||}
-    \caption{\label{lst:recom} Recommendations}\\
+  \caption{\label{lst:recom} Recommendations}\\
     \hline\hline
     \textbf{Measures} & \textbf{Values} & \textbf{Comments}\\
     \hline\hline
@@ -545,7 +543,7 @@ The following equations defined McCabe Cyclomatic Complexity:
 \item V(g) = P + n, where P are the predicate nodes and n the number of output.
 \end{itemize}
 
-When the graph is strongly connected, a simplified formula to compute the cyclomatic complexity is use: V(g) = P + 1, where P are the predicate nodes.
+When the graph is strongly connected, a simplified formula to calcule the cyclomatic complexity is use: V(g) = P + 1, where P are the predicate nodes.
 
 The result obtained in the calculation of the cyclomatic complexity also determines the upper bound on the number of tests that must be performed to ensure that each statement is executed at least once.
 
@@ -671,9 +669,9 @@ At following the results of some complexity metrics obtained by the RSM tool are
 
 The interface complexity is defined by RSM as the number of input parameters to a function plus the number of return states from that function. Class interface complexity is the sum of all function interface complexity metrics within that class.
 
-The Maximun total complexity is the addition of Maximun Interface and Cyclomatic complexities and the total Cyclomatic complexity is calculated as the sum of the cyclomatic complexity of each function of the file. 
+The Maximun total complexity is the addition of Maximun Interface and Cyclomatic complexities and the total Cyclomatic complexity is calculated as the sumn of the cyclomatic complexity of each function of the file. 
 
-Knowing that a program has a high value of cyclomatic complexity (total Cyclomatic complexity) does not provide us enough info to decide what actions to take to improve our software. This occurs because there is not an approximate threshold reference value for total cyclomatic complexity since not all software has the same size. However we can say that the cyclomatic complexity of each function should not exceed a certain value.
+Knowing that a program has a high value of cyclomatic complexity (total Cyclomatic complexity) does not provide us enough info to decide what actions to take to improve our software. This occurs due to there is not an approximate threshold reference value for total cyclomatic complexity since not all software has the same size. However we can say that the cyclomatic complexity of each function should not exceed a certain value.
 
 Due to this, a more detailed Complexity analysis per function is provided at following.
 
@@ -816,7 +814,7 @@ After calculating the cyclomatic complexity the risk involved can be determined 
 
 If we cross the values ​​obtained in the analysis with the indicative table we can see that all functions are under 10, so we speak of simple functions with little logic and with low risk.
 
-According to Cenelec the modular approach involves several rules for the design, code and maintenance phases. As a result, an appropriate restriction must be specified for the total number of parameters, which are usually 5. Bearing this in mind, the table presented above shows that this is fulfilled for each function.
+In addition to the Limited Size and Complexity in Functions, Subrutines and Methods and Coding Standard techniques, at following we can see that taking into account the modular approach where one of its rule mentions that it shall specify a restriction for the number of paramenters (normally 5) the Parameter Number Limit is fulfilled.
 
 Furthermore, from the previous definition of recommended values for lines of code measures (see \ref{lst:recom}), we can see there is not documentation for some functions.
 
@@ -843,7 +841,7 @@ In this flow, 4 predicated nodes are displayed so, taking into account the equat
 
 \href{http://www.locmetrics.com/}{[LocMetrics]} tool counts total lines of code (LOC), blank lines of code (BLOC), comment lines of code (CLOC), lines with both code and comments (C\&SLOC), logical source lines of code (SLOC-L), McCabe VG complexity (MVG), Header Comments (HCLOC), Header Words (HCWORD) and number of comment words (CWORDS). Physical executable source lines of code (SLOC-P) is calculated as the total lines of source code minus blank lines and comment lines. Counts are calculated on a per file basis and accumulated for the entire project. LocMetrics also generates a comment word histogram.
 
-The results obtained by LocMetrics tool are the following:
+About the results obtained by LocMetrics tool are the following ones:
 
 \begin{longtable}{||p{.125\textwidth}|p{.055\textwidth}|p{.065\textwidth}|p{.065\textwidth}|p{.055\textwidth}|p{.060\textwidth}|p{.09\textwidth}|p{.065\textwidth}|p{.085\textwidth}|p{.075\textwidth}|p{.1\textwidth}||}
   \caption{LocMetrics Tool Results}\\
@@ -874,12 +872,12 @@ The results obtained by LocMetrics tool are the following:
 
 \section{Understand tool Results}
 \href{http://www.scitools.com/}{[Understand]} is a cross-platform, multi-language, maintenance-oriented IDE (Interactive Development Environment). It is designed to help maintain and understand large amounts of legacy or newly created source code. 
-Understand also provides a way to check the code using coding Standard to avoid potential errors. With this tool SQS has checked MISRA-C:2004 and code metrics (lines of code, complexity, object cross reference, invocation tree, Unused Items and others). The highly recommended and mandatory techniques identified by CENELEC Standard covered by the tool are:
+Understand also provides a way to check the code using coding Standard to avoid potencial errors. With this tool SQS has checked MISRA-C:2004 and code metrics (lines of code, complexity, object cross reference, invocation tree, Unused Items and others). The high recomended and mandatory techniques identified by CENELEC Standard covered by the tool are:
 \begin{itemize}
 \item Coding Standard (Mandatory)
-\item Limited Size and Complexity in Functions, Subroutines and Methods (Highly Recommended)
-\item Data Flow Analysis technique (Highly Recommended)
-\item Control Flow Analysis technique (Highly Recommended)
+\item Limited Size and Complexity in Functions, Subroutines and Methods (High Recomended)
+\item Data Flow Analysis technique (High Recomended)
+\item Control Flow Analysis technique (High Recomended)
 \end{itemize}
 
 The detailed static analysis report is available in the \href{https://github.com/openETCS/validation/tree/master/VnVUserStories/VnVUserStorySQS/04-Results}{[VnVUserStories folder]}
@@ -979,7 +977,7 @@ Below the \underline{MISRA-C tested rules} are listed:
 \begin{itemize}
 \item 20.4 (req): Dynamic heap memory allocation shall not be used.
 \item 20.5 (req): The error indicator \inl{errno} shall not be used.
-\item 20.6 (req): The macro \inl{offsetof}, in library \inl{<stddef.h>}, shall not be used.
+\item 20.6 (req): The macro inl{offsetof}, in library \inl{<stddef.h>}, shall not be used.
 \item 20.7 (req): The \inl{setjmp} macro and the \inl{longjmp} function shall not be used.
 \item 20.8 (req): The signal handling facilities of \inl{<signal.h>} shall not be used.
 \item 20.9 (req): The input/output library \inl{<stdio.h>} shall not be used in production code.
@@ -998,7 +996,7 @@ Below the \underline{MISRA-C tested rules} are listed:
 \end{itemize}
 \end{itemize}
  
-After a review of the subset of MISRA-C rules taking into account project requirements and sector standard or best practices it is necessary to decide which of them are not to be implemented/approved due to its application can get worse understandability of the code and which other rules of other standard will be applied.
+After a review of the subset of MISRA-C rules taking into account project requirements and sector standard or best practices it is necessary to decide which of some of them are not to be implemented/approved due to its application can get worse understanbility of the code and which other rules of other standard will be applied.
 
 The table below shows the non approved MISRA-C rules.
 
@@ -1078,7 +1076,7 @@ Below tables shows some different metrics per file and function.
 In order to understand the tables and to be able to compare the results obtained with the different tools the definition of the specific metrics is provided before the presentation of the corresponding table.
 \begin{itemize}
 \item Cyclomatic: The measure of the complexity of a function's decision structure. The cyclomatic complexity is also the number of basis, or independent, paths through a module. 
-\item Modified Cyclomatic: cyclomatic except each case statement is not counted; the entire switch counts as 1.
+\item Modified Cyclomatic: cyclomatic except each case statement is not counted;the entire switch counts as 1.
 \item Strict: Cyclomatic complexity except each short-circuit operator adds 1 to the complexity.
 \item Essential Complexity: cyclomatic complexity after structured programming constructs have been removed.
 \item Nesting: maximum nesting level of control constucts (if, while,etc.)
@@ -1793,7 +1791,7 @@ In this case CMT++ is used to calculate:
 
 \subsection{Complexity Metrics}
 \subsubsection{Program Size Metrics}
-As it was mentioned in \ref{sec:sizem} the number of lines and the Halstead metrics can be used to determine the program size.
+As it was mentioned in \ref{sec:sizem} the number of lines and the Halsted metrics can be used to determine the program size.
 \begin{description}
 \item \textbf{Number of lines}
 
@@ -1853,9 +1851,9 @@ Following the analysis conducted within the tool, the tables below summarizes th
     \hline
    \end{longtable}
 
-\item \textbf{Halstead metrics}
+\item \textbf{Halsted metrics}
 
-Halstead complexity metrics were developed by the late Maurice Halstead as a mean of determining a quantitative measure of complexity directly from the operators and operands in the module to measure a program module's complexity directly from source code.
+Halstead complexity metrics were developed by the late Maurice Halstead as a means of determining a quantitative measure of complexity directly from the operators and operands in the module to measure a program module's complexity directly from source code.
 
 Halstead's metrics are based on interpreting the source code as a sequence of tokens and classifying each token to be an operator or an operand. There are based on four basic measures:
 \begin{itemize}
@@ -1877,7 +1875,7 @@ Taking into account these measures the following metrics will be obtained:
 \item Number of delivered bugs: $B = (E^{2/3}) / 3000$
 \end{itemize}
 
-So Halstead metrics provide several metrics that focus on different aspects of software complexity. Furthermore, they allow the estimation of development and testing times (with parameter L*V), and difficulty of understanding (with parameter E). 
+So Halsted metrics provide several metrics that focus on different aspects of software complexity. Furthermore, they allow the estimation of development and testing times (with parameter L*V), and difficulty of understanding (with parameter E). 
 
 Software complexity is usually analyzed with the indicators L, V and E due to:
 \begin{itemize}
@@ -1886,10 +1884,10 @@ Software complexity is usually analyzed with the indicators L, V and E due to:
 \item effort can be used as a measure of program clarity since the effort required to produce a piece of software is primarily related to the difficulty to understand and implement it.
 \end{itemize}
 
-In the tables below are presented the results obtained per file and per function:
+In the tables below are presented the results obtained per file and per functions:
 
 \begin{longtable}{||p{.475\textwidth}|p{.070\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}||}
-  \caption{Halstead metrics 1 per file}\\
+  \caption{Halsted metrics 1 per file}\\
     \hline\hline
     \textbf{File} &\textbf{L} & \textbf{n} & \textbf{$n_1$} & \textbf{$n_2$} & \textbf{N} & \textbf{$N_1$} & \textbf{$N_2$}\\
     \hline\hline
@@ -1902,7 +1900,7 @@ In the tables below are presented the results obtained per file and per function
    \end{longtable}
    
 \begin{longtable}{||p{.475\textwidth}|p{.070\textwidth}|p{.125\textwidth}|p{.085\textwidth}|p{.075\textwidth}|p{.090\textwidth}||}
-  \caption{Halstead metrics 2 per file}\\
+  \caption{Halsted metrics 2 per file}\\
     \hline\hline
     \textbf{File} &\textbf{B} & \textbf{E} & \textbf{T} & \textbf{D} & \textbf{V}\\
     \hline\hline
@@ -1915,7 +1913,7 @@ In the tables below are presented the results obtained per file and per function
    \end{longtable}
    
 \begin{longtable}{||p{.475\textwidth}|p{.070\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}|p{.060\textwidth}||}
-  \caption{Halstead metrics 1 per function}\\
+  \caption{Halsted metrics 1 per functions}\\
     \hline\hline
     \textbf{Function} &\textbf{L} & \textbf{n} & \textbf{$n_1$} & \textbf{$n_2$} & \textbf{N} & \textbf{$N_1$} & \textbf{$N_2$}\\
     \hline\hline
@@ -1946,7 +1944,7 @@ In the tables below are presented the results obtained per file and per function
    \end{longtable}
    
 \begin{longtable}{||p{.475\textwidth}|p{.070\textwidth}|p{.1\textwidth}|p{.085\textwidth}|p{.075\textwidth}|p{.080\textwidth}||}
-  \caption{Halstead metrics 2 per function}\\
+  \caption{Halsted metrics 2 per functions}\\
     \hline\hline
     \textbf{Function} &\textbf{B} & \textbf{E} & \textbf{T} & \textbf{D} & \textbf{V}\\
     \hline\hline
@@ -1986,7 +1984,7 @@ Halstead's delivered bugs (B) is an estimate for the number of errors in the imp
 Delivered bugs in a file should be less than 2. 
 Experiences have shown that, when programming with C or C++, a source file almost always contains more errors than B suggests. The number of defects tends to grow more rapidly than B.
 
-By analyzing the results, one can observe that all the Halstead metrics obtained in relation to functions and file are inside the recommendations.
+By analyzing the results, one can observe that all the Halsted metrics obtained in relation to functions and file are inside the recommendations.
 
 
 \subsubsection{Control Flow Metrics}
@@ -2035,7 +2033,7 @@ Actually there are three measures:
 \item MI: Maintainability Index = MIwoc + MIcw
 \end{itemize}
 
-The general formulae for MI are the following:
+The general formulae for MI is the following:
 
 MIwoc = 171 - 5.2 * ln(aveV) -0.23 * aveG -16.2 * ln(aveLOC)
 
@@ -2110,7 +2108,7 @@ with really bad pieces of code (big, uncommented, unstructured) the MI value can
 
 As a first conclusion, the values from the tables above indicate the functions and file have a good maintanability.
 
-\section{MISRA and Mü8004 Rules Comparation}
+\section{MISRA and Mü8004 Rules Comparison}
 This section analyses the requirements designed in MISRA-C : 2004 standard and Mü8004 standard and makes a comparison between rules they might have in common and describes the most important features of the ones they don’t have in common. 
 
 \begin{center}
@@ -2130,7 +2128,7 @@ This rule is not included in Mü8004 standard. It never mentions which version o
 MISRA-C Rule 1.2 No reliance shall be placed on undefined or unspecified
 behaviour.
 
-This rule is not included in Mü8004 standard. No requirement on behaviour is specified
+This rule is not included in Mü8004 standard. No requirement on behaviour is specified.
 %% Fin FRR
 
 \paragraph{MISRA –C Environment Rule 1.3}
@@ -2165,7 +2163,7 @@ This is less restrictive in Mü8004 standard, as // comments are allowed in Mü8
 \paragraph{MISRA –C Language extensions 2.3}
 MISRA-C Rule 2.2 Description: The character sequence /* shall not be used within a comment.
 
-This rule is included in Mü8004 Rule 0.2.8, as it establishes that comments must not be nested. This is an important requirement whose omission would cause critical errors otherwise.
+This rule is included in Mü8004 Rule 0.2.8, as it establishes that comments must not be nested. This is an important requirement whom omission would cause critical errors otherwise.
 
 \paragraph{MISRA –C Language extensions 2.4}
 MISRA-C Rule 2.4 Description: Sections of code should not be “commented out”
@@ -2184,7 +2182,7 @@ standard shall be used.
 Mü8004 standard does not include this rule. This rules is useful for code portabiliy.
  
 \paragraph{MISRA –C Character sets 4.2}
-MISRA-C Rule 4.2 Trigraphs shall not be used
+MISRA-C Rule 4.2 Trigraphs shall not be used.
 
 
 Mü8004 standard does not include this rule. This rules is useful for code understanding. This rule should be mandatory.
@@ -2209,7 +2207,7 @@ This rule is not included in Mü8004 standard, but it would be useful adding it 
 \paragraph{MISRA –C Identifiers 5.3}
 MISRA-C Rule 5.3 Description: A typedef name shall be a unique identifier.
 
-This rule is not included in Mü8004 standard, but it would be useful adding it to avoid the reuse these names within a program.
+This rule is not included in Mü8004 standard, but it would be useful adding it to avoid the reuse this names within a program.
 
 
 \paragraph{MISRA –C Identifiers 5.4}
@@ -2231,7 +2229,7 @@ This rule is not included in Mü8004 standard. It extends the avoidance of using
 \paragraph{MISRA –C Identifiers 5.7}
 MISRA-C Rule 5.7 Description: No identifier name should be reused (across any files in the system).
 
-This rule is not included in Mü8004 standard. It incorporates the Rules 5.2, 5.3, 5.4, 5.5 and 5.6. It would be an extremely severe requirement to avoid confusion between names.
+This rule is not included in Mü8004 standard. It incorporated the Rules 5.2, 5.3, 5.4, 5.5 and 5.6. It would be an extremely severe requirement to avoid confusion between names.
 
 \paragraph{Mü8004 Identifiers 0.2.9}
 Some points of this section, as the following ones, are very important to avoid confusion between names and are not included in Identifiers section in MISRA-C standard:
@@ -2371,11 +2369,11 @@ Mü8004 does not include this rule. It is necessary to avoid making mistakes whe
 \paragraph{MISRA -C Conversions 10.1}
 MISRA-C Rule 10.1 Description: The value of an expression of integer type shall not be implicitly
 converted to a different underlying type if:\\
-(a)it is not a conversion to a wider integer type of the same
+(a) it is not a conversion to a wider integer type of the same
 signedness, or \\
-(b)the expression is complex, or \\
-(c)the expression is not constant and is a function argument, or \\
-(d)the expression is not constant and is a return expression
+(b) the expression is complex, or \\
+(c) the expression is not constant and is a function argument, or \\
+(d) the expression is not constant and is a return expression.
 
 Mü8004 includes this rule. It is a precision of the third phrase of the chapter 0.2.18.
 
@@ -2385,7 +2383,7 @@ converted to a different type if:\\
 (a) it is not a conversion to a wider floating type, or\\
 (b) the expression is complex, or\\
 (c) the expression is a function argument, or\\
-(d) the expression is a return expression
+(d) the expression is a return expression.
 
 Mü8004 includes this rule. It is a precision of the thrid phrase of the chapter 0.2.18.
 
@@ -2394,54 +2392,51 @@ MISRA-C Rule 10.3 Description: The value of a complex expression of integer type
 cast to a type of the same signedness that is no wider than the
 underlying type of the expression.
 
-Mü8004 includes this rule. It is a precision of the third phrase of chapter 0.2.18.
+Mü8004 includes this rule. It is a precision of the third sentence of the chapter 0.2.18.
 
 \paragraph{MISRA -C Conversions 10.4}
 MISRA-C Rule 10.4 Description: The value of a complex expression of floating type shall only be cast to a floating type that is narrower or of the same size.
 
-Mü8004 includes this rule. It is a precision of the third phrase of the chapter 0.2.18.
+Mü8004 includes this rule. It is a precision of the third sentence of the chapter 0.2.18.
 
 \paragraph{MISRA -C Conversions 10.5}
 MISRA-C Rule 10.4 Description: If the bitwise operators
-\~{} and $<<$ are applied to an operand of underlying type
+\~ and $<<$ are applied to an operand of underlying type
 unsigned char or unsigned short, the result shall
 be immediately cast to the underlying type of the operand.
 
-Mü8004 does not include this rule. This operators in this small type then it is a source bug. When type forcing allow the good comportement.
+Mü8004 does not include this rule. This operators converts the data in the type having a small size. This convertion causes overflow and bug.
+
 
 \paragraph{MISRA -C Conversions 10.6}
-MISRA-C Rule 10.6 Description: An “U” suffix shall be applied to all constants of unsigned type.
+MISRA-C Rule 10.6 Description: A “U” suffix shall be applied to all constants of unsigned type.
 
-Mü8004 does not include this rule. This rule is for the maintenability and code review.
+Mü8004 does not include this rule. This rule is useful for the maintenability and code review.
 
 \paragraph{MISRA -C Conversions 11.1}
 MISRA-C Rule 11.1 Description: Conversions shall not be performed between a pointer to a function and any type other than an integral type.
 
-Mü8004 does not include this rule. If this rule was not respected, the code has an undefined behavior. This rule must be mandatory. In addition, the code becomes independent of the compiler.
+Mü8004 does not include this rule. If this rule is not respected, the code has an undefined behavior. This rule must be mandatory. In addition, the code becomes independent of the compiler.
 
 \paragraph{MISRA -C Conversions 11.2}
 MISRA-C Rule 11.2 Description: Conversions shall not be performed between a pointer to object and any type other than an integral type, another pointer to object type or a pointer to void.
 
-Mü8004 does not include this rule. This rule is for the cast system is determinist. And this rules indicates which does not mix pointer and object.
+Mü8004 does not include this rule. This rule is for the determinism of the cast system. This rules indicates that we do not have to mix pointer and object.
 
 \paragraph{MISRA -C Conversions 11.3}
 MISRA-C Rule 11.3 Description: A cast should not be performed between a pointer type and an integral type. 
 
-Mü8004 does not include this rule. This rule is used for not mixing data and pointer. These two objects are different.
+Mü8004 does not include this rule. This rule is used for not mixing data and pointer. Those two objects are different.
 
 \paragraph{MISRA -C Conversions 11.4}
 MISRA-C Rule 11.4 Description: A cast should not be performed between a pointer to object type and a different pointer to object type.
 
-Mü8004 does not include this rule. This rule is used for not mix different pointer types for data alignement. This rule prevents safety issues that may
-occur if misaligned pointers are used.
+Mü8004 does not include this rule. This rule is used for not mixing different pointer types for data alignement. This rule allows to execute the code in a safety way.
 
 \paragraph{MISRA -C Conversions 11.5}
 MISRA-C Rule 11.5 Description: A cast shall not be performed that removes any {\it const} or {\it volatile} qualification from the type addressed by a pointer.
 
-Mü8004 does not include this rule. This rule is used for not modified a constant data or a volatile. This rule prevents safety issues that may occur if 
-writing to a {\it const} location, or accessing a {\it volatile} location
-without proper qualification.
-
+Mü8004 does not include this rule. This rule is used for not modifying a constant data or a volatile. This rule allows to execute the code in a safety way.
 %% end FRR
 
 \begin{center}
@@ -2451,7 +2446,7 @@ without proper qualification.
 \paragraph{MISRA –C Expressions 12.1}
 MISRA-C Rule 12.1 Description: Limited dependence should be placed on C’s operator precedence rules in expressions
 
-Mü8004 does not include this rule. This could be a good advisory rule for the developer that has to be careful with made mistakes because of precedence rule of C. Parentheses should be used to reduce mistakes.
+Mü8004 does not include this rule. This could be a good advisory rule for the developer that has to be careful with made mistakes because of precedence rule of C. Parentheses should be used to reduce made mistakes.
 
 \paragraph{MISRA –C Expressions 12.2}
 MISRA-C Rule 12.2 Description: The value of an expression shall be the same under any order of evaluation that the standard permits
@@ -2475,7 +2470,7 @@ Mü8004 standard does not include this rule. This could be a good rule for both 
 \paragraph{MISRA –C Expressions 12.6}
 MISRA-C Rule 12.6 Description: The operands of logical operators (\&\&, || and !) should be effectively Boolean. Expressions that are effectively Boolean should not be used as operands to operators other than (\&\&, ||, !, =, ==, != and ?:)
 
-Mü8004 Rule 0.2.4 establishes the difference between logical operators (\&\&, ||, !, =, ==, != and ?:) and bitwise (\&=, |, \^{}, -, $>>$, $<<$) operators
+Mü8004 Rule 0.2.4 establishes the difference between logical operators (\&\&, ||, !, =, ==, != and ?:) and bitwise (\&=, |, \^, -, >>, <<) operators
 
 \paragraph{MISRA –C Expressions 12.7}
 MISRA-C Rule 12.7 Description: Bitwise operators shall not be applied to operands whose underlying type is signed
@@ -2508,7 +2503,7 @@ MISRA-C Rule 12.12 Description: The underlying bit representations of floating-p
 Mü8004 standard does not include this rule. This could be an interesting rule to avoid the errors caused by the way floating-point values are stored, in case this data types would be supported by the compiler.
 
 \paragraph{MISRA –C Expressions 12.13}
-MISRA-C Rule 12.13 Description: The increment (++) and decrement (-{}-) operators should not be mixed with other operators in an expression
+MISRA-C Rule 12.13 Description: The increment (++) and decrement (--) operators should not be mixed with other operators in an expression
 
 Mü8004 Rule 0.2.4 establishes the restrictions when working with these operators. Post increment and post decrement operators are only allowed if they are placed in a separate expression.
 
@@ -2523,7 +2518,7 @@ MISRA-C Rule 13.1 Description: Assignment operators shall not be used in express
 Mü8004 Rule 0.2.13 establishes that assignment operators shall not be used inside expressions that are considered to have a Boolean value.
 
 \paragraph{MISRA –C Control statement expressions 13.2}
-MISRA-C Rule 13.2 Description: Tests of a value against zero should be made explicit, unless the operand is effectively Boolean
+MISRA-C Rule 13.2 Description: Tests of a value against cero should be made explicit, unless the operand is effectively Boolean
 
 Mü8004 standard does not include this rule. It could be useful to add this rule for the appropriate work with “not equal” operator.
 
@@ -2642,6 +2637,67 @@ MISRA-C Rule 15.5 Description: Every \textit{switch} statement shall have at lea
 
 Mü8004 standard does not include this rule. It could be useful to add this rule to clarify the necessity of adding at least one case clause in every \textit{switch} statement.
 
+%%% debut FRR v2
+
+\begin{center}
+\textsc{\underline{FUNCTION:}}
+\end{center}
+
+
+\paragraph{MISRA -C Rule 16.1}
+MISRA -C Rule 16.1 Description : Functions shall not be defined with a variable number of arguments.
+
+This rule is included in Mü8004 standard. This rule is mandatory. A variable number of arguments is dangerous for the code. It can introduce undefined behavior.
+
+\paragraph{MISRA -C Rule 16.2}
+MISRA -C Rule 16.2 Description : Functions shall not call themselves, either directly or indirectly.
+
+This rule is included in Mü8004 standard. This rule is mandatory. The functions who call themselves, introduce a recursive behavior. And with recursive functions, it is difficult to justify the program stop. 
+
+ \paragraph{MISRA -C Rule 16.3}
+MISRA -C Rule 16.3 Description : Identifiers shall be given for all of the parameters in a function prototype declaration.
+
+This rule is not included in Mü8004 standard. This rule is used for compatibility, clarity and maintainability aspects.
+
+\paragraph{MISRA -C Rule 16.4}
+MISRA -C Rule 16.4 Description : The identifiers used in the declaration and definition of a function shall be identical.
+
+This rule is not included in Mü8004 standard. This rule is useful for the coherency between the c file and the h file.  
+
+\paragraph{MISRA -C Rule 16.5}
+MISRA -C Rule 16.5 Description : Functions with no parameters shall be declared and defined with the parameter list void.
+
+This rule is not included in Mü8004 standard. This rule is used for standardizing the list parameter and the return of the function. 
+
+\paragraph{MISRA -C Rule 16.6}
+MISRA -C Rule 16.5 Description : The number of arguments passed to a function shall match the number of parameters.
+
+This rule is not included in Mü8004 standard. This rule is related to the rule 16.1. This rule is used for standardizing the definition and the call function.
+
+\paragraph{MISRA -C Rule 16.7}
+MISRA -C Rule 16.7 Description : A pointer parameter in a function prototype should be declared as pointer to {\it const} if the pointer is not used to modify the adressed object.
+
+This rule is not included in Mü8004 standard. This rule is mandatory. Thanks to this rule verifications can be made by the compiler.
+
+\paragraph{MISRA -C Rule 16.8}
+MISRA -C Rule 16.8 Description : All exit paths from a function with non-void return type shall have an explicit {\it return} statement with an expression.
+
+%%This rule is not included in Mü8004 standard. The C norm does not define the behaviour when there is not in  the dataflow. This rule prevents an unwanted behavior.
+This rule is not included in Mü8004 standard. The C norm does not define the behaviour when there is no expression in  the dataflow. This rule prevents an unwanted behavior.
+
+\paragraph{MISRA -C Rule 16.9}
+MISRA -C Rule 16.9 Description : A function identifier shall only be used with either a preceding \&,or with a parenthesised parameter list, which may be empty.
+
+This rule is not included in Mü8004 standard. In the example of Misra, we cannot make the difference between the null test of a pointer or the return of the function. To avoid a confusion, this rule is mandatory.
+
+\paragraph{MISRA -C Rule 16.9}
+MISRA -C Rule 16.9 Description : A function identifier shall only be used with either a preceding \&,or with a parenthesised parameter list, which may be empty.
+
+This rule is not included in Mü8004 standard. This rule is obvious. However the rule 20.3 indicates that a test before the call function is recommended.
+
+We have noticed that there was no many information about the behavior and the function call in this standard, but a lot of information on the documentation and the declaration of the function.
+%%% Fin FRR v2
+
 \begin{center}
 \textsc{\underline{POINTERS AND ARRAYS:}}
 \end{center}
@@ -2703,6 +2759,161 @@ MISRA-C Rule 18.4 Description: Unions shall not be used
 
 Mü8004 Rule 0.2.6 contradicts this rule. Unions could be used in situations in which the use of unions is advisable for an implementation that has to be efficient in terms of memory.
 
+%%% begin FRR v2
+\begin{center}
+\textsc{\underline{PREPROCESSING DIRECTIVES:}}
+\end{center}
+
+\paragraph{MISRA -C Rule 19.1}
+MISRA -C Rule 19.1 Description : \#include statements in a file should only be preceded by other preprocessor directives or comments.
+
+This rule is included in Mü8004. This rule is advisory in MISRA -C but mandatory in the Mü8004. This rule describes the pattern of the files and makes the files more readable.
+
+\paragraph{MISRA -C Rule 19.2}
+MISRA -C Rule 19.3 Description : Non-standard characters should not occur in header file names in \#include directives.
+
+This rule is not included in Mü8004. This rule is useful for the portability of the code.
+
+\paragraph{MISRA -C Rule 19.3}
+MISRA -C Rule 19.3 Description : The \#include directive shall be followed by either a <filename> or "filename" sequence.
+
+This rule is included in Mü8004. This rule is used to demonstrate the dependence of the modular code.
+
+\paragraph{MISRA -C Rule 19.4}
+MISRA -C Rule 19.4 Description : C macros shall only expand to a braced initialiser, a constant, a string literal, a parenthesised expression, a type qualifier, a storage class specifier, or a do-while-zero construct.
+
+This rule is not included in Mü8004. This rule reduces C macros. This reduction is useful for the maintainability and readability of the code. This rule is used only to define macro instructions and not a function. 
+
+\paragraph{MISRA -C Rule 19.5}
+MISRA -C Rule 19.5 Description : Macros shall not be \#define’d or \#undef’d within a block.
+
+This rule is not included in Mü8004. This rule is not reduce the scope of the macro in a code. When it defines a macro, the scope of the instruction must be at same level.
+
+\paragraph{MISRA -C Rule 19.6}
+MISRA -C Rule 19.6 Description : \#undef shall not be used.
+
+This rule is included in Mü8004. \#undef  is no used. And this instruction can lead to confusion.
+
+\paragraph{MISRA -C Rule 19.7}
+MISRA -C Rule 19.7 Description : A function should be used in preference to a function-like macro
+
+This rule is not included in Mü8004. This rule is used to not confuse the modular aspect and the programming.
+
+\paragraph{MISRA -C Rule 19.8}
+MISRA -C Rule 19.8 Description : A function-like macro shall not be invoked without all of its arguments.
+
+This rule is not included in Mü8004. This rule is mandatory. This rule is used to avoid the unwanted behaviour. 
+
+\paragraph{MISRA -C Rule 19.9}
+MISRA -C Rule 19.9 Description : Arguments to a function-like macro shall not contain tokens that look like preprocessing directives.
+
+This rule is not included in Mü8004.  This rule is for readable. If this rule is not respected, the software maintainer will be allowed to confuse the macro and preprocessing directive?
+
+\paragraph{MISRA -C Rule 19.10}
+MISRA -C Rule 19.10 Description : In the definition of a function-like macro each instance of a parameter shall be enclosed in parentheses unless it is used as the operand of \# or \#\#.
+
+This rule is not included in Mü8004. This rule is used to create the unwanted behaviour, when the pre-processor instances the macro.
+
+\paragraph{MISRA -C Rule 19.11}
+MISRA -C Rule 19.11 Description : All macro identifiers in preprocessor directives shall be defined before use, except in \#ifdef and \#ifndef preprocessor directives and the defined() operator.
+
+This rule is not included in Mü8004. This rule is for the modular aspect and comprehension. Because The identifier is clearly defined.
+
+\paragraph{MISRA -C Rule 19.12}
+MISRA -C Rule 19.12 Description : There shall be at most one occurrence of the \# or \#\# operators in a single macro definition.
+
+This rule is not included in Mü8004. This rule is used to avoid unspecified directive preprocessor.
+
+\paragraph{MISRA -C Rule 19.13}
+MISRA -C Rule 19.13 Description : The \# and \#\# operators should not be used.
+
+This rule is not included in Mü8004. This rule is used to avoid unspecified directive preprocessor.
+
+\paragraph{MISRA -C Rule 19.14}
+MISRA -C Rule 19.14 Description : The defined preprocessor operator shall only be used in one of the two standard forms.
+
+This rule is not included in Mü8004. This rule is useful for the portability of the code.
+
+\paragraph{MISRA -C Rule 19.15}
+MISRA -C Rule 19.15 Description : Precautions shall be taken in order to prevent the contents of a header file being included twice.
+
+This rule is not included in Mü8004. This rule is used to avoid incoherence file inclusion. 
+
+\paragraph{MISRA -C Rule 19.16}
+MISRA -C Rule 19.16 Description : Preprocessing directives shall be syntactically meaningful even when excluded by the preprocessor.
+
+This rule is not included in Mü8004. This rule is here to avoid a breach of C norm. If prepocessing directives is badly formed, the compiler will ignor it without warning.
+
+\paragraph{MISRA -C Rule 19.17}
+MISRA -C Rule 19.17 Description : All \#else, \#elif and \#endif preprocessor directives shall reside in the same file as the \#if or  \#ifdef directive to which they are related.
+
+This rule is not included in Mü8004. This rule is used for the maintenance of the code because the imbrication of preprocessor directive makes the code hard to read.
+
+\begin{center}
+\textsc{\underline{STANDARD LIBRARIES:}}
+\end{center}
+
+\paragraph{MISRA -C Rule 20.1}
+MISRA -C Rule 20.1 Description : Reserved identifiers, macros and functions in the standard library, shall not be defined, redefined or undefined.
+
+This rule is not included in Mü8004. This rule is  both for the standardization and readability of the code.
+
+\paragraph{MISRA -C Rule 20.2}
+MISRA -C Rule 20.2 Description : The names of standard library macros, objects and functions shall not be reused.
+
+This rule is not included in Mü8004. This rule is both for standardization and readability of the code. 
+
+\paragraph{MISRA -C Rule 20.3}
+MISRA -C Rule 20.3 Description : The validity of values passed to library functions shall be checked.
+
+This rule is included in Mü8004. This rule is mandatory. When a standard function is called , the values passed to the function are checked. This rule is important because it avoids unwanted behaviour.
+
+\paragraph{MISRA -C Rule 20.4}
+MISRA -C Rule 20.4 Description : Dynamic heap memory allocation shall not be used.
+
+This rule is included in Mü8004. Dynamic heap memory utilisation is a source of errors such as memory leak or null pointer. 
+
+\paragraph{MISRA -C Rule 20.5}
+MISRA -C Rule 20.5 Description : The error indicator {\it errno} shall not be used.
+
+This rule is not included in Mü8004. In the standard {\it errno} is poorly defined. To avoid unwanted behaviour this construction must be prohibited.
+
+paragraph{MISRA -C Rule 20.6}
+MISRA -C Rule 20.6 Description : The macro {\it offsetof}, in library {\it <stddef.h>}, shall not be used.
+
+This rule is not included in Mü8004. In the standard the macro offsetof is bad defined. To avoid unwanted behaviour this construction must be prohibited.
+
+\paragraph{MISRA -C Rule 20.7}
+MISRA -C Rule 20.7 Description : The {\it setjmp} macro and the {\it longjmp} function shall not be used.
+
+This rule is included in Mü8004. The utilisation of this instruction avoid to use goto and label. This instructions provide "spaghetti code".
+
+\paragraph{MISRA -C Rule 20.8}
+MISRA -C Rule 20.8 Description : The signal handling facilities of {\it <signal.h>} shall not be used.
+
+This rule is not included in Mü8004. The behaviour of {\it <signal.h>} is undefined for some values. And a critical code must not have undefined behavior. 
+
+\paragraph{MISRA -C Rule 20.9}
+MISRA -C Rule 20.9 Description : The input/output library {\it <stdio.h>} shall not be used in production code.
+
+This rule is not included in Mü8004. The behaviour of {\it <stdio.h>} is undefined for some values. And a critical code must not have undefined behavior.
+
+\paragraph{MISRA -C Rule 20.10}
+MISRA -C Rule 20.10 Description : The library functions {\it atof}, {\it atoi} and {\it atol} from library {\it <stdlib.h>} shall not be used.
+
+This rule is not included in Mü8004. In the standard the macro atof, atoi and atol are bad defined. To avoid unwanted behaviour this construction shall be prohibited.
+
+\paragraph{MISRA -C Rule 20.11}
+MISRA -C Rule 20.11 Description : The library functions {\it abort}, {\it exit}, {\it getenv} and {\it system} from library {\it <stdlib.h>} shall not be used.
+
+This rule is not included in Mü8004. This function are not need in embedded code. Therefore it is forbidden. 
+
+\paragraph{MISRA -C Rule 20.12}
+MISRA -C Rule 20.12 Description : The time handling functions of library {\it <time.h>} shall not be used.
+
+This rule is not included in Mü8004. The behaviour of <time.h> is undefined for some values. And a critical code must not have undefined behavior. 
+
+%%% End FRR v2
 
 \begin{center}
 \textsc{\underline{DOCUMENTATION:}}
@@ -2744,8 +2955,17 @@ Mü8004 – 0.2.3 Coding of Basic Structures Rule: Although MISRA-standard inclu
 \paragraph{Mü8004 – 0.2.4 Operators}
 Mü8004 – 0.2.4 Operator Rule: Although MISRA-standard includes explanation for the most important operators, it is helpful to have a general overview of them within a table.
 
+\paragraph{Mü8004 - 0.2.5 Preprocessor Commands} 
+This rule is used to the portability of the code. \#pragma directive is for the optimization compiler, and often it is not portable. This commands must be forbid.
+
+\paragraph{Mü8004 - 0.2.7 Memory Classes} 
+The permitted memory classes is classical. But the utilisation of static is problematic because the code is unreadable.
+
 \paragraph{Mü8004 – 0.2.11 Variables}
 Mü8004 – 0.2.11 Variables Rule: Mü8004 - 0.2.11 Variables rule explains the correct way of defining variables. Although the content of this rule has been treated in MISRA-C standard, it is appropriate to use a specific section to explain the work with variables.
+
+\paragraph{Mü8004 0.2.14 Sources Files} 
+This rule is more restrictive than MISRA. The pattern of Mü8004 describes all the file.
 
 \paragraph{Mü8004 – 0.2.19 Data References}
 Mü8004 – 0.2.19 Data References Rule: Although MISRA-C includes rules about Documentation, it is necessary to make a reference to the documentation of data related and not related to the project planning, and not only to the data and to the libraries used along the code.
@@ -2754,7 +2974,14 @@ Mü8004 – 0.2.19 Data References Rule: Although MISRA-C includes rules about D
 Mü8004 – 0.2.20 Cross Reference List Rule: MISRA-C doesn’t include the necessity of using cross reference list for the data of the code. It also could be useful to add the characteristics that need to have the development tools used for this purpose.
 
 \paragraph{Mü8004 – 0.2.21 Assembler Coding}
-Mü8004 – 0.2.21 Assembler Coding Rule: MISRA-C doesn’t include the necessity of justifying the use of assembler coding. It is helpful to specify that assembler could be useful in time critical programming.
+Mü8004 – 0.2.21 Assembler Coding Rule: MISRA-C doesn’t include the necessity of justifying the use of assembler coding. It is helpful to specifying that assembler could be useful in time critical programming.
+
+\paragraph{Mü8004 - 0.2.23 Libraries Routine}  
+This section defined some restrictive utilisation of the standard library. But This restriction is less restrictive than MISRA.
+
+
+\paragraph{Mü8004 - 0.2.24 Program Protocol} this rule is obvious but it is not delivered of metric in the code for readable, the maximum number of line in the function or in the file ...
+
 
 \paragraph{Mü8004 – 0.2.25 Optimization}
 Mü8004 – 0.2.25 Optimization Rule: Although MISRA-standard includes the importance of the characteristics of compiler used in the development environment, it is useful to explain the influence of optimization in the compiler.
@@ -2763,7 +2990,7 @@ Mü8004 – 0.2.25 Optimization Rule: Although MISRA-standard includes the impor
 
 Static analysis tools are very good due to the detection of several problem/errors at code level that are usually difficult to detect by manual inspection. Furthermore, they help enforce coding standards and keep code complexity low.
 
-However, these tools sometimes report false positives so it is necessary to review them and decide if they are related with problems or not. Nonetheless, it is recommended to complement the static analysis tools with manual code inspections (not thought of by the original coder) and dynamic analysis.
+However, these tools sometimes report false positives so it is necessary review them and decide if they are related with problems or not. Nonetheless, it is recommended to complement the static analysis tools with manual code inspections (not thought of by the original coder) and dynamic analysis.
 
 In order to ensure the correctness of the obtained results mentioned in the previous sections, a comparison of them was executed.
 

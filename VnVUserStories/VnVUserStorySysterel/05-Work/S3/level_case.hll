@@ -1,0 +1,238 @@
+/* Different cases of Level */
+
+/*
+
+struct{'m_mode':'M_MODE','m_level':'M_LEVEL','m_leveltr':'M_LEVELTR'} 'BG_Types_Pkg::ModeAndLevelStatus_T';
+
+
+enum{'Level_And_Mode_Types_Pkg::A','Level_And_Mode_Types_Pkg::B','Level_And_Mode_Types_Pkg::unknown'} 'Level_And_Mode_Types_Pkg::T_Cab';
+struct{'NTC':bool,'L0':bool,'L1':bool,'L2':bool,'L3':bool} 'Level_And_Mode_Types_Pkg::T_ERTMS_capabilities';
+
+struct{'level':'M_LEVEL','position':'M_POSITION','transitionType':'Level_And_Mode_Types_Pkg::T_TransitionType'} 'Level_And_Mode_Types_Pkg::T_LevelTansitionInfo';
+struct{'is_set':bool,'transition':'Level_And_Mode_Types_Pkg::T_LevelTansitionInfo'} 'Level_And_Mode_Types_Pkg::T_LevelTransition';
+'Level_And_Mode_Types_Pkg::T_LevelTransition'^(30) 'Level_And_Mode_Types_Pkg::T_LevelTransition_PriorityTable';
+bool^(20) 'Level_And_Mode_Types_Pkg::T_TransitionConditions';
+enum{'Level_And_Mode_Types_Pkg::M_TransitionType_Immediate','Level_And_Mode_Types_Pkg::M_TransitionType_Conditional','Level_And_Mode_Types_Pkg::M_TransitionType_DriverInit','Level_And_Mode_Types_Pkg::M_TransitionType_Normal'} 'Level_And_Mode_Types_Pkg::T_TransitionType';
+
+enum{'M_LEVEL_Level_0','M_LEVEL_Level_NTC_specified_by_NID_NTC','M_LEVEL_Level_1','M_LEVEL_Level_2','M_LEVEL_Level_3'} 'M_LEVEL';
+enum{'M_LEVELTEXTDISPLAY_Level_0','M_LEVELTEXTDISPLAY_Level_NTC_specified_by_NID_NTC','M_LEVELTEXTDISPLAY_Level_1','M_LEVELTEXTDISPLAY_Level_2','M_LEVELTEXTDISPLAY_Level_3','M_LEVELTEXTDISPLAY_The_display_of_the_text_shall_not_be_limited_by_the_level'} 'M_LEVELTEXTDISPLAY';
+enum{'M_LEVELTR_Level_0','M_LEVELTR_Level_NTC_specified_by_NID_NTC','M_LEVELTR_Level_1','M_LEVELTR_Level_2','M_LEVELTR_Level_3'} 'M_LEVELTR';
+
+int 'M_POSITION';
+
+
+Inputs:
+bool train_standstill;
+'Level_And_Mode_Types_Pkg::T_LevelTransition_PriorityTable' conditional_transition;
+'Level_And_Mode_Types_Pkg::T_LevelTransition_PriorityTable' level_transition_priority_table;
+'Level_And_Mode_Types_Pkg::T_LevelTransition' driver_level_transition;
+bool getAck;
+bool resetIdle;
+int currentDistance;
+int ackDistance;
+bool immediateAck;
+'Level_And_Mode_Types_Pkg::T_ERTMS_capabilities' ERTMS_capabilities;
+bool received_L2_L3_MA;
+bool received_L1_MA;
+bool received_target_speed;
+
+
+Outputs:
+next_level;
+TripTrain;
+previous_level;
+needsAckFromDriver;
+
+*/
+/**********************************/
+/* Basic checks */
+
+
+
+Declarations: 
+'M_LEVEL' prev_level ;
+
+
+Definitions:
+
+prev_level := pre(next_level, 'M_LEVEL_Level_0') ;
+
+
+
+Proof Obligations:
+prev_level == previous_level ;
+
+
+/**********************************/
+/* From Level 0 */
+
+Declarations: 
+bool immediate_transition_L3 ;
+bool immediate_transition_L2 ;
+bool immediate_transition_L1 ;
+bool immediate_transition_L0 ;
+bool immediate_transition_LNTC ;
+
+
+Definitions:
+
+immediate_transition_L3 := SOME i : [0,29] ( level_transition_priority_table[i].'is_set' 
+                                            & level_transition_priority_table[i].'transition'.'level' = 'M_LEVEL_Level_3'
+                                            & level_transition_priority_table[i].'transition'.'position' <= currentDistance   
+                                            & level_transition_priority_table[i].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Normal'
+                                           );
+
+immediate_transition_L2 := SOME i : [0,29] ( level_transition_priority_table[i].'is_set' 
+                                            & level_transition_priority_table[i].'transition'.'level' = 'M_LEVEL_Level_2'
+                                            & level_transition_priority_table[i].'transition'.'position' <= currentDistance   
+                                            & level_transition_priority_table[i].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Normal'
+                                           );
+
+immediate_transition_L1 := SOME i : [0,29] ( level_transition_priority_table[i].'is_set' 
+                                            & level_transition_priority_table[i].'transition'.'level' = 'M_LEVEL_Level_1'
+                                            & level_transition_priority_table[i].'transition'.'position' <= currentDistance   
+                                            & level_transition_priority_table[i].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Normal'
+                                           );
+
+immediate_transition_L0 := SOME i : [0,29] ( level_transition_priority_table[i].'is_set' 
+                                            & level_transition_priority_table[i].'transition'.'level' = 'M_LEVEL_Level_0'
+                                            & level_transition_priority_table[i].'transition'.'position' <= currentDistance   
+                                            & level_transition_priority_table[i].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Normal'
+                                           );
+
+immediate_transition_LNTC := SOME i : [0,29] ( level_transition_priority_table[i].'is_set' 
+                                            & level_transition_priority_table[i].'transition'.'level' = 'M_LEVEL_Level_NTC_specified_by_NID_NTC'
+                                            & level_transition_priority_table[i].'transition'.'position' <= currentDistance   
+                                            & level_transition_priority_table[i].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Normal'
+                                           );
+
+
+
+
+Proof Obligations:
+
+( immediate_transition_L3 
+& received_L2_L3_MA
+& ERTMS_capabilities.'L3' ) -> ( next_level = 'M_LEVEL_Level_3'  );
+
+
+/**********************************/
+
+
+Declarations:
+bool immediate_transition_L3 ;
+bool immediate_transition_L2 ;
+bool immediate_transition_L1 ;
+bool immediate_transition_L0 ;
+bool immediate_transition_LNTC ;
+
+
+Definitions:
+
+immediate_transition_position := 'Level_And_Mode_Types_Pkg::C_Immediate_transition_order_position';
+
+only_trans_L3 :=
+                 (
+                  ( level_transition_priority_table[0].'is_set'
+                  & level_transition_priority_table[0].'transition'.'level' = 'M_LEVEL_Level_3'
+                  & level_transition_priority_table[0].'transition'.'position' = immediate_transition_position
+                  & level_transition_priority_table[0].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Immediate'
+                  )
+                 & ALL i : [1,29] ( ~(level_transition_priority_table[i].'is_set'))
+                 );
+
+trans_L2_L3 :=
+                 (
+                  ( level_transition_priority_table[0].'is_set'
+                  & level_transition_priority_table[0].'transition'.'level' = 'M_LEVEL_Level_2'
+                  & level_transition_priority_table[0].'transition'.'position' = immediate_transition_position
+                  & level_transition_priority_table[0].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Immediate'
+                  )
+                 & ( level_transition_priority_table[1].'is_set'
+                  & level_transition_priority_table[1].'transition'.'level' = 'M_LEVEL_Level_3'
+                  & level_transition_priority_table[1].'transition'.'position' = immediate_transition_position
+                  & level_transition_priority_table[1].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Immediate'
+                  )
+                 & ALL i : [2,29] ( ~(level_transition_priority_table[i].'is_set'))
+                 );
+
+
+trans_L1_L2 :=
+                 (
+                  ( level_transition_priority_table[0].'is_set'
+                  & level_transition_priority_table[0].'transition'.'level' = 'M_LEVEL_Level_1'
+                  & level_transition_priority_table[0].'transition'.'position' = immediate_transition_position
+                  & level_transition_priority_table[0].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Immediate'
+                  )
+                 & ( level_transition_priority_table[1].'is_set'
+                  & level_transition_priority_table[1].'transition'.'level' = 'M_LEVEL_Level_2'
+                  & level_transition_priority_table[1].'transition'.'position' = immediate_transition_position
+                  & level_transition_priority_table[1].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Immediate'
+                  )
+                 & ALL i : [2,29] ( ~(level_transition_priority_table[i].'is_set'))
+                 );
+
+immediate_transition_L3 := SOME i : [0,0] ( level_transition_priority_table[i].'is_set'
+                                            & level_transition_priority_table[i].'transition'.'level' = 'M_LEVEL_Level_3'
+                                            & level_transition_priority_table[i].'transition'.'position' = immediate_transition_position
+                                            & level_transition_priority_table[i].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Immediate'
+                                           ) ;
+
+
+immediate_transition_L2 := SOME i : [0,0] ( level_transition_priority_table[i].'is_set'
+                                            & level_transition_priority_table[i].'transition'.'level' = 'M_LEVEL_Level_2'
+                                            & level_transition_priority_table[i].'transition'.'position' <= currentDistance
+                                            & level_transition_priority_table[i].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Normal'
+                                           );
+
+immediate_transition_L1 := SOME i : [0,29] ( level_transition_priority_table[i].'is_set'
+                                            & level_transition_priority_table[i].'transition'.'level' = 'M_LEVEL_Level_1'
+                                            & level_transition_priority_table[i].'transition'.'position' <= currentDistance
+                                            & level_transition_priority_table[i].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Normal'
+                                           );
+
+immediate_transition_L0 := SOME i : [0,29] ( level_transition_priority_table[i].'is_set'
+                                            & level_transition_priority_table[i].'transition'.'level' = 'M_LEVEL_Level_0'
+                                            & level_transition_priority_table[i].'transition'.'position' <= currentDistance
+                                            & level_transition_priority_table[i].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Normal'
+                                           );
+
+immediate_transition_LNTC := SOME i : [0,29] ( level_transition_priority_table[i].'is_set'
+                                            & level_transition_priority_table[i].'transition'.'level' = 'M_LEVEL_Level_NTC_specified_by_NID_NTC'
+                                            & level_transition_priority_table[i].'transition'.'position' <= currentDistance
+                                            & level_transition_priority_table[i].'transition'.'transitionType' == 'Level_And_Mode_Types_Pkg::M_TransitionType_Normal'
+                                           );
+
+
+
+
+Proof Obligations:
+
+( immediate_transition_L3
+& received_L2_L3_MA
+& ERTMS_capabilities.'L3' ) -> ( next_level = 'M_LEVEL_Level_3'  );
+
+( immediate_transition_L3
+& received_L2_L3_MA
+& ERTMS_capabilities.'L3') -> ( 'ManageLevels_#1/manage_priorities_##1/>output_level_transition'.'transition'.'level' = 'M_LEVEL_Level_3' );
+
+( trans_L2_L3
+& received_L2_L3_MA
+& ERTMS_capabilities.'L3'
+& ERTMS_capabilities.'L2' ) -> ( 'ManageLevels_#1/manage_priorities_##1/>output_level_transition'.'transition'.'level' = 'M_LEVEL_Level_2' );
+
+( trans_L2_L3
+& received_L2_L3_MA
+& ERTMS_capabilities.'L3'
+& ~(ERTMS_capabilities.'L2') ) -> ( 'ManageLevels_#1/manage_priorities_##1/>output_level_transition'.'transition'.'level' = 'M_LEVEL_Level_3' );
+
+( trans_L1_L2
+& received_L1_MA
+& ERTMS_capabilities.'L1' ) -> ( 'ManageLevels_#1/manage_priorities_##1/>output_level_transition'.'transition'.'level' = 'M_LEVEL_Level_1' );
+
+// ( immediate_transition_L3
+// & received_L2_L3_MA
+// & ERTMS_capabilities.'L3') -> ( 'ManageLevels_#1/computeLeveLTransitions_##1/<level_transition' = 'M_LEVEL_Level_3'
+//    -> 'ManageLevels_#1/computeLeveLTransitions_##1/>next_level' = 'M_LEVEL_Level_3' );
+
+/**********************************/

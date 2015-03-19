@@ -1,0 +1,63 @@
+\section{Proof of : Shunting Initiated By Driver}
+\subsection{Files used for the proof}
+\begin{tabular}{|c|c|}
+\hline
+Used node & Property file \\ \hline
+Procedures::SH\_Initiated\_By\_Driver & shunting\_initiated\_by\_driver.hll \\
+\hline
+\end{tabular}
+
+
+\subsection{What is proved ?}
+We want to prove that the procedure SH\_Initiated\_By\_Driver is a
+correct implementation of the section 5.6 Shunting Initiated By Driver
+(cf. D1).
+
+To prove this, a modelisation of the flowchart is proposed in the
+property file. However, the flowchart is not entirely modelised
+because the Scade model does not seem to represent all of
+it. Requirements that are not modelised are the following :
+\texttt{D030}, \texttt{A030}, \texttt{A095}, \texttt{S100} and
+\texttt{A115}.
+
+\paragraph{Constraints used}
+One constraint is used in this model. Without this constraint, a
+counter-example is reachable.
+
+This constraint specifies that the flowchart shall return to his
+initial state a cycle after the dead-end state \texttt{A100} is
+reached.
+
+Actually, if this constraint is not verified, the Scade model could
+return \texttt{False} for the request of ``End of Mission'' procedure
+which contradicts the flowchart (\texttt{D040} and \texttt{A100} requirements).
+
+In our implementation of the flowchart, this constraint is modelised
+by verifying that when we are in \texttt{A100} the request of ``End of
+Mission'' procedure correspond to the value of the input
+\texttt{On-going Mission} as it is modelised in the Scade model.
+
+This modelisation is justified by the fact that, according to
+\texttt{A050}, \texttt{D040} and \texttt{A100}, if the input
+\texttt{On-going Mission} is \texttt{True} then the ``End of Mission''
+request is \texttt{True}, so equal to \texttt{On-going Mission}. Also,
+as transition to SH mode is enable (\texttt{A050}) when ``End of
+Mission'' request is made, the system should go to SH mode (or another
+mode except SB mode). So the next cycle the driver should not execute
+the shunting selection procedure and the next time this pocedure is
+executed it should start a the initial state.
+
+
+\subsection{Results}
+Considering the constraint and our model, the Scade model of
+SH\_Initiated\_By\_Driver corresponds to the specification.
+
+
+%\subsection{Conclusion and questions}
+%\begin{itemize}
+%\item The constraint used must be verified in an upper scade node.
+%\item Parts of the flowcharts that are not modelised must be modelised
+%  in another part of the scade model.
+%\item Some output values should be precised in specifications when
+%  reaching a state which sends some informations.
+%\end{itemize}

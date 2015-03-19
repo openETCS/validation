@@ -1,0 +1,538 @@
+Constraints:
+// During Start of Mission procedure, Level should not change
+Current_Level = X(Current_Level); 
+
+// During Start of Mission procedure, train data should not be 
+// modified. Then, there validity should not change.
+Valid_Train_Data_Stored = X(Valid_Train_Data_Stored); 
+
+
+Types:
+// State names corresponding to flowchart states
+enum{'s0','s10','nl_mode','s20','s21','s22','s23','s24','s25_os','s25_ls','s25_sh',
+	'os_mode','ls_mode','sh_mode','sr_mode','sn_mode','un_mode',
+	'fs_mode','eb_req','sh_initiated_by_driver_procedure','a045',
+	'a030','a100','a095','d080','a220'} startofmission_states;
+
+
+Declarations:
+bool s0_state;
+bool s21_state;
+bool s22_state;
+bool s23_state;
+bool s24_state;
+bool s25_os_state;
+bool s25_ls_state;
+bool s25_sh_state;
+bool all_false_state;
+bool nl_mode_state;
+bool fs_mode_state;
+bool os_mode_state;
+bool ls_mode_state;
+bool sh_mode_state;
+bool sr_mode_state;
+bool sn_mode_state;
+bool un_mode_state;
+
+bool cond_5_4_3_2_1; 
+
+bool emergency_brake; // /!\ Copy from scade model
+startofmission_states eb_req;
+
+startofmission_states current_state;
+startofmission_states last_state;
+startofmission_states s0;
+startofmission_states s10;
+startofmission_states s20;
+startofmission_states s21;
+startofmission_states s22;
+startofmission_states s23;
+startofmission_states s24;
+startofmission_states s25_os;
+startofmission_states s25_ls;
+startofmission_states s25_sh;
+
+
+
+bool a030_state;
+bool a045_state;
+bool a050_state;
+bool a220_state;
+bool a100_state;
+bool a095_state;
+bool a115_state;
+bool all_false_sh_state;
+
+startofmission_states e015;
+startofmission_states sh_initiated_by_driver_procedure;
+startofmission_states d020;
+startofmission_states a050;
+startofmission_states d040;
+startofmission_states d080;
+
+bool On_Going_Mission;
+
+'t__SM_StartOfMissionProcedure__states' SCADE_SM;
+'t__SM_StartOfMissionProcedure/SM_SoM_On__states' SCADE_SM_Procedure_On;
+'t__SM_SH_Initiated_By_Driver__states' SCADE_SM_Procedure_SH;
+'t__SM_Start_L1_L2_L3__states' SCADE_SM_Procedure_Start;
+
+/*
+Inputs:
+'Level_And_Mode_Types_Pkg::T_Cab' Cab;
+bool Continue_Shunting_Function_Active;
+'Level_And_Mode_Types_Pkg::T_Level' Current_Level;
+'Level_And_Mode_Types_Pkg::T_Data_From_DMI' Data_From_DMI;
+'Level_And_Mode_Types_Pkg::T_Data_From_Speed_Supervision' Data_From_Speed_and_Supervision;
+'TIU_Types_Pkg::Message_Train_Interface_to_EVC_T' Data_From_TIU;
+'Level_And_Mode_Types_Pkg::T_Data_From_Track' Data_From_Track;
+bool Emergency_Stop_Message_Received;
+'TIU_Types_Pkg::Isolation_Status_T' ETCS_Isolated;
+bool Failure_Occured;
+bool Interface_To_National_System;
+bool National_Trip_Order;
+bool OnBoard_Powered;
+bool Override_Function_Active;
+bool Override_Function_Former_Active;
+bool Stop_Shunting_Stored;
+'TrainPosition_Types_Pck::trainPosition_T' Train_Position;
+bool Valid_Train_Data_Stored;
+*/
+
+/*
+Outputs:
+currentMode;
+EB_Requested;
+Service_Brake_Command;
+Data_To_DMI;
+Data_To_BG_Management;
+*/
+
+/* BEGIN our inputs */
+'Level_And_Mode_Types_Pkg::T_Mode' Current_Mode;
+bool Desk_Open;
+bool Driver_Ack_LS;
+bool Driver_Ack_OS;
+bool Driver_Ack_SH;
+bool Driver_Ack_SN;
+bool Driver_Ack_SR;
+bool Driver_Ack_UN;
+bool Driver_Req_NL;
+bool Driver_Req_SH;
+bool Driver_Req_Start;
+bool MA_SSP_Gradiant_Available;
+'Level_And_Mode_Types_Pkg::T_Mode_Profile' Mode_Profile_On_Board;
+bool RBC_Authorizes_SR;
+bool Shunting_Granted_By_RBC;
+bool Train_Permitted_NL;
+/* END */
+
+
+/* BEGIN our outputs */
+bool Ack_LS_Req_To_Driver;
+bool Ack_OS_Req_To_Driver;
+bool Ack_SH_Req_To_Driver;
+bool Ack_SN_Req_To_Driver;
+bool Ack_SR_Req_To_Driver;
+bool Ack_UN_Req_To_Driver;
+bool Clean_BG_List_SH_Area;
+bool Condition_5;
+bool Condition_6;
+bool Condition_8;
+bool Condition_10;
+bool Condition_15;
+bool Condition_46;
+bool Condition_50;
+bool Condition_58;
+bool Condition_60;
+bool Condition_70;
+bool End_Of_Mission_Procedure_Req;
+bool MA_Req_To_RBC;
+bool Request_For_SH_To_RBC;
+bool SH_Refused_By_RBC_To_DMI;
+/* END */
+
+
+Definitions:
+/* BEGIN Connexion with Scade model inputs */
+Train_Standstill := Data_From_Speed_and_Supervision.'Train_Standstill';
+Current_Mode := 'ManageModes_#1/SwitchModes_##1/%last_3257';//pre(currentMode,'Level_And_Mode_Types_Pkg::SB');
+// Deks_Open variable is compute from different scade inputs but not implemented here
+Desk_Open := 'ManageModes_#1/Interfaces::InputTIUManagement_##1/>Desk_Open';
+Driver_Ack_LS := Data_From_DMI.'Ack_LS';
+Driver_Ack_OS := Data_From_DMI.'Ack_OS';
+Driver_Ack_SH := Data_From_DMI.'Ack_SH';
+Driver_Ack_SN := Data_From_DMI.'Ack_SN';
+Driver_Ack_SR := Data_From_DMI.'Ack_SR';
+Driver_Ack_UN := Data_From_DMI.'Ack_UN';
+Driver_Req_NL := Data_From_DMI.'Req_NL';
+Driver_Req_SH := Data_From_DMI.'Req_SH';
+Driver_Req_Start := Data_From_DMI.'Req_Start';
+MA_SSP_Gradiant_Available := Data_From_Speed_and_Supervision.'MA_SSP_Gradiant_Available';
+Mode_Profile_On_Board := Data_From_Track.'Mode_Profile_On_Board';
+RBC_Authorizes_SR := Data_From_Track.'RBC_Authorized_SR';
+Shunting_Granted_By_RBC := Data_From_Track.'Shunting_granted_By_RBC';
+Train_Permitted_NL := 'ManageModes_#1/Interfaces::InputTIUManagement_##1/>Train_Permitted_NL';
+/* END */
+
+/* BEGIN Connexion with Scade model outputs */
+Ack_LS_Req_To_Driver := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Ack_LS_Req_To_Driver';
+Ack_OS_Req_To_Driver := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Ack_OS_Req_To_Driver';
+Ack_SH_Req_To_Driver := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Ack_SH_Req_To_Driver';
+Ack_SN_Req_To_Driver := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Ack_SN_Req_To_Driver';
+Ack_SR_Req_To_Driver := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Ack_SR_Req_To_Driver';
+Ack_UN_Req_To_Driver := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Ack_UN_Req_To_Driver';
+Clean_BG_List_SH_Area := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Clean_BG_List_SH_Area';
+Condition_5 := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Condition_5';
+Condition_6 := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Condition_6';
+Condition_8 := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Condition_8';
+Condition_10 := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Condition_10';
+Condition_15 := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Condition_15';
+Condition_46 := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Condition_46';
+Condition_50 := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Condition_50';
+Condition_58 := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Condition_58';
+Condition_60 := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Condition_60';
+Condition_70 := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Condition_70';
+End_Of_Mission_Procedure_Req := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>End_Of_Mission_Procedure_Req';
+MA_Req_To_RBC := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>MA_Req_To_RBC';
+Request_For_SH_To_RBC := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>Request_For_SH_To_RBC';
+SH_Refused_By_RBC_To_DMI := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/>SH_Refused_By_RBC_To_DMI';
+/* END */
+
+all_false_state := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+		   ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+		   ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & 
+		   ~Condition_10 & ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & 
+		   ~Condition_60 & ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & 
+		   ~MA_Req_To_RBC & ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+/* States */
+nl_mode_state := Condition_46;
+
+s21_state := MA_Req_To_RBC;
+
+s22_state := Ack_SN_Req_To_Driver;
+
+s23_state := Ack_UN_Req_To_Driver;
+
+s24_state := Ack_SR_Req_To_Driver;
+
+s25_os_state := Ack_OS_Req_To_Driver;
+
+s25_ls_state := Ack_LS_Req_To_Driver;
+
+s25_sh_state := Ack_SH_Req_To_Driver;
+
+fs_mode_state := Condition_10;
+
+os_mode_state := Condition_15;
+
+ls_mode_state := Condition_70;
+
+sh_mode_state := Condition_50;
+
+sr_mode_state := Condition_8;
+
+sn_mode_state := Condition_58;
+
+un_mode_state := Condition_60;
+
+eb_req_state := EB_Requested;
+
+
+
+
+/* Flowchart */
+last_state := pre(current_state,'s0');
+/*I(last_state) := 's0';
+X(last_state) := current_state;*/
+current_state := (last_state,emergency_brake,cond_5_4_3_2_1
+	      	 | 's0',False,False => s0
+	      	 | 's0',False,True => s0
+	      	 | 's0',True,False => s0
+	      	 | 's0',True,True => s0
+		 | 'eb_req',_,_ => eb_req
+		 | _,True,_ => 'eb_req' // Emergency brake has the top priority over 5.4.3.2.1
+		 | _,_,True => 's0' // Condition 5.4.3.2.1
+		 | 's10',False,False => s10
+		 | 'sh_initiated_by_driver_procedure',False,False => sh_initiated_by_driver_procedure
+		 | 's20',False,False => s20
+		 | 's21',False,False => s21
+		 | 's22',False,False => s22
+		 | 's23',False,False => s23
+		 | 's24',False,False => s24
+		 | 's25_os',False,False => s25_os
+		 | 's25_ls',False,False => s25_ls
+		 | 's25_sh',False,False => s25_sh
+		 | 'nl_mode',False,False => 'nl_mode'
+		 | 'sn_mode',False,False => 'sn_mode'
+		 | 'un_mode',False,False => 'un_mode'
+		 | 'sr_mode',False,False => 'sr_mode'
+		 | 'os_mode',False,False => 'os_mode'
+		 | 'fs_mode',False,False => 'fs_mode'
+		 | 'ls_mode',False,False => 'ls_mode'
+		 | 'sh_mode',False,False => 'sh_mode'
+		 | 'a045',False,False => s050
+	      	 | 'a100',False,False => 'a100'
+		 | 'a045',False,False => s050
+		 | 'a220',False,False => 'a220'
+		 | 'd080',False,False => 'd080'
+		 | 'a095',False,False => 'a095' 
+		 );
+
+//!\ Copy from scade model: Emergency brake management /!\\
+eb_req := if (Train_Standstill) then
+       	  's0'
+	  else
+	  'eb_req';
+
+emergency_brake := (Current_Mode = 'Level_And_Mode_Types_Pkg::SB') & ~Train_Standstill; 
+//!\ End of copy /!\\
+
+cond_5_4_3_2_1 := ~Desk_Open # ~(Current_Mode = 'Level_And_Mode_Types_Pkg::SB'); 
+
+s0 := if (Train_Standstill /*/!\Copy from scade model/!\*/ & 
+      Desk_Open & (Current_Mode = 'Level_And_Mode_Types_Pkg::SB')) then
+      s10
+      else
+      's0';
+
+
+s10 := if (Driver_Req_NL & Train_Standstill & Train_Permitted_NL) then // E10
+       'nl_mode' 
+       elif (Driver_Req_SH) then // E12
+       sh_initiated_by_driver_procedure
+       //elif (E11) then // /!\ Not in scade model
+       elif (Valid_Train_Data_Stored) then
+       's20'
+       else
+       's10';
+
+s20 := if (Driver_Req_Start & 
+       (Current_Level = 'Level_And_Mode_Types_Pkg::L2' # 
+       Current_Level = 'Level_And_Mode_Types_Pkg::L3')) then // E24
+       's21'
+       elif (Driver_Req_Start & (Current_Level = 'Level_And_Mode_Types_Pkg::L1')) then // E22
+       's24'
+       elif (Driver_Req_Start & (Current_Level = 'Level_And_Mode_Types_Pkg::LNTC')) then // E20
+       's22'
+       elif (Driver_Req_Start & (Current_Level = 'Level_And_Mode_Types_Pkg::L0')) then // E21
+       's23'
+       else
+       's20';
+
+s21 := if (RBC_Authorizes_SR) then // E26
+       's24'
+       elif (MA_SSP_Gradiant_Available & 
+       	    (Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::No_Profile') & 
+	    Valid_Train_Data_Stored) then // E29 = Condition 10 (SRS 4)
+       'fs_mode'
+       elif (Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::Profile_OS') then // E27
+       's25_os'
+       elif (Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::Profile_SH') then // E27
+       's25_sh'
+       elif (Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::Profile_LS') then // E27
+       's25_ls'
+       else
+       's21';
+
+s22 := if (Driver_Ack_SN) then // E30
+       'sn_mode'
+       else
+       's22';
+
+
+s23 := if (Driver_Ack_UN) then // E31
+       'un_mode'
+       else
+       's23';
+
+
+s24 := if (Driver_Ack_SR) then // E32
+       'sr_mode'
+       else
+       's24';
+
+
+s25_os := if (Driver_Ack_OS) then // E33
+       	  'os_mode'
+	  else
+	  's25_os';
+
+
+s25_ls := if (Driver_Ack_LS) then // E33
+       	  'ls_mode'
+	  else
+	  's25_ls';
+
+
+s25_sh := if (Driver_Ack_SH) then // E33
+       	  'sh_mode'
+	  else
+	  's25_sh';
+
+/* Shunting Initiated By Driver Procedure */
+On_Going_Mission := False; //!\ Copy from scade model /!\\
+a030_state := True; // Process go to the "Train Trip" procedure
+a045_state := Request_For_SH_To_RBC;
+a050_state := (Condition_5 # Condition_6) & Clean_BG_List_SH_Area;
+a220_state := SH_Refused_By_RBC_To_DMI;
+a100_state := End_Of_Mission_Procedure_Req == On_Going_Mission; // /!\ Contraints to be verifiedin a top node
+a095_state := True; // mode change shall be reported to the RBC
+a115_state := True; // Terminate session (???)
+all_false_sh_state := ~Clean_BG_List_SH_Area &
+		      ~Condition_5 &
+		      ~Condition_6 &
+		      ~End_Of_Mission_Procedure_Req &
+		      ~SH_Refused_By_RBC_To_DMI &
+		      ~Request_For_SH_To_RBC;
+
+sh_initiated_by_driver_procedure := 
+	if (Train_Standstill & (Current_Mode = 'Level_And_Mode_Types_Pkg::SB' 
+	   		       # Current_Mode = 'Level_And_Mode_Types_Pkg::FS'
+	   		       # Current_Mode = 'Level_And_Mode_Types_Pkg::LS'
+	   		       # Current_Mode = 'Level_And_Mode_Types_Pkg::OS' 
+	   		       # Current_Mode = 'Level_And_Mode_Types_Pkg::SR'
+	   		       # Current_Mode = 'Level_And_Mode_Types_Pkg::PT'
+	   		       # Current_Mode = 'Level_And_Mode_Types_Pkg::SN'
+	   		       # Current_Mode = 'Level_And_Mode_Types_Pkg::UN')) then
+	e015
+	else
+	'sh_initiated_by_driver_procedure';
+
+
+e015 := if (Driver_Req_SH) then
+     	d020
+	else
+	'sh_initiated_by_driver_procedure';
+
+/*
+d020 := if (Current_Level == 'Level_And_Mode_Types_Pkg::LNTC') then
+	d030
+	elif ((Current_Level == 'Level_And_Mode_Types_Pkg::L0' # 
+	Current_Level == 'Level_And_Mode_Types_Pkg::L1')) then
+	a050
+	else // (Current_Level == 'Level_And_Mode_Types_Pkg::L2' # Current_Level == 'Level_And_Mode_Types_Pkg::L3')
+	'a045';
+
+
+d030 := if (On_Going_Mission) then
+     	'a030'
+	else
+	a050;
+*/
+//!\ Copy from scade model as D030 and A030 are not modelised /!\\
+d020 := if (Current_Level = 'Level_And_Mode_Types_Pkg::L2' # 
+     	Current_Level = 'Level_And_Mode_Types_Pkg::L3') then
+	'a045'
+	elif (Current_Level = 'Level_And_Mode_Types_Pkg::L0' # 
+	Current_Level = 'Level_And_Mode_Types_Pkg::L1' #
+	Current_Level = 'Level_And_Mode_Types_Pkg::LNTC') then
+	a050
+	else
+	'sh_initiated_by_driver_procedure';
+//!\ End of copy /!\\
+
+a050 := d040;
+
+
+s050 := if (Shunting_Granted_By_RBC) then
+	a050
+	else
+	'a220';
+
+
+d040 := if On_Going_Mission then
+     	'a100'
+	else
+	d080;
+
+d080 := if (Current_Level = 'Level_And_Mode_Types_Pkg::L0' # 
+	Current_Level = 'Level_And_Mode_Types_Pkg::L1' #
+	Current_Level = 'Level_And_Mode_Types_Pkg::LNTC') then
+	'd080' // Further flowchart states are not modelised
+	else // (Current_Level == 'Level_And_Mode_Types_Pkg::L2' # Current_Level == 'Level_And_Mode_Types_Pkg::L3')
+	'a095'; // Further flowchart states are not modelised
+
+
+
+/* State names streams of scade model state machines */
+SCADE_SM := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/SM_StartOfMissionProcedure_act';
+
+SCADE_SM_Procedure_On := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_StartOfMission_##1/SM_StartOfMissionProcedure/SM_SoM_On_act';
+
+SCADE_SM_Procedure_SH := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_Train_Trip_##1/Procedures::SH_Initiated_By_Driver_On_##1/SM_SH_Initiated_By_Driver_act';
+
+SCADE_SM_Procedure_Start := 'ManageModes_#1/ComputeModesConditions_##1/Procedures::Procedure_Train_Trip_##1/Procedures::Procedure_Start_L1_L2_L3_##1/SM_Start_L1_L2_L3_act';
+
+
+Proof Obligations:
+/* Lemma */
+Train_Standstill & ~Desk_Open -> ~(current_state = 'eb_req');
+
+Train_Standstill -> ~(current_state = 'eb_req');
+
+~Train_Standstill & (last_state = 'eb_req') -> ~(current_state = 's0');
+
+(current_state = 's0') <-> (SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_Off');
+
+(current_state = 'eb_req') <-> (SCADE_SM = 'SM_StartOfMissionProcedure/EB_Requested');
+
+((current_state != 'eb_req') & (current_state != 's0')) <-> (SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_On');
+
+(current_state = 's10') <-> 
+   ((SCADE_SM_Procedure_On = 'SM_StartOfMissionProcedure/SM_SoM_On/Waiting_Driver_Command') & 
+   (SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_On'));
+
+(current_state = 's20' & 
+(Current_Level != 'Level_And_Mode_Types_Pkg::L1' &
+Current_Level != 'Level_And_Mode_Types_Pkg::L2' &
+Current_Level != 'Level_And_Mode_Types_Pkg::L3')) -> 
+   ((SCADE_SM_Procedure_On = 'SM_StartOfMissionProcedure/SM_SoM_On/Waiting_Driver_Strating_Command') & 
+   (SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_On'));
+
+(SCADE_SM_Procedure_On = 'SM_StartOfMissionProcedure/SM_SoM_On/Waiting_Driver_Strating_Command' & 
+SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_On') -> (current_state = 's20');
+
+~Valid_Train_Data_Stored -> ~(current_state = 's21');
+
+~Valid_Train_Data_Stored -> ~(current_state = 's20');
+
+~Driver_Req_SH -> ~(current_state = 'sh_initiated_by_driver_procedure');
+
+(current_state = 'sh_initiated_by_driver_procedure' #
+current_state = 'a030' #
+current_state = 'a045' #
+current_state = 'a100' #
+current_state = 'a220' #
+current_state = 'a095' #
+current_state = 'd080') <-> 
+   ((SCADE_SM_Procedure_On = 'SM_StartOfMissionProcedure/SM_SoM_On/Procedure_SH_Initiated_By_Driver') & 
+   (SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_On'));
+
+
+/* Proofs */
+(current_state = 's0') -> all_false_state;
+(current_state = 'eb_req') -> eb_req_state;
+(current_state = 's10') -> all_false_state;
+(current_state = 's20') -> all_false_state;
+(current_state = 's21') -> s21_state;
+(current_state = 's22') -> s22_state;
+(current_state = 's23') -> s23_state;
+(current_state = 's24') -> s24_state;
+(current_state = 's25_os') -> s25_os_state;
+(current_state = 's25_ls') -> s25_ls_state;
+(current_state = 's25_sh') -> s25_sh_state;
+(current_state = 'nl_mode') -> nl_mode_state;
+(current_state = 'fs_mode') -> fs_mode_state;
+(current_state = 'os_mode') -> os_mode_state;
+(current_state = 'ls_mode') -> ls_mode_state;
+(current_state = 'sh_mode') -> sh_mode_state;
+(current_state = 'sr_mode') -> sr_mode_state;
+(current_state = 'sn_mode') -> sn_mode_state;
+(current_state = 'un_mode') -> un_mode_state;
+(current_state == 'a100') -> (a050_state & a100_state);
+(current_state == 'a045') -> a045_state;
+(current_state == 'a220') -> a220_state;
+(current_state == 'a095') -> a050_state;
+(current_state == 'd080') -> a050_state;
+

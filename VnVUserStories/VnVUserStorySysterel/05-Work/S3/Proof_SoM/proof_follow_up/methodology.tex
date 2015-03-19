@@ -1,0 +1,289 @@
+\section{Methodology}
+This section presents the methodology used to verify that the SRS 5 is
+correctly implemented into a scade model.
+
+\subsection{Overview of proof methodology}
+\label{overview}
+The document D1 is a specification written with flowcharts. A scade
+model is made according to this specification.
+
+We want to known that the scade model is a correct implementation of
+the specification. To do so, we will prove that the scade model
+is equivalent to flowcharts.
+
+
+Starting with one flowchart, a first step is to identify to which
+scade inputs and outputs this flowchart refers to. Usually, there are
+states which send data (scade model outputs) and there are conditions
+depending on variable(s) value(s) (scade model inputs).
+
+Then, the flowchart is transalted into an equivalent HLL program using
+the scade inputs names. Scade outputs names are used to write proof
+obligation.
+
+Once those steps done, it is possible to prove (or disprove) that for
+all possible inputs, the scade model and the flowcart HLL program
+compute the same outputs.
+
+
+\subsection{Flowchart to HLL program}
+\label{flowchart-2-hll}
+In this section we will see how to transform a flowchart from the SRS
+documentation into an equivalent HLL
+program. Section~\ref{flowchart-definition} presents definitions of
+flowchart shapes, the section~\ref{reading-a-flowchart} explains how a
+flowchart is interpreted in the context of the synchronous language
+HLL and the section~\ref{transformation-to-hll-program} shows a
+generic methodology for the translation of this type of flowchart into
+a HLL program.
+\subsubsection{Flowcharts in SRS documentation}
+\label{flowchart-definition}
+Here is a list of flowchart shapes and there meaning :
+\begin{description}
+\item[Rectangle] The rectangle usually means that an action has to be
+  taken. In our case, this shape is assimilated to a state where a
+  value can be send through one or more outputs.
+\item[Rounded rectangle] This shape is equal to the rectangle shape
+  except when you read it (see section~\ref{reading-a-flowchart}). If
+  no arrow is leaving from such shape, it is considered as a
+  rectangle.
+\item[Diamond] This shape usually corresponds to a question. Answers
+  are listed on different arrows leaving the diamond.
+\item[Arrow] This shape indicates the reading direction. An arrow
+  should start from a shape and end to another shape. The arrow may be
+  labeled. This label is usually a condition which must be fulfilled
+  to continue to the next shape.
+\item[Circle] This is usually a terminal shape, which indicates an end
+  of the flowchart. No more actions will be taken.
+\end{description}
+
+Also, a definition of states (which correspond to rectangles and
+rounded rectangles) is given in the SRS at section 5.3.2.3.
+
+A definition of transitions (which correspond to diamonds and arrows)
+is given in the SRS at section 5.3.2.4.
+
+\subsubsection{Reading a flowchart in a HLL context}
+\label{reading-a-flowchart}
+The concept of cycle is used in the synchronous language HLL and this
+impacts how a flowchart is read.
+
+At the first cycle, we start to read the flowchart from an initial
+state which is a state where there is only leaving arrows. Then, at
+each cycle we go from one state A to a state B, where A could be equal
+to B, until we reach a final state which is a state where there is no
+leaving arrows.
+
+During a cycle execution it is not possible to read more than one
+state, so when reaching a state the reading is stopped even if it is
+possible to leave the current state following arrows. 
+
+Moreover, intial states can sometimes behave as a global condition
+which trigger or stop (and re-initialize) the reading of the
+flowchart. In this case, this initial state will not be seen as a
+state as mentionned above. Reading corresponding description of the
+requirement should help in state interpretation.
+
+
+\subsubsection{Transformation to HLL program}
+\label{transformation-to-hll-program}
+In this section, we will describe how to translate examples of simples
+flowcharts into a HLL programs. Combining those examples is a way to
+translate more complex flowcharts. 
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[%
+    >=triangle 60,              % Nice arrows; your taste may be different
+    start chain=going below,    % General flow is top-to-bottom
+    node distance=6mm and 60mm, % Global setup of box spacing
+    ]
+% ------------------------------------------------- 
+% A few box styles 
+% <on chain> *and* <on grid> reduce the need for manual relative
+% positioning of nodes
+\tikzset{
+  base/.style={draw, on chain, on grid, align=center, minimum height=4ex},
+  state/.style={base, rectangle, text width=8em},
+  % -------------------------------------------------
+  % Connector line styles for different parts of the diagram
+  transition_label/.style ={base, rectangle, draw=none, thick, fill=none}
+}
+
+\node [state] (s0) {State 0};
+\node [transition_label] (ta) {Condition A};
+\node [state] (s1) {State 1};
+\node [transition_label] (tb) {Condition B};
+\node [state] (s2) {State 2};
+
+
+\draw [-] (s0.south) -- (ta);
+\draw [->] (ta.south) -- (s1);
+\draw [-] (s1.south) -- (tb);
+\draw [->] (tb.south) -- (s2);
+
+\end{tikzpicture}
+\caption{Three states and two transitions.}
+\label{example-1}
+\end{figure}
+
+
+\paragraph{Rectangle -Labeled arrow-> Rectangle -Labeled arrow-> Rectangle.}
+The following HLL program is translation of the flowchart
+figure~\ref{example-1} : 
+{\footnotesize
+\begin{verbatim}
+Types:
+enum{'state_0','state_1','state_2'} states;
+
+Declarations:
+states last_states; // State reached at previous cycle
+states current_states; // Current state
+
+states s_0;
+states s_1;
+
+bool s_0_var_state;
+bool s_1_var_state;
+bool s_2_var_state;
+
+Definitions:
+s_0_var_state := State 0;
+s_1_var_state := State 1;
+s_2_var_state := State 2;
+
+last_state := pre(current_state,'state_0'); // 'state_0' is an initial state
+current_state := (last_state
+                 | 'state_0' => s_0
+                 | 'state_1' => s_1
+                 | 'state_2' => 'state_2' // 'state_2' is a final state
+                 );
+
+s_0 := if (Condition A) then
+       'state_1'
+       else
+       'state_0';
+
+s_1 := if (Condition B) then
+       'state_2'
+       else
+       'state_1';
+
+Proof Obligations:
+(current_state = 'state_0') -> s_0_var_state;
+(current_state = 'state_1') -> s_1_var_state;
+(current_state = 'state_2') -> s_2_var_state;
+\end{verbatim}
+}
+
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[%
+    >=triangle 60,              % Nice arrows; your taste may be different
+    start chain=going below,    % General flow is top-to-bottom
+    node distance=6mm and 60mm, % Global setup of box spacing
+    ]
+% ------------------------------------------------- 
+% A few box styles 
+% <on chain> *and* <on grid> reduce the need for manual relative
+% positioning of nodes
+\tikzset{
+  base/.style={draw, on chain, on grid, align=center, minimum height=4ex},
+  state/.style={base, rectangle, text width=8em},
+  test/.style={base, diamond, aspect=2, text width=5em},
+  tmp_state/.style={state, rounded corners},
+  % -------------------------------------------------
+  % Connector line styles for different parts of the diagram
+  transition_label/.style ={base, rectangle, draw=none, thick, fill=none}
+}
+
+\node [state] (s0) {State 0};
+\node [transition_label] (ta) {Condition A};
+\node [tmp_state] (is1) {Intermediate State 1};
+\node [test] (d) {Question ?};
+\node [transition_label] (d1) {Answer 1};
+\node [state] (s2) {State 2};
+\node [transition_label] (d2) [right=of d] {Answer 2};
+\node [state] (s3) {State 3};
+
+\draw [-] (s0.south) -- (ta);
+\draw [->] (ta.south) -- (is1);
+\draw [->] (is1.south) -- (d);
+\draw [-] (d.south) -- (d1);
+\draw [->] (d1.south) -- (s2);
+\draw [-] (d.east) -- (d2);
+\draw [->] (d2.south) -- (s3);
+
+\end{tikzpicture}
+\caption{Three states and two transitions.}
+\label{example-2}
+\end{figure}
+\paragraph{Rectangle -Labeled arrow-> Rounded rectangle --> Diamond ->> Rectangle x 2.}
+The following HLL program is translation of the flowchart
+figure~\ref{example-2} : 
+{\footnotesize
+\begin{verbatim}
+Types:
+enum{'state_0','inter_state_1','state_2','state_3',
+     'state_0_from_diamond','state_2_from_state_1','state_3_from_state_1'} states;
+
+Declarations:
+states last_states; // State reached at previous cycle
+states current_states; // Current state
+
+states s_0;
+states inter_s_1;
+
+bool s_0_var_state;
+bool s_2_var_state;
+bool s_3_var_state;
+bool inter_s_1_state;
+
+Definitions:
+s_0_var_state := State 0;
+s_2_var_state := State 2;
+s_3_var_state := State 3;
+inter_s_1_state := Inter_State 1;
+
+last_state := pre(current_state,'state_0'); // 'state_0' is an initial state
+current_state := (last_state
+                 | 'state_0' => s_0
+                 | 'state_0_from_diamond' => s_0
+                 | 'state_2_from_state_1' => 'state_2'
+                 | 'state_3_from_state_1' => 'state_3'
+                 | 'state_2' => 'state_2' // 'state_2' is a final state
+                 | 'state_3' => 'state_3' // 'state_3' is a final state
+                 );
+
+s_0 := if (Condition A) then
+       inter_s_1
+       else
+       'state_0';
+
+inter_s_1 := if (Diamond_cond_1) then
+             'state_2_from_state_1'
+             elif (Diamond_cond_2) then
+             'state_3_from_state_1'
+             else
+             'state_0_from_diamond';
+
+
+Proof Obligations:
+(current_state = 'state_0') -> s_0_var_state;
+(current_state = 'state_0_from_diamond') -> s_0_var_state & inter_s_1_state;
+(current_state = 'state_2_from_state_1') -> s_2_var_state & inter_s_1_state;
+(current_state = 'state_3_from_state_1') -> s_3_var_state & inter_s_1_state;
+(current_state = 'state_2') -> s_2_var_state;
+(current_state = 'state_3') -> s_3_var_state;
+\end{verbatim}
+}
+
+
+
+
+
+
+
+%\subsection{Proofs that flowchart correspond to its model}
+%TODO

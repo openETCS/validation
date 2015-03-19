@@ -1,0 +1,156 @@
+﻿The aim of this document is to describe a part of the validation processus used to demonstrate the good implementation of the subset 26 in the SCADE model.
+In this part, the requirement will be validate by using formal methods (SAT solvers). The requirements and the Scade model will be tranlated in HLL to use Systerel Smart Solver tools. 
+
+
+The document is in two parts:
+-the writting of openETCS requirments in HLL
+-Proof of the properties to demonstrate that the SCADE model is implementing the requirements
+
+1) Properties:
+
+In this section, four requirements in the subset 26 are tranlated in HLL.
+
+a) Orientation of a balise group (Balise groups composed of two or more balises)
+
+The poperty will cover the following requirement:
+
+(3.4.2.1.2) The orientation of the co-ordinate system of a balise group (i.e., nominal or reverse
+direction) is identified as balise group orientation. 
+
+
+To write this requirement in HLL, the following requirements will be used in hypothesis:
+(3.4.2.2.1) The origin of the co-ordinate system for each balise group shall be given by the balise
+number 1 (called location reference) in the balise group. 
+(3.4.2.2.2) The nominal direction of each balise group is defined by increasing internal balise
+numbers. 
+
+So the number of the first balise met, determine the orientation of a balise Group.
+If it is the number 1, the orientation is Nominal else it is Reverse.
+
+The balise group Orientation is defined in ouptut by FilteredBGMessage_.'BGOrientation'.
+
+The property written in HLL is:
+
+(if is_firstBaliseInGroup then
+ (FilteredBGMessage_.'BGOrientation' == 'Q_DIRTRAIN_Nominal') 
+else
+ (FilteredBGMessage_.'BGOrientation' == 'Q_DIRTRAIN_Reverse')
+)
+
+is_firstBaliseInGroup need to be defined.
+An input of the composant is CheckedBGMessage_ wich contains the telegram of the differents balises in the balise group.
+
+We will be assumed that the first telegram is the telegram of the first balise met.
+This assumption will be proved in the component which defines CheckedBGMessage_. If this assumption is not proved, the property need to be modify.
+
+  
+is_firstBaliseInGroup := (CheckedBGMessage_.'TelegramHeaders'[0].'header'.'n_pig' == 'N_PIG_I_am_the_1st');
+
+Finally, the property will be proved for a balise group with two or more balises. 
+~is_singleBalise
+(if is_firstBaliseInGroup then
+ (FilteredBGMessage_.'BGOrientation' == 'Q_DIRTRAIN_Nominal') 
+else
+ (FilteredBGMessage_.'BGOrientation' == 'Q_DIRTRAIN_Reverse')
+)
+
+
+Note that, a group of two balises duplicating each other shall be treated as a single balise group
+in case where only one balise is correctly read. (3.4.2.4.1)
+with
+is_singleBalise := ((CheckedBGMessage_.'TelegramHeaders'[0].'header'.'n_total' == 'N_TOTAL_1_balise_in_the_group') # ((CheckedBGMessage_.'TelegramHeaders'[0].'header'.'n_total' == 'N_TOTAL_2_balise_in_the_group') & ((CheckedBGMessage_.'TelegramHeaders'[0].'header'.'m_dup' == 'M_DUP_This_balise_is_a_duplicate_of_the_next_balise') # (CheckedBGMessage_.'TelegramHeaders'[0].'header'.'m_dup' == 'M_DUP_This_balise_is_a_duplicate_of_the_previous_balise')) & ~CheckedBGMessage_.'TelegramHeaders'[1].'valid'));
+
+
+b) Orientation of balise group (single balise group)
+
+The property will cover the following requirements:
+
+(3.4.2.3.2.3) The reference for the linking data shall be either a single balise group if a co-ordinate
+system has been assigned to it before, or a balise group consisting of two or more
+balises (with "inherent" co-ordinate system)
+ 
+(3.4.2.3.3.1) If the ERTMS/ETCS on-board equipment cannot evaluate the orientation of the last
+balise group detected, being a single balise group, i.e. no linking information is
+available to identify the orientation of the co-ordinate system of this single balise group,
+the ERTMS/ETCS on-board equipment shall report its position by means of a position
+report based on two balise groups reporting the train position in reference to the LRBG
+and the “previous LRBG”, if any.
+
+(3.4.2.3.3.2) When a single balise group is detected and the previous LRBG is known, the position
+report based on two balise groups shall use as direction reference a move from the
+“previous LRBG” towards this single balise group (being the new LRBG): directional
+information in the position report pointing in the same direction as the direction
+reference shall be reported as “nominal”, otherwise as “reverse”.
+
+(3.4.2.3.3.3) If the “previous LRBG “ is not known, the “previous LRBG” and all directional
+information of the position report based on two balise groups shall be reported as
+“unknown”.
+
+
+So, the property is:
+
+is_singleBalise ->
+(if CurrentLRBG_.'filteredBGMessage'.'BGOrientation' <> 'Q_DIRTRAIN_Unknown' 
+then
+ (FilteredBGMessage_.'BGOrientation' == CurrentLRBG_.'filteredBGMessage'.'BGOrientation') //(3.4.2.3.2.3)
+else
+ (FilteredBGMessage_.'BGOrientation' == previousLRBG_.'filteredBGMessage'.'BGOrientation') //(3.4.2.3.3.1), (3.4.2.3.3.2) and (3.4.2.3.3.3)
+)
+
+previousLRBG_ and CurrentLRBG_ are inputs. The behaviours of this parameters need to be proved in the component which defines this parameters.
+
+
+c) Safe Train Length
+
+The poperty will cover the following requirement:
+(3.6.5.2.4) The safe train length information shall represent the distance between the min safe rear end (by subtracting the train length from the min. safe front end position at the time when integrity was established last time) and the estimated position of the train front.
+
+To check this property in Scade model, we will picked in the model the variable which defines the safe train length.
+
+safeTrainLength := 'ProvidePositionReport_Pkg::ProvidePositionReport_#1/ProvidePositionReport_Pkg::CalculateSafeTrainLength_##1/>safeTrainLength';
+
+The property in HLL is:
+$abs(memory - trainPos.'estimatedFrontEndPosition') = safeTrainLength;
+with trainPos.'estimatedFrontEndPosition' an input and 
+memory := if trainPos.'valid' & ~trainPos.'trainPositionIsUnknown' then trainPos.'minSafeFrontEndPosition' - trainProps.'l_train' else 0, 
+          if X(trainPos.'valid' & ~trainPos.'trainPositionIsUnknown') then X(trainPos.'minSafeFrontEndPosition' - trainProps.'l_train') else memory;
+
+d) Balise message
+
+(3.16.2.1.3) A balise within a balise group shall be regarded as missed if
+               a) No balise is found within the maximum distance between balises from the previous balise in the group.
+
+If odometry is valid, message is complete (No other balise will be found) if the distance is greater than the max distance between two balises in the same group. 
+
+
+'BuildBGMessage_Pkg::BuildBGMessage_#1/BuildBGMessage_Pkg::checkOdometry_##1/|isValid'
+->
+(
+outMessageComplete = ($abs(actualOdometry.'odo'.'o_nominal' - inCollector.'balisePosition'.'centerOfBalisePosition'.'o_nominal') > 'BG_Types_Pkg::cMaxDistanceBalisesInGroup'.'o_nominal')
+);
+
+This property is a functional property.
+
+2) Results
+
+a) Orientation of balise group (Balise groups composed of two or more balises)
+Proof is falsified because in SCADE, 
+is_singleBalise is equal to (CheckedBGMessage_.'TelegramHeaders'[0].'header'.'n_total' == 'N_TOTAL_1_balise_in_the_group') # (CheckedBGMessage_.'TelegramHeaders'[0].'header'.'n_total' == 'N_TOTAL_2_balise_in_the_group') # (CheckedBGMessage_.'TelegramHeaders'[0].'header'.'m_dup' <> 'M_DUP_This_balise_is_a_duplicate_of_the_next_balise');
+
+So the SCADE model is wrong.
+
+b) Orientation of balise group (single balise group)
+Proved.
+
+c) Safe Train Length
+
+Proved with a constraint to prevent overflow 
+memory = memory*2^31;
+
+And a lemma is added to make the property inductive:
+(memory == 'ProvidePositionReport_Pkg::ProvidePositionReport_#1/ProvidePositionReport_Pkg::CalculateSafeTrainLength_##1/|_L10');
+
+'ProvidePositionReport_Pkg::ProvidePositionReport_#1/ProvidePositionReport_Pkg::CalculateSafeTrainLength_##1/|_L10' is the memory defines in the SCADE model.
+
+d) Balise message
+Proved.

@@ -1,0 +1,54 @@
+\section{Proof of : Start Of Mission}
+\subsection{Files used for the proof}
+\begin{tabular}{|c|c|}
+\hline
+Used node & Property file \\ \hline
+Procedures::Procedure\_StartOfMission & startofmission\_proof.hll \\
+\hline
+ManageModes & startofmission\_topnode\_proof.hll \\
+\hline
+\end{tabular}
+
+\subsection{What is proved ?}
+We want to prove that the procedure Procedure\_StartOfMission is a
+correct implementation of the section 5.6 Procedure Start of mission
+(cf. D1).
+
+The flowchart is not entirely modelised in the Scade model and an
+implementation of emergency brake management is present in the Scade
+model.
+
+States modelised are S0, from S10 and from S20. In fact, S0 is a
+condition which could trigger S10 and S20 states or stop the procedure
+execution at an time. 
+
+Also, emergency brake can be triggered at any time during the procedure
+execution.
+
+The ``On Going Mission'' variable, input of SH Initiated by Driver, is
+forced to False. This is justified by SRS 5, section ``5.4.6 Entry to
+Mode Considered as a Mission''.
+
+TODO : make the actual flowchart modelised in HLL
+
+\paragraph{Constraints used}
+\begin{enumerate}
+\item Level should not change : During Start of Mission procedure,
+  Level should not change.
+
+\item Train Data should not change : During Start of Mission procedure,
+  train data should not be modified. Then, their validity should not
+  change.
+
+\item The train shall be at standstill to start the pocedure.
+
+\item Same constraint used for the procedure SH Initiated By Driver proof.
+\end{enumerate}
+
+
+
+\subsection{Results}
+Considering constraints and our model, the Scade model of Procedure
+Start of Mission corresponds to the specification.
+
+%\subsection{Conclusion and questions}

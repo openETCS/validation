@@ -1,0 +1,137 @@
+/**********************************
+Procedure
+Shunting Initiated by Driver
+(SRS 5.6)
+**********************************/
+//Constraints:
+
+
+Types:
+enum{'s0','a100','a030','a045','a220','a095','d080_end'} states;
+
+
+Declarations:
+bool a030_state;
+bool a045_state;
+bool a050_state;
+bool a220_state;
+bool a100_state;
+bool a095_state;
+bool a115_state;
+bool all_false_state;
+
+bool s0;
+
+states current_state;
+states last_state;
+states e015;
+states d020;
+states a050;
+states s050;
+states a045;
+states d030;
+states d040;
+states d080;
+
+/*
+enum{'Level_And_Mode_Types_Pkg::L0','Level_And_Mode_Types_Pkg::L1','Level_And_Mode_Types_Pkg::L2','Level_And_Mode_Types_Pkg::L3','Level_And_Mode_Types_Pkg::LNTC'} 'Level_And_Mode_Types_Pkg::T_Level';
+
+Inputs:
+'Level_And_Mode_Types_Pkg::T_Level' Current_Level;
+'Level_And_Mode_Types_Pkg::T_Mode' Current_Mode;
+bool Driver_Req_SH;
+bool On_Going_Mission;
+bool Shunting_Granted_By_RBC;
+bool Train_Standstill;
+
+Outputs:
+Condition5;
+Condition6;
+Clean_BG_List_SH_Area;
+End_Of_Mission_Procedure_Req;
+Request_For_SH_To_RBC;
+SH_Refused_By_RBC_To_DMI;
+*/
+
+Definitions:
+a030_state := True; // Process go to the "Train Trip" procedure (???)
+a045_state := Request_For_SH_To_RBC;
+a050_state := (Condition5 # Condition6) & Clean_BG_List_SH_Area;
+a220_state := SH_Refused_By_RBC_To_DMI;
+a100_state := End_Of_Mission_Procedure_Req == On_Going_Mission; ///!\ This constraints must be verified over a top node
+a095_state := True; // mode change shall be reported to the RBC (???)
+a115_state := True; // Terminate session (???)
+all_false_state := ~Clean_BG_List_SH_Area &
+		   ~Condition5 &
+		   ~Condition6 &
+		   ~End_Of_Mission_Procedure_Req &
+		   ~SH_Refused_By_RBC_To_DMI &
+		   ~Request_For_SH_To_RBC;
+
+
+last_state := pre(current_state,'s0');
+current_state := (last_state,s0
+	      	 | 's0',True => e015
+	      	 | _,False => 's0'
+	      	 | 'a100',True => 'a100'
+		 | 'a045',True => s050
+		 | 'a220',True => 'a220'
+		 | 'a030',True => 'a030' // /!\ not modelized Scade SH_Initiated_By_Driver_On
+		 | 'd080_end',True => 'd080_end'
+		 | 'a095',True => 'a095' // /!\ not modelized Scade SH_Initiated_By_Driver_On
+		 );
+
+
+s0 := (Train_Standstill & (Current_Mode = 'Level_And_Mode_Types_Pkg::SB' 
+      			  # Current_Mode = 'Level_And_Mode_Types_Pkg::FS'
+	   		  # Current_Mode = 'Level_And_Mode_Types_Pkg::LS'
+	   		  # Current_Mode = 'Level_And_Mode_Types_Pkg::OS' 
+	   		  # Current_Mode = 'Level_And_Mode_Types_Pkg::SR'
+	   		  # Current_Mode = 'Level_And_Mode_Types_Pkg::PT'
+	   		  # Current_Mode = 'Level_And_Mode_Types_Pkg::SN'
+	   		  # Current_Mode = 'Level_And_Mode_Types_Pkg::UN'));
+
+e015 := if (Driver_Req_SH) then
+     	d020
+	else
+	's0';
+
+d020 := if (Current_Level == 'Level_And_Mode_Types_Pkg::LNTC') then
+	d030
+	elif ((Current_Level == 'Level_And_Mode_Types_Pkg::L0' # 
+	Current_Level == 'Level_And_Mode_Types_Pkg::L1')) then
+	a050
+	else // (Current_Level == 'Level_And_Mode_Types_Pkg::L2' # Current_Level == 'Level_And_Mode_Types_Pkg::L3')
+	'a045';
+
+
+d030 := 'a030'; // National trip procedure is not an input of this model
+
+
+a050 := d040;
+
+d040 := if (On_Going_Mission) then
+     	'a100'
+	else
+	d080;
+
+d080 := if (Current_Level == 'Level_And_Mode_Types_Pkg::L0' # 
+	Current_Level == 'Level_And_Mode_Types_Pkg::L1' #
+	Current_Level == 'Level_And_Mode_Types_Pkg::LNTC') then
+	'd080_end'
+	else // (Current_Level == 'Level_And_Mode_Types_Pkg::L2' # Current_Level == 'Level_And_Mode_Types_Pkg::L3')
+	'a095';
+
+s050 := if (Shunting_Granted_By_RBC) then
+	a050
+	else
+	'a220';
+
+
+Proof Obligations:
+(current_state == 's0') -> all_false_state;
+(current_state == 'a045') -> a045_state;
+(current_state == 'a100') -> (a050_state & a100_state);
+(current_state == 'a220') -> a220_state;
+(current_state == 'a095') -> a050_state; // /!\ Est-ce que End_Of_Mission_Procedure_Req doit être à False ?
+(current_state == 'd080_end') -> a050_state; // /!\ Est-ce que End_Of_Mission_Procedure_Req doit être à False ?

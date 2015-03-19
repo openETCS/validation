@@ -1,5 +1,7 @@
 Here the first verification results for 'Calculate Train Position' can be found.
 
+The results are linked to the following [github issue](https://github.com/openETCS/validation/issues/227).
+
 04-Results Guideline
 
 Only final or important intermediate results shall be placed here. A

@@ -155,8 +155,8 @@ bool SH_Refused_By_RBC_To_DMI;
 
 Definitions:
 /* BEGIN Connexion with Scade model inputs */
-Train_Standstill := Data_From_Speed_and_Supervision.'Train_Standstill';
-Current_Mode := 'ManageModes_#1/SwitchModes_##1/%last_3257';//pre(currentMode,'Level_And_Mode_Types_Pkg::SB');
+Train_Standstill := Data_From_Localisation.'Train_Standstill';
+Current_Mode := pre(currentMode,'Level_And_Mode_Types_Pkg::SB');
 // Deks_Open variable is compute from different scade inputs but not implemented here
 Desk_Open := 'ManageModes_#1/Interfaces::InputTIUManagement_##1/>Desk_Open';
 Driver_Ack_LS := Data_From_DMI.'Ack_LS';
@@ -168,7 +168,7 @@ Driver_Ack_UN := Data_From_DMI.'Ack_UN';
 Driver_Req_NL := Data_From_DMI.'Req_NL';
 Driver_Req_SH := Data_From_DMI.'Req_SH';
 Driver_Req_Start := Data_From_DMI.'Req_Start';
-MA_SSP_Gradiant_Available := Data_From_Speed_and_Supervision.'MA_SSP_Gradiant_Available';
+MA_SSP_Gradiant_Available := Data_From_Track.'MA_SSP_Gradient_Available';
 Mode_Profile_On_Board := Data_From_Track.'Mode_Profile_On_Board';
 RBC_Authorizes_SR := Data_From_Track.'RBC_Authorized_SR';
 Shunting_Granted_By_RBC := Data_From_Track.'Shunting_granted_By_RBC';
@@ -511,28 +511,29 @@ current_state = 'd080') <->
 
 
 /* Proofs */
-(current_state = 's0') -> all_false_state;
-(current_state = 'eb_req') -> eb_req_state;
+/*(current_state = 's0') -> all_false_state;
 (current_state = 's10') -> all_false_state;
-(current_state = 's20') -> all_false_state;
-(current_state = 's21') -> s21_state;
-(current_state = 's22') -> s22_state;
-(current_state = 's23') -> s23_state;
-(current_state = 's24') -> s24_state;
-(current_state = 's25_os') -> s25_os_state;
-(current_state = 's25_ls') -> s25_ls_state;
-(current_state = 's25_sh') -> s25_sh_state;
-(current_state = 'nl_mode') -> nl_mode_state;
-(current_state = 'fs_mode') -> fs_mode_state;
-(current_state = 'os_mode') -> os_mode_state;
-(current_state = 'ls_mode') -> ls_mode_state;
-(current_state = 'sh_mode') -> sh_mode_state;
-(current_state = 'sr_mode') -> sr_mode_state;
-(current_state = 'sn_mode') -> sn_mode_state;
-(current_state = 'un_mode') -> un_mode_state;
+(current_state = 's20') -> all_false_state;*/
+(current_state = 's0') # (current_state = 's10') # (current_state = 's20') <-> all_false_state;
+(current_state = 'eb_req') <-> eb_req_state;
+(current_state = 's21') <-> s21_state;
+(current_state = 's22') <-> s22_state;
+(current_state = 's23') <-> s23_state;
+(current_state = 's24') <-> s24_state;
+(current_state = 's25_os') <-> s25_os_state;
+(current_state = 's25_ls') <-> s25_ls_state;
+(current_state = 's25_sh') <-> s25_sh_state;
+(current_state = 'nl_mode') <-> nl_mode_state;
+(current_state = 'fs_mode') <-> fs_mode_state;
+(current_state = 'os_mode') <-> os_mode_state;
+(current_state = 'ls_mode') <-> ls_mode_state;
+(current_state = 'sh_mode') <-> sh_mode_state;
+(current_state = 'sr_mode') <-> sr_mode_state;
+(current_state = 'sn_mode') <-> sn_mode_state;
+(current_state = 'un_mode') <-> un_mode_state;
 (current_state == 'a100') -> (a050_state & a100_state);
-(current_state == 'a045') -> a045_state;
-(current_state == 'a220') -> a220_state;
+(current_state == 'a045') <-> a045_state;
+(current_state == 'a220') <-> a220_state;
 (current_state == 'a095') -> a050_state;
 (current_state == 'd080') -> a050_state;
-
+a050_state -> ((current_state == 'd080') # (current_state == 'a095') # (current_state == 'a100'));

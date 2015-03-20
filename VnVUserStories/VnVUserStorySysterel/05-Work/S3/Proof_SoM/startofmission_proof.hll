@@ -461,28 +461,30 @@ current_state = 'd080') <->
 
 
 /* Proofs */
-(current_state = 's0') -> all_false_state;
-(current_state = 'eb_req') -> eb_req_state;
+/*(current_state = 's0') -> all_false_state;
 (current_state = 's10') -> all_false_state;
-(current_state = 's20') -> all_false_state;
-(current_state = 's21') -> s21_state;
-(current_state = 's22') -> s22_state;
-(current_state = 's23') -> s23_state;
-(current_state = 's24') -> s24_state;
-(current_state = 's25_os') -> s25_os_state;
-(current_state = 's25_ls') -> s25_ls_state;
-(current_state = 's25_sh') -> s25_sh_state;
-(current_state = 'nl_mode') -> nl_mode_state;
-(current_state = 'fs_mode') -> fs_mode_state;
-(current_state = 'os_mode') -> os_mode_state;
-(current_state = 'ls_mode') -> ls_mode_state;
-(current_state = 'sh_mode') -> sh_mode_state;
-(current_state = 'sr_mode') -> sr_mode_state;
-(current_state = 'sn_mode') -> sn_mode_state;
-(current_state = 'un_mode') -> un_mode_state;
+(current_state = 's20') -> all_false_state;*/
+(current_state = 's0') # (current_state = 's10') # (current_state = 's20') <-> all_false_state;
+(current_state = 'eb_req') <-> eb_req_state;
+(current_state = 's21') <-> s21_state;
+(current_state = 's22') <-> s22_state;
+(current_state = 's23') <-> s23_state;
+(current_state = 's24') <-> s24_state;
+(current_state = 's25_os') <-> s25_os_state;
+(current_state = 's25_ls') <-> s25_ls_state;
+(current_state = 's25_sh') <-> s25_sh_state;
+(current_state = 'nl_mode') <-> nl_mode_state;
+(current_state = 'fs_mode') <-> fs_mode_state;
+(current_state = 'os_mode') <-> os_mode_state;
+(current_state = 'ls_mode') <-> ls_mode_state;
+(current_state = 'sh_mode') <-> sh_mode_state;
+(current_state = 'sr_mode') <-> sr_mode_state;
+(current_state = 'sn_mode') <-> sn_mode_state;
+(current_state = 'un_mode') <-> un_mode_state;
 (current_state == 'a100') -> (a050_state & a100_state);
-(current_state == 'a045') -> a045_state;
-(current_state == 'a220') -> a220_state;
+(current_state == 'a045') <-> a045_state;
+(current_state == 'a220') <-> a220_state;
 (current_state == 'a095') -> a050_state;
 (current_state == 'd080') -> a050_state;
+a050_state -> ((current_state == 'd080') # (current_state == 'a095') # (current_state == 'a100'));
 

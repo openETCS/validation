@@ -17,7 +17,7 @@
 
 \section{University of Bremen: Verification of the  Management of the Radio
 Communication}
-
+\label{sec:ubremen}
 This section reports the verification activity of SCADE-MoRC. The goal
 of this activity is, first, to establish the compliance of the SCADE
 model to the SRS description via testing. Secondly, we want to track
@@ -26,15 +26,14 @@ demonstrate the efficiency of model based testing using the RT-tester
 tool for system integration testing.
 
 The activity is described in the Verification and Validation Plan
-section {\em 6.1.2.7 System Integration Testing (Uni Bremen/DLR)} \cite{D4.1_2013}
+section {\em 6.1.2.7 System Integration Testing (Uni Bremen/DLR)} \cite{D4.1_2013}.
 In short, we develop a test model from the specification, generate tests and use
 the code generated from SCADE to perform software-in-loop testing.
 The test model and the SCADE model used to generate code have been
-done independently to each other. The generated tests w
+done independently to each other. 
 
 \paragraph{Object of verification}
  Management of radio communication (MoRC) ERTMS function baseline 3.
-\nl
 
 
 The system under test (e.g. the verification object) is the C code
@@ -49,7 +48,7 @@ phase.
 \paragraph{Available specification}
 
 The specification is described in the
-SUBSET-026\cite{unisig_subset-026_2012} chap 3.5 \cite{chap3-5}. It
+Subset-026 chapter 3.5. It
 describes the communication protocol between the EVC and the RBC or
 balises. In particular, how the EVC initiates and terminates a
 communication.
@@ -65,7 +64,7 @@ been developed. The description of this verification artifact may be
 found here \url{https://github.com/openETCS/model-evaluation/blob/master/model/EA-SysML/new_version/doc/ea_sysml_report.pdf}
 
 Our main goal is to verify the SCADE model by test simulation. The
-tests are produced by a model of the subset-026 chap 3.5 described as a
+tests are produced by a model of the Subset-026 chapter 3.5 described as a
 state machine.
 
 \subparagraph{Method/Approach}
@@ -81,13 +80,13 @@ be then  used to produce C code and one SysML model for generating
 tests.
 
 Our test model contains the behavioral representation of the MoRC, the
-set of requirements of the chap 3.5, and the link between the behavior
+set of requirements of the chapter 3.5, and the link between the behavior
 and the requirement.  Most of the requirements may be represented as
 single transition or state in the test model state
 machine. Nevertheless, some of the requirements may be only modeled as
 a path of the state machine, we choose to represent those as LTL
 formula, added as constraints of the test model. For example the
-\verb+REQ-3.5.10+ describes the steps needed for the establishment of
+\verb+REQ-3.5.3.10+ describes the steps needed for the establishment of
 the radio communication order by the RBC. This requirement explicits a
 particular path of the test model, thus this path should exists in our
 test model. To ensure that this particular test will be generated a LTL
@@ -122,7 +121,7 @@ strategies ensuring the following coverage :
 \begin{itemize}
 \item  Basic control state coverage (BCS): All state locations are covered.
 \item  Transition coverage (TC): All transition of the statecharts are covered.
-\item  Modified condition/decision coverage (MC/DC): Modified condtion/decision coverage.
+\item  Modified condition/decision coverage (MC/DC): Modified condition/decision coverage.
 \item  Hierarchic transition coverage (HITR): High-level transition of
   nested statecharts are covered.
 \item  Basic Control states Pair coverage(BCPAIRS): For concurrent state
@@ -131,9 +130,10 @@ strategies ensuring the following coverage :
 
 More detailled explaination on the coverage may be found here \cite{huang_test_2013}.
 
-We then apply a requirement coverage strategy that consists of
-generating tests that covers all the requirements. As each requirement
-are linked to an artifact of the test model, part of the test cases
+We then apply a requirement coverage strategy to
+generate tests that covers all the requirements. 
+As each requirement
+is linked to an artifact of the test model, part of the test cases
 are generated as subset of the coverage mention above. In addition,
 test cases from the LTL are also provided.
 
@@ -172,13 +172,13 @@ T3 as shown in \cite{peleska_efficient_2012}.
 \end{tabular}
 
 \vspace{1em}
-\raggedleft Total Requirements cover 40
+%\raggedleft Total Requirements cover 40
 \caption{\label{tbl:test_summary} Test cases generation summary}
 \end{table}
 
 Table \ref{tbl:test_summary} resumes the set of automatically
 generated tests.
-The set of tests cover 40 of the requirements from the chap3.5.
+The set of tests cover 40 of the requirements from the chapter 3.5.
 
 
 The simulation result of the C code is not yet finished and for the
@@ -215,8 +215,8 @@ From  our first investigation, we could see that one chapter of
 the specification is not self-contained. This leads to different
 interpretation in the modeling and thus some non equivalent behaviors.
 
-Moreover some missing information in the specification leads to a
-under constraints test model. It affects the test generation by
+Moreover some missing information in the specification leads to 
+ constraints in test model. It affects the test generation by
 providing some non realistic test cases. Some variable behavior that
 were not mentioned in the specification are considered as free and may have any
 possible value in their definition range. This can be solved by adding

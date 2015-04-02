@@ -1,24 +1,24 @@
 \section{TWT GmbH Science \& Innovation: Verification of Procedures of Subset
-026-5}
-
-This sections reports on the modeling of the procedures described in Subset 026, Chapter 5---that is, the behavioral part of the ETCS. The goal of the activity is to validate the specification and to support the modeling using SCADE and the verification of SCADE models on a higher\footnote{in comparison to SCADE models} level of abstraction.
+026 chapter 5}
+\label{sec:twt}
+This sections reports on the modeling of the procedures described in Subset 026 chapter 5---that is, the behavioral part of the ETCS. The goal of the activity is to validate the specification and to support the modeling using SCADE and the verification of SCADE models on a higher level of abstraction in comparison to SCADE models.
 
 The activity is described in the Verification and Validation Plan (see Sect.~6.1.2.5). In short, we provide feedback regarding ambiguities, inconsistencies and errors in the current ETCS standard based on our formalization of the specification using mathematical modeling languages.
 
 \paragraph{Object of verification}
 
-The object of verification is Subset 026-5 of the specification. We formally model parts of the specification and use the resulting model to validate the specification. This design step has been described in D2.3 (see Sect.~4.4).
+The object of verification is Subset-026 chapter 5 of the specification. We formally model parts of the specification and use the resulting model to validate the specification. This design step has been described in D2.3 (see Sect.~4.4).
 
 \paragraph{Available specification}
 
-The specification is described in Subset 026-5. It describes procedures of ETCS entities (i.e., required reactions on events and received messages), thereby focusing on required change in status and mode of entities considered.
+The specification is described in Subset-026 chapter 5. It describes procedures of ETCS entities (i.e., required reactions on events and received messages), thereby focusing on required change in status and mode of entities considered.
 
 
 \paragraph{Detailed verification plan}
 
 \subparagraph{Goals} 
 
-The goal is to model the the procedures described in Subset 026-5, thereby focusing on modeling the \textit{system behavior}---that is, the control flow of the on-board unit and the interplay with its environment (e.g., the driver and the RBC). The model is then used to validate the specification.
+The goal is to model the the procedures described in Subset-026 chapter 5, thereby focusing on modeling the \textit{system behavior}---that is, the control flow of the on-board unit and the interplay with its environment (e.g., the driver and the RBC). The model is then used to validate the specification.
 
 \subparagraph{Method/Approach}
 
@@ -33,7 +33,7 @@ We focus on modeling the \textit{system behavior}---that is, the control flow of
 	\label{fig:Top}
 \end{figure}
 
-Zooming in subpage \texttt{On-board Unit} yields the CPN model in Fig.~\ref{fig:OBUnit}. This CPN model has two subpages: Subpage \texttt{Start} models the states S0 and S1 of the specification (i.e., Subset 026-5.4) and subpage \texttt{Rest} the remaining states. At this level of abstraction, we see on the left hand side seven places (green frame). Each such place models (a part) of the state of the on-board unit, for example, the mode and the train running number. The current model has 689 places, 173 transitions and 1,227 arcs.
+Zooming in subpage \texttt{On-board Unit} yields the CPN model in Fig.~\ref{fig:OBUnit}. This CPN model has two subpages: Subpage \texttt{Start} models the states S0 and S1 of the specification (i.e., Subset-026 chapter 5.4) and subpage \texttt{Rest} the remaining states. At this level of abstraction, we see on the left hand side seven places (green frame). Each such place models (a part) of the state of the on-board unit, for example, the mode and the train running number. The current model has 689 places, 173 transitions and 1,227 arcs.
 
 \begin{figure}[tb]
 	\centering
@@ -51,41 +51,43 @@ So far, the primary goal of modeling has been to validate the specification. Dur
 
 \subparagraph{Means}
 
-The input for our approach is the specification described in Subset 026-5. Our output is a CPN model and a report describing inconsistencies, ambiguities and gaps in the Subset 026-5.
+The input for our approach is the specification described in Subset-026 chapter 5. Our output is a CPN model and a report describing inconsistencies, ambiguities and gaps in the Subset-026 chapter 5.
 
 
 \paragraph{Results}
 
 \subparagraph{Summary}
 
-We have modeled the following five procedures of Subset 026-5 as CPN:
+We have modeled the following five procedures of Subset-026 chapter 5 as CPN:
 \begin{itemize}
-	\item Start of Mission (Subset 026-5.4)
-	\item End of Mission (Subset 026-5.5)
-	\item Shunting Initiated by Driver (Subset 026-5.6)
-	\item Override (Subset 026-5.8)
-	\item Train Trip (Subset 026-5.11)
+	\item Start of Mission (Subset-026 chapter 5.4)
+	\item End of Mission (Subset-026 chapter 5.5)
+	\item Shunting Initiated by Driver (Subset-026 chapter 5.6)
+	\item Override (Subset-026 chapter 5.8)
+	\item Train Trip (Subset-026 chapter 5.11)
 \end{itemize}
-During the modeling we discovered 36 inconsistencies, ambiguities and gaps in the specification which we reported in~\cite{specfindings}. Our CPN models the system behavior---that is, the interplay between the different entities of the ETCS---and partially abstract from data. Therefore, we complement the work on SysML modeling, where the focus is on the connectivity of components and the data types.
+
+%During the modeling we discovered 36 inconsistencies, ambiguities and gaps in the %specification which we reported in~\cite{specfindings}. 
+Our CPN models the system behavior---that is, the interplay between the different entities of the ETCS---and partially abstract from data. Therefore, we complement the work on SysML modeling, where the focus is on the connectivity of components and the data types.
  
 \subparagraph{Conclusions/Lessons learned}
  
-The numerous specification findings illustrate the need for validating the specification. CPNs are well-suited to model the behavioral aspects described in Subset 026-5. The size of the model clearly indicates the complexity of the procedures, even at the current level of abstraction. Therefore, we expect that applying formal verification on the resulting CPNs will not be feasible due to state-space explosion.
+The numerous specification findings illustrate the need for validating the specification. CPNs are well-suited to model the behavioral aspects described in Subset-026 chapter 5. The size of the model clearly indicates the complexity of the procedures, even at the current level of abstraction. Therefore, we expect that applying formal verification on the resulting CPNs will not be feasible due to state-space explosion.
 
 \paragraph{Future Activities}
 
 
-We shall continue our work by completing the model, contributing to the modeling of (parts of) Subset 026-5 using SCADE, and verifying the SCADE model. In addition, we are planning to exploit synergies by collaborating with the project partner LAAS who advocate the Petri net model checker TINA~\cite{BerthomieuV2006}. In addition, we are working with the project partners from Braunschweig University of Technology on generating test cases from the CPN model.
+We shall continue our work by completing the model, contributing to the modeling of (parts of) Subset-026 chapter 5 using SCADE, and verifying the SCADE model. In addition, we are planning to exploit synergies by collaborating with the project partner LAAS who advocate the Petri net model checker TINA~\cite{BerthomieuV2006}. In addition, we are working with the project partners from Braunschweig University of Technology on generating test cases from the CPN model.
 
 
-\paragraph{Modeling the Subset 026-5}
+\paragraph{Modeling the Subset-026 chapter 5}
 
-We plan to model the remaining parts of Subset 026-5, thereby reporting possible additional findings in the specification. The goal is to have a CPN modeling all procedures that are described in Subset 026-5. We also want to compare our model with the (corresponding part of the) ERTMSFormalSpec model~\cite{ertms}.
+We plan to model the remaining parts of Subset-026 chapter 5, thereby reporting possible additional findings in the specification. The goal is to have a CPN modeling all procedures that are described in Subset-026 chapter 5. We also want to compare our model with the (corresponding part of the) ERTMSFormalSpec model~\cite{ertms}.
 
 
 \paragraph{SCADE Modeling}
 
-As the ETCS will be modeled using SCADE, we shall contribute to this modeling process. To use the experience that we gained from modeling Subset 026-05 with CPN Tools, we want to contribute to the SCADE modeling of (parts of) the Subset 026-5. The SCADE design flow starts with modeling all components and their interplay using SysML block diagrams (with the tool SCADE Designer). The resulting SysML diagrams provide a functional and an architectural view. They are similar to the CPN model in Fig.~\ref{fig:Top}. In a second step, the behavior of each block has to be fully modeled on the system level using SCADE Suite. Currently, SCADE does not support state machine models on the level of SysML. Our CPN model provides this level of abstraction and will, therefore, be useful for the SCADE modeling.
+As the ETCS will be modeled using SCADE, we shall contribute to this modeling process. To use the experience that we gained from modeling Subset-026 chapter 05 with CPN Tools, we want to contribute to the SCADE modeling of (parts of) the Subset-026 chapter 5. The SCADE design flow starts with modeling all components and their interplay using SysML block diagrams (with the tool SCADE Designer). The resulting SysML diagrams provide a functional and an architectural view. They are similar to the CPN model in Fig.~\ref{fig:Top}. In a second step, the behavior of each block has to be fully modeled on the system level using SCADE Suite. Currently, SCADE does not support state machine models on the level of SysML. Our CPN model provides this level of abstraction and will, therefore, be useful for the SCADE modeling.
 
 
 \subparagraph{Verification of the SCADE Model}

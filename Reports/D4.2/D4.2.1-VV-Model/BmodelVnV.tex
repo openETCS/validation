@@ -27,7 +27,7 @@ Static type checking (TC) is a basic form of program verification that ensures t
 Strong typing ensures a consistent use of data and is essential to writing correct formulae (predicates or expressions).\\
 
 The type checking process consists of two main activities: data typing and type verification.\\
-{\itshape Data typing} is the activity of assigning a type to newly-encountered data in a predicate or a substitution\footnote{In B, a substitution is comparable to a set of instructions that modify variables. For more information, see \cite{bbook}.}. It is based on an inference mechanism, which is able to deduce the type of a newly-encountered variable from the type of the other variables intervening in the predicate or the substitution, and specific inference rules.\\
+{\itshape Data typing} is the activity of assigning a type to newly-encountered data in a predicate or a substitution. {In B, a substitution is comparable to a set of instructions that modify variables. For more information, see \cite{bbook}}. It is based on an inference mechanism, which is able to deduce the type of a newly-encountered variable from the type of the other variables intervening in the predicate or the substitution, and specific inference rules.\\
 On the other hand, {\itshape type verification} is the activity of verifying typing rules between already-typed variables. These rules are specific to their applying predicates, expressions or substitutions.
 % In B, the base types consist of integers, booleans, strings, abstract sets and enumerated sets.\\
 % The construction of more complex types is achieved through the powerset operator $\mathbb{P}$ and the cartesian product $\times$.
@@ -94,7 +94,7 @@ informal specification! It must be validated that the formalized specification
 specification, in particular that the intended functioning is possible. This is
 the domain of validation, as discussed in the introduction.
 
-\subsubsection{Tools for verification}
+\subsubsection{Tools}
 \label{sec:tools}
 
 %\subsubsection{Existing tools}
@@ -134,7 +134,8 @@ Table \ref{tab:cenelec} shows, for each of the verification processes presented 
 
 \begin{table}[h!]
 \begin{center}
-\begin{tabular}{ l l l c c c c c c c }
+\scalebox{.88}{
+\begin{tabular}{@{}l l l c c c c c c c@{}}
 ~ & ~ & level & spec & TC & B0C & MC & CBC & proof & source code \\
 \hline
 A 5.1 & Formal Proof & HR & ~ & ~ & ~ & ~ & ~ & \checkmark & ~ \\
@@ -157,7 +158,7 @@ A 5.9 & Performance testing & HR & ~ & ~ & ~ & ~ & ~ & ~ & ~ \\
 \hline
 A 5.10 & Interface testing & HR & ~ & ~ & ~ & ~ & ~ & ~ & ~ \\
 \hline
-\end{tabular}
+\end{tabular}}
 \end{center}
 \caption{Correspondence between CENELEC norm recommendations and the presented verification processes}
 \label{tab:cenelec}
@@ -235,7 +236,8 @@ Additionally, constraint-based checking has also been run and stated, for every 
 
 \paragraph{Formal proof results}
 \label{subapp:proof}
-\subparagraph{Project status}
+
+%\subparagraph{Project status}
 Project status illustrated in figure \ref{fig:atelierb} shows the fully-proved model in Atelier~B. 
 
 \begin{figure}[h!]
@@ -250,9 +252,9 @@ force 0 and force 1 (on 427 proof obligation generated, only 3 need the
 interactive prover to define cases). Proving the model results in the certainty
 of its correctness wrt.\ the formal specification. In this case, only typing
 invariants and constraints were expressed, because more complex safety
-properties have not been identified to be sepcified as invariant. However, for each function, its behaviour is specified and the implementation is verified according this specification.
+properties have not been identified to be specified as invariant. However, for each function, its behaviour is specified and the implementation is verified according to this specification.
 
-\subparagraph{User-defined theories}
+%\subparagraph{User-defined theories}
 When automatic proof fails, the user must provide a manual proof and uses theories for this purpose. Theories are rules that are used to discharge specific goals.\\
 In this example, the only module for which interactive proof was required is \verb+os_consist_i+. Below is presented a very simple theory (among several others) used for the proof of this component:
 

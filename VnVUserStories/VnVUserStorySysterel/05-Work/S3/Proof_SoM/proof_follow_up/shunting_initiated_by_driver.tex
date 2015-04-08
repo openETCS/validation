@@ -1,63 +1,137 @@
 \section{Proof of : Shunting Initiated By Driver}
+\label{sh-initiated-by-driver}
 \subsection{Files used for the proof}
 \begin{tabular}{|c|c|}
 \hline
 Used node & Property file \\ \hline
 Procedures::SH\_Initiated\_By\_Driver & shunting\_initiated\_by\_driver.hll \\
 \hline
+ManageModes & shunting\_initiated\_by\_driver\_topnode.hll \\
+\hline
 \end{tabular}
 
 
-\subsection{What is proved ?}
+\subsection{What we want to prove}
 We want to prove that the procedure SH\_Initiated\_By\_Driver is a
 correct implementation of the section 5.6 Shunting Initiated By Driver
 (cf. D1).
 
-To prove this, a modelisation of the flowchart is proposed in the
-property file. However, the flowchart is not entirely modelised
-because the Scade model does not seem to represent all of
-it. Requirements that are not modelised are the following :
-\texttt{D030}, \texttt{A030}, \texttt{A095}, \texttt{S100} and
-\texttt{A115}.
+To prove this, a modelization of the flowchart is proposed in the
+property file. However, the flowchart is not entirely modelized by the
+Scade model, assumptions are taken:
+\begin{enumerate} 
+\item A030 and National Trip occurrence is covered by Trip conditions and
+procedures with higher priority.
 
-\paragraph{Constraints used}
-One constraint is used in this model. Without this constraint, a
-counter-example is reachable.
+\item Communication with RBC is out of the scope of this function
+(repetition of message to RBC, waiting for acknowledgment,...) 
+\end{enumerate} 
+Those assumptions have the following consequences: 
+\begin{enumerate} 
+\item \texttt{D030} and \texttt{A030} are not in this HLL model. This
+  implies that we have to deal with the "NTC" transition leaving
+  D020. To resolve this problem, we assume this transition is merged
+  with the "0/1" transition.
 
-This constraint specifies that the flowchart shall return to his
-initial state a cycle after the dead-end state \texttt{A100} is
-reached.
+\item \texttt{D080}, \texttt{A095}, \texttt{S100}, \texttt{A115} are
+  not in this HLL model. This implies the "No" transition leaving D040
+  is going nowhere. In this case, we assume this transition leads to
+  an "End" state, which means that process shall end.
+\end{enumerate} 
 
-Actually, if this constraint is not verified, the Scade model could
-return \texttt{False} for the request of ``End of Mission'' procedure
-which contradicts the flowchart (\texttt{D040} and \texttt{A100} requirements).
+\subsection{Results and conclusions}
+\label{SH-results-and-conclusions}
+Considering assumptions, SH\_Initiated\_By\_Driver Scade model does
+not correspond to the specification.
 
-In our implementation of the flowchart, this constraint is modelised
-by verifying that when we are in \texttt{A100} the request of ``End of
-Mission'' procedure correspond to the value of the input
-\texttt{On-going Mission} as it is modelised in the Scade model.
+This is explained by the following differences between the
+specification and the Scade model:
+\begin{enumerate} 
+\item \label{s0-case}In the specification, \texttt{S0} state has no associated
+  requirement other than the \texttt{E015} requirement. Considering
+  only the flowchart, \texttt{S0} is an initial state which can be
+  left when the conditions explained in \texttt{E015} requirement are
+  fulfilled. Usually, states are not conditions.  The Scade model is
+  considering \texttt{S0} state as a re-initialization state :
+  \texttt{S0} conditions must be fulfilled to allow flowchart
+  execution.
+%\item The flowchart have end states where no actions are
+%  made. Actually, \texttt{A220} and \texttt{A100} (drawn by rounded
+%  rectangles) are not states, so they are read one time contrary to a
+%  state and then the process (of reading the flowchart) is
+%  stopped. This contradicts the Scade model where those elements as
+%  seen and modelized as states.
+\item \label{a100-case}The flowchart have end states where no actions
+  are made. Actually, \texttt{A100} (drawn by rounded rectangles) is
+  not a state, so it is read one time contrary to a state and then the
+  process (of reading the flowchart) is stopped. This contradicts the
+  Scade model where this element is seen and modelized as a state.
+\item \label{a220-case}In the case of \texttt{A220}, the flowchart leads to an end
+  state after this action. However, the Scade model leads to the
+  initial state (a state just before \texttt{E015}).
+\item \label{eom-case}The \texttt{A100} action is specified by a requirement which
+  says that the process shall go to the ``End of Mission''
+  procedure. In the Scade model, we assume this requirement is
+  corresponding to the output called
+  \texttt{End\_Of\_Mission\_Procedure\_Req}. This output shall be
+  \texttt{True} when conditions to reach \texttt{A100} are fulfilled,
+  \texttt{False} in all other cases. However this output is equal to
+  the input \texttt{On\_Going\_Mission} and, because of the previous
+  point, this implies that output
+  \texttt{End\_Of\_Mission\_Procedure\_Req} can have a changing value
+  when Scade model is in a dead end state where conditions to reach
+  \texttt{A100} were fulfilled.
+\end{enumerate} 
 
-This modelisation is justified by the fact that, according to
-\texttt{A050}, \texttt{D040} and \texttt{A100}, if the input
-\texttt{On-going Mission} is \texttt{True} then the ``End of Mission''
-request is \texttt{True}, so equal to \texttt{On-going Mission}. Also,
-as transition to SH mode is enable (\texttt{A050}) when ``End of
-Mission'' request is made, the system should go to SH mode (or another
-mode except SB mode). So the next cycle the driver should not execute
-the shunting selection procedure and the next time this pocedure is
-executed it should start at the initial state.
+Here is propositions of solutions to resolve previous problems:
+\begin{description}
+\item[Proposition for \ref{s0-case}.] The ambiguity of \texttt{S0} definition must be
+  clarified : either it is a state with a clear action in its
+  definition, or it is a condition which trigger or not the procedure.
+\item[Proposition for \ref{a220-case}.] The Scade model should end in a
+  dead end state instead of going back to its initial state.
+\item[Proposition for \ref{a100-case}. and \ref{eom-case}.] To resolve those to points, the Scade
+  model should not have dead end states where actions can be taken
+  (outputs are set to values). Actions in those dead end state should
+  be modelized as ``emit''. 
+\end{description}
 
 
-\subsection{Results}
-Considering the constraint and our model, the Scade model of
-SH\_Initiated\_By\_Driver corresponds to the specification.
+However, in the case where the Scade model reaches a final state of
+the Shunting Initiated By Driver procedure and where it always leads
+to a mode change at next cycle, which is not a mode in \texttt{S0}
+condition, then the procedure will go back to its initial state after
+one cycle in a final state.
+
+So, if this behavior is verified, this will resolve points
+\ref{a100-case}. and \ref{eom-case}.
+
+%\paragraph{Constraints used}
+%One constraint is used in this model. Without this constraint, a
+%counter-example is reachable.
+
+%This constraint specifies that the flowchart shall return to his
+%initial state a cycle after the dead-end state \texttt{A100} is
+%reached.
+
+%Actually, if this constraint is not verified, the Scade model could
+%return \texttt{False} for the request of ``End of Mission'' procedure
+%which contradicts the flowchart (\texttt{D040} and \texttt{A100}
+%requirements).
+
+%In our implementation of the flowchart, this constraint is modelised
+%by verifying that when we are in \texttt{A100} the request of ``End of
+%Mission'' procedure correspond to the value of the input
+%\texttt{On-going Mission} as it is modelised in the Scade model.
+
+%This modelisation is justified by the fact that, according to
+%\texttt{A050}, \texttt{D040} and \texttt{A100}, if the input
+%\texttt{On-going Mission} is \texttt{True} then the ``End of Mission''
+%request is \texttt{True}, so equal to \texttt{On-going Mission}. Also,
+%as transition to SH mode is enable (\texttt{A050}) when ``End of
+%Mission'' request is made, the system should go to SH mode (or another
+%mode except SB mode). So the next cycle the driver should not execute
+%the shunting selection procedure and the next time this pocedure is
+%executed it should start at the initial state.
 
 
-%\subsection{Conclusion and questions}
-%\begin{itemize}
-%\item The constraint used must be verified in an upper scade node.
-%\item Parts of the flowcharts that are not modelised must be modelised
-%  in another part of the scade model.
-%\item Some output values should be precised in specifications when
-%  reaching a state which sends some informations.
-%\end{itemize}

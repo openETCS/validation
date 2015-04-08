@@ -18,12 +18,12 @@ scade inputs and outputs this flowchart refers to. Usually, there are
 states which send data (scade model outputs) and there are conditions
 depending on variable(s) value(s) (scade model inputs).
 
-Then, the flowchart is transalted into an equivalent HLL program using
+Then, the flowchart is translated into an equivalent HLL program using
 the scade inputs names. Scade outputs names are used to write proof
 obligation.
 
 Once those steps done, it is possible to prove (or disprove) that for
-all possible inputs, the scade model and the flowcart HLL program
+all possible inputs, the scade model and the flowchart HLL program
 compute the same outputs.
 
 
@@ -81,19 +81,24 @@ During a cycle execution it is not possible to read more than one
 state, so when reaching a state the reading is stopped even if it is
 possible to leave the current state following arrows. 
 
-Moreover, intial states can sometimes behave as a global condition
+Moreover, initial states can sometimes behave as a global condition
 which trigger or stop (and re-initialize) the reading of the
 flowchart. In this case, this initial state will not be seen as a
-state as mentionned above. Reading corresponding description of the
+state as mentioned above. Reading corresponding description of the
 requirement should help in state interpretation.
 
 
 \subsubsection{Transformation to HLL program}
 \label{transformation-to-hll-program}
-In this section, we will describe how to translate examples of simples
+In this section, we will describe how to translate examples of simple
 flowcharts into a HLL programs. Combining those examples is a way to
-translate more complex flowcharts. 
+translate more complex flowcharts.
 
+It is only a few examples of flowcharts translation. An objective can
+be to automatize this translation.
+
+
+\subsubsection{Example: Rectangle -Labeled arrow-> Rectangle -Labeled arrow-> Rectangle.}
 \begin{figure}[h]
 \centering
 \begin{tikzpicture}[%
@@ -131,7 +136,6 @@ translate more complex flowcharts.
 \end{figure}
 
 
-\paragraph{Rectangle -Labeled arrow-> Rectangle -Labeled arrow-> Rectangle.}
 The following HLL program is translation of the flowchart
 figure~\ref{example-1} : 
 {\footnotesize
@@ -143,43 +147,56 @@ Declarations:
 states last_states; // State reached at previous cycle
 states current_states; // Current state
 
-states s_0;
-states s_1;
+// Transitions:
+states transition_A;
+states transition_B;
 
-bool s_0_var_state;
-bool s_1_var_state;
-bool s_2_var_state;
+/* Declarations of actions took (= output(s) are set to a value) for
+ each state: */
+bool s_0_outputs;
+bool s_1_outputs;
+bool s_2_outputs;
+
+/* Main proof obligation */
+bool po;
 
 Definitions:
-s_0_var_state := State 0;
-s_1_var_state := State 1;
-s_2_var_state := State 2;
+s_0_outputs := State 0;
+s_1_outputs := State 1;
+s_2_outputs := State 2;
 
+// Definition of transitions between states:
 last_state := pre(current_state,'state_0'); // 'state_0' is an initial state
 current_state := (last_state
-                 | 'state_0' => s_0
-                 | 'state_1' => s_1
+                 | 'state_0' => transition_A
+                 | 'state_1' => transition_B
                  | 'state_2' => 'state_2' // 'state_2' is a final state
                  );
 
-s_0 := if (Condition A) then
-       'state_1'
-       else
-       'state_0';
+transition_A := if (Condition A) then
+                'state_1'
+                else
+                'state_0';
 
-s_1 := if (Condition B) then
-       'state_2'
-       else
-       'state_1';
+transition_B := if (Condition B) then
+                'state_2'
+                else
+                'state_1';
+
+
+/* Main proof obligation */
+po := if (current_state = 'state_0') then s_0_outputs
+      elif (current_state = 'state_1') then s_1_outputs
+      elif (current_state = 'state_2') then s_2_outputs
+      else False;
 
 Proof Obligations:
-(current_state = 'state_0') <-> s_0_var_state;
-(current_state = 'state_1') <-> s_1_var_state;
-(current_state = 'state_2') <-> s_2_var_state;
+po;
 \end{verbatim}
 }
 
 
+\subsubsection{Example: Rectangle -Labeled arrow-> Rounded rectangle --> Diamond ->> Rectangle x 2.}
 \begin{figure}[h]
 \centering
 \begin{tikzpicture}[%
@@ -203,7 +220,7 @@ Proof Obligations:
 
 \node [state] (s0) {State 0};
 \node [transition_label] (ta) {Condition A};
-\node [tmp_state] (is1) {Intermediate State 1};
+\node [tmp_state] (is1) {Action 1};
 \node [test] (d) {Question ?};
 \node [transition_label] (d1) {Answer 1};
 \node [state] (s2) {State 2};
@@ -219,78 +236,113 @@ Proof Obligations:
 \draw [->] (d2.south) -- (s3);
 
 \end{tikzpicture}
-\caption{Three states and two transitions.}
+\caption{Three states, one rounded rectangle state, one diamond and one transition.}
 \label{example-2}
 \end{figure}
-\paragraph{Rectangle -Labeled arrow-> Rounded rectangle --> Diamond ->> Rectangle x 2.}
+
 The following HLL program is translation of the flowchart
 figure~\ref{example-2} : 
 {\footnotesize
 \begin{verbatim}
 Types:
-enum{'state_0','inter_state_1','state_2','state_3',
-     'state_0_from_diamond','state_2_from_state_1','state_3_from_state_1'} states;
+enum{'state_0','state_2','state_3'} states;
 
 Declarations:
 states last_states; // State reached at previous cycle
 states current_states; // Current state
 
-states s_0;
-states inter_s_1;
+// Transitions:
+states transition_A;
+states transition_question;
 
-bool s_0_var_state;
-bool s_2_var_state;
-bool s_3_var_state;
-bool inter_s_1_state;
+/* Declarations of actions took (= output(s) are set to a value) for
+ each state: */
+bool state_0_outputs;
+bool state_2_outputs;
+bool state_3_outputs;
+
+// Activation state of rounded rectangle states
+bool action_1_activation;
+
+
+/* Main proof obligation */
+bool po;
 
 Definitions:
-s_0_var_state := State 0;
-s_2_var_state := State 2;
-s_3_var_state := State 3;
-inter_s_1_state := Inter_State 1;
+state_0_outputs := State 0;
+state_0_action_1_outputs := State 0 + Action 1;
+state_2_outputs := State 2;
+state_2_action_1_outputs := State 2 + Action 1;
+state_3_outputs := State 3;
+state_3_action_1_outputs := State 3 + Action 1;
 
+// Definition of transitions between states:
 last_state := pre(current_state,'state_0'); // 'state_0' is an initial state
 current_state := (last_state
-                 | 'state_0' => s_0
-                 | 'state_0_from_diamond' => s_0
-                 | 'state_2_from_state_1' => 'state_2'
-                 | 'state_3_from_state_1' => 'state_3'
+                 | 'state_0' => transition_A
                  | 'state_2' => 'state_2' // 'state_2' is a final state
                  | 'state_3' => 'state_3' // 'state_3' is a final state
                  );
 
-s_0 := if (Condition A) then
-       inter_s_1
-       else
-       'state_0';
+transition_A := if (Condition A) then
+                transition_question
+                else
+                'state_0';
 
-inter_s_1 := if (Diamond_cond_1) then
-             'state_2_from_state_1'
-             elif (Diamond_cond_2) then
-             'state_3_from_state_1'
-             else
-             'state_0_from_diamond';
+transition_question := if (Answer 1) then
+                       'state_2'
+                       elif (Answer 2) then
+                       'state_3'
+                       else
+                       'state_0';
 
+action_1_activation := (last_state = 'state_0') & Condition A;
+
+/* Main proof obligation */
+po := if (current_state = 'state_0' & ~action_1_activation) then state_0_outputs
+      elif (current_state = 'state_0' & action_1_activation) then state_0_action_1_outputs
+      elif (current_state = 'state_2' & ~action_1_activation) then state_2_outputs
+      elif (current_state = 'state_2' & action_1_activation) then state_2_action_1_outputs
+      elif (current_state = 'state_3' & ~action_1_activation) then state_3_outputs
+      elif (current_state = 'state_3' & action_1_activation) then state_3_action_1_outputs
+      else False;
 
 Proof Obligations:
-(current_state = 'state_0') <-> s_0_var_state;
-(current_state = 'state_0_from_diamond') <-> s_0_var_state & inter_s_1_state;
-(current_state = 'state_2_from_state_1') <-> s_2_var_state & inter_s_1_state;
-(current_state = 'state_3_from_state_1') <-> s_3_var_state & inter_s_1_state;
-(current_state = 'state_2') <-> s_2_var_state;
-(current_state = 'state_3') <-> s_3_var_state;
+po;
 \end{verbatim}
 }
 
-Here is only a few examples of flowcharts translation. An objective
-can be to automatize this translation.
 
+\subsection{Proofs that a flowchart corresponds to its Scade model}
+The proof we want to make is that our flowchart take the same actions
+than the Scade model for each flowchart state.
 
+To do this, we need three elements to construct a proof obligation to be proven :
+\begin{enumerate}
+\item State names, usualy they are listed in an enumerated type.
+\item Action (corresponding to rounded rectangle) activation
+  conditions. They are implemented by boolean variables which are
+  \texttt{True} when the action is read during a cycle execution,
+  \texttt{False} otherwise.
+\item Boolean variables representing outputs values for each states.
+\end{enumerate}
 
+Once we have those three elements, we can construct the proof
+obligation using an \texttt{if ... then ... elif ... else ...;}
+structure as we can see in previous examples.
 
-\subsection{Proofs that a flowchart corresponds to its model}
+This structure will represent a following statement :
+\begin{verbatim}
+if "flowchart is in a state and if an action(s) is taken (or not)"
+then "Scade outputs are set to some values" 
+elif ...
+\end{verbatim}
 
-In HLL programs translated from~\ref{example-1} and ~\ref{example-2},
-we can see that proof obligations are equivalences between
-states. Usually, right hand side of the equivalence are streams
-composed with Scade model outputs. 
+The \texttt{... else False;} part is a security: if we forgot a case the
+proof obligation will be \texttt{False} and our attention will be
+caught on this problem.
+
+\paragraph{}
+With this proof obligation, S3 tool will be able to prove or disprove
+(or fail to prove) that, at each cycle, actions taken by a flowchart
+HLL model are the same as Scade model.

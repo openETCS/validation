@@ -1,0 +1,639 @@
+/**********************************
+Procedure
+Start of Mission
+(SRS 5.6 v3.3.0)
+Associated Scade model for the proof :
+Procedures::Procedure_StartOfMission
+**********************************/
+
+
+
+/**** NOTES **** 
+(1) Modification of HLL model in order to copy the Scade model about
+A220 modelization leading to the initial state instead of a dead end
+state.
+
+
+
+****************/
+
+
+Constraints:
+// During Start of Mission procedure, Level should not change
+Current_Level = X(Current_Level); 
+
+// During Start of Mission procedure, train data should not be 
+// modified. Then, there validity should not change.
+Valid_Train_Data_Stored = X(Valid_Train_Data_Stored); 
+
+
+Types:
+// State names corresponding to flowchart states
+enum{'initial_state','standstill_supervision','s10','s20','s21','s22','s23','s24','s25_os',
+	's25_ls','s25_sh','nl_mode','sr_mode','fs_mode','os_mode','ls_mode','sh_mode',
+	'sn_mode','un_mode','procedure_sh_initiated','s050','a100_end','d040_end'} states;
+
+
+Declarations:
+/* Declarations of actions took (= output(s) are set to a value) for
+each state: */
+bool all_false_outputs;
+bool s10_outputs;
+bool s20_outputs;
+bool s21_outputs;
+bool s22_outputs;
+bool s23_outputs;
+bool s24_outputs;
+bool s25_os_outputs;
+bool s25_ls_outputs;
+bool s25_sh_outputs;
+bool nl_mode_outputs;
+bool sr_mode_outputs;
+bool fs_mode_outputs;
+bool os_mode_outputs;
+bool ls_mode_outputs;
+bool sh_mode_outputs;
+bool sn_mode_outputs;
+bool un_mode_outputs;
+bool s050_outputs; // when in S050 state
+bool a045_s050_outputs; //when in S050 state, coming from a045
+bool a220_outputs; // when in End state from A220, coming from A220
+bool a100_a050_from_d020_outputs; // when in a100, coming from a050 and d020
+bool a100_a050_from_e090_outputs; // when in a100, coming from a050 and e090
+bool end_d040_a050_from_d020_outputs; // when in End state from D040, coming from A050 and d020
+bool end_d040_a050_from_e090_outputs; // when in End state from D040, coming from A050 and e090
+
+bool standstill_supervision_outputs;
+
+states last_state;
+states current_state;
+
+
+bool s0; // Requirements S0 of SoM procedure
+bool requirement_5_4_3_2_1; // Requirements 5.4.3.2.1 of SoM procedure
+bool standstill_supervision_trigger; // Standstill supervision trigger
+bool On_Going_Mission; 
+
+/* Transitions of Start of Mission procedure */
+states e10_e12_transition;
+//states e13_transition;
+states e20_e21_e22_e24_transition;
+states e26_e27_e29_transition;
+states e30_transition;
+states e31_transition;
+states e32_transition;
+states e33_os_transition;
+states e33_ls_transition;
+states e33_sh_transition;
+states s0_transition;
+
+/* Transitions of Shunting Initiated by Driver procedure */
+states e015_transition;
+states e090_e215_transitions;
+states d020_diamond;
+states a050_rounded_from_d020;
+states a045_rounded_from_d020;
+states d040_diamond;
+states a050_rounded_from_e090;
+
+/* Transition of Standstill supervision */
+states standstill_supervision_transition;
+
+bool a045_activation;
+bool a050_activation;
+bool a100_activation;
+bool a220_activation;
+
+
+// Proof obligation:
+bool po;
+
+Definitions:
+/*****************************
+ * OUTPUTS VALUES DEFINITION *
+ *****************************/
+all_false_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+		     ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+		     ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+		     ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+		     ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+		     ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+
+s10_outputs := all_false_outputs;
+
+s20_outputs := all_false_outputs;
+
+s21_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	       ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+	       ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & MA_Req_To_RBC & 
+	       ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+s22_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	       ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+	       ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+s23_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & Ack_UN_Req_To_Driver & 
+	       ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	       ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+	       ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+s24_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       ~Ack_SN_Req_To_Driver & Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	       ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+	       ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+s25_os_outputs := ~Ack_LS_Req_To_Driver & Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       	  ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       	  ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	       	  ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+	       	  ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       	  ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+s25_ls_outputs := Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       	  ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       	  ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	       	  ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+	       	  ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       	  ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+s25_sh_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & Ack_SH_Req_To_Driver & 
+	       	  ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       	  ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	       	  ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+	       	  ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       	  ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+// SB -> NL : Condition 46
+nl_mode_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       	   ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       	   ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	       	   ~Condition_15 & Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+	       	   ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       	   ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+// SB -> SR : Conditions 8 & 37 
+sr_mode_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       	   ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       	   ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & Condition_8 & ~Condition_10 & 
+	       	   ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+	       	   ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       	   ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+// SB -> FS : Condition 10
+fs_mode_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       	   ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       	   ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & Condition_10 & 
+	       	   ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+	       	   ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       	   ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+// SB -> OS : Condition 15
+os_mode_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       	   ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       	   ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	       	   Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+	       	   ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       	   ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+// SB -> LS : Condition 70
+ls_mode_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       	   ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       	   ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	       	   ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+	       	   Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       	   ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+// SB -> SH : Conditions 5, 6 & 50, here, only Condition 50 is valid
+sh_mode_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       	   ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       	   ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	       	   ~Condition_15 & ~Condition_46 & Condition_50 & ~Condition_58 & ~Condition_60 & 
+	       	   ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       	   ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+// SB -> SN : Condition 58
+sn_mode_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       	   ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       	   ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	       	   ~Condition_15 & ~Condition_46 & ~Condition_50 & Condition_58 & ~Condition_60 & 
+	       	   ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       	   ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+// SB -> UN : Condition 60
+un_mode_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	       	   ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+	       	   ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	       	   ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & Condition_60 & 
+	       	   ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+	       	   ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+/* Specific outputs of Shunting Initiated by Driver procedure: */
+s050_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	     	~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+		~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	  	~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+		~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+		~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+
+a045_s050_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+		     ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+		     ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	  	     ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+		     ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+		     Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+
+a220_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	     	~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+		~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	  	~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+		~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+		~Request_For_SH_To_RBC & SH_Refused_By_RBC_To_DMI;
+
+
+a100_a050_from_d020_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	     		       ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+			       Clean_BG_List_SH_Area & Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	  		       ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+			       ~Condition_70 & ~EB_Requested & End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+			       ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+
+a100_a050_from_e090_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	     		       ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+			       Clean_BG_List_SH_Area & ~Condition_5 & Condition_6 & ~Condition_8 & ~Condition_10 & 
+	  		       ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+			       ~Condition_70 & ~EB_Requested & End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+			       ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+
+end_d040_a050_from_d020_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	     		       	   ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+			       	   Clean_BG_List_SH_Area & Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	  		       	   ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+			       	   ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+			       	   ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+
+end_d040_a050_from_e090_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+	     		       	   ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+			       	   Clean_BG_List_SH_Area & ~Condition_5 & Condition_6 & ~Condition_8 & ~Condition_10 & 
+	  		       	   ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+			       	   ~Condition_70 & ~EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+			       	   ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+/* Standstill supervision outputs: */
+standstill_supervision_outputs := ~Ack_LS_Req_To_Driver & ~Ack_OS_Req_To_Driver & ~Ack_SH_Req_To_Driver & 
+			       	  ~Ack_SN_Req_To_Driver & ~Ack_SR_Req_To_Driver & ~Ack_UN_Req_To_Driver & 
+				  ~Clean_BG_List_SH_Area & ~Condition_5 & ~Condition_6 & ~Condition_8 & ~Condition_10 & 
+	  			  ~Condition_15 & ~Condition_46 & ~Condition_50 & ~Condition_58 & ~Condition_60 & 
+				  ~Condition_70 & EB_Requested & ~End_Of_Mission_Procedure_Req & ~MA_Req_To_RBC & 
+				  ~Request_For_SH_To_RBC & ~SH_Refused_By_RBC_To_DMI;
+
+
+
+
+
+/***********************
+ * HLL FLOWCHART MODEL *
+ **********************/
+// Requirements S0 of SoM procedure
+//!\ Train_Standstill is a copy of Scade model
+s0 := (Current_Mode = 'Level_And_Mode_Types_Pkg::SB') & Desk_Open & Train_Standstill;
+
+// Requirements 5.4.3.2.1 of SoM procedure, it is equivalent to ~s0 according to specification
+requirement_5_4_3_2_1 := (Current_Mode != 'Level_And_Mode_Types_Pkg::SB') # ~Desk_Open; 
+
+// SRS 5.4.6 Entry to Mode Considered as a Mission
+On_Going_Mission := False;
+
+// Definition of last state stream. Initial state is called 'initial_state'.
+last_state := pre(current_state,'initial_state');
+// Definition of transitions between states
+current_state := (last_state,requirement_5_4_3_2_1,standstill_supervision_trigger 
+	      	 | 'initial_state',_,_ => s0_transition
+		 | 'standstill_supervision',_,_ => standstill_supervision_transition
+		 | 's10',False,False => e10_e12_transition
+		 | 's20',False,False => e20_e21_e22_e24_transition
+		 | 's21',False,False => e26_e27_e29_transition
+		 | 's22',False,False => e30_transition
+		 | 's23',False,False => e31_transition
+		 | 's24',False,False => e32_transition
+		 | 's25_os',False,False => e33_os_transition
+		 | 's25_ls',False,False => e33_ls_transition
+		 | 's25_sh',False,False => e33_sh_transition
+		 | 'nl_mode',False,False => 'nl_mode' // Final state
+		 | 'sr_mode',False,False => 'sr_mode' // Final state
+		 | 'fs_mode',False,False => 'fs_mode' // Final state
+		 | 'os_mode',False,False => 'os_mode' // Final state
+		 | 'ls_mode',False,False => 'ls_mode' // Final state
+		 | 'sh_mode',False,False => 'sh_mode' // Final state
+		 | 'sn_mode',False,False => 'sn_mode' // Final state
+		 | 'un_mode',False,False => 'un_mode' // Final state
+		 // Shunting Initiated by Driver procedure
+		 | 'procedure_sh_initiated',False,False => e015_transition
+		 | 's050',False,False => e090_e215_transitions
+		 | 'a100_end',False,False => 'a100_end' // Final state
+		 | 'd040_end',False,False => 'd040_end' // Final state
+		 // Standstill supervision or requirement 5.4.3.2.1
+		 | _,_,True => 'standstill_supervision' // Standstill supervision have higher priority than 5.4.3.2.1
+		 | _,True,_ => 'initial_state' // Requirement 5.4.3.2.1
+		 );
+
+	
+/**************************
+ * Standstill Supervision *
+ **************************/
+/* The Standstill Supervision part is a copy of Scade model. */
+standstill_supervision_transition := if (Train_Standstill) then
+		       	  	     'initial_state'
+			  	     else
+			  	     'standstill_supervision';
+
+standstill_supervision_trigger := ~Train_Standstill & (Current_Mode = 'Level_And_Mode_Types_Pkg::SB');
+
+
+/********************************
+ * Shunting Initiated by Driver *
+ ********************************/
+// E015 modelisation
+e015_transition := if (Driver_Req_SH) then
+     		   d020_diamond
+		   else
+		   'procedure_sh_initiated';
+
+// D020 modelisation, taking into account the point 1.
+d020_diamond := if (Current_Level = 'Level_And_Mode_Types_Pkg::LNTC' #
+		   Current_Level == 'Level_And_Mode_Types_Pkg::L0' #
+		   Current_Level == 'Level_And_Mode_Types_Pkg::L1') then
+		   a050_rounded_from_d020
+		   else
+		   a045_rounded_from_d020;
+
+// A050 leads directly to D040
+a050_rounded_from_d020 := d040_diamond;
+
+// D040 modelisation, taking into account the point 2.
+d040_diamond := if (On_Going_Mission) then
+	     	'a100_end'
+		else
+		'd040_end';
+
+// A045 leads directly to S050 state
+a045_rounded_from_d020 := 's050';
+
+// From S050 state, their is two transitions possibles : E090 and E215
+e090_e215_transitions := if (Shunting_Granted_By_RBC) then // E090
+		      	 a050_rounded_from_e090
+			 else // E215 = E13
+			 'procedure_sh_initiated';//'s10'; //!\ (1) COPY OF SCADE MODEL
+
+// From E090 transition, it goes to A050
+a050_rounded_from_e090 := d040_diamond;
+
+// A045 can be read from initial state throug E015 transition and D020
+a045_activation := (last_state = 'initial_state' # last_state = 's10' # last_state = 'procedure_sh_initiated') & 
+		   Driver_Req_SH & // E015
+		   (Current_Level == 'Level_And_Mode_Types_Pkg::L2' # // D020
+		   Current_Level == 'Level_And_Mode_Types_Pkg::L3'); 
+
+// A050 can be read in two cases :
+// - From the initial state through E015 transition and D020
+// - From S050 state through E090 transition
+a050_activation := ((last_state = 'initial_state' # last_state = 's10' # last_state = 'procedure_sh_initiated') & 
+		   Driver_Req_SH & // E015
+		   (Current_Level == 'Level_And_Mode_Types_Pkg::L0' # // D020
+		   Current_Level == 'Level_And_Mode_Types_Pkg::L1' # 
+		   Current_Level == 'Level_And_Mode_Types_Pkg::LNTC')) #
+		   ((last_state = 's050') & 
+		   Shunting_Granted_By_RBC); // E090
+
+// A100 can be read from D040 if A050 is also read
+a100_activation := (((last_state = 'initial_state' # last_state = 's10' # last_state = 'procedure_sh_initiated') & 
+		   Driver_Req_SH & // E015
+		   (Current_Level == 'Level_And_Mode_Types_Pkg::L0' # // D020
+		   Current_Level == 'Level_And_Mode_Types_Pkg::L1' # 
+		   Current_Level == 'Level_And_Mode_Types_Pkg::LNTC')) #
+		   ((last_state = 's050') & 
+		   Shunting_Granted_By_RBC)) & // E090
+		   On_Going_Mission;
+
+
+// A220 can be read from S050 if E215 transition can be triggered
+a220_activation := (last_state = 's050') &
+		   ~Shunting_Granted_By_RBC; // E215 & E13
+
+
+/********************
+ * Start of Mission *
+ ********************/
+s0_transition := if (s0) then // S0 requirement engages SoM procedure
+	      	 e10_e12_transition
+		 else
+		 'initial_state';
+
+e10_e12_transition := if (Driver_Req_NL & Train_Permitted_NL & Train_Standstill) then // E10 & SRS 4 transition [46]
+		      'nl_mode'
+		      elif (Driver_Req_SH & Train_Standstill) then // E12 & S0 of "Shunting Initialted by Driver" procedure, mode is not tested here because SoM procedure can only be executed in SB mode
+		      e015_transition
+		      elif (Valid_Train_Data_Stored) then // /!\ Copy of Scade model
+		      's20'
+		      else
+		      's10';
+
+
+e20_e21_e22_e24_transition := if (Driver_Req_Start & 
+			      Current_Level = 'Level_And_Mode_Types_Pkg::LNTC') then // E20
+			      's22'
+			      elif (Driver_Req_Start & Current_Level = 'Level_And_Mode_Types_Pkg::L0') then // E21
+			      's23'
+			      elif (Driver_Req_Start & Current_Level = 'Level_And_Mode_Types_Pkg::L1') then // E22
+			      's24'
+			      elif (Driver_Req_Start & (Current_Level = 'Level_And_Mode_Types_Pkg::L2' #
+			      Current_Level = 'Level_And_Mode_Types_Pkg::L3')) then // E24
+			      's21'
+			      else
+			      's20';
+
+
+e26_e27_e29_transition := if (RBC_Authorizes_SR) then // E26
+		       	  's24'
+			  elif (Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::Profile_OS') then // E27
+		       	  's25_os'
+			  elif (Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::Profile_LS') then // E27
+		       	  's25_ls'
+			  elif (Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::Profile_SH') then // E27
+		       	  's25_sh'
+			  elif (MA_SSP_Gradiant_Available & Valid_Train_Data_Stored & 
+			  Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::No_Profile') then // E29
+			  'fs_mode'
+			  else
+			  's21';
+
+
+e30_transition := if (Driver_Ack_SN) then // E30
+	       	  'sn_mode'
+		  else
+		  's22';
+
+
+e31_transition := if (Driver_Ack_UN) then // E31
+	       	  'un_mode'
+		  else
+		  's23';
+
+
+e32_transition := if (Driver_Ack_SR) then // E32
+	       	  'sr_mode'
+		  else
+		  's24';
+
+
+e33_os_transition := if (Driver_Ack_OS) then // E33
+	       	  'os_mode'
+		  else
+		  's25_os';
+
+
+e33_ls_transition := if (Driver_Ack_LS) then // E33
+	       	  'ls_mode'
+		  else
+		  's25_ls';
+
+
+e33_sh_transition := if (Driver_Ack_SH) then // E33
+	       	  'sh_mode'
+		  else
+		  's25_sh';
+
+
+
+/* Proof obligation of the model */
+po := if (current_state = 'initial_state') then all_false_outputs
+      elif (current_state = 's20') then s20_outputs
+      elif (current_state = 's21') then s21_outputs
+      elif (current_state = 's22') then s22_outputs
+      elif (current_state = 's23') then s23_outputs
+      elif (current_state = 's24') then s24_outputs
+      elif (current_state = 's25_os') then s25_os_outputs
+      elif (current_state = 's25_ls') then s25_ls_outputs
+      elif (current_state = 's25_sh') then s25_sh_outputs
+      elif (current_state = 'nl_mode') then nl_mode_outputs
+      elif (current_state = 'sr_mode') then sr_mode_outputs
+      elif (current_state = 'fs_mode') then fs_mode_outputs
+      elif (current_state = 'os_mode') then os_mode_outputs
+      elif (current_state = 'ls_mode') then ls_mode_outputs
+      elif (current_state = 'sh_mode') then sh_mode_outputs
+      elif (current_state = 'sn_mode') then sn_mode_outputs
+      elif (current_state = 'un_mode') then un_mode_outputs
+      elif (current_state = 's10' /*& ~a220_activation*/) then s10_outputs //!\ (1) 
+      elif (current_state = 'procedure_sh_initiated' & ~a220_activation) then all_false_outputs  //!\ (1) & ~a220_activation
+      elif (current_state = 'procedure_sh_initiated' & a220_activation) then a220_outputs //!\ (1) & a220_activation
+      elif (current_state = 's050' & a045_activation) then a045_s050_outputs 
+      elif (current_state = 's050' & ~a045_activation) then s050_outputs 
+      elif (current_state = 's10' & a220_activation) then a220_outputs 
+      elif (current_state = 'a100_end' & a100_activation) then (a100_a050_from_d020_outputs # a100_a050_from_e090_outputs) 
+      elif (current_state = 'a100_end' & ~a100_activation) then (a100_a050_from_d020_outputs # a100_a050_from_e090_outputs) //all_false_outputs 
+      elif (current_state = 'd040_end' & a050_activation) then (end_d040_a050_from_d020_outputs # end_d040_a050_from_e090_outputs) 
+      elif (current_state = 'd040_end' & ~a050_activation) then (end_d040_a050_from_d020_outputs # end_d040_a050_from_e090_outputs) //all_false_outputs 
+      elif (current_state = 'standstill_supervision') then standstill_supervision_outputs
+      else False;
+
+
+/* State names streams of scade model state machines */
+/* It is made for purposes of readability of the lemma section */
+Declarations:
+'t__SM_StartOfMissionProcedure__states' SCADE_SM;
+'t__SM_StartOfMissionProcedure/SM_SoM_On__states' SCADE_SM_Procedure_On;
+'t__SM_SH_Initiated_By_Driver__states' SCADE_SM_Procedure_SH;
+'t__SM_Start_L1_L2_L3__states' SCADE_SM_Procedure_Start;
+
+
+Definitions:
+SCADE_SM := 'Procedures::Procedure_StartOfMission_#1/SM_StartOfMissionProcedure_act';
+
+SCADE_SM_Procedure_On := 'Procedures::Procedure_StartOfMission_#1/SM_StartOfMissionProcedure/SM_SoM_On_act';
+
+SCADE_SM_Procedure_SH := 'Procedures::Procedure_StartOfMission_#1/Procedures::SH_Initiated_By_Driver_On_##1/SM_SH_Initiated_By_Driver_act';
+
+SCADE_SM_Procedure_Start := 'Procedures::Procedure_StartOfMission_#1/Procedures::Procedure_Start_L1_L2_L3_##1/SM_Start_L1_L2_L3_act';
+
+
+Proof Obligations:
+/* Lemma section */
+(current_state = 'initial_state') <-> (SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_Off');
+
+(current_state = 'standstill_supervision') <-> (SCADE_SM = 'SM_StartOfMissionProcedure/EB_Requested');
+
+((current_state != 'standstill_supervision') & (current_state != 'initial_state')) <-> (SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_On');
+
+(current_state = 's10') <-> 
+   ((SCADE_SM_Procedure_On = 'SM_StartOfMissionProcedure/SM_SoM_On/Waiting_Driver_Command') & 
+   (SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_On'));
+
+(current_state = 's20' & 
+(Current_Level != 'Level_And_Mode_Types_Pkg::L1' &
+Current_Level != 'Level_And_Mode_Types_Pkg::L2' &
+Current_Level != 'Level_And_Mode_Types_Pkg::L3')) -> 
+   ((SCADE_SM_Procedure_On = 'SM_StartOfMissionProcedure/SM_SoM_On/Waiting_Driver_Strating_Command') & 
+   (SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_On'));
+
+(SCADE_SM_Procedure_On = 'SM_StartOfMissionProcedure/SM_SoM_On/Waiting_Driver_Strating_Command' & 
+SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_On') -> (current_state = 's20');
+
+(SCADE_SM_Procedure_Start = 'SM_Start_L1_L2_L3/Waiting_Driver_Starting_Command' &
+SCADE_SM_Procedure_On = 'SM_StartOfMissionProcedure/SM_SoM_On/Waiting_Driver_Selection' & 
+SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_On') -> (current_state = 's20');
+
+(current_state = 's21') <-> (SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_On' & 
+	       	 	    SCADE_SM_Procedure_On = 'SM_StartOfMissionProcedure/SM_SoM_On/Waiting_Driver_Selection' &
+			    SCADE_SM_Procedure_Start = 'SM_Start_L1_L2_L3/Level_2_3');
+
+(current_state = 's24') <-> (SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_On' & 
+	       	 	    SCADE_SM_Procedure_On = 'SM_StartOfMissionProcedure/SM_SoM_On/Waiting_Driver_Selection' &
+			    SCADE_SM_Procedure_Start = 'SM_Start_L1_L2_L3/Level_1');
+
+
+
+(current_state = 'procedure_sh_initiated') <-> (SCADE_SM = 'SM_StartOfMissionProcedure/Procedure_On' & 
+	       	 			       SCADE_SM_Procedure_On = 'SM_StartOfMissionProcedure/SM_SoM_On/Procedure_SH_Initiated_By_Driver' & 
+					       SCADE_SM_Procedure_SH = 'SM_SH_Initiated_By_Driver/SH_procedure_possible');
+
+
+~Valid_Train_Data_Stored -> ~(current_state = 's20');
+
+~Valid_Train_Data_Stored -> ~(current_state = 's21');
+
+~(Driver_Req_SH & Train_Standstill) -> ~(current_state = 'procedure_sh_initiated' & last_state = 'initial_state' & ~a220_activation);
+
+~(Driver_Req_SH & Train_Standstill) -> ~(current_state = 'procedure_sh_initiated' & last_state = 's10' & ~a220_activation);
+
+
+
+~Driver_Req_SH -> ~(current_state = 'd040_end' & last_state = 'procedure_sh_initiated');
+
+
+~Driver_Req_SH -> ~(SCADE_SM_Procedure_SH = 'SM_SH_Initiated_By_Driver/Issue_SH_Request_L2_L3');
+
+~Driver_Req_SH -> ~(SCADE_SM_Procedure_SH = 'SM_SH_Initiated_By_Driver/SH_Authorized_L0_L1_LNTC' & pre(SCADE_SM_Procedure_SH) = 'SM_SH_Initiated_By_Driver/SH_procedure_possible');
+
+Train_Standstill -> ~(current_state = 'standstill_supervision');
+
+
+/* Main proof obligation */
+po;
+
+
+
+

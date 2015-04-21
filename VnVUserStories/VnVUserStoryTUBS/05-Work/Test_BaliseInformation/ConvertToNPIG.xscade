@@ -1,0 +1,1048 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Operator xmlns="http://www.esterel-technologies.com/ns/scade/4" xmlns:ed="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4" xmlns:kcg="http://www.esterel-technologies.com/ns/scade/pragmas/codegen/2" kind="function" name="ConvertToNPIG">
+	<inputs>
+		<Variable name="inPlaceInBG">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="int"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/38376/36AB/1850/55367bcd68b5" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Input: NTotal as enumartion</comment>
+					<comment>(ETCS Language)</comment>
+				</ed:Variable>
+			</pragmas>
+		</Variable>
+	</inputs>
+	<outputs>
+		<Variable name="outNpig">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="N_PIG"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/383f7/36AB/1850/55367ed822ce" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Output: nTotal as integer. </comment>
+					<comment>The mapping is according to the meanin, e.g.,</comment>
+					<comment>&#x9;#pragma kcg enum_val 0 #end N_TOTAL_1_balise_in_the_group = 1</comment>
+					<comment>An undefined / unexpected value is mapped to 0.</comment>
+					<comment></comment>
+				</ed:Variable>
+			</pragmas>
+		</Variable>
+	</outputs>
+	<data>
+		<IfBlock name="IfBlock1">
+			<block>
+				<IfNode>
+					<if>
+						<!-- inPlaceInBG = 1 -->
+						<BinaryOp name="9" operator="=">
+							<operands>
+								<IdExpression>
+									<path>
+										<ConstVarRef name="inPlaceInBG"/>
+									</path>
+								</IdExpression>
+								<ConstValue value="1"/>
+							</operands>
+						</BinaryOp>
+					</if>
+					<then>
+						<Action>
+							<locals>
+								<Variable name="_L1">
+									<type>
+										<NamedType>
+											<type>
+												<TypeRef name="N_PIG"/>
+											</type>
+										</NamedType>
+									</type>
+									<pragmas>
+										<ed:Variable oid="!ed/38373/36AB/1850/55367bcd1687"/>
+									</pragmas>
+								</Variable>
+							</locals>
+							<data>
+								<!-- _L1 = N_PIG_I_am_the_1st; -->
+								<Equation>
+									<lefts>
+										<VariableRef name="_L1"/>
+									</lefts>
+									<right>
+										<IdExpression>
+											<path>
+												<ConstVarRef name="N_PIG_I_am_the_1st"/>
+											</path>
+										</IdExpression>
+									</right>
+									<pragmas>
+										<ed:Equation oid="!ed/38372/36AB/1850/55367bcd4242"/>
+									</pragmas>
+								</Equation>
+								<!-- outNpig = _L1; -->
+								<Equation>
+									<lefts>
+										<VariableRef name="outNpig"/>
+									</lefts>
+									<right>
+										<IdExpression>
+											<path>
+												<ConstVarRef name="_L1"/>
+											</path>
+										</IdExpression>
+									</right>
+									<pragmas>
+										<ed:Equation oid="!ed/38414/36AB/1850/55367f925411"/>
+									</pragmas>
+								</Equation>
+							</data>
+							<pragmas>
+								<ed:Action oid="!ed/38370/36AB/1850/55367bcd1897"/>
+							</pragmas>
+						</Action>
+					</then>
+					<else>
+						<IfNode>
+							<if>
+								<!-- inPlaceInBG = 2 -->
+								<BinaryOp name="10" operator="=">
+									<operands>
+										<IdExpression>
+											<path>
+												<ConstVarRef name="inPlaceInBG"/>
+											</path>
+										</IdExpression>
+										<ConstValue value="2"/>
+									</operands>
+								</BinaryOp>
+							</if>
+							<then>
+								<Action>
+									<locals>
+										<Variable name="_L1">
+											<type>
+												<NamedType>
+													<type>
+														<TypeRef name="N_PIG"/>
+													</type>
+												</NamedType>
+											</type>
+											<pragmas>
+												<ed:Variable oid="!ed/3836f/36AB/1850/55367bcd66ba"/>
+											</pragmas>
+										</Variable>
+									</locals>
+									<data>
+										<!-- _L1 = N_PIG_I_am_the_2nd; -->
+										<Equation>
+											<lefts>
+												<VariableRef name="_L1"/>
+											</lefts>
+											<right>
+												<IdExpression>
+													<path>
+														<ConstVarRef name="N_PIG_I_am_the_2nd"/>
+													</path>
+												</IdExpression>
+											</right>
+											<pragmas>
+												<ed:Equation oid="!ed/3836e/36AB/1850/55367bcd26d0"/>
+											</pragmas>
+										</Equation>
+										<!-- outNpig = _L1; -->
+										<Equation>
+											<lefts>
+												<VariableRef name="outNpig"/>
+											</lefts>
+											<right>
+												<IdExpression>
+													<path>
+														<ConstVarRef name="_L1"/>
+													</path>
+												</IdExpression>
+											</right>
+											<pragmas>
+												<ed:Equation oid="!ed/38419/36AB/1850/55367f9b12da"/>
+											</pragmas>
+										</Equation>
+									</data>
+									<pragmas>
+										<ed:Action oid="!ed/3836c/36AB/1850/55367bcd7df7"/>
+									</pragmas>
+								</Action>
+							</then>
+							<else>
+								<IfNode>
+									<if>
+										<!-- inPlaceInBG = 3 -->
+										<BinaryOp name="11" operator="=">
+											<operands>
+												<IdExpression>
+													<path>
+														<ConstVarRef name="inPlaceInBG"/>
+													</path>
+												</IdExpression>
+												<ConstValue value="3"/>
+											</operands>
+										</BinaryOp>
+									</if>
+									<then>
+										<Action>
+											<locals>
+												<Variable name="_L1">
+													<type>
+														<NamedType>
+															<type>
+																<TypeRef name="N_PIG"/>
+															</type>
+														</NamedType>
+													</type>
+													<pragmas>
+														<ed:Variable oid="!ed/3836b/36AB/1850/55367bcd3e8b"/>
+													</pragmas>
+												</Variable>
+											</locals>
+											<data>
+												<!-- _L1 = N_PIG_I_am_the_3rd; -->
+												<Equation>
+													<lefts>
+														<VariableRef name="_L1"/>
+													</lefts>
+													<right>
+														<IdExpression>
+															<path>
+																<ConstVarRef name="N_PIG_I_am_the_3rd"/>
+															</path>
+														</IdExpression>
+													</right>
+													<pragmas>
+														<ed:Equation oid="!ed/38369/36AB/1850/55367bcd488f"/>
+													</pragmas>
+												</Equation>
+												<!-- outNpig = _L1; -->
+												<Equation>
+													<lefts>
+														<VariableRef name="outNpig"/>
+													</lefts>
+													<right>
+														<IdExpression>
+															<path>
+																<ConstVarRef name="_L1"/>
+															</path>
+														</IdExpression>
+													</right>
+													<pragmas>
+														<ed:Equation oid="!ed/3841e/36AB/1850/55367f9d47cf"/>
+													</pragmas>
+												</Equation>
+											</data>
+											<pragmas>
+												<ed:Action oid="!ed/38368/36AB/1850/55367bcd4955"/>
+											</pragmas>
+										</Action>
+									</then>
+									<else>
+										<IfNode>
+											<if>
+												<!-- inPlaceInBG = 4 -->
+												<BinaryOp name="12" operator="=">
+													<operands>
+														<IdExpression>
+															<path>
+																<ConstVarRef name="inPlaceInBG"/>
+															</path>
+														</IdExpression>
+														<ConstValue value="4"/>
+													</operands>
+												</BinaryOp>
+											</if>
+											<then>
+												<Action>
+													<locals>
+														<Variable name="_L1">
+															<type>
+																<NamedType>
+																	<type>
+																		<TypeRef name="N_PIG"/>
+																	</type>
+																</NamedType>
+															</type>
+															<pragmas>
+																<ed:Variable oid="!ed/38367/36AB/1850/55367bcd19d3"/>
+															</pragmas>
+														</Variable>
+													</locals>
+													<data>
+														<!-- _L1 = N_PIG_I_am_the_4th; -->
+														<Equation>
+															<lefts>
+																<VariableRef name="_L1"/>
+															</lefts>
+															<right>
+																<IdExpression>
+																	<path>
+																		<ConstVarRef name="N_PIG_I_am_the_4th"/>
+																	</path>
+																</IdExpression>
+															</right>
+															<pragmas>
+																<ed:Equation oid="!ed/38365/36AB/1850/55367bcd2743"/>
+															</pragmas>
+														</Equation>
+														<!-- outNpig = _L1; -->
+														<Equation>
+															<lefts>
+																<VariableRef name="outNpig"/>
+															</lefts>
+															<right>
+																<IdExpression>
+																	<path>
+																		<ConstVarRef name="_L1"/>
+																	</path>
+																</IdExpression>
+															</right>
+															<pragmas>
+																<ed:Equation oid="!ed/38423/36AB/1850/55367f9f3d73"/>
+															</pragmas>
+														</Equation>
+													</data>
+													<pragmas>
+														<ed:Action oid="!ed/38364/36AB/1850/55367bcd3312"/>
+													</pragmas>
+												</Action>
+											</then>
+											<else>
+												<IfNode>
+													<if>
+														<!-- inPlaceInBG = 5 -->
+														<BinaryOp name="13" operator="=">
+															<operands>
+																<IdExpression>
+																	<path>
+																		<ConstVarRef name="inPlaceInBG"/>
+																	</path>
+																</IdExpression>
+																<ConstValue value="5"/>
+															</operands>
+														</BinaryOp>
+													</if>
+													<then>
+														<Action>
+															<locals>
+																<Variable name="_L1">
+																	<type>
+																		<NamedType>
+																			<type>
+																				<TypeRef name="N_PIG"/>
+																			</type>
+																		</NamedType>
+																	</type>
+																	<pragmas>
+																		<ed:Variable oid="!ed/38363/36AB/1850/55367bcd2401"/>
+																	</pragmas>
+																</Variable>
+															</locals>
+															<data>
+																<!-- _L1 = N_PIG_I_am_the_5th; -->
+																<Equation>
+																	<lefts>
+																		<VariableRef name="_L1"/>
+																	</lefts>
+																	<right>
+																		<IdExpression>
+																			<path>
+																				<ConstVarRef name="N_PIG_I_am_the_5th"/>
+																			</path>
+																		</IdExpression>
+																	</right>
+																	<pragmas>
+																		<ed:Equation oid="!ed/38361/36AB/1850/55367bcd5a5e"/>
+																	</pragmas>
+																</Equation>
+																<!-- outNpig = _L1; -->
+																<Equation>
+																	<lefts>
+																		<VariableRef name="outNpig"/>
+																	</lefts>
+																	<right>
+																		<IdExpression>
+																			<path>
+																				<ConstVarRef name="_L1"/>
+																			</path>
+																		</IdExpression>
+																	</right>
+																	<pragmas>
+																		<ed:Equation oid="!ed/38428/36AB/1850/55367fa236db"/>
+																	</pragmas>
+																</Equation>
+															</data>
+															<pragmas>
+																<ed:Action oid="!ed/38360/36AB/1850/55367bcd2ded"/>
+															</pragmas>
+														</Action>
+													</then>
+													<else>
+														<IfNode>
+															<if>
+																<!-- inPlaceInBG = 6 -->
+																<BinaryOp name="14" operator="=">
+																	<operands>
+																		<IdExpression>
+																			<path>
+																				<ConstVarRef name="inPlaceInBG"/>
+																			</path>
+																		</IdExpression>
+																		<ConstValue value="6"/>
+																	</operands>
+																</BinaryOp>
+															</if>
+															<then>
+																<Action>
+																	<locals>
+																		<Variable name="_L1">
+																			<type>
+																				<NamedType>
+																					<type>
+																						<TypeRef name="N_PIG"/>
+																					</type>
+																				</NamedType>
+																			</type>
+																			<pragmas>
+																				<ed:Variable oid="!ed/3835f/36AB/1850/55367bcd3d65"/>
+																			</pragmas>
+																		</Variable>
+																	</locals>
+																	<data>
+																		<!-- _L1 = N_PIG_I_am_the_6th; -->
+																		<Equation>
+																			<lefts>
+																				<VariableRef name="_L1"/>
+																			</lefts>
+																			<right>
+																				<IdExpression>
+																					<path>
+																						<ConstVarRef name="N_PIG_I_am_the_6th"/>
+																					</path>
+																				</IdExpression>
+																			</right>
+																			<pragmas>
+																				<ed:Equation oid="!ed/3835e/36AB/1850/55367bcd20c7"/>
+																			</pragmas>
+																		</Equation>
+																		<!-- outNpig = _L1; -->
+																		<Equation>
+																			<lefts>
+																				<VariableRef name="outNpig"/>
+																			</lefts>
+																			<right>
+																				<IdExpression>
+																					<path>
+																						<ConstVarRef name="_L1"/>
+																					</path>
+																				</IdExpression>
+																			</right>
+																			<pragmas>
+																				<ed:Equation oid="!ed/3842d/36AB/1850/55367fa416b5"/>
+																			</pragmas>
+																		</Equation>
+																	</data>
+																	<pragmas>
+																		<ed:Action oid="!ed/3835c/36AB/1850/55367bcd3a56"/>
+																	</pragmas>
+																</Action>
+															</then>
+															<else>
+																<IfNode>
+																	<if>
+																		<!-- inPlaceInBG = 7 -->
+																		<BinaryOp name="15" operator="=">
+																			<operands>
+																				<IdExpression>
+																					<path>
+																						<ConstVarRef name="inPlaceInBG"/>
+																					</path>
+																				</IdExpression>
+																				<ConstValue value="7"/>
+																			</operands>
+																		</BinaryOp>
+																	</if>
+																	<then>
+																		<Action>
+																			<locals>
+																				<Variable name="_L1">
+																					<type>
+																						<NamedType>
+																							<type>
+																								<TypeRef name="N_PIG"/>
+																							</type>
+																						</NamedType>
+																					</type>
+																					<pragmas>
+																						<ed:Variable oid="!ed/3835b/36AB/1850/55367bcd44bf"/>
+																					</pragmas>
+																				</Variable>
+																			</locals>
+																			<data>
+																				<!-- _L1 = N_PIG_I_am_the_7th; -->
+																				<Equation>
+																					<lefts>
+																						<VariableRef name="_L1"/>
+																					</lefts>
+																					<right>
+																						<IdExpression>
+																							<path>
+																								<ConstVarRef name="N_PIG_I_am_the_7th"/>
+																							</path>
+																						</IdExpression>
+																					</right>
+																					<pragmas>
+																						<ed:Equation oid="!ed/38359/36AB/1850/55367bcd443f"/>
+																					</pragmas>
+																				</Equation>
+																				<!-- outNpig = _L1; -->
+																				<Equation>
+																					<lefts>
+																						<VariableRef name="outNpig"/>
+																					</lefts>
+																					<right>
+																						<IdExpression>
+																							<path>
+																								<ConstVarRef name="_L1"/>
+																							</path>
+																						</IdExpression>
+																					</right>
+																					<pragmas>
+																						<ed:Equation oid="!ed/38432/36AB/1850/55367fa68ef"/>
+																					</pragmas>
+																				</Equation>
+																			</data>
+																			<pragmas>
+																				<ed:Action oid="!ed/38358/36AB/1850/55367bcd2910"/>
+																			</pragmas>
+																		</Action>
+																	</then>
+																	<else>
+																		<IfNode>
+																			<if>
+																				<!-- inPlaceInBG = 8 -->
+																				<BinaryOp name="16" operator="=">
+																					<operands>
+																						<IdExpression>
+																							<path>
+																								<ConstVarRef name="inPlaceInBG"/>
+																							</path>
+																						</IdExpression>
+																						<ConstValue value="8"/>
+																					</operands>
+																				</BinaryOp>
+																			</if>
+																			<then>
+																				<Action>
+																					<locals>
+																						<Variable name="_L1">
+																							<type>
+																								<NamedType>
+																									<type>
+																										<TypeRef name="N_PIG"/>
+																									</type>
+																								</NamedType>
+																							</type>
+																							<pragmas>
+																								<ed:Variable oid="!ed/38357/36AB/1850/55367bcd110a"/>
+																							</pragmas>
+																						</Variable>
+																					</locals>
+																					<data>
+																						<!-- _L1 = N_PIG_I_am_the_8th; -->
+																						<Equation>
+																							<lefts>
+																								<VariableRef name="_L1"/>
+																							</lefts>
+																							<right>
+																								<IdExpression>
+																									<path>
+																										<ConstVarRef name="N_PIG_I_am_the_8th"/>
+																									</path>
+																								</IdExpression>
+																							</right>
+																							<pragmas>
+																								<ed:Equation oid="!ed/38355/36AB/1850/55367bcd5ecb"/>
+																							</pragmas>
+																						</Equation>
+																						<!-- outNpig = _L1; -->
+																						<Equation>
+																							<lefts>
+																								<VariableRef name="outNpig"/>
+																							</lefts>
+																							<right>
+																								<IdExpression>
+																									<path>
+																										<ConstVarRef name="_L1"/>
+																									</path>
+																								</IdExpression>
+																							</right>
+																							<pragmas>
+																								<ed:Equation oid="!ed/38437/36AB/1850/55367fa87860"/>
+																							</pragmas>
+																						</Equation>
+																					</data>
+																					<pragmas>
+																						<ed:Action oid="!ed/38354/36AB/1850/55367bcd490d"/>
+																					</pragmas>
+																				</Action>
+																			</then>
+																			<else>
+																				<Action>
+																					<locals>
+																						<Variable name="_L2">
+																							<type>
+																								<NamedType>
+																									<type>
+																										<TypeRef name="N_PIG"/>
+																									</type>
+																								</NamedType>
+																							</type>
+																							<pragmas>
+																								<ed:Variable oid="!ed/38353/36AB/1850/55367bcd4784"/>
+																							</pragmas>
+																						</Variable>
+																					</locals>
+																					<data>
+																						<!-- _L2 = N_PIG_I_am_the_8th; -->
+																						<Equation>
+																							<lefts>
+																								<VariableRef name="_L2"/>
+																							</lefts>
+																							<right>
+																								<IdExpression>
+																									<path>
+																										<ConstVarRef name="N_PIG_I_am_the_8th"/>
+																									</path>
+																								</IdExpression>
+																							</right>
+																							<pragmas>
+																								<ed:Equation oid="!ed/38351/36AB/1850/55367bcd6c63"/>
+																							</pragmas>
+																						</Equation>
+																						<!-- outNpig = _L2; -->
+																						<Equation>
+																							<lefts>
+																								<VariableRef name="outNpig"/>
+																							</lefts>
+																							<right>
+																								<IdExpression>
+																									<path>
+																										<ConstVarRef name="_L2"/>
+																									</path>
+																								</IdExpression>
+																							</right>
+																							<pragmas>
+																								<ed:Equation oid="!ed/3843c/36AB/1850/55367fab33d4"/>
+																							</pragmas>
+																						</Equation>
+																					</data>
+																					<pragmas>
+																						<ed:Action oid="!ed/38350/36AB/1850/55367bcd3c84"/>
+																					</pragmas>
+																				</Action>
+																			</else>
+																			<pragmas>
+																				<ed:IfNode oid="!ed/3834f/36AB/1850/55367bcd79ff"/>
+																			</pragmas>
+																		</IfNode>
+																	</else>
+																	<pragmas>
+																		<ed:IfNode oid="!ed/3834e/36AB/1850/55367bcd1788"/>
+																	</pragmas>
+																</IfNode>
+															</else>
+															<pragmas>
+																<ed:IfNode oid="!ed/3834d/36AB/1850/55367bcd15a"/>
+															</pragmas>
+														</IfNode>
+													</else>
+													<pragmas>
+														<ed:IfNode oid="!ed/3834c/36AB/1850/55367bcd7156"/>
+													</pragmas>
+												</IfNode>
+											</else>
+											<pragmas>
+												<ed:IfNode oid="!ed/3834b/36AB/1850/55367bcd396e"/>
+											</pragmas>
+										</IfNode>
+									</else>
+									<pragmas>
+										<ed:IfNode oid="!ed/3834a/36AB/1850/55367bcd3c3c"/>
+									</pragmas>
+								</IfNode>
+							</else>
+							<pragmas>
+								<ed:IfNode oid="!ed/38349/36AB/1850/55367bcd5d40"/>
+							</pragmas>
+						</IfNode>
+					</else>
+					<pragmas>
+						<ed:IfNode oid="!ed/38348/36AB/1850/55367bcd78a1"/>
+					</pragmas>
+				</IfNode>
+			</block>
+			<pragmas>
+				<ed:IfBlock oid="!ed/38347/36AB/1850/55367bcd8a9"/>
+			</pragmas>
+		</IfBlock>
+	</data>
+	<pragmas>
+		<ed:Operator oid="!ed/38346/36AB/1850/55367bcd1694" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+			<diagrams>
+				<NetDiagram name="diagram_ConvertToNPIG_1" landscape="true" format="A4 (210 297)" oid="!ed/38374/36AB/1850/55367bcd7b0d">
+					<presentationElements>
+						<IfBlockGE presentable="!ed/38347/36AB/1850/55367bcd8a9">
+							<position>
+								<Point x="4233" y="2778"/>
+							</position>
+							<size>
+								<Size width="11907" height="14632"/>
+							</size>
+						</IfBlockGE>
+						<IfNodeGE labelWidth="1958" presentable="!ed/38348/36AB/1850/55367bcd78a1">
+							<position>
+								<Point x="4683" y="3360"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/38370/36AB/1850/55367bcd1897">
+							<position>
+								<Point x="6085" y="3281"/>
+							</position>
+							<size>
+								<Size width="5848" height="1111"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/38372/36AB/1850/55367bcd4242">
+							<position>
+								<Point x="7091" y="3572"/>
+							</position>
+							<size>
+								<Size width="212" height="317"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="1958" presentable="!ed/38349/36AB/1850/55367bcd5d40">
+							<position>
+								<Point x="4683" y="5133"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/3836c/36AB/1850/55367bcd7df7">
+							<position>
+								<Point x="6059" y="5054"/>
+							</position>
+							<size>
+								<Size width="5874" height="1481"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/3836e/36AB/1850/55367bcd26d0">
+							<position>
+								<Point x="7223" y="5477"/>
+							</position>
+							<size>
+								<Size width="211" height="318"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="1958" presentable="!ed/3834a/36AB/1850/55367bcd3c3c">
+							<position>
+								<Point x="4683" y="7303"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/38368/36AB/1850/55367bcd4955">
+							<position>
+								<Point x="6059" y="7223"/>
+							</position>
+							<size>
+								<Size width="5874" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/38369/36AB/1850/55367bcd488f">
+							<position>
+								<Point x="7223" y="7620"/>
+							</position>
+							<size>
+								<Size width="211" height="317"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="1958" presentable="!ed/3834b/36AB/1850/55367bcd396e">
+							<position>
+								<Point x="4683" y="9075"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/38364/36AB/1850/55367bcd3312">
+							<position>
+								<Point x="6059" y="8996"/>
+							</position>
+							<size>
+								<Size width="5874" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/38365/36AB/1850/55367bcd2743">
+							<position>
+								<Point x="7303" y="9446"/>
+							</position>
+							<size>
+								<Size width="212" height="318"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="1958" presentable="!ed/3834c/36AB/1850/55367bcd7156">
+							<position>
+								<Point x="4683" y="10636"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/38360/36AB/1850/55367bcd2ded">
+							<position>
+								<Point x="6059" y="10557"/>
+							</position>
+							<size>
+								<Size width="5874" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/38361/36AB/1850/55367bcd5a5e">
+							<position>
+								<Point x="7144" y="10954"/>
+							</position>
+							<size>
+								<Size width="211" height="318"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="1958" presentable="!ed/3834d/36AB/1850/55367bcd15a">
+							<position>
+								<Point x="4683" y="12144"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/3835c/36AB/1850/55367bcd3a56">
+							<position>
+								<Point x="6059" y="12065"/>
+							</position>
+							<size>
+								<Size width="5874" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/3835e/36AB/1850/55367bcd20c7">
+							<position>
+								<Point x="7197" y="12435"/>
+							</position>
+							<size>
+								<Size width="212" height="317"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="1958" presentable="!ed/3834e/36AB/1850/55367bcd1788">
+							<position>
+								<Point x="4683" y="13864"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/38358/36AB/1850/55367bcd2910">
+							<position>
+								<Point x="6059" y="13785"/>
+							</position>
+							<size>
+								<Size width="5874" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/38359/36AB/1850/55367bcd443f">
+							<position>
+								<Point x="7250" y="14155"/>
+							</position>
+							<size>
+								<Size width="212" height="317"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="1958" presentable="!ed/3834f/36AB/1850/55367bcd79ff">
+							<position>
+								<Point x="4683" y="15134"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/38354/36AB/1850/55367bcd490d">
+							<position>
+								<Point x="6059" y="15055"/>
+							</position>
+							<size>
+								<Size width="5874" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/38355/36AB/1850/55367bcd5ecb">
+							<position>
+								<Point x="7038" y="15505"/>
+							</position>
+							<size>
+								<Size width="211" height="318"/>
+							</size>
+						</EquationGE>
+						<ActionGE presentable="!ed/38350/36AB/1850/55367bcd3c84">
+							<position>
+								<Point x="6006" y="16431"/>
+							</position>
+							<size>
+								<Size width="5927" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/38351/36AB/1850/55367bcd6c63">
+							<position>
+								<Point x="7779" y="16828"/>
+							</position>
+							<size>
+								<Size width="212" height="317"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/38414/36AB/1850/55367f925411">
+							<position>
+								<Point x="9419" y="3519"/>
+							</position>
+							<size>
+								<Size width="318" height="503"/>
+							</size>
+						</EquationGE>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/38372/36AB/1850/55367bcd4242" dstEquation="!ed/38414/36AB/1850/55367f925411">
+							<positions>
+								<Point x="7303" y="3731"/>
+								<Point x="8387" y="3731"/>
+								<Point x="8387" y="3784"/>
+								<Point x="9472" y="3784"/>
+							</positions>
+						</Edge>
+						<EquationGE presentable="!ed/38419/36AB/1850/55367f9b12da">
+							<position>
+								<Point x="9948" y="5689"/>
+							</position>
+							<size>
+								<Size width="318" height="502"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/3841e/36AB/1850/55367f9d47cf">
+							<position>
+								<Point x="10001" y="7329"/>
+							</position>
+							<size>
+								<Size width="318" height="503"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/38423/36AB/1850/55367f9f3d73">
+							<position>
+								<Point x="10213" y="9208"/>
+							</position>
+							<size>
+								<Size width="317" height="502"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/38428/36AB/1850/55367fa236db">
+							<position>
+								<Point x="10292" y="10795"/>
+							</position>
+							<size>
+								<Size width="318" height="503"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/3842d/36AB/1850/55367fa416b5">
+							<position>
+								<Point x="10398" y="12224"/>
+							</position>
+							<size>
+								<Size width="318" height="502"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/38432/36AB/1850/55367fa68ef">
+							<position>
+								<Point x="10636" y="13996"/>
+							</position>
+							<size>
+								<Size width="318" height="503"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/38437/36AB/1850/55367fa87860">
+							<position>
+								<Point x="10689" y="15214"/>
+							</position>
+							<size>
+								<Size width="318" height="502"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/3843c/36AB/1850/55367fab33d4">
+							<position>
+								<Point x="10742" y="16536"/>
+							</position>
+							<size>
+								<Size width="318" height="503"/>
+							</size>
+						</EquationGE>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/38351/36AB/1850/55367bcd6c63" dstEquation="!ed/3843c/36AB/1850/55367fab33d4">
+							<positions>
+								<Point x="7990" y="16986"/>
+								<Point x="9393" y="16986"/>
+								<Point x="9393" y="16801"/>
+								<Point x="10795" y="16801"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/38355/36AB/1850/55367bcd5ecb" dstEquation="!ed/38437/36AB/1850/55367fa87860">
+							<positions>
+								<Point x="7250" y="15663"/>
+								<Point x="8996" y="15663"/>
+								<Point x="8996" y="15478"/>
+								<Point x="10742" y="15478"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/38359/36AB/1850/55367bcd443f" dstEquation="!ed/38432/36AB/1850/55367fa68ef">
+							<positions>
+								<Point x="7461" y="14314"/>
+								<Point x="9075" y="14314"/>
+								<Point x="9075" y="14261"/>
+								<Point x="10689" y="14261"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/3835e/36AB/1850/55367bcd20c7" dstEquation="!ed/3842d/36AB/1850/55367fa416b5">
+							<positions>
+								<Point x="7408" y="12594"/>
+								<Point x="8916" y="12594"/>
+								<Point x="8916" y="12488"/>
+								<Point x="10451" y="12488"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/38361/36AB/1850/55367bcd5a5e" dstEquation="!ed/38428/36AB/1850/55367fa236db">
+							<positions>
+								<Point x="7355" y="11113"/>
+								<Point x="8837" y="11113"/>
+								<Point x="8837" y="11060"/>
+								<Point x="10345" y="11060"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/38365/36AB/1850/55367bcd2743" dstEquation="!ed/38423/36AB/1850/55367f9f3d73">
+							<positions>
+								<Point x="7514" y="9604"/>
+								<Point x="8890" y="9604"/>
+								<Point x="8890" y="9472"/>
+								<Point x="10266" y="9472"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/38369/36AB/1850/55367bcd488f" dstEquation="!ed/3841e/36AB/1850/55367f9d47cf">
+							<positions>
+								<Point x="7435" y="7779"/>
+								<Point x="8731" y="7779"/>
+								<Point x="8731" y="7594"/>
+								<Point x="10054" y="7594"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/3836e/36AB/1850/55367bcd26d0" dstEquation="!ed/38419/36AB/1850/55367f9b12da">
+							<positions>
+								<Point x="7435" y="5636"/>
+								<Point x="8705" y="5636"/>
+								<Point x="8705" y="5953"/>
+								<Point x="10001" y="5953"/>
+							</positions>
+						</Edge>
+					</presentationElements>
+				</NetDiagram>
+			</diagrams>
+		</ed:Operator>
+	</pragmas>
+</Operator>

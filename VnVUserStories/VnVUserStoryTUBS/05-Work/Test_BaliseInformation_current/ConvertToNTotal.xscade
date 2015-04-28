@@ -1,0 +1,1050 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Operator xmlns="http://www.esterel-technologies.com/ns/scade/4" xmlns:ed="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4" xmlns:kcg="http://www.esterel-technologies.com/ns/scade/pragmas/codegen/2" kind="function" name="ConvertToNTotal">
+	<inputs>
+		<Variable name="inBalisesInBG">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="int"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/381e7/36AB/1850/55367a961357" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Input: NTotal as enumartion</comment>
+					<comment>(ETCS Language)</comment>
+				</ed:Variable>
+			</pragmas>
+		</Variable>
+	</inputs>
+	<outputs>
+		<Variable name="outN_Total">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="N_TOTAL"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/381e8/36AB/1850/55367a96139d" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Output: nTotal as integer. </comment>
+					<comment>The mapping is according to the meanin, e.g.,</comment>
+					<comment>&#x9;#pragma kcg enum_val 0 #end N_TOTAL_1_balise_in_the_group = 1</comment>
+					<comment>An undefined / unexpected value is mapped to 0.</comment>
+					<comment></comment>
+				</ed:Variable>
+			</pragmas>
+		</Variable>
+	</outputs>
+	<data>
+		<IfBlock name="IfBlock1">
+			<block>
+				<IfNode>
+					<if>
+						<!-- inBalisesInBG = 1 -->
+						<BinaryOp name="9" operator="=">
+							<operands>
+								<IdExpression>
+									<path>
+										<ConstVarRef name="inBalisesInBG"/>
+									</path>
+								</IdExpression>
+								<ConstValue value="1"/>
+							</operands>
+						</BinaryOp>
+					</if>
+					<then>
+						<Action>
+							<locals>
+								<Variable name="_L1">
+									<type>
+										<NamedType>
+											<type>
+												<TypeRef name="N_TOTAL"/>
+											</type>
+										</NamedType>
+									</type>
+									<pragmas>
+										<ed:Variable oid="!ed/38215/36AB/1850/55367a96e67"/>
+									</pragmas>
+								</Variable>
+							</locals>
+							<data>
+								<!-- outN_Total = _L1; -->
+								<Equation>
+									<lefts>
+										<VariableRef name="outN_Total"/>
+									</lefts>
+									<right>
+										<IdExpression>
+											<path>
+												<ConstVarRef name="_L1"/>
+											</path>
+										</IdExpression>
+									</right>
+									<pragmas>
+										<ed:Equation oid="!ed/38213/36AB/1850/55367a9637a2"/>
+									</pragmas>
+								</Equation>
+								<!-- _L1 = N_TOTAL_1_balise_in_the_group; -->
+								<Equation>
+									<lefts>
+										<VariableRef name="_L1"/>
+									</lefts>
+									<right>
+										<IdExpression>
+											<path>
+												<ConstVarRef name="N_TOTAL_1_balise_in_the_group"/>
+											</path>
+										</IdExpression>
+									</right>
+									<pragmas>
+										<ed:Equation oid="!ed/38214/36AB/1850/55367a9641fb"/>
+									</pragmas>
+								</Equation>
+							</data>
+							<pragmas>
+								<ed:Action oid="!ed/38212/36AB/1850/55367a963f1d"/>
+							</pragmas>
+						</Action>
+					</then>
+					<else>
+						<IfNode>
+							<if>
+								<!-- inBalisesInBG = 2 -->
+								<BinaryOp name="10" operator="=">
+									<operands>
+										<IdExpression>
+											<path>
+												<ConstVarRef name="inBalisesInBG"/>
+											</path>
+										</IdExpression>
+										<ConstValue value="2"/>
+									</operands>
+								</BinaryOp>
+							</if>
+							<then>
+								<Action>
+									<locals>
+										<Variable name="_L1">
+											<type>
+												<NamedType>
+													<type>
+														<TypeRef name="N_TOTAL"/>
+													</type>
+												</NamedType>
+											</type>
+											<pragmas>
+												<ed:Variable oid="!ed/38211/36AB/1850/55367a9623d6"/>
+											</pragmas>
+										</Variable>
+									</locals>
+									<data>
+										<!-- outN_Total = _L1; -->
+										<Equation>
+											<lefts>
+												<VariableRef name="outN_Total"/>
+											</lefts>
+											<right>
+												<IdExpression>
+													<path>
+														<ConstVarRef name="_L1"/>
+													</path>
+												</IdExpression>
+											</right>
+											<pragmas>
+												<ed:Equation oid="!ed/3820f/36AB/1850/55367a964b77"/>
+											</pragmas>
+										</Equation>
+										<!-- _L1 = N_TOTAL_2_balises_in_the_group; -->
+										<Equation>
+											<lefts>
+												<VariableRef name="_L1"/>
+											</lefts>
+											<right>
+												<IdExpression>
+													<path>
+														<ConstVarRef name="N_TOTAL_2_balises_in_the_group"/>
+													</path>
+												</IdExpression>
+											</right>
+											<pragmas>
+												<ed:Equation oid="!ed/38210/36AB/1850/55367a966ec8"/>
+											</pragmas>
+										</Equation>
+									</data>
+									<pragmas>
+										<ed:Action oid="!ed/3820e/36AB/1850/55367a964637"/>
+									</pragmas>
+								</Action>
+							</then>
+							<else>
+								<IfNode>
+									<if>
+										<!-- inBalisesInBG = 3 -->
+										<BinaryOp name="11" operator="=">
+											<operands>
+												<IdExpression>
+													<path>
+														<ConstVarRef name="inBalisesInBG"/>
+													</path>
+												</IdExpression>
+												<ConstValue value="3"/>
+											</operands>
+										</BinaryOp>
+									</if>
+									<then>
+										<Action>
+											<locals>
+												<Variable name="_L1">
+													<type>
+														<NamedType>
+															<type>
+																<TypeRef name="N_TOTAL"/>
+															</type>
+														</NamedType>
+													</type>
+													<pragmas>
+														<ed:Variable oid="!ed/3820d/36AB/1850/55367a96afb"/>
+													</pragmas>
+												</Variable>
+											</locals>
+											<data>
+												<!-- _L1 = N_TOTAL_3_balises_in_the_group; -->
+												<Equation>
+													<lefts>
+														<VariableRef name="_L1"/>
+													</lefts>
+													<right>
+														<IdExpression>
+															<path>
+																<ConstVarRef name="N_TOTAL_3_balises_in_the_group"/>
+															</path>
+														</IdExpression>
+													</right>
+													<pragmas>
+														<ed:Equation oid="!ed/3820b/36AB/1850/55367a964737"/>
+													</pragmas>
+												</Equation>
+												<!-- outN_Total = _L1; -->
+												<Equation>
+													<lefts>
+														<VariableRef name="outN_Total"/>
+													</lefts>
+													<right>
+														<IdExpression>
+															<path>
+																<ConstVarRef name="_L1"/>
+															</path>
+														</IdExpression>
+													</right>
+													<pragmas>
+														<ed:Equation oid="!ed/3820c/36AB/1850/55367a966817"/>
+													</pragmas>
+												</Equation>
+											</data>
+											<pragmas>
+												<ed:Action oid="!ed/3820a/36AB/1850/55367a961e36"/>
+											</pragmas>
+										</Action>
+									</then>
+									<else>
+										<IfNode>
+											<if>
+												<!-- inBalisesInBG = 4 -->
+												<BinaryOp name="12" operator="=">
+													<operands>
+														<IdExpression>
+															<path>
+																<ConstVarRef name="inBalisesInBG"/>
+															</path>
+														</IdExpression>
+														<ConstValue value="4"/>
+													</operands>
+												</BinaryOp>
+											</if>
+											<then>
+												<Action>
+													<locals>
+														<Variable name="_L1">
+															<type>
+																<NamedType>
+																	<type>
+																		<TypeRef name="N_TOTAL"/>
+																	</type>
+																</NamedType>
+															</type>
+															<pragmas>
+																<ed:Variable oid="!ed/38209/36AB/1850/55367a965f51"/>
+															</pragmas>
+														</Variable>
+													</locals>
+													<data>
+														<!-- _L1 = N_TOTAL_4_balises_in_the_group; -->
+														<Equation>
+															<lefts>
+																<VariableRef name="_L1"/>
+															</lefts>
+															<right>
+																<IdExpression>
+																	<path>
+																		<ConstVarRef name="N_TOTAL_4_balises_in_the_group"/>
+																	</path>
+																</IdExpression>
+															</right>
+															<pragmas>
+																<ed:Equation oid="!ed/38207/36AB/1850/55367a9669f3"/>
+															</pragmas>
+														</Equation>
+														<!-- outN_Total = _L1; -->
+														<Equation>
+															<lefts>
+																<VariableRef name="outN_Total"/>
+															</lefts>
+															<right>
+																<IdExpression>
+																	<path>
+																		<ConstVarRef name="_L1"/>
+																	</path>
+																</IdExpression>
+															</right>
+															<pragmas>
+																<ed:Equation oid="!ed/38208/36AB/1850/55367a965565"/>
+															</pragmas>
+														</Equation>
+													</data>
+													<pragmas>
+														<ed:Action oid="!ed/38206/36AB/1850/55367a96118d"/>
+													</pragmas>
+												</Action>
+											</then>
+											<else>
+												<IfNode>
+													<if>
+														<!-- inBalisesInBG = 5 -->
+														<BinaryOp name="13" operator="=">
+															<operands>
+																<IdExpression>
+																	<path>
+																		<ConstVarRef name="inBalisesInBG"/>
+																	</path>
+																</IdExpression>
+																<ConstValue value="5"/>
+															</operands>
+														</BinaryOp>
+													</if>
+													<then>
+														<Action>
+															<locals>
+																<Variable name="_L1">
+																	<type>
+																		<NamedType>
+																			<type>
+																				<TypeRef name="N_TOTAL"/>
+																			</type>
+																		</NamedType>
+																	</type>
+																	<pragmas>
+																		<ed:Variable oid="!ed/38205/36AB/1850/55367a96bc3"/>
+																	</pragmas>
+																</Variable>
+															</locals>
+															<data>
+																<!-- _L1 = N_TOTAL_5_balises_in_the_group; -->
+																<Equation>
+																	<lefts>
+																		<VariableRef name="_L1"/>
+																	</lefts>
+																	<right>
+																		<IdExpression>
+																			<path>
+																				<ConstVarRef name="N_TOTAL_5_balises_in_the_group"/>
+																			</path>
+																		</IdExpression>
+																	</right>
+																	<pragmas>
+																		<ed:Equation oid="!ed/38203/36AB/1850/55367a961356"/>
+																	</pragmas>
+																</Equation>
+																<!-- outN_Total = _L1; -->
+																<Equation>
+																	<lefts>
+																		<VariableRef name="outN_Total"/>
+																	</lefts>
+																	<right>
+																		<IdExpression>
+																			<path>
+																				<ConstVarRef name="_L1"/>
+																			</path>
+																		</IdExpression>
+																	</right>
+																	<pragmas>
+																		<ed:Equation oid="!ed/38204/36AB/1850/55367a96355e"/>
+																	</pragmas>
+																</Equation>
+															</data>
+															<pragmas>
+																<ed:Action oid="!ed/38202/36AB/1850/55367a96428"/>
+															</pragmas>
+														</Action>
+													</then>
+													<else>
+														<IfNode>
+															<if>
+																<!-- inBalisesInBG = 6 -->
+																<BinaryOp name="14" operator="=">
+																	<operands>
+																		<IdExpression>
+																			<path>
+																				<ConstVarRef name="inBalisesInBG"/>
+																			</path>
+																		</IdExpression>
+																		<ConstValue value="6"/>
+																	</operands>
+																</BinaryOp>
+															</if>
+															<then>
+																<Action>
+																	<locals>
+																		<Variable name="_L1">
+																			<type>
+																				<NamedType>
+																					<type>
+																						<TypeRef name="N_TOTAL"/>
+																					</type>
+																				</NamedType>
+																			</type>
+																			<pragmas>
+																				<ed:Variable oid="!ed/38201/36AB/1850/55367a96310"/>
+																			</pragmas>
+																		</Variable>
+																	</locals>
+																	<data>
+																		<!-- outN_Total = _L1; -->
+																		<Equation>
+																			<lefts>
+																				<VariableRef name="outN_Total"/>
+																			</lefts>
+																			<right>
+																				<IdExpression>
+																					<path>
+																						<ConstVarRef name="_L1"/>
+																					</path>
+																				</IdExpression>
+																			</right>
+																			<pragmas>
+																				<ed:Equation oid="!ed/381ff/36AB/1850/55367a965bb2"/>
+																			</pragmas>
+																		</Equation>
+																		<!-- _L1 = N_TOTAL_6_balises_in_the_group; -->
+																		<Equation>
+																			<lefts>
+																				<VariableRef name="_L1"/>
+																			</lefts>
+																			<right>
+																				<IdExpression>
+																					<path>
+																						<ConstVarRef name="N_TOTAL_6_balises_in_the_group"/>
+																					</path>
+																				</IdExpression>
+																			</right>
+																			<pragmas>
+																				<ed:Equation oid="!ed/38200/36AB/1850/55367a9645bc"/>
+																			</pragmas>
+																		</Equation>
+																	</data>
+																	<pragmas>
+																		<ed:Action oid="!ed/381fe/36AB/1850/55367a963b67"/>
+																	</pragmas>
+																</Action>
+															</then>
+															<else>
+																<IfNode>
+																	<if>
+																		<!-- inBalisesInBG = 7 -->
+																		<BinaryOp name="15" operator="=">
+																			<operands>
+																				<IdExpression>
+																					<path>
+																						<ConstVarRef name="inBalisesInBG"/>
+																					</path>
+																				</IdExpression>
+																				<ConstValue value="7"/>
+																			</operands>
+																		</BinaryOp>
+																	</if>
+																	<then>
+																		<Action>
+																			<locals>
+																				<Variable name="_L1">
+																					<type>
+																						<NamedType>
+																							<type>
+																								<TypeRef name="N_TOTAL"/>
+																							</type>
+																						</NamedType>
+																					</type>
+																					<pragmas>
+																						<ed:Variable oid="!ed/381fd/36AB/1850/55367a96627f"/>
+																					</pragmas>
+																				</Variable>
+																			</locals>
+																			<data>
+																				<!-- _L1 = N_TOTAL_7_balises_in_the_group; -->
+																				<Equation>
+																					<lefts>
+																						<VariableRef name="_L1"/>
+																					</lefts>
+																					<right>
+																						<IdExpression>
+																							<path>
+																								<ConstVarRef name="N_TOTAL_7_balises_in_the_group"/>
+																							</path>
+																						</IdExpression>
+																					</right>
+																					<pragmas>
+																						<ed:Equation oid="!ed/381fb/36AB/1850/55367a96544b"/>
+																					</pragmas>
+																				</Equation>
+																				<!-- outN_Total = _L1; -->
+																				<Equation>
+																					<lefts>
+																						<VariableRef name="outN_Total"/>
+																					</lefts>
+																					<right>
+																						<IdExpression>
+																							<path>
+																								<ConstVarRef name="_L1"/>
+																							</path>
+																						</IdExpression>
+																					</right>
+																					<pragmas>
+																						<ed:Equation oid="!ed/381fc/36AB/1850/55367a967264"/>
+																					</pragmas>
+																				</Equation>
+																			</data>
+																			<pragmas>
+																				<ed:Action oid="!ed/381fa/36AB/1850/55367a964359"/>
+																			</pragmas>
+																		</Action>
+																	</then>
+																	<else>
+																		<IfNode>
+																			<if>
+																				<!-- inBalisesInBG = 8 -->
+																				<BinaryOp name="16" operator="=">
+																					<operands>
+																						<IdExpression>
+																							<path>
+																								<ConstVarRef name="inBalisesInBG"/>
+																							</path>
+																						</IdExpression>
+																						<ConstValue value="8"/>
+																					</operands>
+																				</BinaryOp>
+																			</if>
+																			<then>
+																				<Action>
+																					<locals>
+																						<Variable name="_L1">
+																							<type>
+																								<NamedType>
+																									<type>
+																										<TypeRef name="N_TOTAL"/>
+																									</type>
+																								</NamedType>
+																							</type>
+																							<pragmas>
+																								<ed:Variable oid="!ed/381f9/36AB/1850/55367a96ac6"/>
+																							</pragmas>
+																						</Variable>
+																					</locals>
+																					<data>
+																						<!-- _L1 = N_TOTAL_8_balises_in_the_group; -->
+																						<Equation>
+																							<lefts>
+																								<VariableRef name="_L1"/>
+																							</lefts>
+																							<right>
+																								<IdExpression>
+																									<path>
+																										<ConstVarRef name="N_TOTAL_8_balises_in_the_group"/>
+																									</path>
+																								</IdExpression>
+																							</right>
+																							<pragmas>
+																								<ed:Equation oid="!ed/381f7/36AB/1850/55367a961be4"/>
+																							</pragmas>
+																						</Equation>
+																						<!-- outN_Total = _L1; -->
+																						<Equation>
+																							<lefts>
+																								<VariableRef name="outN_Total"/>
+																							</lefts>
+																							<right>
+																								<IdExpression>
+																									<path>
+																										<ConstVarRef name="_L1"/>
+																									</path>
+																								</IdExpression>
+																							</right>
+																							<pragmas>
+																								<ed:Equation oid="!ed/381f8/36AB/1850/55367a9647be"/>
+																							</pragmas>
+																						</Equation>
+																					</data>
+																					<pragmas>
+																						<ed:Action oid="!ed/381f6/36AB/1850/55367a96d38"/>
+																					</pragmas>
+																				</Action>
+																			</then>
+																			<else>
+																				<Action>
+																					<locals>
+																						<Variable name="_L2">
+																							<type>
+																								<NamedType>
+																									<type>
+																										<TypeRef name="N_TOTAL"/>
+																									</type>
+																								</NamedType>
+																							</type>
+																							<pragmas>
+																								<ed:Variable oid="!ed/381f5/36AB/1850/55367a967b36"/>
+																							</pragmas>
+																						</Variable>
+																					</locals>
+																					<data>
+																						<!-- _L2 = N_TOTAL_8_balises_in_the_group; -->
+																						<Equation>
+																							<lefts>
+																								<VariableRef name="_L2"/>
+																							</lefts>
+																							<right>
+																								<IdExpression>
+																									<path>
+																										<ConstVarRef name="N_TOTAL_8_balises_in_the_group"/>
+																									</path>
+																								</IdExpression>
+																							</right>
+																							<pragmas>
+																								<ed:Equation oid="!ed/381f3/36AB/1850/55367a963389"/>
+																							</pragmas>
+																						</Equation>
+																						<!-- outN_Total = _L2; -->
+																						<Equation>
+																							<lefts>
+																								<VariableRef name="outN_Total"/>
+																							</lefts>
+																							<right>
+																								<IdExpression>
+																									<path>
+																										<ConstVarRef name="_L2"/>
+																									</path>
+																								</IdExpression>
+																							</right>
+																							<pragmas>
+																								<ed:Equation oid="!ed/381f4/36AB/1850/55367a962453"/>
+																							</pragmas>
+																						</Equation>
+																					</data>
+																					<pragmas>
+																						<ed:Action oid="!ed/381f2/36AB/1850/55367a962324"/>
+																					</pragmas>
+																				</Action>
+																			</else>
+																			<pragmas>
+																				<ed:IfNode oid="!ed/381f1/36AB/1850/55367a967b2a"/>
+																			</pragmas>
+																		</IfNode>
+																	</else>
+																	<pragmas>
+																		<ed:IfNode oid="!ed/381f0/36AB/1850/55367a9625ac"/>
+																	</pragmas>
+																</IfNode>
+															</else>
+															<pragmas>
+																<ed:IfNode oid="!ed/381ef/36AB/1850/55367a963f9d"/>
+															</pragmas>
+														</IfNode>
+													</else>
+													<pragmas>
+														<ed:IfNode oid="!ed/381ee/36AB/1850/55367a96d21"/>
+													</pragmas>
+												</IfNode>
+											</else>
+											<pragmas>
+												<ed:IfNode oid="!ed/381ed/36AB/1850/55367a965db0"/>
+											</pragmas>
+										</IfNode>
+									</else>
+									<pragmas>
+										<ed:IfNode oid="!ed/381ec/36AB/1850/55367a96c68"/>
+									</pragmas>
+								</IfNode>
+							</else>
+							<pragmas>
+								<ed:IfNode oid="!ed/381eb/36AB/1850/55367a962126"/>
+							</pragmas>
+						</IfNode>
+					</else>
+					<pragmas>
+						<ed:IfNode oid="!ed/381ea/36AB/1850/55367a964355"/>
+					</pragmas>
+				</IfNode>
+			</block>
+			<pragmas>
+				<ed:IfBlock oid="!ed/381e9/36AB/1850/55367a966b78"/>
+			</pragmas>
+		</IfBlock>
+	</data>
+	<pragmas>
+		<ed:Operator oid="!ed/38159/36AB/1850/55367a4d36d6" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+			<diagrams>
+				<NetDiagram name="diagram_ConvertToNTotal_1" landscape="true" format="A4 (210 297)" oid="!ed/3815a/36AB/1850/55367a4d2a80">
+					<presentationElements>
+						<IfBlockGE presentable="!ed/381e9/36AB/1850/55367a966b78">
+							<position>
+								<Point x="4233" y="2778"/>
+							</position>
+							<size>
+								<Size width="7752" height="14631"/>
+							</size>
+						</IfBlockGE>
+						<IfNodeGE labelWidth="4815" presentable="!ed/381ea/36AB/1850/55367a964355">
+							<position>
+								<Point x="4683" y="3360"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/38212/36AB/1850/55367a963f1d">
+							<position>
+								<Point x="6085" y="3281"/>
+							</position>
+							<size>
+								<Size width="5053" height="1112"/>
+							</size>
+						</ActionGE>
+						<EquationGE presentable="!ed/38213/36AB/1850/55367a9637a2">
+							<position>
+								<Point x="8387" y="3466"/>
+							</position>
+							<size>
+								<Size width="318" height="502"/>
+							</size>
+						</EquationGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/38214/36AB/1850/55367a9641fb">
+							<position>
+								<Point x="7091" y="3572"/>
+							</position>
+							<size>
+								<Size width="212" height="317"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="4948" presentable="!ed/381eb/36AB/1850/55367a962126">
+							<position>
+								<Point x="4683" y="5133"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/3820e/36AB/1850/55367a964637">
+							<position>
+								<Point x="6059" y="5054"/>
+							</position>
+							<size>
+								<Size width="5001" height="1482"/>
+							</size>
+						</ActionGE>
+						<EquationGE presentable="!ed/3820f/36AB/1850/55367a964b77">
+							<position>
+								<Point x="8520" y="5371"/>
+							</position>
+							<size>
+								<Size width="318" height="503"/>
+							</size>
+						</EquationGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/38210/36AB/1850/55367a966ec8">
+							<position>
+								<Point x="7223" y="5477"/>
+							</position>
+							<size>
+								<Size width="211" height="318"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="4948" presentable="!ed/381ec/36AB/1850/55367a96c68">
+							<position>
+								<Point x="4683" y="7303"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/3820a/36AB/1850/55367a961e36">
+							<position>
+								<Point x="6059" y="7223"/>
+							</position>
+							<size>
+								<Size width="5053" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/3820b/36AB/1850/55367a964737">
+							<position>
+								<Point x="7223" y="7620"/>
+							</position>
+							<size>
+								<Size width="211" height="317"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/3820c/36AB/1850/55367a966817">
+							<position>
+								<Point x="8520" y="7514"/>
+							</position>
+							<size>
+								<Size width="318" height="503"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="4948" presentable="!ed/381ed/36AB/1850/55367a965db0">
+							<position>
+								<Point x="4683" y="9075"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/38206/36AB/1850/55367a96118d">
+							<position>
+								<Point x="6059" y="8996"/>
+							</position>
+							<size>
+								<Size width="5053" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/38207/36AB/1850/55367a9669f3">
+							<position>
+								<Point x="7303" y="9446"/>
+							</position>
+							<size>
+								<Size width="212" height="318"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/38208/36AB/1850/55367a965565">
+							<position>
+								<Point x="8599" y="9340"/>
+							</position>
+							<size>
+								<Size width="317" height="503"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="4948" presentable="!ed/381ee/36AB/1850/55367a96d21">
+							<position>
+								<Point x="4683" y="10636"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/38202/36AB/1850/55367a96428">
+							<position>
+								<Point x="6059" y="10557"/>
+							</position>
+							<size>
+								<Size width="5053" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/38203/36AB/1850/55367a961356">
+							<position>
+								<Point x="7144" y="10954"/>
+							</position>
+							<size>
+								<Size width="211" height="318"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/38204/36AB/1850/55367a96355e">
+							<position>
+								<Point x="8440" y="10848"/>
+							</position>
+							<size>
+								<Size width="318" height="503"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="4948" presentable="!ed/381ef/36AB/1850/55367a963f9d">
+							<position>
+								<Point x="4683" y="12144"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/381fe/36AB/1850/55367a963b67">
+							<position>
+								<Point x="6059" y="12065"/>
+							</position>
+							<size>
+								<Size width="5053" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE presentable="!ed/381ff/36AB/1850/55367a965bb2">
+							<position>
+								<Point x="8493" y="12330"/>
+							</position>
+							<size>
+								<Size width="317" height="503"/>
+							</size>
+						</EquationGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/38200/36AB/1850/55367a9645bc">
+							<position>
+								<Point x="7197" y="12435"/>
+							</position>
+							<size>
+								<Size width="212" height="317"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="4948" presentable="!ed/381f0/36AB/1850/55367a9625ac">
+							<position>
+								<Point x="4683" y="13864"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/381fa/36AB/1850/55367a964359">
+							<position>
+								<Point x="6059" y="13785"/>
+							</position>
+							<size>
+								<Size width="5053" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/381fb/36AB/1850/55367a96544b">
+							<position>
+								<Point x="7250" y="14155"/>
+							</position>
+							<size>
+								<Size width="212" height="317"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/381fc/36AB/1850/55367a967264">
+							<position>
+								<Point x="8546" y="14049"/>
+							</position>
+							<size>
+								<Size width="317" height="503"/>
+							</size>
+						</EquationGE>
+						<IfNodeGE labelWidth="4948" presentable="!ed/381f1/36AB/1850/55367a967b2a">
+							<position>
+								<Point x="4683" y="15134"/>
+							</position>
+						</IfNodeGE>
+						<ActionGE presentable="!ed/381f6/36AB/1850/55367a96d38">
+							<position>
+								<Point x="6059" y="15055"/>
+							</position>
+							<size>
+								<Size width="5053" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/381f7/36AB/1850/55367a961be4">
+							<position>
+								<Point x="7038" y="15505"/>
+							</position>
+							<size>
+								<Size width="211" height="318"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/381f8/36AB/1850/55367a9647be">
+							<position>
+								<Point x="8334" y="15399"/>
+							</position>
+							<size>
+								<Size width="317" height="503"/>
+							</size>
+						</EquationGE>
+						<ActionGE presentable="!ed/381f2/36AB/1850/55367a962324">
+							<position>
+								<Point x="6006" y="16431"/>
+							</position>
+							<size>
+								<Size width="4974" height="926"/>
+							</size>
+						</ActionGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/381f3/36AB/1850/55367a963389">
+							<position>
+								<Point x="7779" y="16828"/>
+							</position>
+							<size>
+								<Size width="212" height="317"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/381f4/36AB/1850/55367a962453">
+							<position>
+								<Point x="9075" y="16722"/>
+							</position>
+							<size>
+								<Size width="317" height="503"/>
+							</size>
+						</EquationGE>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/381f3/36AB/1850/55367a963389" dstEquation="!ed/381f4/36AB/1850/55367a962453">
+							<positions>
+								<Point x="7990" y="16986"/>
+								<Point x="8546" y="16986"/>
+								<Point x="8546" y="16986"/>
+								<Point x="9128" y="16986"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/381f7/36AB/1850/55367a961be4" dstEquation="!ed/381f8/36AB/1850/55367a9647be">
+							<positions>
+								<Point x="7250" y="15663"/>
+								<Point x="7805" y="15663"/>
+								<Point x="7805" y="15663"/>
+								<Point x="8387" y="15663"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/381fb/36AB/1850/55367a96544b" dstEquation="!ed/381fc/36AB/1850/55367a967264">
+							<positions>
+								<Point x="7461" y="14314"/>
+								<Point x="8017" y="14314"/>
+								<Point x="8017" y="14314"/>
+								<Point x="8599" y="14314"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/38200/36AB/1850/55367a9645bc" dstEquation="!ed/381ff/36AB/1850/55367a965bb2">
+							<positions>
+								<Point x="7408" y="12594"/>
+								<Point x="7964" y="12594"/>
+								<Point x="7964" y="12594"/>
+								<Point x="8546" y="12594"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/38203/36AB/1850/55367a961356" dstEquation="!ed/38204/36AB/1850/55367a96355e">
+							<positions>
+								<Point x="7355" y="11113"/>
+								<Point x="8758" y="11113"/>
+								<Point x="8758" y="11165"/>
+								<Point x="8758" y="11165"/>
+								<Point x="8758" y="11113"/>
+								<Point x="8493" y="11113"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/38207/36AB/1850/55367a9669f3" dstEquation="!ed/38208/36AB/1850/55367a965565">
+							<positions>
+								<Point x="7514" y="9604"/>
+								<Point x="8070" y="9604"/>
+								<Point x="8070" y="9604"/>
+								<Point x="8652" y="9604"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/3820b/36AB/1850/55367a964737" dstEquation="!ed/3820c/36AB/1850/55367a966817">
+							<positions>
+								<Point x="7435" y="7779"/>
+								<Point x="7990" y="7779"/>
+								<Point x="7990" y="7779"/>
+								<Point x="8573" y="7779"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/38210/36AB/1850/55367a966ec8" dstEquation="!ed/3820f/36AB/1850/55367a964b77">
+							<positions>
+								<Point x="7435" y="5636"/>
+								<Point x="7990" y="5636"/>
+								<Point x="7990" y="5636"/>
+								<Point x="8573" y="5636"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/38214/36AB/1850/55367a9641fb" dstEquation="!ed/38213/36AB/1850/55367a9637a2">
+							<positions>
+								<Point x="7303" y="3731"/>
+								<Point x="7858" y="3731"/>
+								<Point x="7858" y="3731"/>
+								<Point x="8440" y="3731"/>
+							</positions>
+						</Edge>
+					</presentationElements>
+				</NetDiagram>
+			</diagrams>
+		</ed:Operator>
+	</pragmas>
+</Operator>

@@ -8,46 +8,44 @@ correctly implemented into a scade model.
 The document D1 is a specification written with flowcharts. A scade
 model is made according to this specification.
 
-We want to known that the scade model is a correct implementation of
-the specification. To do so, we will prove that the scade model
-is equivalent to flowcharts.
-
+We would like to known that the scade model is a correct
+implementation of the specification. To do so, the scade model is
+proven equivalent to its flowcharts.
 
 Starting with one flowchart, a first step is to identify to which
 scade inputs and outputs this flowchart refers to. Usually, there are
 states which send data (scade model outputs) and there are conditions
 depending on variable(s) value(s) (scade model inputs).
 
-Then, the flowchart is translated into an equivalent HLL program using
+Then, the flowchart is translated into an equivalent HLL model using
 the scade inputs names. Scade outputs names are used to write proof
 obligation.
 
-Once those steps done, it is possible to prove (or disprove) that for
-all possible inputs, the scade model and the flowchart HLL program
+Once these steps done, it is possible to prove (or disprove) that for
+all possible inputs, the scade model and the flowchart HLL model
 compute the same outputs.
 
 
-\subsection{Flowchart to HLL program}
+\subsection{Flowchart to HLL model}
 \label{flowchart-2-hll}
-In this section we will see how to transform a flowchart from the SRS
-documentation into an equivalent HLL
-program. Section~\ref{flowchart-definition} presents definitions of
+In this section, a presentation of flowchart (from the SRS
+documentation) transformation into an equivalent HLL model is
+made. Section~\ref{flowchart-definition} presents definitions of
 flowchart shapes, the section~\ref{reading-a-flowchart} explains how a
 flowchart is interpreted in the context of the synchronous language
 HLL and the section~\ref{transformation-to-hll-program} shows a
 generic methodology for the translation of this type of flowchart into
-a HLL program.
+a HLL model.
 \subsubsection{Flowcharts in SRS documentation}
 \label{flowchart-definition}
-Here is a list of flowchart shapes and there meaning :
+Here is a list of flowchart shapes and there meaning:
 \begin{description}
 \item[Rectangle] The rectangle usually means that an action has to be
   taken. In our case, this shape is assimilated to a state where a
   value can be send through one or more outputs.
-\item[Rounded rectangle] This shape is equal to the rectangle shape
-  except when you read it (see section~\ref{reading-a-flowchart}). If
-  no arrow is leaving from such shape, it is considered as a
-  rectangle.
+\item[Rounded rectangle] This shape also means that an action has to
+  be taken, like rectangle shape, but rounded rectangle are read
+  differently. We will call them action.
 \item[Diamond] This shape usually corresponds to a question and the
   answer indicates the reading direction. Answers are listed on
   different arrows leaving the diamond.
@@ -69,13 +67,17 @@ is given in the SRS at section 5.3.2.4.
 \label{reading-a-flowchart}
 The concept of cycle is used in the synchronous language HLL and this
 impacts how a flowchart is read when we want to translate it into a
-HLL program.
+HLL model.
 
 At the first cycle, we start to read the flowchart from an initial
 state which is a state where there is only leaving arrows. Then, at
 each cycle we go from one state A to a state B, where A could be equal
 to B, until we reach a final state which is a state where there is no
 leaving arrows.
+
+When, during a cycle, the reading go through an action (rounded
+rectangle) then its coresponding actions are taken and the reading
+continue. So it is not possible to stop the reading in an action. 
 
 During a cycle execution it is not possible to read more than one
 state, so when reaching a state the reading is stopped even if it is
@@ -85,17 +87,17 @@ Moreover, initial states can sometimes behave as a global condition
 which trigger or stop (and re-initialize) the reading of the
 flowchart. In this case, this initial state will not be seen as a
 state as mentioned above. Reading corresponding description of the
-requirement should help in state interpretation.
+requirement should help in state interpretation. 
 
 
-\subsubsection{Transformation to HLL program}
+\subsubsection{Transformation to HLL model}
 \label{transformation-to-hll-program}
 In this section, we will describe how to translate examples of simple
-flowcharts into a HLL programs. Combining those examples is a way to
+flowcharts into a HLL models. Combining these examples is a way to
 translate more complex flowcharts.
 
-It is only a few examples of flowcharts translation. An objective can
-be to automatize this translation.
+In this document, there is only a few examples of flowcharts
+translation. An objective can be to automatize this translation.
 
 
 \subsubsection{Example: Rectangle -Labeled arrow-> Rectangle -Labeled arrow-> Rectangle.}
@@ -136,8 +138,8 @@ be to automatize this translation.
 \end{figure}
 
 
-The following HLL program is translation of the flowchart
-figure~\ref{example-1} : 
+The following HLL model is translation of the flowchart
+figure~\ref{example-1}: 
 {\footnotesize
 \begin{verbatim}
 Types:
@@ -240,8 +242,8 @@ po;
 \label{example-2}
 \end{figure}
 
-The following HLL program is translation of the flowchart
-figure~\ref{example-2} : 
+The following HLL model is translation of the flowchart
+figure~\ref{example-2}: 
 {\footnotesize
 \begin{verbatim}
 Types:
@@ -270,11 +272,11 @@ bool po;
 
 Definitions:
 state_0_outputs := State 0;
-state_0_action_1_outputs := State 0 + Action 1;
+state_0_action_1_outputs := State 0 & Action 1;
 state_2_outputs := State 2;
-state_2_action_1_outputs := State 2 + Action 1;
+state_2_action_1_outputs := State 2 & Action 1;
 state_3_outputs := State 3;
-state_3_action_1_outputs := State 3 + Action 1;
+state_3_action_1_outputs := State 3 & Action 1;
 
 // Definition of transitions between states:
 last_state := pre(current_state,'state_0'); // 'state_0' is an initial state
@@ -313,27 +315,29 @@ po;
 }
 
 
-\subsection{Proofs that a flowchart corresponds to its Scade model}
-The proof we want to make is that our flowchart take the same actions
-than the Scade model for each flowchart state.
+\subsection{Equivalence proof between flowchart and Scade model}
+We want to prove that our flowchart take the same actions than the
+Scade model for each flowchart state.
 
-To do this, we need three elements to construct a proof obligation to be proven :
+To do this, three elements are required to construct the proof
+obligation:
 \begin{enumerate}
 \item State names, usualy they are listed in an enumerated type.
 \item Action (corresponding to rounded rectangle) activation
   conditions. They are implemented by boolean variables which are
   \texttt{True} when the action is read during a cycle execution,
   \texttt{False} otherwise.
-\item Boolean variables representing outputs values for each states.
+\item Boolean variables representing outputs values for each
+  states. Each Scade model outputs must be present in each variable.
 \end{enumerate}
 
-Once we have those three elements, we can construct the proof
-obligation using an \texttt{if ... then ... elif ... else ...;}
+Once these three elements are implemented, the proof obligation can be
+constructed using an \texttt{if ... then ... elif ... else ...;}
 structure as we can see in previous examples.
 
-This structure will represent a following statement :
+This structure will represent a following statement:
 \begin{verbatim}
-if "flowchart is in a state and if an action(s) is taken (or not)"
+if "flowchart is in a state (and if action(s) is taken (or not))"
 then "Scade outputs are set to some values" 
 elif ...
 \end{verbatim}

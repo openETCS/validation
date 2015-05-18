@@ -1,4 +1,4 @@
-\section{Proof of : Shunting Initiated By Driver}
+\section{Proof of: Shunting Initiated By Driver}
 \label{sh-initiated-by-driver}
 \subsection{Files used for the proof}
 \begin{tabular}{|c|c|}
@@ -24,9 +24,9 @@ Scade model, assumptions are taken:
 procedures with higher priority.
 
 \item Communication with RBC is out of the scope of this function
-(repetition of message to RBC, waiting for acknowledgment,...) 
+  (repetition of message to RBC, waiting for acknowledgment, ...)
 \end{enumerate} 
-Those assumptions have the following consequences: 
+These assumptions have the following consequences: 
 \begin{enumerate} 
 \item \texttt{D030} and \texttt{A030} are not in this HLL model. This
   implies that we have to deal with the "NTC" transition leaving
@@ -52,14 +52,14 @@ specification and the Scade model:
   only the flowchart, \texttt{S0} is an initial state which can be
   left when the conditions explained in \texttt{E015} requirement are
   fulfilled. Usually, states are not conditions.  The Scade model is
-  considering \texttt{S0} state as a re-initialization state :
+  considering \texttt{S0} state as a re-initialization state:
   \texttt{S0} conditions must be fulfilled to allow flowchart
   execution.
 %\item The flowchart have end states where no actions are
 %  made. Actually, \texttt{A220} and \texttt{A100} (drawn by rounded
 %  rectangles) are not states, so they are read one time contrary to a
 %  state and then the process (of reading the flowchart) is
-%  stopped. This contradicts the Scade model where those elements as
+%  stopped. This contradicts the Scade model where these elements as
 %  seen and modelized as states.
 \item \label{a100-case}The flowchart have end states where no actions
   are made. Actually, \texttt{A100} (drawn by rounded rectangles) is
@@ -86,14 +86,16 @@ specification and the Scade model:
 Here is propositions of solutions to resolve previous problems:
 \begin{description}
 \item[Proposition for \ref{s0-case}.] The ambiguity of \texttt{S0} definition must be
-  clarified : either it is a state with a clear action in its
+  clarified: either it is a state with a clear action in its
   definition, or it is a condition which trigger or not the procedure.
-\item[Proposition for \ref{a220-case}.] The Scade model should end in a
-  dead end state instead of going back to its initial state.
-\item[Proposition for \ref{a100-case}. and \ref{eom-case}.] To resolve those to points, the Scade
-  model should not have dead end states where actions can be taken
-  (outputs are set to values). Actions in those dead end state should
-  be modelized as ``emit''. 
+\item[Proposition for \ref{a220-case}.] To be equivalent to the
+  specification, the Scade model should end in a dead end state
+  instead of going back to its initial state.
+\item[Proposition for \ref{a100-case}. and \ref{eom-case}.] To be
+  equivalent to the specification, the Scade model should not have
+  dead end states where actions can be taken (outputs are set to
+  values). Actions in these dead end state should be modelized as
+  ``emit''.
 \end{description}
 
 

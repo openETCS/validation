@@ -1,0 +1,96 @@
+// PO for test case generation...
+Proof Obligations:
+/* Test objective: 
+If in s10 state and E10 is verified, then NL mode state is reached.
+*/
+~(last_state = 's10' & (Driver_Req_NL & Train_Permitted_NL & Train_Standstill) & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger); // E10 & SRS 4 transition [46]
+
+
+/* Test objective:
+If in S20 state and condition E20 is satisfied then S22 state is reached.
+*/
+~(last_state = 's20' & Driver_Req_Start & Current_Level = 'M_LEVEL_Level_NTC_specified_by_NID_NTC' & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S20 state and condition E21 is satisfied then S23 state is reached.
+*/
+~(last_state = 's20' & Driver_Req_Start & Current_Level = 'M_LEVEL_Level_0' & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S20 state and condition E22 is satisfied then S24 state is reached.
+*/
+~(last_state = 's20' & Driver_Req_Start & Current_Level = 'M_LEVEL_Level_1' & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S20 state and condition E24 is satisfied then S21 state is reached.
+*/
+~(last_state = 's20' & Driver_Req_Start & (Current_Level = 'M_LEVEL_Level_2' # Current_Level = 'M_LEVEL_Level_3') & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S21 state and condition E26 is satisfied then S24 state is reached.
+*/
+~(last_state = 's21' & RBC_Authorizes_SR & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S21 state and condition E27 is satisfied then S25 (LS mode) state is reached.
+*/
+~(last_state = 's21' & Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::Profile_LS' & ~RBC_Authorizes_SR & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S21 state and condition E27 is satisfied then S25 (OS mode) state is reached.
+*/
+~(last_state = 's21' & Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::Profile_OS' & ~RBC_Authorizes_SR & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S21 state and condition E27 is satisfied then S25 (SH mode) state is reached.
+*/
+~(last_state = 's21' & Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::Profile_SH' & ~RBC_Authorizes_SR & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S21 state and condition E29 is satisfied then 'FS mode' state is reached.
+*/
+~(last_state = 's21' & MA_SSP_Gradiant_Available & Valid_Train_Data_Stored & Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::No_Profile' & ~RBC_Authorizes_SR & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S22 state and condition E30 is satisfied then 'SN mode' state is reached.
+*/
+~(last_state = 's22' & Driver_Ack_SN & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S23 state and condition E31 is satisfied then 'UN mode' state is reached.
+*/
+~(last_state = 's23' & Driver_Ack_UN & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S24 state and condition E32 is satisfied then 'SR mode' state is reached.
+*/
+~(last_state = 's24' & Driver_Ack_SR & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S25 state and condition E33 is satisfied then 'LS mode' state is reached.
+*/
+~(last_state = 's25_ls' & Driver_Ack_LS & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S25 state and condition E33 is satisfied then 'OS mode' state is reached.
+*/
+~(last_state = 's25_os' & Driver_Ack_OS & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);
+
+
+/* Test objective:
+If in S25 state and condition E33 is satisfied then 'SH mode' state is reached.
+*/
+~(last_state = 's25_sh' & Driver_Ack_SH & ~requirement_5_4_3_2_1 & ~standstill_supervision_trigger);

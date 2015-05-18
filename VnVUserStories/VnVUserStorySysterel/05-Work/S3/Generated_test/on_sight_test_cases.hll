@@ -1,0 +1,7 @@
+Proof Obligations:
+/* Test Objective: if model in state 'ack_fs_ls_sr_un_sn' (1) and
+transition "5 sec are elapsed & no ack by driver" is triggered then
+'service_brake' state is reached.
+(1) "- acknowledgment is requested to driver
+     - Waiting for driver ackno" */
+~(last_state = 'ack_fs_ls_sr_un_sn' & (~Driver_Ack_OS & timer > ACK_DELAY));

@@ -1,3 +1,6 @@
+Important Note: Change of Scade Release for Modelling!!!!
+We NOW switch to Scade Release 16.1. Please, make sure you use this version for all commits.
+
 [![Stories in Ready](https://badge.waffle.io/openETCS/validation.png?label=ready&title=Ready)](https://waffle.io/openETCS/validation)
 [![Stories in "In Progress"](https://badge.waffle.io/openETCS/validation.png?label=In Progress&title=In Progress)](https://waffle.io/openETCS/validation)
 ##Management

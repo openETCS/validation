@@ -1,7 +1,7 @@
 #include "CheckBGInputChannel_newinterface.h"
 const int  rt_version = Srtv62;
 
-const char* _SCSIM_CheckSum = "2114eae6967945954937b5358d38b73d";
+const char* _SCSIM_CheckSum = "f7b95623b986ffa9a71bb44d90060bf2";
 const char* _SCSIM_SmuTypesCheckSum = "d5b51fa9eff9683da46173266ac496c5";
 
 /*******************************
@@ -17,18 +17,19 @@ int notvalid(void * pHandle) {
 /*******************************
  * Simulation context
  *******************************/
-inC_Listen_on_BTM_CheckBGInputChannel_Pkg inputs_ctx;
-static inC_Listen_on_BTM_CheckBGInputChannel_Pkg inputs_ctx_restore;
-static inC_Listen_on_BTM_CheckBGInputChannel_Pkg inputs_ctx_execute;
-outC_Listen_on_BTM_CheckBGInputChannel_Pkg outputs_ctx;
-static outC_Listen_on_BTM_CheckBGInputChannel_Pkg outputs_ctx_restore;
+inC_CheckBGInCh_Int_CheckBGInputChannel_Pkg inputs_ctx;
+static inC_CheckBGInCh_Int_CheckBGInputChannel_Pkg inputs_ctx_restore;
+static inC_CheckBGInCh_Int_CheckBGInputChannel_Pkg inputs_ctx_execute;
+outC_CheckBGInCh_Int_CheckBGInputChannel_Pkg outputs_ctx;
+static outC_CheckBGInCh_Int_CheckBGInputChannel_Pkg outputs_ctx_restore;
 
 /* separate_io: inputs instanciation */
 
 /* separate_io: outputs instanciation */
 
 static void _SCSIM_RestoreInterface(void) {
-	kcg_copy_struct__2714(&(inputs_ctx.BTM_TrackMsg), &(inputs_ctx_restore.BTM_TrackMsg));
+	inputs_ctx.acceleration = inputs_ctx_restore.acceleration;
+	inputs_ctx.initialPosition = inputs_ctx_restore.initialPosition;
 	outputs_ctx = outputs_ctx_restore;
 
 	/* separate_io: outputs restore */
@@ -36,7 +37,8 @@ static void _SCSIM_RestoreInterface(void) {
 
 static void _SCSIM_ExecuteInterface(void) {
 	pSimulator->m_pfnAcquireValueMutex(pSimulator);
-	kcg_copy_struct__2714(&(inputs_ctx_execute.BTM_TrackMsg), &(inputs_ctx.BTM_TrackMsg));
+	inputs_ctx_execute.acceleration = inputs_ctx.acceleration;
+	inputs_ctx_execute.initialPosition = inputs_ctx.initialPosition;
 	pSimulator->m_pfnReleaseValueMutex(pSimulator);
 }
 
@@ -49,7 +51,7 @@ void SimInit(void) {
 #ifdef EXTENDED_SIM
 	BeforeSimInit();
 #endif /* EXTENDED_SIM */
-	Listen_on_BTM_reset_CheckBGInputChannel_Pkg(&outputs_ctx);
+	CheckBGInCh_Int_reset_CheckBGInputChannel_Pkg(&outputs_ctx);
 #ifdef EXTENDED_SIM
 	AfterSimInit();
 #endif /* EXTENDED_SIM */
@@ -64,7 +66,7 @@ int SimStep(void) {
 		BeforeSimStep();
 #endif /* EXTENDED_SIM */
 	_SCSIM_ExecuteInterface();
-	Listen_on_BTM_CheckBGInputChannel_Pkg(&inputs_ctx_execute, &outputs_ctx);
+	CheckBGInCh_Int_CheckBGInputChannel_Pkg(&inputs_ctx_execute, &outputs_ctx);
 #ifdef EXTENDED_SIM
 	AfterSimStep();
 #endif /* EXTENDED_SIM */
@@ -79,12 +81,12 @@ void SimStop(void) {
 
 int SsmGetDumpSize(void) {
 	int nSize = 0;
-	nSize += sizeof(inC_Listen_on_BTM_CheckBGInputChannel_Pkg);
+	nSize += sizeof(inC_CheckBGInCh_Int_CheckBGInputChannel_Pkg);
 
 /* separate_io: add (not in ctx) inputs size */
 
 /* separate_io: add (not in ctx) outputs size */
-	nSize += sizeof(outC_Listen_on_BTM_CheckBGInputChannel_Pkg);
+	nSize += sizeof(outC_CheckBGInCh_Int_CheckBGInputChannel_Pkg);
 #ifdef EXTENDED_SIM
 	nSize += ExtendedGetDumpSize();
 #endif /* EXTENDED_SIM */
@@ -93,14 +95,14 @@ int SsmGetDumpSize(void) {
 
 void SsmGatherDumpData(char * pData) {
 	char* pCurrent = pData;
-	memcpy(pCurrent, &inputs_ctx, sizeof(inC_Listen_on_BTM_CheckBGInputChannel_Pkg));
-	pCurrent += sizeof(inC_Listen_on_BTM_CheckBGInputChannel_Pkg);
+	memcpy(pCurrent, &inputs_ctx, sizeof(inC_CheckBGInCh_Int_CheckBGInputChannel_Pkg));
+	pCurrent += sizeof(inC_CheckBGInCh_Int_CheckBGInputChannel_Pkg);
 
 	/* separate_io: dump (not in ctx) inputs */
 
 	/* separate_io: dump (not in ctx) outputs */
-	memcpy(pCurrent, &outputs_ctx, sizeof(outC_Listen_on_BTM_CheckBGInputChannel_Pkg));
-	pCurrent += sizeof(outC_Listen_on_BTM_CheckBGInputChannel_Pkg);
+	memcpy(pCurrent, &outputs_ctx, sizeof(outC_CheckBGInCh_Int_CheckBGInputChannel_Pkg));
+	pCurrent += sizeof(outC_CheckBGInCh_Int_CheckBGInputChannel_Pkg);
 #ifdef EXTENDED_SIM
 	ExtendedGatherDumpData(pCurrent);
 #endif /* EXTENDED_SIM */
@@ -108,14 +110,14 @@ void SsmGatherDumpData(char * pData) {
 
 void SsmRestoreDumpData(const char * pData) {
 	const char* pCurrent = pData;
-	memcpy(&inputs_ctx, pCurrent, sizeof(inC_Listen_on_BTM_CheckBGInputChannel_Pkg));
-	pCurrent += sizeof(inC_Listen_on_BTM_CheckBGInputChannel_Pkg);
+	memcpy(&inputs_ctx, pCurrent, sizeof(inC_CheckBGInCh_Int_CheckBGInputChannel_Pkg));
+	pCurrent += sizeof(inC_CheckBGInCh_Int_CheckBGInputChannel_Pkg);
 
 	/* separate_io: restore (not in ctx) inputs */
 
 	/* separate_io: restore (not in ctx) outputs */
-	memcpy(&outputs_ctx, pCurrent, sizeof(outC_Listen_on_BTM_CheckBGInputChannel_Pkg));
-	pCurrent += sizeof(outC_Listen_on_BTM_CheckBGInputChannel_Pkg);
+	memcpy(&outputs_ctx, pCurrent, sizeof(outC_CheckBGInCh_Int_CheckBGInputChannel_Pkg));
+	pCurrent += sizeof(outC_CheckBGInCh_Int_CheckBGInputChannel_Pkg);
 #ifdef EXTENDED_SIM
 	ExtendedRestoreDumpData(pCurrent);
 #endif /* EXTENDED_SIM */

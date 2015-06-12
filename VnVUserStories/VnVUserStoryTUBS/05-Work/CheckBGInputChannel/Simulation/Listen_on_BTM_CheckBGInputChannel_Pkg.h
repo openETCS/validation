@@ -1,22 +1,21 @@
 /* $*************** KCG Version 6.1.3 (build i6) ****************
-** Command: s2c613 -config C:/Welte-Dokumente/GitHub/jW/modeling/model/Scade/System/OBU_PreIntegrations/TestBenchExample/MultiplexerCheck/Simulation\kcg_s2c_config.txt
-** Generation date: 2015-06-12T13:56:05
+** Command: s2c613 -config C:/Welte-Dokumente/GitHub/jW/validation/VnVUserStories/VnVUserStoryTUBS/05-Work/CheckBGInputChannel/Simulation\kcg_s2c_config.txt
+** Generation date: 2015-06-12T21:21:29
 *************************************************************$ */
 #ifndef _Listen_on_BTM_CheckBGInputChannel_Pkg_H_
 #define _Listen_on_BTM_CheckBGInputChannel_Pkg_H_
 
 #include "kcg_types.h"
-#include "InitBG_Subfunctions.h"
-#include "Decop_Track_Msg_Subfunctions.h"
-#include "Consistency_Check_Track_BG_Subfunctions.h"
 #include "CAST_NID_BG_to_int_TM_conversions.h"
 #include "CAST_N_TOTAL_to_int_TM_conversions.h"
 #include "CAST_N_PIG_to_int_TM_conversions.h"
+#include "InitConsBG_Subfunctions_CheckBGInput_Pkg.h"
+#include "Decop_Track_Msg_Subfunctions_CheckBGInput_Pkg.h"
+#include "Consistency_NomCheck_Track_BG_Subfunctions_CheckBGInput_Pkg.h"
+#include "Consistency_RevCheck_Track_BG_Subfunctions_CheckBGInput_Pkg.h"
+#include "InitInconBG_Subfunctions_CheckBGInput_Pkg.h"
 
-/* ========================  input structure  ====================== */
-typedef struct {
-  API_TrackSideInput_T_API_Msg_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::BTM_TrackMsg */ BTM_TrackMsg;
-} inC_Listen_on_BTM_CheckBGInputChannel_Pkg;
+/* =====================  no input structure  ====================== */
 
 /* ========================  context type  ========================= */
 typedef struct {
@@ -27,13 +26,22 @@ typedef struct {
   ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::out_BG */ out_BG;
   /* -----------------------  no local probes  ----------------------- */
   /* -------------------- initialization variables  ------------------ */
-  kcg_bool init5;
+  kcg_bool init13;
+  kcg_bool init12;
+  kcg_bool init11;
+  kcg_bool init10;
   kcg_bool init;
   /* ----------------------- local memories  ------------------------- */
   kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2 */ SM2_reset_nxt_SM1_NominalDir;
   kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2 */ SM2_reset_act_SM1_NominalDir;
   SSM_ST_SM2_SM1_NominalDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2 */ SM2_state_nxt_SM1_NominalDir;
-  SSM_ST_SM1 /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1 */ SM1_state_nxt;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3 */ SM3_reset_nxt_SM1_ReverseDir;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3 */ SM3_reset_act_SM1_ReverseDir;
+  SSM_ST_SM3_SM1_ReverseDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3 */ SM3_state_nxt_SM1_ReverseDir;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4 */ SM4_reset_nxt_SM1_InconsistentDir;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4 */ SM4_reset_act_SM1_InconsistentDir;
+  SSM_ST_SM4_SM1_InconsistentDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4 */ SM4_state_nxt_SM1_InconsistentDir;
+  _3_SSM_ST_SM1 /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1 */ SM1_state_nxt;
   kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1 */ SM1_reset_act;
   kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1 */ SM1_reset_nxt;
   ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::current_BG */ current_BG;
@@ -41,21 +49,33 @@ typedef struct {
   kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::BG */ BG;
   kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::BTM_valid */ BTM_valid;
   /* ---------------------  sub nodes' contexts  --------------------- */
-  outC_InitBG_Subfunctions /* InitBG */ Context_InitBG;
-  outC_Consistency_Check_Track_BG_Subfunctions /* 1 */ _4_Context_1;
-  outC_Consistency_Check_Track_BG_Subfunctions /* 5 */ Context_5;
-  outC_Consistency_Check_Track_BG_Subfunctions /* 15 */ Context_15;
-  outC_Consistency_Check_Track_BG_Subfunctions /* 14 */ Context_14;
-  outC_Consistency_Check_Track_BG_Subfunctions /* 10 */ Context_10;
-  outC_Consistency_Check_Track_BG_Subfunctions /* 9 */ Context_9;
-  outC_Consistency_Check_Track_BG_Subfunctions /* 16 */ Context_16;
-  outC_CAST_NID_BG_to_int_TM_conversions /* 1 */ _3_Context_1;
-  outC_CAST_N_TOTAL_to_int_TM_conversions /* 1 */ _2_Context_1;
+  outC_Consistency_NomCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 9 */ _9_Context_9;
+  outC_InitInconBG_Subfunctions_CheckBGInput_Pkg /* 1 */ _8_Context_1;
+  outC_Consistency_RevCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 9 */ Context_9;
+  outC_Consistency_RevCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 4 */ _7_Context_4;
+  outC_Consistency_RevCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 8 */ Context_8;
+  outC_Consistency_RevCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 6 */ Context_6;
+  outC_Consistency_RevCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 5 */ _6_Context_5;
+  outC_Consistency_RevCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 2 */ Context_2;
+  outC_InitConsBG_Subfunctions_CheckBGInput_Pkg /* 4 */ Context_4;
+  outC_Consistency_RevCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 1 */ _5_Context_1;
+  outC_InitConsBG_Subfunctions_CheckBGInput_Pkg /* InitConsBG */ Context_InitConsBG;
+  outC_Consistency_NomCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 1 */ _4_Context_1;
+  outC_Consistency_NomCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 5 */ Context_5;
+  outC_Consistency_NomCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 15 */ Context_15;
+  outC_Consistency_NomCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 14 */ Context_14;
+  outC_Consistency_NomCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 10 */ Context_10;
+  outC_Consistency_NomCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 20 */ Context_20;
+  outC_Consistency_NomCheck_Track_BG_Subfunctions_CheckBGInput_Pkg /* 16 */ Context_16;
+  outC_CAST_N_TOTAL_to_int_TM_conversions /* 1 */ _3_Context_1;
+  outC_CAST_NID_BG_to_int_TM_conversions /* 1 */ _2_Context_1;
   outC_CAST_N_PIG_to_int_TM_conversions /* 1 */ _1_Context_1;
-  outC_Decop_Track_Msg_Subfunctions /* 1 */ Context_1;
+  outC_Decop_Track_Msg_Subfunctions_CheckBGInput_Pkg /* 1 */ Context_1;
   /* ------------------ clocks of observable data -------------------- */
   SSM_ST_SM2_SM1_NominalDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2 */ SM2_clock_SM1_NominalDir;
-  SSM_ST_SM1 /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1 */ SM1_state_act;
+  SSM_ST_SM3_SM1_ReverseDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3 */ SM3_clock_SM1_ReverseDir;
+  SSM_ST_SM4_SM1_InconsistentDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4 */ SM4_clock_SM1_InconsistentDir;
+  _3_SSM_ST_SM1 /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1 */ SM1_state_act;
   /* -------------------- (-debug) no assertions  -------------------- */
   /* ------------------- (-debug) local variables -------------------- */
   kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::_L43 */ _L43_SM1_NominalDir;
@@ -71,7 +91,7 @@ typedef struct {
   SSM_TR_SM2_SM1_NominalDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2 */ SM2_fired_strong_SM1_NominalDir;
   SSM_ST_SM2_SM1_NominalDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2 */ SM2_state_act_SM1_NominalDir;
   SSM_ST_SM2_SM1_NominalDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2 */ SM2_state_sel_SM1_NominalDir;
-  SSM_ST_SM2_SM1_NominalDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2 */ _6_SM2_clock_SM1_NominalDir;
+  SSM_ST_SM2_SM1_NominalDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2 */ _16_SM2_clock_SM1_NominalDir;
   kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir */ NominalDir_weakb_clock_SM1;
   ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2::LastBaliseinBG::_L2 */ _L2_SM1_NominalDir_SM2_LastBaliseinBG;
   API_TrackSideInput_T_API_Msg_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2::LastBaliseinBG::_L5 */ _L5_SM1_NominalDir_SM2_LastBaliseinBG;
@@ -121,9 +141,103 @@ typedef struct {
   API_TrackSideInput_T_API_Msg_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2::FirstBalise::_L20 */ _L20_SM1_NominalDir_SM2_FirstBalise;
   kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2::FirstBalise::_L22 */ _L22_SM1_NominalDir_SM2_FirstBalise;
   ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::NominalDir::SM2::FirstBalise::_L11 */ _L11_SM1_NominalDir_SM2_FirstBalise;
-  SSM_ST_SM1 /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1 */ SM1_state_sel;
-  SSM_TR_SM1 /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1 */ SM1_fired_strong;
-  SSM_TR_SM1 /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1 */ SM1_fired;
+  ReceivedBGs_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::_L17 */ _L17_SM1_ReverseDir;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::_L9 */ _L9_SM1_ReverseDir;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::_L10 */ _L10_SM1_ReverseDir;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::_L11 */ _L11_SM1_ReverseDir;
+  ReceivedBGs_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::_L12 */ _L12_SM1_ReverseDir;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::_L13 */ _L13_SM1_ReverseDir;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::_L14 */ _L14_SM1_ReverseDir;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::_L15 */ _L15_SM1_ReverseDir;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::_L16 */ _L16_SM1_ReverseDir;
+  SSM_TR_SM3_SM1_ReverseDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3 */ SM3_fired_SM1_ReverseDir;
+  SSM_TR_SM3_SM1_ReverseDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3 */ SM3_fired_strong_SM1_ReverseDir;
+  SSM_ST_SM3_SM1_ReverseDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3 */ SM3_state_act_SM1_ReverseDir;
+  SSM_ST_SM3_SM1_ReverseDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3 */ SM3_state_sel_SM1_ReverseDir;
+  SSM_ST_SM3_SM1_ReverseDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3 */ _15_SM3_clock_SM1_ReverseDir;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir */ ReverseDir_weakb_clock_SM1;
+  API_TrackSideInput_T_API_Msg_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FirstBalise::_L7 */ _L7_SM1_ReverseDir_SM3_FirstBalise;
+  Completeness_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FirstBalise::_L6 */ _L6_SM1_ReverseDir_SM3_FirstBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FirstBalise::_L3 */ _L3_SM1_ReverseDir_SM3_FirstBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FirstBalise::_L2 */ _L2_SM1_ReverseDir_SM3_FirstBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FirstBalise::_L1 */ _L1_SM1_ReverseDir_SM3_FirstBalise;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FirstBalise::_L9 */ _L9_SM1_ReverseDir_SM3_FirstBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FirstBalise::_L8 */ _L8_SM1_ReverseDir_SM3_FirstBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SeventhBalise::_L9 */ _L9_SM1_ReverseDir_SM3_SeventhBalise;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SeventhBalise::_L10 */ _L10_SM1_ReverseDir_SM3_SeventhBalise;
+  API_TrackSideInput_T_API_Msg_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SeventhBalise::_L8 */ _L8_SM1_ReverseDir_SM3_SeventhBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SeventhBalise::_L7 */ _L7_SM1_ReverseDir_SM3_SeventhBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SeventhBalise::_L6 */ _L6_SM1_ReverseDir_SM3_SeventhBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SeventhBalise::_L11 */ _L11_SM1_ReverseDir_SM3_SeventhBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SixthBalise::_L4 */ _L4_SM1_ReverseDir_SM3_SixthBalise;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SixthBalise::_L5 */ _L5_SM1_ReverseDir_SM3_SixthBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SixthBalise::_L3 */ _L3_SM1_ReverseDir_SM3_SixthBalise;
+  API_TrackSideInput_T_API_Msg_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SixthBalise::_L2 */ _L2_SM1_ReverseDir_SM3_SixthBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SixthBalise::_L1 */ _L1_SM1_ReverseDir_SM3_SixthBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SixthBalise::_L6 */ _L6_SM1_ReverseDir_SM3_SixthBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::Wait::_L2 */ _L2_SM1_ReverseDir_SM3_Wait;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::Wait::_L1 */ _L1_SM1_ReverseDir_SM3_Wait;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FifthBalise::_L4 */ _L4_SM1_ReverseDir_SM3_FifthBalise;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FifthBalise::_L5 */ _L5_SM1_ReverseDir_SM3_FifthBalise;
+  API_TrackSideInput_T_API_Msg_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FifthBalise::_L3 */ _L3_SM1_ReverseDir_SM3_FifthBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FifthBalise::_L2 */ _L2_SM1_ReverseDir_SM3_FifthBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FifthBalise::_L1 */ _L1_SM1_ReverseDir_SM3_FifthBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FifthBalise::_L6 */ _L6_SM1_ReverseDir_SM3_FifthBalise;
+  API_TrackSideInput_T_API_Msg_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FourthBalise::_L4 */ _L4_SM1_ReverseDir_SM3_FourthBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FourthBalise::_L2 */ _L2_SM1_ReverseDir_SM3_FourthBalise;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FourthBalise::_L3 */ _L3_SM1_ReverseDir_SM3_FourthBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FourthBalise::_L1 */ _L1_SM1_ReverseDir_SM3_FourthBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FourthBalise::_L5 */ _L5_SM1_ReverseDir_SM3_FourthBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::FourthBalise::_L6 */ _L6_SM1_ReverseDir_SM3_FourthBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::ThirdBalise::_L5 */ _L5_SM1_ReverseDir_SM3_ThirdBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::ThirdBalise::_L3 */ _L3_SM1_ReverseDir_SM3_ThirdBalise;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::ThirdBalise::_L4 */ _L4_SM1_ReverseDir_SM3_ThirdBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::ThirdBalise::_L2 */ _L2_SM1_ReverseDir_SM3_ThirdBalise;
+  API_TrackSideInput_T_API_Msg_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::ThirdBalise::_L1 */ _L1_SM1_ReverseDir_SM3_ThirdBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::ThirdBalise::_L6 */ _L6_SM1_ReverseDir_SM3_ThirdBalise;
+  API_TrackSideInput_T_API_Msg_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SecondBalise::_L4 */ _L4_SM1_ReverseDir_SM3_SecondBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SecondBalise::_L3 */ _L3_SM1_ReverseDir_SM3_SecondBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SecondBalise::_L1 */ _L1_SM1_ReverseDir_SM3_SecondBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SecondBalise::_L7 */ _L7_SM1_ReverseDir_SM3_SecondBalise;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SecondBalise::_L8 */ _L8_SM1_ReverseDir_SM3_SecondBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::SecondBalise::_L9 */ _L9_SM1_ReverseDir_SM3_SecondBalise;
+  API_TrackSideInput_T_API_Msg_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::LastBalise::_L5 */ _L5_SM1_ReverseDir_SM3_LastBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::LastBalise::_L4 */ _L4_SM1_ReverseDir_SM3_LastBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::LastBalise::_L7 */ _L7_SM1_ReverseDir_SM3_LastBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::LastBalise::_L8 */ _L8_SM1_ReverseDir_SM3_LastBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::ReverseDir::SM3::LastBalise::_L9 */ _L9_SM1_ReverseDir_SM3_LastBalise;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::No_BG::_L3 */ _L3_SM1_No_BG;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::No_BG::_L1 */ _L1_SM1_No_BG;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::_L8 */ _L8_SM1_InconsistentDir;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::_L9 */ _L9_SM1_InconsistentDir;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::_L10 */ _L10_SM1_InconsistentDir;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::_L11 */ _L11_SM1_InconsistentDir;
+  ReceivedBGs_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::_L5 */ _L5_SM1_InconsistentDir;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::_L6 */ _L6_SM1_InconsistentDir;
+  ReceivedBGs_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::_L7 */ _L7_SM1_InconsistentDir;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::_L3 */ _L3_SM1_InconsistentDir;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::_L4 */ _L4_SM1_InconsistentDir;
+  SSM_TR_SM4_SM1_InconsistentDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4 */ SM4_fired_SM1_InconsistentDir;
+  SSM_TR_SM4_SM1_InconsistentDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4 */ SM4_fired_strong_SM1_InconsistentDir;
+  SSM_ST_SM4_SM1_InconsistentDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4 */ SM4_state_act_SM1_InconsistentDir;
+  SSM_ST_SM4_SM1_InconsistentDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4 */ SM4_state_sel_SM1_InconsistentDir;
+  SSM_ST_SM4_SM1_InconsistentDir /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4 */ _14_SM4_clock_SM1_InconsistentDir;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4::Wait::_L2 */ _L2_SM1_InconsistentDir_SM4_Wait;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4::Wait::_L1 */ _L1_SM1_InconsistentDir_SM4_Wait;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4::FirstBalise::_L1 */ _L1_SM1_InconsistentDir_SM4_FirstBalise;
+  API_TrackSideInput_T_API_Msg_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4::FirstBalise::_L2 */ _L2_SM1_InconsistentDir_SM4_FirstBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4::FirstBalise::_L6 */ _L6_SM1_InconsistentDir_SM4_FirstBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4::FirstBalise::_L7 */ _L7_SM1_InconsistentDir_SM4_FirstBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4::FirstBalise::_L8 */ _L8_SM1_InconsistentDir_SM4_FirstBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4::FirstBalise::_L10 */ _L10_SM1_InconsistentDir_SM4_FirstBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4::FirstBalise::_L20 */ _L20_SM1_InconsistentDir_SM4_FirstBalise;
+  API_TrackSideInput_T_API_Msg_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4::FirstBalise::_L19 */ _L19_SM1_InconsistentDir_SM4_FirstBalise;
+  ReceivedBG_CheckBGInputChannel_Pkg /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4::FirstBalise::_L17 */ _L17_SM1_InconsistentDir_SM4_FirstBalise;
+  kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4::FirstBalise::_L18 */ _L18_SM1_InconsistentDir_SM4_FirstBalise;
+  kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1::InconsistentDir::SM4::FirstBalise::_L16 */ _L16_SM1_InconsistentDir_SM4_FirstBalise;
+  _3_SSM_ST_SM1 /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1 */ SM1_state_sel;
+  _5_SSM_TR_SM1 /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1 */ SM1_fired_strong;
+  _5_SSM_TR_SM1 /* CheckBGInputChannel_Pkg::Listen_on_BTM::SM1 */ SM1_fired;
   kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::API_nid_bg */ API_nid_bg;
   kcg_bool /* CheckBGInputChannel_Pkg::Listen_on_BTM::API_Msg_Present */ API_Msg_Present;
   kcg_int /* CheckBGInputChannel_Pkg::Listen_on_BTM::API_n_pig */ API_n_pig;
@@ -166,7 +280,7 @@ typedef struct {
 /* ===========  node initialization and cycle functions  =========== */
 /* CheckBGInputChannel_Pkg::Listen_on_BTM */
 extern void Listen_on_BTM_CheckBGInputChannel_Pkg(
-  inC_Listen_on_BTM_CheckBGInputChannel_Pkg *inC,
+  /* CheckBGInputChannel_Pkg::Listen_on_BTM::BTM_TrackMsg */API_TrackSideInput_T_API_Msg_Pkg *BTM_TrackMsg,
   outC_Listen_on_BTM_CheckBGInputChannel_Pkg *outC);
 
 extern void Listen_on_BTM_reset_CheckBGInputChannel_Pkg(
@@ -175,6 +289,6 @@ extern void Listen_on_BTM_reset_CheckBGInputChannel_Pkg(
 #endif /* _Listen_on_BTM_CheckBGInputChannel_Pkg_H_ */
 /* $*************** KCG Version 6.1.3 (build i6) ****************
 ** Listen_on_BTM_CheckBGInputChannel_Pkg.h
-** Generation date: 2015-06-12T13:56:05
+** Generation date: 2015-06-12T21:21:29
 *************************************************************$ */
 

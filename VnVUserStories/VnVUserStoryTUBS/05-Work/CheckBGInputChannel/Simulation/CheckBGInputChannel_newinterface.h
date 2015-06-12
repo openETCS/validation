@@ -1,18 +1,18 @@
-#ifndef LISTEN_ON_BTM_CHECKBGINPUTCHANNEL_PKG_INTERFACE
-#define LISTEN_ON_BTM_CHECKBGINPUTCHANNEL_PKG_INTERFACE
+#ifndef CHECKBGINCH_INT_CHECKBGINPUTCHANNEL_PKG_INTERFACE
+#define CHECKBGINCH_INT_CHECKBGINPUTCHANNEL_PKG_INTERFACE
 
 
 #include "NewSmuTypes.h"
 #include "kcg_types.h"
-#include "Listen_on_BTM_CheckBGInputChannel_Pkg.h"
+#include "CheckBGInCh_Int_CheckBGInputChannel_Pkg.h"
 
 extern SimSimulator * pSimulator;
 
 /*******************************
  * Simulation context
  *******************************/
-extern inC_Listen_on_BTM_CheckBGInputChannel_Pkg inputs_ctx;
-extern outC_Listen_on_BTM_CheckBGInputChannel_Pkg outputs_ctx;
+extern inC_CheckBGInCh_Int_CheckBGInputChannel_Pkg inputs_ctx;
+extern outC_CheckBGInCh_Int_CheckBGInputChannel_Pkg outputs_ctx;
 
 /* separate_io: inputs declaration */
 
@@ -42,4 +42,4 @@ extern int GraphicalInputsConnected;
 #define SIM_ERROR   3
 extern void SsmOutputMessage(int level, const char* str);
 
-#endif /*LISTEN_ON_BTM_CHECKBGINPUTCHANNEL_PKG_INTERFACE */
+#endif /*CHECKBGINCH_INT_CHECKBGINPUTCHANNEL_PKG_INTERFACE */

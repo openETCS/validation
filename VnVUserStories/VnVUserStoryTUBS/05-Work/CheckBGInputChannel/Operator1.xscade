@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Operator xmlns="http://www.esterel-technologies.com/ns/scade/4" xmlns:ed="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4" xmlns:kcg="http://www.esterel-technologies.com/ns/scade/pragmas/codegen/2" kind="node" name="Check_Position_BG">
+	<inputs>
+		<Variable name="BTM_TrackMes">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="API_Msg_Pkg::API_TrackSideInput_T"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/9060d/4E88/1594/556de0ad6a1e"/>
+			</pragmas>
+		</Variable>
+		<Variable name="Pos_BGs">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="TrainPosition_Types_Pck::positionedBGs_T"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/9061b/4E88/1594/556de14918c6" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>The collection of currently known BGs.</comment>
+				</ed:Variable>
+			</pragmas>
+		</Variable>
+	</inputs>
+	<outputs>
+		<Variable name="Number_Pos_BGs">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="bool"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/90640/4E88/1594/556de3c1442b"/>
+			</pragmas>
+		</Variable>
+	</outputs>
+	<signals>
+		<Signal name="Signal1">
+			<pragmas>
+				<ed:Signal oid="!ed/90674/4E88/1594/556de4f8205a"/>
+			</pragmas>
+		</Signal>
+	</signals>
+	<locals>
+		<Variable name="_L1">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="API_Msg_Pkg::API_TrackSideInput_T"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/90610/4E88/1594/556de0d4618a"/>
+			</pragmas>
+		</Variable>
+		<Variable name="_L2">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="TrainPosition_Types_Pck::positionedBGs_T"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/90639/4E88/1594/556de2df1adb"/>
+			</pragmas>
+		</Variable>
+	</locals>
+	<data>
+		<!-- _L1 = BTM_TrackMes; -->
+		<Equation>
+			<lefts>
+				<VariableRef name="_L1"/>
+			</lefts>
+			<right>
+				<IdExpression>
+					<path>
+						<ConstVarRef name="BTM_TrackMes"/>
+					</path>
+				</IdExpression>
+			</right>
+			<pragmas>
+				<ed:Equation oid="!ed/9060f/4E88/1594/556de0d47b2d"/>
+			</pragmas>
+		</Equation>
+		<!-- _L2 = Pos_BGs; -->
+		<Equation>
+			<lefts>
+				<VariableRef name="_L2"/>
+			</lefts>
+			<right>
+				<IdExpression>
+					<path>
+						<ConstVarRef name="Pos_BGs"/>
+					</path>
+				</IdExpression>
+			</right>
+			<pragmas>
+				<ed:Equation oid="!ed/90638/4E88/1594/556de2df6e1d"/>
+			</pragmas>
+		</Equation>
+		<StateMachine name="Check_BaliseInput">
+			<states>
+				<State name="Receive_First_Balise">
+					<until>
+						<Transition kind="restart">
+							<target>
+								<StateRef name="Recieve_Last_Balise"/>
+							</target>
+							<condition>
+								<ConstValue value="true"/>
+							</condition>
+							<effect>
+								<Action>
+									<pragmas>
+										<ed:Action oid="!ed/11e14f/3FD0/14F8/557084b53aee"/>
+									</pragmas>
+								</Action>
+							</effect>
+							<pragmas>
+								<ed:Transition oid="!ed/11e14e/3FD0/14F8/557084b5307e"/>
+							</pragmas>
+						</Transition>
+					</until>
+					<pragmas>
+						<ed:State oid="!ed/11e14d/3FD0/14F8/557084b5588f"/>
+					</pragmas>
+				</State>
+				<State name="Recieve_Last_Balise">
+					<until>
+						<Transition kind="restart">
+							<target>
+								<StateRef name="No_Balise_Received"/>
+							</target>
+							<condition>
+								<ConstValue value="true"/>
+							</condition>
+							<effect>
+								<Action>
+									<pragmas>
+										<ed:Action oid="!ed/11e152/3FD0/14F8/557084b5772f"/>
+									</pragmas>
+								</Action>
+							</effect>
+							<pragmas>
+								<ed:Transition oid="!ed/11e151/3FD0/14F8/557084b575bb"/>
+							</pragmas>
+						</Transition>
+					</until>
+					<pragmas>
+						<ed:State oid="!ed/11e150/3FD0/14F8/557084b55f93"/>
+					</pragmas>
+				</State>
+				<State initial="true" name="No_Balise_Received">
+					<until>
+						<Transition kind="restart">
+							<target>
+								<StateRef name="Receive_First_Balise"/>
+							</target>
+							<condition>
+								<ConstValue value="true"/>
+							</condition>
+							<effect>
+								<Action>
+									<pragmas>
+										<ed:Action oid="!ed/11e155/3FD0/14F8/557084b55bb2"/>
+									</pragmas>
+								</Action>
+							</effect>
+							<pragmas>
+								<ed:Transition oid="!ed/11e154/3FD0/14F8/557084b53f49"/>
+							</pragmas>
+						</Transition>
+					</until>
+					<pragmas>
+						<ed:State oid="!ed/11e153/3FD0/14F8/557084b5767c"/>
+					</pragmas>
+				</State>
+				<State name="Balise_Positioned">
+					<pragmas>
+						<ed:State oid="!ed/11e156/3FD0/14F8/557084b513d"/>
+					</pragmas>
+				</State>
+			</states>
+			<pragmas>
+				<ed:StateMachine oid="!ed/11e14c/3FD0/14F8/557084b5412e"/>
+			</pragmas>
+		</StateMachine>
+	</data>
+	<pragmas>
+		<ed:Operator oid="!ed/90605/4E88/1594/556de0394ba1" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+			<diagrams>
+				<NetDiagram name="diagram_Check_Position_BG_1" landscape="true" format="A4 (210 297)" oid="!ed/90606/4E88/1594/556de039250b">
+					<presentationElements>
+						<EquationGE presentable="!ed/9060f/4E88/1594/556de0d47b2d">
+							<position>
+								<Point x="4101" y="2249"/>
+							</position>
+							<size>
+								<Size width="264" height="503"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/90638/4E88/1594/556de2df6e1d">
+							<position>
+								<Point x="3995" y="9684"/>
+							</position>
+							<size>
+								<Size width="265" height="502"/>
+							</size>
+						</EquationGE>
+					</presentationElements>
+				</NetDiagram>
+				<NetDiagram name="StateM_CheckInput" landscape="true" format="A4 (210 297)" oid="!ed/11e14b/3FD0/14F8/557084b54df6">
+					<presentationElements>
+						<StateMachineGE presentable="!ed/11e14c/3FD0/14F8/557084b5412e">
+							<position>
+								<Point x="3889" y="1296"/>
+							</position>
+							<size>
+								<Size width="23654" height="18045"/>
+							</size>
+						</StateMachineGE>
+						<StateGE presentable="!ed/11e14d/3FD0/14F8/557084b5588f">
+							<position>
+								<Point x="5980" y="8546"/>
+							</position>
+							<size>
+								<Size width="4180" height="3519"/>
+							</size>
+						</StateGE>
+						<StateGE presentable="!ed/11e150/3FD0/14F8/557084b55f93">
+							<position>
+								<Point x="14314" y="8625"/>
+							</position>
+							<size>
+								<Size width="5080" height="3149"/>
+							</size>
+						</StateGE>
+						<StateGE presentable="!ed/11e153/3FD0/14F8/557084b5767c">
+							<position>
+								<Point x="6138" y="1931"/>
+							</position>
+							<size>
+								<Size width="4524" height="1772"/>
+							</size>
+						</StateGE>
+						<TransitionGE presentable="!ed/11e154/3FD0/14F8/557084b53f49">
+							<positions>
+								<Point x="7938" y="3703"/>
+								<Point x="7303" y="4657"/>
+								<Point x="7250" y="7038"/>
+								<Point x="9446" y="8546"/>
+							</positions>
+							<labelSize>
+								<Size width="1535" height="370"/>
+							</labelSize>
+							<labelPos>
+								<Point x="5053" y="6430"/>
+							</labelPos>
+							<slashPos>
+								<Point x="5794" y="6429"/>
+							</slashPos>
+						</TransitionGE>
+						<TransitionGE presentable="!ed/11e14e/3FD0/14F8/557084b5307e">
+							<positions>
+								<Point x="10160" y="9975"/>
+								<Point x="11536" y="9975"/>
+								<Point x="12912" y="9975"/>
+								<Point x="14314" y="10028"/>
+							</positions>
+							<labelSize>
+								<Size width="1535" height="370"/>
+							</labelSize>
+							<labelPos>
+								<Point x="11457" y="10848"/>
+							</labelPos>
+							<slashPos>
+								<Point x="12197" y="10848"/>
+							</slashPos>
+						</TransitionGE>
+						<TransitionGE presentable="!ed/11e151/3FD0/14F8/557084b575bb">
+							<positions>
+								<Point x="15610" y="8625"/>
+								<Point x="15108" y="7620"/>
+								<Point x="11139" y="4657"/>
+								<Point x="10610" y="3625"/>
+							</positions>
+							<labelSize>
+								<Size width="1535" height="370"/>
+							</labelSize>
+							<labelPos>
+								<Point x="15610" y="8440"/>
+							</labelPos>
+							<slashPos>
+								<Point x="16351" y="8440"/>
+							</slashPos>
+						</TransitionGE>
+						<StateGE presentable="!ed/11e156/3FD0/14F8/557084b513d">
+							<position>
+								<Point x="22675" y="6403"/>
+							</position>
+							<size>
+								<Size width="4021" height="2566"/>
+							</size>
+						</StateGE>
+					</presentationElements>
+				</NetDiagram>
+			</diagrams>
+		</ed:Operator>
+	</pragmas>
+</Operator>

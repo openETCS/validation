@@ -31,4 +31,6 @@ Throughput Graph
 4. Verify/ Validate and document the results
 5. Commit your changes (`git commit -am 'Added some verification results'`)
 6. Push to the branch (`git push origin my-new-verification-operator`)
-7. Create new Pull Request
+7. Create new Pull Request via http://github.com/you
+8. Configure pulling your repository from the master (`git remote set-url --push https://github.com/openETCS/validation.git`)
+

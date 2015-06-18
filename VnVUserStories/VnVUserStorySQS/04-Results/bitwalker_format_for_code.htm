@@ -1,0 +1,378 @@
+<html><head><title>Resource Standard Metrics 7.75</title></head><body><pre><P>
+
+
+
+
+                                        RSM Source Code Print
+          File: C:\Users\idelatorre.BIO-SQS\Desktop\Bitwalker\Bitwalker.h          
+          Date: Mon Aug 19 07:37:22 2013
+          ________________________________________________________________________________
+
+              1| #ifndef BITWALKER_H
+              2| #define BITWALKER_H
+              3| #include &lt;stdint.h&gt;
+              4| 
+              5| /*
+              6| Formalization of Subset-026-7 (Chapter 7: ERTMS/ETCS language)
+              7| 
+              8| - Name: Subset-026-7 / Bitwalker / Bitwalker.h
+              9| - Description: UNISIG SUBSET-026-7, ISSUE : 3.3.0, 3.5 ERTMS/ETCS languag
+               | e) 
+             10| - Copyright Siemens AG, 2013
+             11| - Licensed under the EUPL V.1.1 ( http://joinup.ec.europa.eu/software/pag
+               | e/eupl/licence-eupl )
+             12| - Gist URL: none
+             13| - Cryptography: No
+             14| - Author(s): SiemensRailAutomation
+             15| 
+             16| Disclaimer:
+             17| 
+             18| The use of this software is limited to NON-vital applications. 
+             19| It has NOT been developed for vital operation purposes and MUST NOT be us
+               | ed for applications 
+             20| which may cause harm to people, physical accidents or financial loss. 
+             21| 
+             22| THEREFORE, NO LIABILITY WILL BE GIVEN FOR SUCH AND ANY OTHER KIND OF USE.
+               |  
+             23| */
+             24| 
+             25| uint64_t Bitwalker_Peek(unsigned int Startposition, unsigned int Length, 
+               | uint8_t Bitstream[], unsigned int BitstreamSizeInBytes);
+             26| int 	 Bitwalker_Poke(unsigned int Startposition, unsigned int Length, uin
+               | t8_t Bitstream[], unsigned int BitstreamSizeInBytes, uint64_t Value);
+             27| 
+             28| typedef struct	{	uint8_t *Bitstream;
+             29| 					unsigned int Length;
+             30| 					unsigned int CurrentBitposition;
+             31| 				} T_Bitwalker_Incremental_Locals;
+             32| 
+             33| void	 Bitwalker_IncrementalWalker_Init(T_Bitwalker_Incremental_Locals *Lo
+               | cals, uint8_t Bitstream[], unsigned int Size, unsigned int FirstBitpositi
+               | on);
+             34| 
+             35| uint64_t Bitwalker_IncrementalWalker_Peek_Next (T_Bitwalker_Incremental_L
+               | ocals *Locals, unsigned int Length);
+             36| int		 Bitwalker_IncrementalWalker_Peek_Finish (T_Bitwalker_Incremental_Lo
+               | cals *Locals);
+             37| 
+             38| int		 Bitwalker_IncrementalWalker_Poke_Next(T_Bitwalker_Incremental_Local
+               | s *Locals, unsigned int Length, uint64_t Value);
+             39| int		 Bitwalker_IncrementalWalker_Poke_Finish (T_Bitwalker_Incremental_Lo
+               | cals *Locals);
+             40| 
+             41| #endif // BITWALKER_H
+
+          ________________________________________________________________________________
+
+
+
+
+
+
+                                        RSM Source Code Print
+          File: C:\Users\idelatorre.BIO-SQS\Desktop\Bitwalker\Bitwalker.c          
+          Date: Mon Aug 19 07:37:22 2013
+          ________________________________________________________________________________
+
+              1| #include "Bitwalker.h"
+              2| /*
+              3| Formalization of Subset-026-7 (Chapter 7: ERTMS/ETCS language)
+              4| 
+              5| - Name: Subset-026-7 / Bitwalker.c
+              6| - Description: UNISIG SUBSET-026-7, ISSUE : 3.3.0, 3.5 ERTMS/ETCS languag
+               | e) 
+              7| - Copyright Siemens AG, 2013
+              8| - Licensed under the EUPL V.1.1 ( http://joinup.ec.europa.eu/software/pag
+               | e/eupl/licence-eupl )
+              9| - Gist URL: none
+             10| - Cryptography: No
+             11| - Author(s): SiemensRailAutomation
+             12| 
+             13| Disclaimer:
+             14| 
+             15| The use of this software is limited to NON-vital applications. 
+             16| It has NOT been developed for vital operation purposes and MUST NOT be us
+               | ed for applications 
+             17| which may cause harm to people, physical accidents or financial loss. 
+             18| 
+             19| THEREFORE, NO LIABILITY WILL BE GIVEN FOR SUCH AND ANY OTHER KIND OF USE.
+               |  
+             20| */
+             21| 
+             22| // switch between easily debugable code and compact code with reduced num
+               | ber of local variables and intensified bit manipulation
+             23| 
+             24| static const uint8_t BitwalkerBitMaskTable[] = {0x80, 0x40, 0x20, 0x10, 0
+               | x08, 0x04, 0x02, 0x01};
+             25| 
+             26| uint64_t Bitwalker_Peek (unsigned int Startposition, unsigned int Length,
+               |  uint8_t Bitstream[], unsigned int BitstreamSizeInBytes)
+             27| {
+             28| 	// plausibility check: is last byte in range
+             29| 	if (((Startposition + Length - 1) &gt;&gt; 3) &gt;= BitstreamSizeInBytes)
+             30| 		return 0;	// error: index out of range
+             31| 
+             32| 	// Everything ok, we can iterate bitwise
+             33| 	uint64_t retval = 0;
+             34| 
+             35| 	unsigned int i;
+             36| 	for (i = Startposition; i &lt; Startposition + Length; i++)
+             37| 	{
+             38| 		uint8_t CurrentValue = Bitstream[i &gt;&gt; 3] &amp; BitwalkerBitMaskTable[i &amp; 0x
+               | 07];
+             39| 
+             40| 		retval = (retval &lt;&lt; 1) + (uint8_t)(CurrentValue != 0);	// tricky conver
+               | sion bool to int (Zero or One):
+             41| 																// false == 0, true == 1 ==&gt; if bit is set, than 1, else 
+               | 0
+             42| 	}
+             43| 
+             44| 	return retval;
+             45| }
+             46| 
+             47| 
+             48| int Bitwalker_Poke (unsigned int Startposition, unsigned int Length, uint
+               | 8_t Bitstream[], unsigned int BitstreamSizeInBytes, uint64_t Value)
+             49| {
+             50| 	// plausibility check: is last byte in range
+             51| 	if (((Startposition + Length - 1) &gt;&gt; 3) &gt;= BitstreamSizeInBytes)
+             52| 		return -1;	// error: index out of range
+             53| 
+             54| 	// plausibility check: is value in range
+             55| 	uint64_t MaxValue = (((uint64_t)0x01) &lt;&lt; Length) - 1;
+             56| 	if (MaxValue &lt; Value)
+             57| 		return -2;		// error: value to big for bit field
+             58| 
+             59| 	// Everything ok, we can iterate bitwise from left to right
+             60| 	int i;
+             61| 	for (i = Startposition + Length - 1; i &gt;= (int)Startposition; i--)
+             62| 	{
+             63| 		if ((Value &amp; 0x01) == 0)
+             64| 			 Bitstream[i &gt;&gt; 3] &amp;= ~BitwalkerBitMaskTable[i &amp; 0x07];
+             65| 		else Bitstream[i &gt;&gt; 3] |=  BitwalkerBitMaskTable[i &amp; 0x07];
+             66| 
+             67| 		Value &gt;&gt;= 1;	//prepare next iteration with value without written bit
+             68| 	}
+             69| 
+             70| 	return 0;
+             71| }
+             72| 
+             73| 
+             74| void Bitwalker_IncrementalWalker_Init (T_Bitwalker_Incremental_Locals *Lo
+               | cals, uint8_t Bitstream[], unsigned int Size, unsigned int FirstBitpositi
+               | on)
+             75| {
+             76| 	Locals-&gt;Bitstream			= Bitstream;
+             77| 	Locals-&gt;Length				= Size;
+             78| 	Locals-&gt;CurrentBitposition	= FirstBitposition;
+             79| }
+             80| 
+             81| 
+             82| uint64_t Bitwalker_IncrementalWalker_Peek_Next (T_Bitwalker_Incremental_L
+               | ocals *Locals, unsigned int Length)
+             83| {
+             84| 	// plausibility check is done when reading the bits
+             85| 	uint64_t retval = Bitwalker_Peek(Locals-&gt;CurrentBitposition, Length, Loc
+               | als-&gt;Bitstream, Locals-&gt;Length);
+             86| 	Locals-&gt;CurrentBitposition += Length;
+             87| 	return retval;
+             88| }
+             89| 
+             90| 
+             91| int Bitwalker_IncrementalWalker_Peek_Finish (T_Bitwalker_Incremental_Loca
+               | ls *Locals)
+             92| {
+             93| 	return Locals-&gt;CurrentBitposition;
+             94| }
+             95| 
+             96| 
+             97| int Bitwalker_IncrementalWalker_Poke_Next(T_Bitwalker_Incremental_Locals 
+               | *Locals, unsigned int Length, uint64_t Value)
+             98| {
+             99| 	// plausibility check is done when reading the bits
+            100| 	int retval = Bitwalker_Poke(Locals-&gt;CurrentBitposition, Length, Locals-&gt;
+               | Bitstream, Locals-&gt;Length, Value);
+            101| 	Locals-&gt;CurrentBitposition += Length;
+            102| 	return retval;
+            103| }
+            104| 
+            105| 
+            106| int Bitwalker_IncrementalWalker_Poke_Finish(T_Bitwalker_Incremental_Local
+               | s *Locals)
+            107| {
+            108| 	return Locals-&gt;CurrentBitposition;
+            109| }
+
+          ________________________________________________________________________________
+
+
+
+
+
+
+                                        RSM Source Code Print
+          File: C:\Users\idelatorre.BIO-SQS\Desktop\Bitwalker\main.c               
+          Date: Mon Aug 19 07:37:22 2013
+          ________________________________________________________________________________
+
+              1| #include &lt;stdio.h&gt;
+              2| #include "Bitwalker.h"
+              3| #include "opnETCS_Decoder.h"
+              4| #include "System_Version_order.h"
+              5| 
+              6| /*
+              7| Formalization of Subset-026-7 (Chapter 7: ERTMS/ETCS language)
+              8| 
+              9| - Name: Subset-026-7 / Bitwalker / main.c
+             10| - Description: UNISIG SUBSET-026-7, ISSUE : 3.3.0, 3.5 ERTMS/ETCS languag
+               | e) 
+             11| - Copyright Siemens AG, 2013
+             12| - Licensed under the EUPL V.1.1 ( http://joinup.ec.europa.eu/software/pag
+               | e/eupl/licence-eupl )
+             13| - Gist URL: ---
+             14| - Cryptography: No
+             15| 
+             16| Disclaimer:
+             17| 
+             18| The use of this software is limited to NON-vital applications. 
+             19| It has NOT been developed for vital operation purposes and MUST NOT be us
+               | ed for applications 
+             20| which may cause harm to people, physical accidents or financial loss. 
+             21| 
+             22| THEREFORE, NO LIABILITY WILL BE GIVEN FOR SUCH AND ANY OTHER KIND OF USE.
+               |  
+             23| */
+             24| 
+             25| int main(void)
+             26| {
+             27| 	//	uint8_t Teststream[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf
+               | f, 0xff,
+             28| 	//							0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+             29| 	//							0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+             30| 	//							0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+             31| 	//							0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+             32| 	//
+             33| 	//							0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+             34| 	//							0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+             35| 	//							0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+             36| 	//							0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+             37| 	//							0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+             38| 	//
+             39| 	//							0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+             40| 	//							0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+             41| 	//							0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
+             42| 	//						   };
+             43| 	uint8_t Teststream[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+               | 0x00,
+             44| 							0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+             45| 							0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+             46| 							0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+             47| 							0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+             48| 
+             49| 							0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+             50| 							0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+             51| 							0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+             52| 							0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+             53| 							0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+             54| 
+             55| 							0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+             56| 							0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+             57| 							0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+             58| 						   };
+             59| 
+             60| 	int size = sizeof(Teststream);
+             61| 
+             62| 	uint64_t Testwort = 0;
+             63| 	uint64_t TestwortRetval = 0;
+             64| 
+             65| 	T_Bitwalker_Incremental_Locals PeekLocals;
+             66| 	T_Bitwalker_Incremental_Locals PokeLocals;
+             67| 
+             68| 	Bitwalker_IncrementalWalker_Init(&amp;PeekLocals, Teststream, size, 0);
+             69| 	Bitwalker_IncrementalWalker_Init(&amp;PokeLocals, Teststream, size, 0);
+             70| 
+             71|     {
+             72|         //
+             73|         // Für Testzwecke
+             74|         //
+             75|         //	Testwort = 1;
+             76|         //	Bitwalker_IncrementalWalker_Poke_Next(&amp;PokeLocals, 8, Testwort
+               | );
+             77|         //	TestwortRetval = Bitwalker_IncrementalWalker_Peek_Next(&amp;PeekLo
+               | cals, 8);
+             78| 
+             79|         //	Testwort = 2;
+             80|         //	Bitwalker_IncrementalWalker_Poke_Next(&amp;PokeLocals, 8, Testwort
+               | );
+             81|         //	TestwortRetval = Bitwalker_IncrementalWalker_Peek_Next(&amp;PeekLo
+               | cals, 8);
+             82| 
+             83|         //	Testwort = 4;
+             84|         //	Bitwalker_IncrementalWalker_Poke_Next(&amp;PokeLocals, 8, Testwort
+               | );
+             85|         //	TestwortRetval = Bitwalker_IncrementalWalker_Peek_Next(&amp;PeekLo
+               | cals, 8);
+             86| 
+             87|         //	Testwort = 8;
+             88|         //	Bitwalker_IncrementalWalker_Poke_Next(&amp;PokeLocals, 8, Testwort
+               | );
+             89|         //	TestwortRetval = Bitwalker_IncrementalWalker_Peek_Next(&amp;PeekLo
+               | cals, 8);
+             90| 
+             91|         //	Testwort = 16;
+             92|         //	Bitwalker_IncrementalWalker_Poke_Next(&amp;PokeLocals, 8, Testwort
+               | );
+             93|         //	TestwortRetval = Bitwalker_IncrementalWalker_Peek_Next(&amp;PeekLo
+               | cals, 8);
+             94| 
+             95|         //	Testwort = 32;
+             96|         //	Bitwalker_IncrementalWalker_Poke_Next(&amp;PokeLocals, 8, Testwort
+               | );
+             97|         //	TestwortRetval = Bitwalker_IncrementalWalker_Peek_Next(&amp;PeekLo
+               | cals, 8);
+             98|     }
+             99|     // create bitstream of telegram "System Version order"
+            100| 
+            101|     uint32_t Bitlength   = 30; //  net bitlength of telegram "System Vers
+               | ion order" without header
+            102|     uint32_t Bytelength  = Bitlength / 8 + 1;
+            103|     uint32_t FirstBitPos = 0;
+            104|     uint32_t ArrayIndex  = 0;
+            105| 
+            106|     // &lt;Packet Number="2" Name="System Version order" TransmissionMedia="
+               | Balise" &gt;&lt;TlgVar Name="NID_PACKET" Length="8"  /&gt;
+            107|     Bitwalker_IncrementalWalker_Poke_Next(&amp;PeekLocals, 8, 2);
+            108|     // &lt;TlgVar Name="Q_DIR" Length="2"  /&gt; &lt;Special Value="01"  Descripti
+               | on="Nominal" /&gt;
+            109|     Bitwalker_IncrementalWalker_Poke_Next(&amp;PeekLocals, 2, 1);
+            110|     // Telegrammlänge in Bit ( normalerweise incl. Header; Den haben wir 
+               | aber noch nicht)
+            111|     Bitwalker_IncrementalWalker_Poke_Next(&amp;PeekLocals, 13, Bitlength);
+            112|     // &lt;Special Value="010 0000"  Description="Version 2_0 introduced in 
+               | SRS 3_3_0" /&gt;
+            113|     Bitwalker_IncrementalWalker_Poke_Next(&amp;PeekLocals, 7, 32);
+            114| 
+            115|     T_DATA_oETCS_TrackToTrain_System_Version_order oETCS;
+            116| 
+            117|      TrackToTrain_System_Version_order(&amp;Teststream, FirstBitPos, Byteleng
+               | th, ArrayIndex,  &amp;oETCS);
+            118| 
+            119|      Testwort = oETCS.aPacket[ArrayIndex].NID_PACKET;  // shall be  2
+            120|      Testwort = oETCS.aPacket[ArrayIndex].Q_DIR;       // shall be  1
+            121|      Testwort = oETCS.aPacket[ArrayIndex].L_PACKET;    // shall be 30
+            122|      Testwort = oETCS.aPacket[ArrayIndex].M_VERSION;   // shall be 32
+            123| 
+            124| 
+            125| 	return TestwortRetval;
+            126| }
+            127| 
+
+          ________________________________________________________________________________
+
+
+
+<b>          Shareware evaluation licenses process only <font color=RED><BLINK>20</BLINK></font> files.
+          Paid licenses enable processing for an unlimited number of files.</b>
+
+<font color="RED" size="+2"><B><I>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Banner - Edit rsm.cfg File</I></B></font>
+</pre></body></html>

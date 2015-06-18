@@ -1,0 +1,77 @@
+/************************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Checking data consistency
+Data adaptation to current ETCS level
+
+************************************************/
+
+REFINEMENT
+	os_consist_r
+
+REFINES
+	os_consist
+
+SEES
+	os_typ         ,
+	os_cte_conf_bs ,
+	os_in
+
+ABSTRACT_VARIABLES
+	level_etcs_prec     ,
+	train_position      ,
+	train_position_prev ,
+	start_os_area       ,
+	mamode              ,
+	os_area_speed       ,
+	dist_ack_os_area
+
+INITIALISATION
+	level_etcs_prec     := c_level_0            ||
+	train_position      := 0                    ||
+	train_position_prev := k_train_position_def ||
+	start_os_area       := 0                    ||
+	mamode              := c_profile_OS         ||
+	os_area_speed       := 0                    ||
+	dist_ack_os_area    := 0
+
+OPERATIONS
+
+	elaborate_area_and_geopos =
+	IF
+		level_etcs_prec : {c_level_ntc, c_level_0, c_level_1}
+	THEN
+		train_position   := btm_train_position   ||
+		start_os_area    := btm_start_os_area    ||
+		mamode           := btm_mamode           ||
+		os_area_speed    := btm_os_area_speed    ||
+		dist_ack_os_area := btm_dist_ack_os_area
+	ELSIF
+		level_etcs_prec : {c_level_2, c_level_3}
+	THEN
+		train_position   := radio_train_position   ||
+		start_os_area    := radio_start_os_area    ||
+		mamode           := radio_mamode           ||
+		os_area_speed    := radio_os_area_speed    ||
+		dist_ack_os_area := radio_dist_ack_os_area
+	ELSE
+		train_position   := k_train_position_def   ||
+		start_os_area    := k_start_os_area_def    ||
+		mamode           := k_mamode_def           ||
+		os_area_speed    := k_os_area_speed_def    ||
+		dist_ack_os_area := k_dist_ack_os_area_def
+	END
+	;
+
+	copy_consist_prec =
+	BEGIN
+		train_position_prev := train_position
+	END
+
+END
+

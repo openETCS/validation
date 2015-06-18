@@ -1,0 +1,234 @@
+/**********************************
+Procedure
+Shunting Initiated by Driver
+(SRS 5.6 v3.3.0)
+Associated Scade model for the proof :
+SH_Initiated_By_Driver_On
+**********************************/
+
+/* 
+Assumptions took by Scade model: 
+
+1. A030 and National Trip occurrence is covered by Trip conditions and
+procedures with higher priority.
+
+2. Communication with RBC is out of the scope of this function
+(repetition of message to RBC, waiting for acknowledgment,...) 
+
+Consequences of those assumptions: 
+
+1. D030 and A030 are not in this HLL model. This implies that we have
+to deal with the "NTC" transition leaving D020. To resolve this
+problem, we assume this transition is merged with the "0/1"
+transition.
+
+2. D080, A095, S100, A115 are not in this HLL model. This implies the
+"No" transition leaving D040 is going nowhere. To deal with it, we
+assume this transition leads to an "End" state.
+*/
+
+
+/**** NOTES **** 
+(1) Modification of HLL model in order to copy the Scade model about
+A220 modelization leading to the initial state instead of a dead end
+state.
+
+
+
+****************/
+
+Types:
+// Flowchart states, corresponding to rectangles
+enum{'initial_state','s050','a100_end','a220_end','d040_end'} states;
+
+
+
+Declarations:
+/* Declarations of actions took (= output(s) are set to a value) for
+each state: */
+bool all_false_outputs;
+bool s050_outputs; // when in S050 state
+bool a045_s050_outputs; //when in S050 state, coming from a045
+bool a220_outputs; // when in End state from A220, coming from A220
+bool a100_a050_from_d020_outputs; // when in a100, coming from a050 and d020
+bool a100_a050_from_e090_outputs; // when in a100, coming from a050 and e090
+bool end_d040_a050_from_d020_outputs; // when in End state from D040, coming from A050 and d020
+bool end_d040_a050_from_e090_outputs; // when in End state from D040, coming from A050 and e090
+
+
+
+states current_state; // current state of our model
+states last_state; // last state of our model
+
+states e015_transition;
+states e090_e215_transitions;
+states d020_diamond;
+states a050_rounded_from_d020;
+states a045_rounded_from_d020;
+states d040_diamond;
+states a050_rounded_from_e090;
+
+
+bool a045_activation;
+bool a050_activation;
+bool a100_activation;
+bool a220_activation;
+
+
+//Proof obligation to be proven:
+bool po;
+
+Definitions:
+/*****************************
+ * OUTPUTS VALUES DEFINITION *
+ *****************************/
+all_false_outputs := ~Clean_BG_List_SH_Area & ~Condition5 & ~Condition6 & 
+		     ~End_Of_Mission_Procedure_Req & ~SH_Refused_By_RBC_To_DMI & 
+		     ~Request_For_SH_To_RBC;
+
+// Wait for RBC to reply
+s050_outputs := ~Clean_BG_List_SH_Area & ~Condition5 & ~Condition6 & 
+	     	~End_Of_Mission_Procedure_Req & ~SH_Refused_By_RBC_To_DMI & 
+		~Request_For_SH_To_RBC;
+
+// Issue SH request
+a045_s050_outputs := ~Clean_BG_List_SH_Area & ~Condition5 & ~Condition6 & 
+		     ~End_Of_Mission_Procedure_Req & ~SH_Refused_By_RBC_To_DMI & 
+		     Request_For_SH_To_RBC;
+
+// Inform Driver: SH refused
+a220_outputs := ~Clean_BG_List_SH_Area & ~Condition5 & ~Condition6 & 
+	     	~End_Of_Mission_Procedure_Req & SH_Refused_By_RBC_To_DMI & 
+		~Request_For_SH_To_RBC;
+
+// A100 & A050 & Condition 5
+a100_a050_from_d020_outputs := Clean_BG_List_SH_Area & Condition5 & ~Condition6 & 
+		     	       (End_Of_Mission_Procedure_Req = On_Going_Mission) & ~SH_Refused_By_RBC_To_DMI & 
+		     	       ~Request_For_SH_To_RBC;
+
+// A100 & A050 & Condition 6
+a100_a050_from_e090_outputs := Clean_BG_List_SH_Area & ~Condition5 & Condition6 & 
+		     	       (End_Of_Mission_Procedure_Req = On_Going_Mission) & ~SH_Refused_By_RBC_To_DMI & 
+		     	       ~Request_For_SH_To_RBC;
+
+// End state from D040 & A050 & Condition 5
+end_d040_a050_from_d020_outputs := Clean_BG_List_SH_Area & Condition5 & ~Condition6 & 
+		     	  	   (End_Of_Mission_Procedure_Req = On_Going_Mission) & ~SH_Refused_By_RBC_To_DMI & 
+		     	  	   ~Request_For_SH_To_RBC;
+
+// End state from D040 & A050 & Condition 6
+end_d040_a050_from_e090_outputs := Clean_BG_List_SH_Area & ~Condition5 & Condition6 & 
+		     	  	   (End_Of_Mission_Procedure_Req = On_Going_Mission) & ~SH_Refused_By_RBC_To_DMI & 
+		     	  	   ~Request_For_SH_To_RBC;
+
+
+
+
+
+
+/***********************
+ * HLL FLOWCHART MODEL *
+ **********************/
+// Definition of last state stream. Initial state is called 'initial_state'.
+last_state := pre(current_state,'initial_state');
+// Definition of transitions between states
+current_state := (last_state
+	      	 | 'initial_state' => e015_transition
+		 | 's050' => e090_e215_transitions
+		 | 'a100_end' => 'a100_end'
+		 | 'a220_end' => 'a220_end'
+		 | 'd040_end' => 'd040_end'
+		 );
+
+
+// E015 modelisation
+e015_transition := if (Driver_Req_SH) then
+     		   d020_diamond
+		   else
+		   'initial_state';
+
+// D020 modelisation, taking into account the point 1.
+d020_diamond := if (Current_Level = 'M_LEVEL_Level_NTC_specified_by_NID_NTC' #
+		   Current_Level == 'M_LEVEL_Level_0' #
+		   Current_Level == 'M_LEVEL_Level_1') then
+		   a050_rounded_from_d020
+		   else
+		   a045_rounded_from_d020;
+
+
+// A050 leads directly to D040
+a050_rounded_from_d020 := d040_diamond;
+
+// D040 modelisation, taking into account the point 2.
+d040_diamond := if (On_Going_Mission) then
+	     	'a100_end'
+		else
+		'd040_end';
+
+
+// A045 leads directly to S050 state
+a045_rounded_from_d020 := 's050';
+
+
+// From S050 state, their is two transitions possibles : E090 and E215
+e090_e215_transitions := if (Shunting_Granted_By_RBC) then // E090
+		      	 a050_rounded_from_e090
+			 else // E215
+			 'initial_state'; //'a220_end'; //!\ (1) Copy of Scade model
+
+// From E090 transition, it goes to A050
+a050_rounded_from_e090 := d040_diamond;
+
+
+/**************/
+
+// A045 can be read from initial state throug E015 transition and D020
+a045_activation := (last_state = 'initial_state') & 
+		   Driver_Req_SH & // E015
+		   (Current_Level == 'M_LEVEL_Level_2' # // D020
+		   Current_Level == 'M_LEVEL_Level_3'); 
+
+// A050 can be read in two cases :
+// - From the initial state through E015 transition and D020
+// - From S050 state through E090 transition
+a050_activation := ((last_state = 'initial_state') & 
+		   Driver_Req_SH & // E015
+		   (Current_Level == 'M_LEVEL_Level_0' # // D020
+		   Current_Level == 'M_LEVEL_Level_1' # 
+		   Current_Level == 'M_LEVEL_Level_NTC_specified_by_NID_NTC')) #
+		   ((last_state = 's050') & 
+		   Shunting_Granted_By_RBC); // E090
+
+// A100 can be read from D040 if A050 is also read
+a100_activation := (((last_state = 'initial_state') & 
+		   Driver_Req_SH & // E015
+		   (Current_Level == 'M_LEVEL_Level_0' # // D020
+		   Current_Level == 'M_LEVEL_Level_1' # 
+		   Current_Level == 'M_LEVEL_Level_NTC_specified_by_NID_NTC')) #
+		   ((last_state = 's050') & 
+		   Shunting_Granted_By_RBC)) & // E090
+		   On_Going_Mission;
+
+
+// A220 can be read from S050 if E215 transition can be triggered
+a220_activation := (last_state = 's050') & 
+		   ~Shunting_Granted_By_RBC; // E215
+
+
+
+
+// What we want to prove:
+po := if (current_state = 'initial_state' & ~a220_activation) then all_false_outputs //!\ (1) Copy of Scade model: "& ~a220_activation"
+      elif (current_state = 'initial_state' & a220_activation) then a220_outputs //!\ (1) Copy of Scade model: all line added
+      elif (current_state = 's050' & a045_activation) then a045_s050_outputs 
+      elif (current_state = 's050' & ~a045_activation) then s050_outputs 
+      //elif (current_state = 'a220_end' & a220_activation) then a220_outputs  //!\ (1) Copy of Scade model
+      //elif (current_state = 'a220_end' & ~a220_activation) then a220_outputs//all_false_outputs  //!\ (1) Copy of Scade model
+      elif (current_state = 'a100_end' & a100_activation) then (a100_a050_from_d020_outputs # a100_a050_from_e090_outputs) 
+      elif (current_state = 'a100_end' & ~a100_activation) then (a100_a050_from_d020_outputs # a100_a050_from_e090_outputs) //all_false_outputs 
+      elif (current_state = 'd040_end' & a050_activation) then (end_d040_a050_from_d020_outputs # end_d040_a050_from_e090_outputs) 
+      elif (current_state = 'd040_end' & ~a050_activation) then (end_d040_a050_from_d020_outputs # end_d040_a050_from_e090_outputs) //all_false_outputs 
+      else False;
+
+Proof Obligations:
+po;

@@ -1,0 +1,52 @@
+<html><head><title>Bitwalker.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: C:\Users\idelatorre.BIO-SQS\Desktop\Bitwalker\Bitwalker.h</h3>
+<SCRIPT>
+defaultStatus = "File: C:\\Users\\idelatorre.BIO-SQS\\Desktop\\Bitwalker\\Bitwalker.h";
+top.document.title  = "Bitwalker.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="preproc">#ifndef <a href="dictionary_B.html#1001">BITWALKER_H</a></span>
+<a name="2"><font size=-1>2     </font></a><span class="preproc">#define <a href="dictionary_B.html#1001">BITWALKER_H</a></span>
+<a name="3"><font size=-1>3     </font></a><span class="preproc">#include </span><span class="string">&lt;stdint.h&gt;</span>
+<a name="4"><font size=-1>4     </font></a><span class="string"></span>
+<a name="5"><font size=-1>5     </font></a><span class="string"></span><span class="comment">/*</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">Formalization of Subset-026-7 (Chapter 7: ERTMS/ETCS language)</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment"></span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">- Name: Subset-026-7 / Bitwalker / Bitwalker.h</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">- Description: UNISIG SUBSET-026-7, ISSUE : 3.3.0, 3.5 ERTMS/ETCS language) </span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">- Copyright Siemens AG, 2013</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">- Licensed under the EUPL V.1.1 ( http://joinup.ec.europa.eu/software/page/eupl/licence-eupl )</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">- Gist URL: none</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">- Cryptography: No</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">- Author(s): SiemensRailAutomation</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment"></span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">Disclaimer:</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment"></span>
+<a name="18"><font size=-1>18     </font></a><span class="comment">The use of this software is limited to NON-vital applications. </span>
+<a name="19"><font size=-1>19     </font></a><span class="comment">It has NOT been developed for vital operation purposes and MUST NOT be used for applications </span>
+<a name="20"><font size=-1>20     </font></a><span class="comment">which may cause harm to people, physical accidents or financial loss. </span>
+<a name="21"><font size=-1>21     </font></a><span class="comment"></span>
+<a name="22"><font size=-1>22     </font></a><span class="comment">THEREFORE, NO LIABILITY WILL BE GIVEN FOR SUCH AND ANY OTHER KIND OF USE. </span>
+<a name="23"><font size=-1>23     </font></a><span class="comment">*/</span>
+<a name="24"><font size=-1>24     </font></a><span class="comment"></span>
+<a name="25"><font size=-1>25     </font></a><span class="comment"><a href="dictionary_U.html#6">uint64_t</a> <a href="dictionary_B.html#5">Bitwalker_Peek</a></span><span class="default">(</span><span class="keyword">unsigned int </span><span class="default">Startposition, </span><span class="keyword">unsigned int </span><span class="default">Length, <a href="dictionary_U.html#4">uint8_t</a> Bitstream[], </span><span class="keyword">unsigned int </span><span class="default">BitstreamSizeInBytes);</span>
+<a name="26"><font size=-1>26     </font></a><span class="default"></span><span class="keyword">int 	 <a href="dictionary_B.html#14">Bitwalker_Poke</a></span><span class="default">(</span><span class="keyword">unsigned int </span><span class="default">Startposition, </span><span class="keyword">unsigned int </span><span class="default">Length, <a href="dictionary_U.html#4">uint8_t</a> Bitstream[], </span><span class="keyword">unsigned int </span><span class="default">BitstreamSizeInBytes, <a href="dictionary_U.html#6">uint64_t</a> Value);</span>
+<a name="27"><font size=-1>27     </font></a><span class="default"></span>
+<a name="28"><font size=-1>28     </font></a><span class="default"></span><span class="keyword">typedef struct	</span><span class="default">{	<a href="dictionary_U.html#4">uint8_t</a> *<a href="dictionary_B.html#29">Bitstream</a>;</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">					</span><span class="keyword">unsigned int <a href="dictionary_L.html#30">Length</a></span><span class="default">;</span>
+<a name="30"><font size=-1>30     </font></a><span class="default">					</span><span class="keyword">unsigned int <a href="dictionary_C.html#31">CurrentBitposition</a></span><span class="default">;</span>
+<a name="31"><font size=-1>31     </font></a><span class="default">				} <a href="dictionary_T.html#24">T_Bitwalker_Incremental_Locals</a>;</span>
+<a name="32"><font size=-1>32     </font></a><span class="default"></span>
+<a name="33"><font size=-1>33     </font></a><span class="default"></span><span class="keyword">void	 <a href="dictionary_B.html#22">Bitwalker_IncrementalWalker_Init</a></span><span class="default">(<a href="dictionary_T.html#24">T_Bitwalker_Incremental_Locals</a> *Locals, <a href="dictionary_U.html#4">uint8_t</a> Bitstream[], </span><span class="keyword">unsigned int </span><span class="default">Size, </span><span class="keyword">unsigned int </span><span class="default">FirstBitposition);</span>
+<a name="34"><font size=-1>34     </font></a><span class="default"></span>
+<a name="35"><font size=-1>35     </font></a><span class="default"><a href="dictionary_U.html#6">uint64_t</a> <a href="dictionary_B.html#32">Bitwalker_IncrementalWalker_Peek_Next</a> (<a href="dictionary_T.html#24">T_Bitwalker_Incremental_Locals</a> *Locals, </span><span class="keyword">unsigned int </span><span class="default">Length);</span>
+<a name="36"><font size=-1>36     </font></a><span class="default"></span><span class="keyword">int		 <a href="dictionary_B.html#36">Bitwalker_IncrementalWalker_Peek_Finish</a> </span><span class="default">(<a href="dictionary_T.html#24">T_Bitwalker_Incremental_Locals</a> *Locals);</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span><span class="keyword">int		 <a href="dictionary_B.html#38">Bitwalker_IncrementalWalker_Poke_Next</a></span><span class="default">(<a href="dictionary_T.html#24">T_Bitwalker_Incremental_Locals</a> *Locals, </span><span class="keyword">unsigned int </span><span class="default">Length, <a href="dictionary_U.html#6">uint64_t</a> Value);</span>
+<a name="39"><font size=-1>39     </font></a><span class="default"></span><span class="keyword">int		 <a href="dictionary_B.html#43">Bitwalker_IncrementalWalker_Poke_Finish</a> </span><span class="default">(<a href="dictionary_T.html#24">T_Bitwalker_Incremental_Locals</a> *Locals);</span>
+<a name="40"><font size=-1>40     </font></a><span class="default"></span>
+<a name="41"><font size=-1>41     </font></a><span class="default"></span><span class="preproc">#endif </span><span class="comment">// BITWALKER_H</span>
+<a name="42"><font size=-1>42     </font></a><span class="comment"></span>
+</pre></body></html>

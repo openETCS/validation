@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2012 sp1 (x64) (http://www.altova.com) von DLR (DLR) bearbeitet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="../AU_TS_OETCS_TEST_COMMON_ATTRIBUTES_120913.xsd"/>
+	<!--OSI_Messge_Elements_________________________________________________-->
+	<xs:element name="OdometrySerialInterface" type="T_OdometrySerialInterface">
+		<xs:annotation>
+			<xs:documentation>OSI message element</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="LaboratoryClock" type="T_LaboratoryClock">
+		<xs:annotation>
+			<xs:documentation>Time of the laboratory clock (test environment)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="SimulationDistance" type="T_SimulationDistance">
+		<xs:annotation>
+			<xs:documentation>Relative distance managed by the laboratory for every simulation</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="SpeedSign" type="T_SpeedSign">
+		<xs:annotation>
+			<xs:documentation>Indicates the sense of movement, considering which cabine of the train is being tested</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="SimulatedTrainSpeed" type="T_SimulatedTrainSpeed">
+		<xs:annotation>
+			<xs:documentation>Instantaneous value of the train speed</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="AccelerationSign" type="T_AccelerationSign">
+		<xs:annotation>
+			<xs:documentation>Indicates whether the train is braking or accelerating</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="SimulatedTrainAcceleration" type="T_SimulatedTrainAcceleration">
+		<xs:annotation>
+			<xs:documentation>Instantaneous value of the simulated train acceleration</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- Message_Types_____________________________________________________-->
+	<xs:complexType name="T_OdometrySerialInterface">
+		<xs:annotation>
+			<xs:documentation>ODS: Odometry Serial Message transmitted from Test Environment to Train Interface</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="NID_INTERFACE" type="T_Interface" fixed="OSI"/>
+			<xs:element ref="LaboratoryClock"/>
+			<xs:element ref="SimulationDistance"/>
+			<xs:element ref="SpeedSign"/>
+			<xs:element ref="SimulatedTrainSpeed"/>
+			<xs:element ref="AccelerationSign"/>
+			<xs:element ref="SimulatedTrainAcceleration"/>
+		</xs:all>
+		<xs:attributeGroup ref="Trigger"/>
+		<xs:attributeGroup ref="DirectionOnboardTeToSut"/>
+	</xs:complexType>
+	<xs:complexType name="T_LaboratoryClock">
+		<xs:annotation>
+			<xs:documentation>Time of the laboratory clock (test environment)</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="T_LAB">
+				<xs:annotation>
+					<xs:documentation>Resolution: 10 ms; 4294967295 - unknown</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:unsignedInt">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="4294967295"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="32"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_SimulationDistance">
+		<xs:annotation>
+			<xs:documentation>Relative distance managed by the laboratory for every simulation</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="D_LAB">
+				<xs:annotation>
+					<xs:documentation>Resolution: 10ms; 4294967295 - unknown</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:unsignedInt">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="4294967295"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="32"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_SpeedSign">
+		<xs:annotation>
+			<xs:documentation>Indicates the sense of movement, considering which cabine of the train is being tested</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Q_VEL" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>0 - forward movement (considering which cabine of the train is being tested); 1 - backwards movement</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="1"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_SimulatedTrainSpeed">
+		<xs:annotation>
+			<xs:documentation>Instantaneous value of the train speed</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="V_LAB">
+				<xs:annotation>
+					<xs:documentation>Resolution: 1mm/s; 262143 - unknown</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:unsignedInt">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="262143"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="18"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_AccelerationSign">
+		<xs:annotation>
+			<xs:documentation>Indicates whether the train is braking or accelerating</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Q_ACC" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>0 - train is braking; 1 - train is accelerating</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="1"/>
+		<xs:attribute ref="BitCoding" default="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_SimulatedTrainAcceleration">
+		<xs:annotation>
+			<xs:documentation>Instantaneous value of the simulated train acceleration</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="A_LAB">
+				<xs:annotation>
+					<xs:documentation>Resolution: 1mm/s^2; 4095 - unknown</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:unsignedShort">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="4095"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="12"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+</xs:schema>

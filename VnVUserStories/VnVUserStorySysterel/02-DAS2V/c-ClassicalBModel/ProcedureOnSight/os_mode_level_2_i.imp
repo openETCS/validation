@@ -1,0 +1,91 @@
+/*?**********************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Elaborating ETCS level and mode
+Data refinement
+
+**********************************************?*/
+
+IMPLEMENTATION
+	os_mode_level_2_i
+
+REFINES
+	os_mode_level_2
+
+SEES
+	os_typ
+
+INITIALISATION
+	etcs_level_i := c_level_0 ;
+	mamode_prec_i := c_profile_OS ;
+	mode_i := c_mode_NP ;
+	waiting_for_ack_i := FALSE ;
+	waiting_for_ack_prec_i := FALSE ;
+	tempo_i := 0 ;
+	service_brake_command_i := FALSE ;
+	ack_request_os_mode_i := FALSE ;
+	os_mode_in_progress_i := FALSE
+
+OPERATIONS
+	
+	/* write operations */
+
+	write_etcs_level(p_level) =
+	BEGIN
+		etcs_level_i := p_level
+	END
+	;
+
+	write_mamode_prec(p_mamode) =
+	BEGIN
+		mamode_prec_i := p_mamode
+	END
+	;
+
+	write_mode(p_mode) =
+	BEGIN
+		mode_i := p_mode
+	END
+	;
+
+	write_waiting_for_ack(p_bool) =
+	BEGIN
+		waiting_for_ack_i := p_bool
+	END
+	;
+
+	write_waiting_for_ack_prec(p_bool) =
+	BEGIN
+		waiting_for_ack_prec_i := p_bool
+	END
+	;
+
+	write_tempo(p_ind) =
+	BEGIN
+		tempo_i := p_ind
+	END
+	;
+
+	write_service_brake_command(p_bool) =
+	BEGIN
+		service_brake_command_i := p_bool
+	END
+	;
+
+	write_ack_request_os_mode(p_bool) =
+	BEGIN
+		ack_request_os_mode_i := p_bool
+	END
+	;
+
+	write_os_mode_in_progress(p_bool) =
+	BEGIN
+		os_mode_in_progress_i := p_bool
+	END
+
+END

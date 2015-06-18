@@ -1,0 +1,433 @@
+
+\chapter{An introduction to formal verification with \framacwp}
+\label{sec:frama-c}
+
+Frama-C is a platform dedicated to source-code analysis of C software.
+It has a plug-in architecture and can thus be easily extended to 
+different kinds of analyses.
+The WP plugin of Frama-C allows one to formally verify that a piece of
+C code satisfies its specification.
+This implies, of course, that the user provides a \emph{formal specification}
+of what the implementation is supposed to do.
+Frama-C comes with its own specification language ACSL which stands for
+\emph{ANSI\slash ISO C Specification Language}.
+In order to help potential users to master ACSL we discuss in this chapter 
+a very simple C function \inl{abs_int} that implements the computation of
+the absolute value for objects of type~\inl{int}.
+
+\begin{itemize}
+\item
+In Section~\ref{sec:first-steps} we will present a straightforward
+specification of \inl{abs_int}.
+We discuss the reasons why \framacwp is not able to verify that our
+implementation satisfies this specification in Section~\ref{sec:framac-failure}.
+
+\item 
+In Section~\ref{sec:contract-sharpening} we provide a more precise
+specification that can be verified by \framacwp.
+In Section~\ref{sec:separating-spec-impl} we explain
+how \framac supports---by allowing the separation of the specification from the 
+implementation---good software engineering practices.
+
+\item
+Sections~\ref{sec:modular-verification} and~\ref{sec:side-effects}
+discuss, respectively,
+how \framacwp supports \emph{modular verification} and the
+formal treatment of \emph{side effects}.
+\end{itemize}
+
+\clearpage
+
+\section{First steps}
+\label{sec:first-steps}
+
+We will consider the function that computes the absolute value $|x|$
+of an integer $x$.
+In order to avoid name clashes with the function \inl{abs} in C standard library
+we use the name \inl{abs_int}.
+
+The mathematical definition of absolute value is very simple
+\begin{align}
+\label{eq:abs}
+   |x| &= \left\{
+            \begin{array}{rl}
+               x  & \text{if $x \geq 0$} \\
+               -x & \text{if $x < 0$}
+            \end{array}
+          \right.
+\end{align}
+
+A straightforward implementation of \inl{abs_int} is shown in Listing~\ref{lst:abs}.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs.c}
+\end{minipage}
+\caption{\label{lst:abs} An implementation of the absolute value function}
+\end{listing}
+
+In order to demonstrate that this implementation is correct we have to provide
+a formal specification.
+Listing~\ref{lst:abs1} shows our first attempt for an ACSL specification of \inl{abs_int} that
+is based on the mathematical definition of the function $x \mapsto |x|$ in Equation~\ref{eq:abs}.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs1.c}
+\end{minipage}
+\caption{\label{lst:abs1} A first attempt to formally specify \inl{abs_int}}
+\end{listing}
+
+\FloatBarrier
+
+The first thing to note is that ACSL specifications---or \emph{contracts}---are placed in special C comments
+(they start with \inl{/*@}).
+Thus, they do not interfere with the executable code.
+The \inl{ensures} clause in the specification expresses \emph{postconditions},
+that is, properties that should be guaranteed \emph{after} the execution
+of \inl{abs_int}.
+The ACSL reserved word \inl{\\result} is used to refer to the return value of a C function.
+Note that we use the usual C operators \inl{==} and \inl{<=} to express equalities and inequalities
+in the specification.
+There is also an additional operator \inl{==>} which expresses logical implication.
+
+\section{Why can \framacwp not verify such a simple function?}
+\label{sec:framac-failure}
+
+Although the specification and implementation in Listing~\ref{lst:abs1} look perfectly right, 
+\framacwp cannot verify that the implementation actually satisfies its specification.
+
+
+The reason becomes clear if we look at some actual return values of \inl{abs_int}.
+Listing~\ref{lst:test_abs} shows our test code whose output is
+listed in Table~\ref{tbl:test_abs_output}.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/test_abs.c}
+\end{minipage}
+\caption{\label{lst:test_abs} Some simple test cases for \inl{abs_int}}
+\end{listing}
+
+%\clearpage
+
+\begin{table}[hbt]
+\begin{center}
+\begin{tabular}{|r|r|c|}
+\hline
+\inl{x} &  \inl{abs_int(x)} & Remark \\ \hline\hline
+0	&	0 & \checkmark \\ \hline
+1	&	1 & \checkmark \\ \hline
+10	&	10 & \checkmark \\ \hline
+2147483647	&	2147483647 & \checkmark \\ \hline
+-1	&	1 & \checkmark \\ \hline
+-10	&	10 & \checkmark \\ \hline
+-2147483648	&	-2147483648 & $\lightning$ \\ \hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:test_abs_output} Test results for \inl{abs_int}}
+\end{table}
+
+\FloatBarrier
+
+The offending value is in the last line of Table~\ref{tbl:test_abs_output}
+which basically states that \inl{abs_int(INT_MIN)} equals \inl{INT_MIN}
+whereas it should equal \inl{-INT_MIN}.
+The problem is that the type \inl{int} only present a 
+finite subset of the (mathematical) integers.
+Many computers use a two's-complement representation of integers
+which covers the range $[-2^{31}\ldots 2^{31}-1]$ on a 32-bit machine.
+On such a machine \inl{-INT_MIN} cannot be  represented by a value
+of the type~\inl{int}.
+
+In a specification, \framacwp interprets integers as mathematical entities.
+Consequently, there is no such thing as an \emph{arithmetic overflow} when
+adding or multiplying them.
+In other words,
+\framacwp is perfectly right not being able to verify that \inl{abs_int}
+satisfies the contract in Listing~\ref{lst:abs1}. Indeed, the 
+implementation does not respect the given specification.
+
+
+\section{Sharpening the contract of \inl{abs_int}}
+\label{sec:contract-sharpening}
+
+It is of course well known that the operation \inl{-x} can overflow
+and it is the fact that \framacwp can detect such overflows that 
+helps to prevent incorrect verification results.
+
+The GNU Standard C Library clearly states that the absolute value of
+\inl{INT_MIN} is undefined.\footnote{%
+  See \url{http://www.gnu.org/software/libc/manual/html_node/Absolute-Value.html}
+}
+Under \textsf{OSX}, the manual page of \inl{abs} mentions under the field of ``Bugs'':
+%
+\begin{small}
+\begin{verbatim}
+    The absolute value of the most negative integer remains negative.
+\end{verbatim}
+\end{small}
+
+Thus, our formal specification should exclude the value \inl{INT_MIN}
+from the set of admissible value to which \inl{abs_int} can be applied.
+In ACSL, we can use the \inl{requires} clause to express \emph{preconditions}
+of a function.
+Listing~\ref{lst:abs1a} shows an extended contract of \inl{abs_int}
+that takes the limitations of the type \inl{int} into account.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs1a.c}
+\end{minipage}
+\caption{\label{lst:abs1a} Taking integer overflows into account}
+\end{listing}
+
+\FloatBarrier
+
+\framacwp is now capable to verify that the implementation of
+\inl{abs_int} satisfies the specification of Listing~\ref{lst:abs1a}.
+
+There is an important lesson that can be learned here:
+\begin{framed}
+\label{lesson}
+Sometimes developers provide source code and imagine that a tool
+like \framacwp can verify the correctness of their implementation.
+In order to fulfill its task, however, \framacwp needs an ACSL specification. 
+Such a specification---which must be based on a reasonably precise description of the
+admissible inputs and expected behavior---has to come from the \emph{requirements}
+of the software and is not magically discovered from the source code by \framacwp.
+The code does what it does. 
+In order to verify that the code does what someone expects, these expectations
+must be clearly expressed, that is, they must be formally specified.
+\end{framed}
+
+%\clearpage 
+
+Of course, it might not always be the goal to verify the complete functionality of a
+piece of software.
+Sometimes, it is enough to ensure that individual software components
+cause no runtime errors, that is, arithmetic overflows or invalid pointer accesses.
+\framacwp can also be used in this situation.
+Under the terms of the following minimal specification in 
+Listing~\ref{lst:abs1b}, \framacwp can verify that no runtime error will occur.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs1b.c}
+\end{minipage}
+\caption{\label{lst:abs1b} Minimal contract to ensure the absence of runtime errors in \inl{abs_int}}
+\end{listing}
+
+%\clearpage
+
+\section{Separating specification and implementation}
+\label{sec:separating-spec-impl}
+
+Before we continue exploring more advanced specification and verification
+capabilities of \framacwp we turn to a simple software engineering question.
+
+It is common practice to put function prototypes into ``\inl{.h}'' files and
+keep the implementation in files ending in~``\inl{.c}''.
+\framacwp supports this separation of specification and implementation.
+Listing~\ref{lst:abs2-h} shows the file \inl{abs2.h} which contains
+a declaration of \inl{abs_int} together with an attached ACSL specification.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs2.h}
+\end{minipage}
+\caption{\label{lst:abs2-h} Specifying a function prototype in a header file}
+\end{listing}
+
+Listing~\ref{lst:abs2-c} shows the specification of \inl{abs_int} in a~\inl{.c} file.
+Note that the file \inl{abs2.h} with the specification is included by this file.
+\framacwp can verify that this implementation satisfies the contract in
+Listing~\ref{lst:abs2-h}.
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs2.c}
+\end{minipage}
+\caption{\label{lst:abs2-c} Implementation at a different location than the specification}
+\end{listing}
+
+We remark, that the definition of a very small function like \inl{abs_int} would normally
+be placed in a header file so that a compiler can inline the function definition
+at the call site.
+
+%\clearpage
+
+\section{Modular verification}
+\label{sec:modular-verification}
+
+We now look at a simple example in which our function \inl{abs_int} is used.
+More precisely, we include in Listing~\ref{lst:use_abs2-1} the
+header file from Listing~\ref{lst:abs2-h} which contains an ACSL specification of \inl{abs_int}.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/use_abs2_1.c}
+\end{minipage}
+\caption{\label{lst:use_abs2-1} A simple example of modular verification}
+\end{listing}
+
+\FloatBarrier
+
+When \framacwp tries to verify the code in Listing~\ref{lst:use_abs2-1},
+then it actually tries to establish whether at each program location where
+it is called the \emph{preconditions} of \inl{abs_int} are satisfied.
+Based on the specification of \inl{abs_int},
+\framacwp can indeed verify that for the first three calls the preconditions are fulfilled.
+For the last call this verification fails because the value \inl{INT_MIN}
+is explicitly excluded by the specification in Listing~\ref{lst:abs2-h}.
+
+Note that the \emph{implementation} of \inl{abs_int}
+does not play any role in determining whether it is safe to
+call the function in a particular context.
+This is what we call \emph{modular verification}: a function can be verified in
+isolation whereas code that calls the function only uses the function contract.
+
+This also means that in a situation as in Listing~\ref{lst:use_abs2-2},
+where nothing is known about the argument of \inl{abs_int}, 
+\framacwp cannot establish that the precondition of \inl{abs_int} is satisfied
+or, in other words, that \inl{x > INT_MIN} holds.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/use_abs2_2.c}
+\end{minipage}
+\caption{\label{lst:use_abs2-2} Another example of modular verification}
+\end{listing}
+
+\FloatBarrier
+
+If, on the other hand, we have precise information on the arguments at call site, then \framacwp can exploit the specification of 
+\inl{abs_int} in order derive some interesting properties.
+As an example, we consider the code fragment in Listing~\ref{lst:use_abs2-3}.
+Here, \framacwp can verify that the assertion after 
+the call of \inl{abs_int} is correct.
+
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/use_abs2_3.c}
+\end{minipage}
+\caption{\label{lst:use_abs2-3} A more complex example of modular verification}
+\end{listing}
+
+Note that this assertion is a \emph{static} one, that is, it is
+an ACSL annotation that resides inside a comment and does not affect
+the execution of the code in Listing~\ref{lst:use_abs2-3}.
+Also note that unlike to C~code, \emph{relation chains} can be used both in function
+contracts and assertions.
+
+%\clearpage
+
+\section{Dealing with side effects}
+\label{sec:side-effects}
+
+Listing~\ref{lst:abs3a1} shows an implementation of \inl{abs_int}
+that writes as a side effect the argument~\inl{x} to a global variable~\inl{a}.
+A natural question is to ask whether this implementation with a side effect
+also satisfies the specification.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs3a1.c}
+\end{minipage}
+\caption{\label{lst:abs3a1} An implementation with side effects}
+\end{listing}
+
+\FloatBarrier
+
+Before we answer this question we consider various uses for side effects.
+There are of course legitimate uses for side effects.
+The assignment to a memory location outside the scope of the function
+might be meaningful because an error condition is reported or because
+some data are logged as in Listing~\ref{lst:abs3logging1}.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs3logging1.c}
+\end{minipage}
+\caption{\label{lst:abs3logging1} Calling a logging function from \inl{abs_int}}
+\end{listing}
+
+If \framacwp attempts to verify the code in Listing~\ref{lst:abs3logging1},
+then it issues the following warning:
+%
+\begin{small}
+\begin{verbatim}
+    Neither code nor specification for function logging,
+    generating default assigns from the prototype
+\end{verbatim}
+\end{small}
+%
+Thus, it points out that the called function \inl{logging} should have a proper
+specification that clearly indicates its side effects.
+
+There are, on the other hand, also good reasons to minimize or even forbid side 
+effects:
+
+\begin{itemize}
+\item
+Imagine a malicious password checking function that writes the password to
+a global variable.
+
+\item
+Another reason is that side effects can make it harder to understand what 
+the real consequences of a function call are.
+In particular, one must be concerned about unintended consequences that
+are caused by side effects
+The norm IEC 61508 therefore requests in the context of software module testing
+and integration testing:
+
+\begin{quote}
+To show that all software modules,
+elements and subsystems interact correctly
+to perform their intended function and do not perform unintended functions
+(see also.~\cite[\S 7.4.7.2,\S 7.7.2.9]{IEC-61508-3})
+\end{quote}
+
+Of course, it is quite difficult to ensure by testing alone that something does \emph{not} happen.
+\end{itemize}
+
+To come back to our question about Listing~\ref{lst:abs3a1} it is important
+to understand that \framacwp verifies that the implementation shown there
+satisfies the specification.
+
+If one wishes to forbid that a function changes global variables
+one can use an \inl{assigns \\nothing} clause as shown in Listing~\ref{lst:abs3a2}.
+\framacwp will then point out that this implementation prevents
+the verification of the assigns clause.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs3a2.c}
+\end{minipage}
+\caption{\label{lst:abs3a2} Specifying the absence of side effects}
+\end{listing}
+
+
+\FloatBarrier
+
+Of course, an all-or-nothing-approach to side effects is not very helpful
+for the verification of real-life software.
+Listing~\ref{lst:abs3a3} shows how the \inl{assigns} clause of a
+specification can name the exact memory location that the
+function is allowed to modify.
+
+\begin{listing}[hbt]
+\begin{minipage}{\textwidth}
+\lstinputlisting[style=acsl-block ]{./Abs/abs3a3.c}
+\end{minipage}
+\caption{\label{lst:abs3a3} Finer control of side effects}
+\end{listing}
+
+Note however that \inl{assigns a} does not imply that a write to \inl{a}
+necessarily occurs during the execution of \inl{abs}. On the other hand, any
+other memory location must stay unchanged between the initial state
+and the final state of \inl{abs}.
+

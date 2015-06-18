@@ -1,0 +1,672 @@
+\documentclass[a4paper]{article}
+%\documentclass[a4paper,german]{article}
+\usepackage{graphicx}
+\usepackage{xspace}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[official]{eurosym}
+%\usepackage{minutes}
+\usepackage{xifthen}% provides \isempty test
+
+\pagestyle{myheadings}
+\markright{openETCS \hfill {\tiny This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License} \hfill}
+
+
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+% % Deutsche Silbentrennung
+% \usepackage[ngerman]{babel}
+% % Deutsche Umlaute
+% \usepackage[ansinew]{inputenc}
+% %\usepackage[latin1]{inputenc}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+
+% editing
+
+% Starts a new line nearly everywhere
+\newcommand{\nl}{\mbox{}\\}
+
+%Texts in a box (eg. for comments)
+% Short text (no line break) 
+\newcommand{\cmmnt}[1]{\framebox{#1}}
+% Long text (separate lines
+\newcommand{\bgcmmnt}[1]{\nl\framebox{\parbox{.95\textwidth}{#1}}\nl[2mm]}
+
+%Uncomment for getting rid of comments in output
+%\renewcommand{cmmnt}[1]{}
+%\renewcommand{\bgcmmnt}[1]{}
+
+% Macros for minutes
+\newcommand{\Q}[2]{\paragraph{Question} 
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty
+    : #2}
+\newcommand{\A}[2]{\newline{\textbf{Answer}}
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty    
+    : #2}
+\newcommand{\C}[2]{\newline{\textbf{Comment}}
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty    
+    : #2}
+    
+\newcommand{\tablenewpage}[2]{
+		& #1	& #2
+		\end{longtable}
+        		\vskip 1 cm 
+		        \clearpage
+		\vskip 1 cm 
+	    \begin{longtable}{|p{0.83\textwidth}|p{.02\textwidth}|p{.15\textwidth}|}
+	    \hline
+	    \textbf{Description} & \textbf{T} & \textbf{Resp.} 
+	    \hline
+	    \endhead
+	    \vskip 0cm
+	    }
+    
+
+% End of document marker
+\newcommand{\eod}{\rule{\textwidth}{1pt}\nl \textit{End of Document}}
+
+
+\begin{document}
+\title{Workshop on Safety Strategy  \\openETCS Meeting in Paris}
+\author{Marc Behrens}
+\date{Version 01, 2013-03-11}
+
+%\pagestyle{empty}
+
+\maketitle
+
+
+\section*{Document Control}
+
+\begin{tabular}{|l|r|*{2}{p{.3\textwidth}|}}
+\hline
+\multicolumn{4}{|l|}{\texttt{OETCS\_SafetyStrategy\_Workshop\_Minutes\_Paris\_130311.tex}}
+\\\hline
+\textbf{Version} & \textbf{Date} & \textbf{Author} & \textbf{Changes/Comment}
+\\\hline
+01 & 2013-03-11 & Behrens & All sections  
+\\\hline
+\end{tabular}
+
+\section*{Organizational Data}
+
+\begin{tabular}{|l|r|r|}
+\hline
+\textbf{Type of meeting} & \multicolumn{2}{|c|}{Face2Face }
+\\\hline
+\textbf{Start} & 2013-03-11 & 13:30
+\\\hline
+ \textbf{End} & 2013-03-11 & 19:00
+\\\hline
+\end{tabular}
+
+\medskip\noindent%
+
+\begin{tabular}{|l|r|}
+  \hline
+\textbf{Participant} & \textbf{Organisation}
+\\\hline
+Baseliyos Jacob & DB \\
+Cyril Corny & All4Tec \\
+David Mentr\'{e} & Mitsubishi Electric \\
+Gr\'{e}gory Guillaume & Alstom \\
+Jan Welte & TU-BS \\
+Jens Gerlach & Fraunhofer FOCUS \\
+Klaus-R\"{u}diger Hase & DB \\
+Luis-Fernando Mejia & Alstom \\ % Fromal Methods /KVB - Automatic generate Safety Code from B-Models
+Marc Behrens & DLR \\
+Marielle Petit-Doche & Systerel \\
+Merlin Pokam & AEbt \\
+Patrick Deutsch & ERSA \\
+Piero Petruccioli & UIC \\
+Pierre-Fran\c{c}ois Jauquet & Alstom \\
+Renaud De Landtsheer & ALSTOM \\
+Stan Pinte & ERTMS Solutions \\
+Stephan Jagusch & AEbt \\
+Sylvain Baro & SNCF 
+\\\hline
+\end{tabular}
+
+\renewcommand{\contentsname}{Agenda}
+\label{sec:agenda}
+\tableofcontents
+
+
+\section*{Results}
+
+% Use several tabular environments to split long result lists over pages
+
+\setlength{\extrarowheight}{1.5pt}
+\begin{longtable}{|p{0.83\textwidth}|p{.02\textwidth}|p{.15\textwidth}|}
+% Description (free text)
+% A (action item) OR D (decision) OR F (fact/finding) 
+% responsible (for action items)
+% 	deadline (for action items)
+%
+% in case of multi-page tables use the following sequence to end one page:
+%		& T & Author
+%		\end{longtable}
+%        		\vskip 1 cm 
+%		        \clearpage
+%		\vskip 1 cm 
+%	    \begin{longtable}{|p{0.83\textwidth}|p{.02\textwidth}|p{.15\textwidth}|}
+%	    \hline
+%	    \textbf{Description} & \textbf{T} & \textbf{Resp.} 
+%	    \hline
+%	    \endhead
+%
+%   or use macro \tablenewpage{Type}{Responsible}
+
+% header ------------------------
+\hline
+\textbf{Description} & \textbf{T} & \textbf{Resp.} 
+%\hline
+\endhead
+\hline
+
+\section{Review of the openETCS Requirements} %1
+\subsection{API Requirements} %1.1
+\subsubsection{Presentation API} %1.1.1: 
+
+The API is presented describing e.g.:
+\begin{description}
+	\item [BsW] Basic Software of the ETCS unit.
+	\item [Tolerance] of generally 100ms is anticipated inside the software call (not the timestamp)
+	\item [Test service] Contains i.e. end of power-up system test 
+		$\rightarrow$ which service is available
+	\item [MMU] Movement Management Unit 
+		Position / Coordinate: Low, nominal and upper uncertainty (LNU)
+		applying e.g. to Speed (LNU), Acceleration (LNU), Motion State, Motion Direction.
+		\newline $\Rightarrow$ due to time passed between processing and availability of data ...
+         everything has to be saved with the time stamp in order to use time-correction-algorithms
+	\item [BTM] Recording timestamped balise-center-location  in order to recalculate the position
+		based on the time passed between availability of balise signal and the time data is processed.
+		Weiting BTM Antenna- Information to write error messages.
+	\item [RTM] On-Board Master of radio communication.
+		Information about e.g. radio holes have to be provided.
+	\item [MMI] Man Machine Interface shows and writes data .
+	\item [STM] Interface to STM: read, write and queue data
+	\item [TIU] Managing connection, and maintain connections and keep alive.
+		If TIU connection is not maintained, an error has to be thrown.
+		$\Rightarrow$ safety related!
+	\item [LLRU] lowest level replaceable unit 
+		e.g. Board at the OBU (replaceable, repairable unit)
+		info to reset, request  (e.g. 50 LRU, eg. 20 high level LLRU)
+	\item [Packet\_44] transferred  through serial interface (Interchange between Balise $\rightarrow$ EVC $\rightarrow$ specific STM)
+\end{description}
+
+\tablenewpage{F}{Pierre-Fran\c{c}ois Jauquet}
+%		& F	& Pierre-Fran\c{c}ois Jauquet
+%		\end{longtable}
+%        		\vskip 1 cm 
+%		        \clearpage
+%		\vskip 1 cm 
+%	    \begin{longtable}{|p{0.83\textwidth}|p{.02\textwidth}|p{.15\textwidth}|}
+%	    \hline
+%	    \textbf{Description} & \textbf{T} & \textbf{Resp.} 
+%	    \hline
+%	    \endhead
+	    
+
+\begin{description}
+	\item [LOOP] Messages from Loop
+	\item [KM] Key management is not in focus of openETCS.
+	\item [EB] Emergency Break in focus.
+	\item [Principle Fault reporting] BsW is responsible to take appropriate action in case of error i.e.
+		\subitem [-] Write error
+		\subitem [-] Trigger EB
+		\subitem [-] Shutdown of system
+	\item [Data Monitoring System] recording all system data.
+\end{description}
+
+\Q{}{Why is the system time stamped?}
+\A{P.-F.Jauquet}{Importance to services to define accuracy of the time. Also having influence to what can be the maximum speed of the line. When you are specifying the interface, you are talking about safety.}
+
+& F
+& Pierre-Fran\c{c}ois Jauquet
+\\\hline
+
+\subsubsection{Proposition on abstract API} %1.1.2  
+
+Presenting WP 5 Input for abstract API.
+
+\begin{description}
+	\item [Demonstrator code] is written in C.
+	\item [Data exchanged] on high level should be described in the high level requirement document.
+	\item [Odometry] of WP 5 Input for abstract API relates to MMU of ALSTOM.
+	\item [Radio Service primitives] should be included inside the model.
+	\Q{P.Deutsch}{Does the basic software (BsW) decribe the primitives?}
+	\item [TIU] Subset-121 defining the TIU released by UNISIG (UNISIG activity) 
+	\newline opinion: TIU should to be as general as possible
+	\item [DMI] described in a separate subset. 
+\end{description}
+
+
+& F
+& Patrick Deutsch
+\\\hline
+%\section{t1}
+%\subsection {test}
+\subsubsection{Questions and\slash or Comments \& Responses} %1.1.3
+
+\Q{S.Pinte}{Which format are the messages sent to BTM/ RTM?}
+\A{G.Guillaume}{Binary messages/ bit encoding of the application is inside of the application (Decoding tool not part of the application, can be excluded).}
+
+\Q{S.Baro}{Do we want to stick to the product or to stay on a high level description?
+Cycle wise logic to be hard coded or to leave open the possibility to have a driven interface?
+Work should be done refining on interface to drive it on a higher level?}
+\A{P.-F.Jauquet}{We can have a high level abstraction of the API.}
+
+\Q{D.Mentr\'{e}}{Does the abstract model describe the dynamics of the API?}
+\A{P.-F.Jauquet}{It describes good use rules to be modelled!}
+
+\Q{}{How can we integrate the real time constraint on safety impact?}
+\A{P.-F.Jauquet}{You need an idea of distance which could have been travelled.
+Time delay as low as possible to be accuracy has to be as high as possible.
+All main functions of ERTMS are related to the train location.
+Uncertainty of train position caused to e.g. slippery phenomena.}
+
+\Q{K.-R.Hase}{Reliable Data  on train position depend also on weather condition?}
+\A{P.-F.Jauquet}{Physical position correction regarded as black box.}
+
+\Q{L.-F.Mejia}{Does the BsW comply to SIL-4 SW?}
+\A{G.Guillaume}{Yes, except that there is no 2 out of 3 on BsW level.}
+
+\Q{}{Is BsW an operational system? Will terms be described in the API document?}
+\A{P.-F.Jauquet}{Also management of different peripheral interface ie. physical sensor.
+Ok Terms will be described!}
+
+\Q{}{Which Services are called by the Basic Software?}
+\A{P.-F.Jauquet}{BsW as global scheduler and calls underlying SW modules.}
+
+\Q{}{Document format?}
+\A{P.-F.Jauquet}{To be evaluated.}
+
+
+\Q{}{Timestamp}
+\A{P.-F.Jauquet}{Time dependency managed. Correction about information reviewed.
+Correction of position should be done before providing the position to the application.}
+
+
+\Q{}{How will the patency of the SSRS to the design model be? (WP2 issue)}
+
+& F  
+& Pierre-Fran\c{c}ois Jauquet 
+\\\hline
+\subsubsection{Conclusion} %1.1.4
+\begin{itemize}
+	\item Review cycle of the documents will be done using the format used in WP2 (XML Excel file).
+	\item Formal review of the documents will be done.
+	\item The questions to the API document will be answered using 'yes' or 'no' and giving justification.
+	\item Review of document will be done after answering (Timeline proposed to be discussed on Friday - give commands in one week, answer within 2 weeks).
+	\item Aim is to have API to be completely free of problems in terms of interfaces and operating system.
+\end{itemize}
+
+
+& F  
+& Pierre-Fran\c{c}ois Jauquet 
+\\\hline
+\subsection{Open Issues on Requirements} %1.2
+\subsubsection{SubSystem Requirement Specification} %1.2.1 
+\paragraph{Presentation:}
+Going from the SRS to the formal model via the SSRS
+
+Proposing SubSystem Requirements (SSRS) as functional architecture in order to \ldots
+\begin{itemize}
+	\item [\ldots] help functional testing.
+	\item [\ldots] have Sub- Boundaries.
+\end{itemize}
+
+\paragraph{SSRS}
+\begin{quote}
+	\begin{description}
+		\item [consists of] Boxes, Arrows and named I/O Streams
+		\item [unambiguously] naming objects and I/O
+		\item [enables Requirements] to be kept in natural language
+		\item [pro] modularity at function level clarify the architecture
+		\item [con] introduces another level of natural language 
+	\end{description}
+\end{quote}
+
+\paragraph{Other solution} could be to model directly from SRS to ease traceability and provide meta/data in the model(e.g. vital/ non vital).
+
+\Q{M.Behrens}{Does the SSRS have an influence on the API?}
+\A{P.-F.Jauquet}{No.}
+\C{L.-F.Mejia}{The SSRS defines the functional architecture. The API should comply the Archiretural Design.}
+\A{P.-F.Jauquet}{The SSRS should be part of the WP2, not WP3.SSRS is very useful but part of the specification.}
+
+\begin{itemize}
+	\item Assumption: For WP3 SSRS should be part of the OBU specification on System Model 
+	\item WP2 should define what is the scope of the modelling
+\end{itemize}
+
+\Q{P.-F.Jauquet}{Where will the SSRS be done? What ware we expecting in SSRS and in Detailed design?}
+\A{S.Baro}{Open, to be discussed between ($\rightarrow$ WP2/ WP3)}
+
+\C{S.Jagusch}{Drawing a picture of the Y-Cycle stating that V-Cycle can be merged at the bottom by certified tools. The standard puts the CENELEC V-Cycle as a suggestion. When the formal methods come to the assessment there will be many questions to be answered.}
+
+\tablenewpage{F}{S.Baro}
+
+\Q{}{Why is formalisation changing the game?}
+\A{S.Jagusch}{In the model you cannot clearly divide the Architecture and detailed design(see scade).
+Component design and architecture melts together.}
+
+\Q{}{Do we do SSRS?}
+\A{P.-F.Jauquet}{Yes SSRS is needed but WP2 should define it!!}
+
+& F
+& Sylvain Baro
+\\\hline
+\subsubsection{Process\slash Methodology} %1.2.2
+
+
+\begin{description}
+	\item [-] What we want to do
+	\item [-] How We do It (Design Process)
+	\item [-] Choose Means to do it (Tools)
+\end{description}
+
+\Q{M.Petit-Doche}{Clarify the aim of the Project.}
+
+
+\begin{itemize}
+	\item To define the system is out of the scope of EN 50129 (it is EN50129)
+	\item define formates to exchange information between activities
+\end{itemize}	
+
+\paragraph{Color coding} of presentation:
+\begin{quote}
+	\begin{itemize}
+		\item [blue] \^{=} design
+		\item [green] \^{=} safety
+		\item [yellow] \^{=} validation
+		\item [red] \^{=} verification
+	\end{itemize}
+\end{quote}
+
+\paragraph{Specifications} relevant for openETCS 
+\begin{itemize}
+	\item System Requirements Specification: Subset-026 
+	\item System Safety Requirement Specification: Subset-091
+\end{itemize}
+
+
+\begin{description}
+	\item [Verification] is needed in each phase to have an assessment.
+	\item [Means] How to Design?
+	\item [Language and output] chosen has to be justified.
+	\item [At each software phase] we should have a set of methods following the main objectives of the standards
+	\item [EN 50128 \S 6.7.1] For each tool we have to justify why we use it for which purpose and when.
+	\item [Justification] is needed for each part of the tool's chain $\Rightarrow$ lots of documents
+	\item [Qualifying tools] you need to make a verification on the output \newline Hard to get e.g. Eclipse / LaTeX qualified for T3
+	\Q{R.De Landtheer}{Is B-Development based on Eclipse?} 
+	\A{M.Petit-Doche}{No.}
+\end{description}
+
+\Q{}{How to define the openETCS design process?}
+
+\Q{M.Petit-Doche}{Do we need an openETCS process with phases as described in EN50128, EN50129, EN50126?}
+\A{S.Jagusch}{Needs to be put down in quality plan, you do not necessarily need to follow the example described within the CENELEC but you need to use the Methods described.}
+
+\tablenewpage{F}{Marielle Petit-Doche}
+
+\Q{P.-F.Jauquet}{Model Developed validated and tested. How can I be sure that the tool platform can be used to demonstrate the model is compliant with the behaviour to be expected?} 
+\Q{P.-F.Jauquet}{After being compliant it is necessary to have the safety analysis?}
+\Q{P.-F.Jauquet}{Safety demonstration of the model or safety demonstration of the platform to be demonstrated?}
+
+\Q{P.-F.Jauquet}{What is our safety strategy to be sure that these platform can be used within any system?}
+\Q{P.-F.Jauquet}{What is the safety strategy for:
+- the guy for the modelling?
+- the tool platform?}
+
+\Q{M.Petit-Doche}{Which Which phases have to been included in OpenETCS design process?}
+\Q{M.Petit-Doche}{Which interaction between design and verification and validation?}
+\Q{M.Petit-Doche}{Which means and languages to develop a OBU?}
+\Q{M.Petit-Doche}{Which tools to support openETCS design process?}
+
+& T
+& Marielle Petit-Doche
+\\\hline
+\setcounter{subsubsection}{3}
+\subsubsection{Full Model or full Compliance} %1.2.4 
+
+ 
+\begin{description}
+	\item [User Story 1] Formalize Subset-026 OBU part \newline 
+		customer: ERA
+	\item [User Story 2] Use OpenETCS model as a shadow EVC \newline
+		customer: Railway operators
+		\C{S.Pinte}{Use openETCS model in V-Cycle right branch: They need a white box, full reasoning tree.}
+		\Q{P.-F.Jauquet}{Is a spying interface needed?}
+		\A{S.Pinte}{They need white box view.} 
+
+	\item [User Story 3] Use OpenETCS model in V-cycle right branch \newline
+		customer: OBU supplier
+		\C{S.Pinte}{How to reuse the model: if it is complete it is of more value!}
+
+	\item [User Story 4] Make sure money is well spent in OpenETCS project \newline
+		customer: Brussels region
+		\C{S.Pinte}{Calculating to model 100\% of Subset-26 within 2 man-years.}
+\end{description}
+
+\paragraph{Conclusion} openETCS must deliver a complete model
+
+& F
+& Stan Pinte
+\\\hline
+\subsubsection*{Presentation of project goals}
+Presentation of DB user story
+
+\C{M.Petit-Doche}{If the aim of the project is a T3 qualified tool's chain the tool's chain does not need to be SIL-4.} 
+
+
+\Q{P.Piero Petruccioli}{Which product and which system are we talking about?
+UIC is fully interested in having the formal specification of the system.}
+
+\C{S.Jagusch}{The V-Cycle is not mandatory, see EN 50128 \S 5.3.2.15.}  
+\Q{P.-F.Jauquet}{Why are they using the V-Cycle?}
+\A{S.Jagusch}{V-Cycle is used by the manufacturer to give evidence to the ISA.}
+
+\C{S.Pinte}{We need to have the complete model and to have the time to do it.}
+%\A{WP1/ WP2}{open}
+ 
+\Q{}{Do we have enough time to do all 3 goals of the and what are the priorities?}
+Explanation from WP1 needed.
+
+\Q{}{Do we model the complete subset-026?}
+
+\C{S.Pinte}{We need a full model!}
+
+& F
+& Klaus-R\"{u}diger Hase
+\\\hline
+\subsubsection{Classification of Formal Methods \& Tools} %1.2.5 
+Presenting the classification of formal methods and tools.
+
+\Q{}{Is the mathematical model formal enough?}
+
+\begin{description}
+	\item [semi-formal model] has rigorous syntax but informal semantics
+	\C{D.Mentr\'{e}}{ERTMS Formal Spec can be formalized.}
+	\item [Model checking] of conc./ synch. languages
+	\item [temporal logic] = next state or states in future \newline
+	compared to real time is i.e. the next state within e.g. 15ms
+	\item [Static analysis] of software code  (abstract interpretation)
+	\item [use of formal methods] check a model/software verifies properties
+	\item [Subset-26] is very rich regarding data description. \newline
+	\item [Model structure] should be used to break down and reuse parts in different software.
+	\item [Properties] should be extracted by Subset-026
+	\item [Subset of performance] does need to be respected.
+	\item [Incremental development] Refinement
+
+\end{description}
+
+\C{}{Matlab, Polyspace is more sxpensive then 5k\euro.}
+
+\C{}{Topcased will merge to Polaris.}
+
+
+\begin{itemize}
+	\item Due to limit to formal verification is very hard to do mathematical verification on a complex model.
+	\item Power PC/Arm certified compiler free for non commercial use exist.
+	\item Test, review and animation used on high level from susbsystem validation
+\end{itemize}
+
+\paragraph{SCADE}: Formal tools for model and not formal verification!!!! (only  model checking techniques are formal)
+
+
+Clear methodology how to use verification when there are model checker
+
+
+\Q{}{Which are the steps of the process? $\rightarrow$ WP2}
+
+\C{L.-F. Mejia}{Model review is best thing. You can check the model partially by simulation.
+$\Rightarrow$ Simulate the formal models: Proof will disclose the holes, possible not 100\% because in the informal models there are assumptions that are hidden. You cannot prove that the model is complete.
+Examples: CBTC Asltom and  Siemens France; RATP introduced formal models for the verification.}
+
+
+\Q{P.-F.Jauquet}{You need to define the safety properties.
+How is it possible to verify in safety our safety properties?} 
+
+\tablenewpage{F}{David Mentr\'{e}}
+
+\Q{}{Which properties need to be considered? $\rightarrow$ WP2}
+\Q{}{Which single language and tools in which step of the process are needed? $\rightarrow$ WP3 + WP7}
+
+\C{}{\textbf(ISA) \^{=} Independent Safety Assessor}
+& F
+& David Mentr\'{e}
+\\\hline
+\subsubsection{Formal methods \& Safety limitation and\slash or concerns} %1.2.6
+
+
+Model: "Only one train on the bridge"
+Event-B single (single event)
+Limitation
+
+There is no explanation in case that e.g. a failure was never found.
+
+Goal Diagram - Free formalizes.
+
+Engineer the model for Verification will make the model hard for code generation
+
+Validate you model for vacuity and emptiness before any proof can be considered valid
+--> Simulation: You have to show that the model is not empty e.g. by simulation
+
+
+soundness: there are some some unsound tools
+	Bounded verification is unsound/ unsound claim
+completeness: tool has to comply
+
+
+%line 14 200ms cycle the answer to be have delivered
+Safety Argument relying on formal proof as well as a watchdog
+
+\C{L.-F.Mejia}{Use B-Method avoid some kind of software errors. They do not claim that B-Model guarantees safety? They do claim that the software does not have systematic errors.}
+\C{}{Very few safety model exist, (they did not succeed yet).}
+
+
+\Q{S.Jagusch}{Difference between Software and System Development (50128 50129 50126) regarded?}
+\A{M.Petit-Doche}{Yes}
+
+\Q{S.Pinte}{Who defines Safety Invariants?}
+\A{S.Baro}{System development properties to be written down and model them on a complete specification.}
+
+\Q{}{Where do safety requirements come from?}
+\C{P.-F.Jauquet}{Safety Strategy is needed.}
+
+\C{J.Gerlach}{There is in the avionics e.g. DO 330 333 where tools are considered.}
+
+\Q{}{Methods in other domains are not yet covered in the state-of-the-art report. Will they be included?}
+
+\Q{}{What will be the full SIL-4 safety property 
+and to be brought from higher to lower level?}
+
+& F
+& Renaud De Landtsheer
+\\\hline
+\setcounter{subsubsection}{2}
+\subsubsection{Safety Activities} %1.2.3  
+
+
+\C{K.-R.Hase}{The complete safety case was never in the scope !!!
+E.g. aviation shortens time from the time the change is introduced to the time of deployment because they have formalized a specification, they have provided a tool's chain with strong confidence that the tool's chain is correct. Through the project we want to have correct implementation but not a safety implementation.}
+
+
+\Q{S.Baro}{Why should the tool's chain be certifiable in EN 50128?}
+\A{K.-R.Hase}{The idea is to qualify the tool's chain for later reuse.} 
+
+\Q{}{If you safety certify the tools, what is the objective?}
+\A{}{open}
+
+\Q{}{Is safety certification according to ISO-26262 out of context?}
+
+
+\C{J.Welte}{There is no open licensed certified tool's chain.}
+
+\C{P.-F.Jauquet}{If we cannot build a safety strategy it is impossible to safety certify the tools.}
+
+\paragraph{CENELEC} For each tool in class T3 it is required that the output and failures are detected.
+
+\paragraph{Decision} If you do not test your tool on a real case / part of a real case /SIL-4 Development you cannot say that the tool is fit for development.
+\Q{}{If we want to qualify the tool with the model we need a model safety certified for a tool's chain?}
+
+
+\Q{}{Should functional safety properties or EN 50128 properties be met?}
+
+\C{M.Petit-Doche}{Usually we do not prove safety properties by a model.}
+\Q{S.Baro}{Which types of safety properties should be shown?}
+
+
+\begin{description}
+\item [1.] Defining the sample tasks   $\rightarrow$ WP2
+\item [2.] Answering the question who will perform the safety activities $\rightarrow$ WP1
+\end{description}
+
+& F 
+& Jan Welte 
+\\\hline
+
+\setcounter{subsubsection}{6}
+\subsubsection{Conclusion} %1.2.6
+Main open point for tomorrow: 
+\begin{description}
+	\item{Safety Strategy} Work on it on what part of the strategy $\Rightarrow$ depending on the process.
+\end{description}
+
+
+& D
+& Sylvain Baro
+\\\hline
+\end{longtable}
+
+\bgcmmnt{\textbf{T} for type of item:
+\begin{description}
+\item[A] action item
+\item[D] decision
+\item[F] fact / finding
+\end{description}}
+
+
+
+\section*{Notes}
+
+This format lacks references to ITEA~2 so far.
+
+% Optional for additional free text
+  
+\eod
+
+
+ 
+
+\end{document}

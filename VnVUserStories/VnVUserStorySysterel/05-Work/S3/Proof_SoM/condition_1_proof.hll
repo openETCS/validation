@@ -1,0 +1,30 @@
+/**********************************
+Condition 1
+(SRS 4.6 v3.3.0)
+Associated Scade model for the proof :
+ManageModes
+**********************************/
+
+/* What we want to prove: From any mode, if condition 1 is True then
+the mode will switch to IS. */
+
+Declarations:
+// Mode in input
+'Level_And_Mode_Types_Pkg::T_Mode' Current_Mode;
+
+// Proof obligation to be proven
+bool po_condition_1;
+
+Definitions:
+// currentMode is a Scade model output and initial mode is SB
+Current_Mode := pre(currentMode,'Level_And_Mode_Types_Pkg::SB');
+
+// PO: 
+po_condition_1 := if (Data_From_DMI.'ETCS_Isolated') then
+	       	  X(Current_Mode) = 'Level_And_Mode_Types_Pkg::IS'
+		  else
+		  True;
+
+
+Proof Obligations:
+po_condition_1;

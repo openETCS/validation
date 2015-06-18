@@ -1,0 +1,61 @@
+\section{Introduction}\label{sec:intro}
+% ==========================================================================
+
+\subsection{A Test Model for the ETCS Ceiling Speed Monitor}
+In 2011 the {\it model-based testing benchmarks website} www.mbt-benchmarks.org has been 
+created with the objective to publish test models that may serve as challenges or benchmarks 
+for validating testing theories   and for comparing the capabilities of model-based testing (MBT) tools~\cite{pel2011a}.
+In this technical report a novel contribution to this website is presented, a SysML model
+of the Ceiling Speed Monitor (CSM) which is part of the European Vital Computer (EVC), the onboard controller of trains conforming to the European Train Control System (ETCS) standard~\cite{ETCS}. In    Section~\ref{sec:ceil} the functional objectives for the CSM are described, and in Section~\ref{sec:modeldesc} the detailed model description is provided. 
+
+The static and behavioural semantics of SysML models have been defined in~\cite{SysML12,uml_2_4} in a semi-formal way, leaving certain ``semantic variation points'' open, so that they can be adjusted according to project-specific requirements. For automated model-based testing, however, a strictly formal semantics is required, so that concrete test data can be calculated from the model's transition relation using constraint solving techniques~\cite{peleska2013ictss}. 
+We therefore describe in Section~\ref{sec:transrel} how a formal behavioural semantics is derived for the CSM model and present the associated transition relation in propositional form.
+
+We use state transition systems (STS) for encoding the operational semantics of concrete
+modelling formalisms like SysML. STS are widely known from the field of model checking~\cite{clarke_em-etal:1999a}, because their extension into Kripke Structures allows for effective data abstraction techniques. The latter are also applied for equivalence class testing. 
+Since state transition systems are a means for semantic representation, testing theories elaborated for STS are applicable for all concrete formalisms whose behavioural semantics can be expressed by STS. In~\cite{d341} it is shown how the semantics of general SysML models and models of a process algebra are encoded as STS. In this technical report we illustrate  how this is achieved for the concrete case of the CSM SysML model.
+
+% ==========================================================================
+\subsection{Equivalence Class Partition Testing for the CSM}
+
+The CSM represents a specific test-related challenge: its behaviour depends on actual and allowed speed, and these have conceptually real-valued data domains, so that -- even when   discretising
+the input space -- it would be infeasible to exercise all possible combinations of 
+inputs on the system under test (SUT). Therefore equivalence class partition (ECP)
+ testing strategies have 
+to be applied for testing the CSM. While these strategies are well-adopted  in a heuristic manner
+in today's industrial test campaigns, practical application of equivalence class testing still lacks 
+formal justification of the equivalence classes selected and the sequences of class representatives 
+selected as test cases: standard text books used in industry, for example~\cite{spillner2006}, 
+only explain the generation of input equivalence class tests for   systems, where the 
+SUT reaction to an input class representative is independent on the internal state. Moreover, the systematic calculation of classes from models, as well as their formal justification with respect to
+test strength and coverage achieved, is not yet part of today's best practices in industry. 
+
+In contrast to this, formal approaches to equivalence class testing have been studied in the formal methods communities; references to these results  are given in Section~\ref{sec:related}.
+In the second main part of this report (Section~\ref{sec:iecpstart}) we therefore describe a recent formal technique for equivalence class testing and its application to testing the CSM. The theoretical 
+foundations of this strategy have been published by two of the authors in~\cite{peleska2013ictss}. 
+This technical report illustrates its practical application and presents first evaluation details using a 
+prototype implementation in an existing MBT tool; the ECP tests are  compared to test results obtained when applying other MBT coverage strategies, such as transition cover or MC/DC coverage (Section~\ref{sec:conventionaltests}). 
+
+
+% ==========================================================================
+\subsection{Fault Models and Completeness Results}
+
+
+Our ECP strategy
+introduces test suites depending on {\it fault models}. This well adopted notion has first been 
+introduced in the field of finite state machine (FSM) testing~\cite{petrenko1996}, but is also applicable
+to other formal modelling techniques. A fault model consists of a reference model, a conformance relation and a fault domain. The latter is a collection of models whose behaviour may or may not be
+consistent to the reference model in the sense of the conformance relation. The test suites generated 
+by the ECP strategy described here are {\it complete} with respect to the given fault model: each
+system of the fault domain which conforms to the reference model will pass all the generated tests
+(this means that the test suite is {\it sound}), and each system in the fault domain that violates the
+conformity to the reference model will fail at least  once when tested according to the test suite (the test suite is {\it exhaustive}). 
+
+
+
+
+%%% @todo open proof strategy of the openETCS project
+
+
+
+

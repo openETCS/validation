@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<File xmlns="http://www.esterel-technologies.com/ns/scade/4" xmlns:ed="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4" xmlns:kcg="http://www.esterel-technologies.com/ns/scade/pragmas/codegen/2">
+	<declarations>
+		<Constant name="K_DELAY_DRIVER_ACK">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="int"/>
+					</type>
+				</NamedType>
+			</type>
+			<value>
+				<ConstValue value="50"/>
+			</value>
+			<pragmas>
+				<ed:Constant oid="!ed/20f9/808/1180/52497ffd2025" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Delay waiting for the acknowledge of the driver (in cycles)</comment>
+				</ed:Constant>
+			</pragmas>
+		</Constant>
+		<Type name="s_datas_in_odo">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="D_DISTANCE_ODO">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/210b/808/1180/524981f1502e" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Distance extracted of the ODO sub-system</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/20fa/808/1180/52498008119e" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Structure associated to the inputs of the ODO sub-system</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Type name="s_datas_in_btm">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="M_PACKET_GEO_POS_INFO">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="s_packet_geographical_position_information"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/ee2/5C94/728/524af50c1219" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Packet geographical position information</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="M_PACKET_MODE_PROFILE">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="s_packet_mode_profile"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/210d/808/1180/52498260b10" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Packet Mode Profile</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="NID_LRBG_BTM">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/83e/5C94/728/52499e0214d8" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Identity of last relevant balise group </comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/210c/808/1180/524982444394" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Structure associated to the inputs of the BTM sub-system</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Type name="s_datas_in_radio">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="M_PACKET_GEO_POS_INFO">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="s_packet_geographical_position_information"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/ef9/5C94/728/524af5597bd" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Packet geographical position information</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="M_PACKET_MODE_PROFILE">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="s_packet_mode_profile"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/ef2/5C94/728/524af5497ec3" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Packet Mode Profile</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/210e/808/1180/524982676d49" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Structure associated to the inputs of the Radio sub-system</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Type name="s_train_positions">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="M_POSITION">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/cb4/5C94/728/524aebfd7700" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Track kilometre reference value</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="D_POSOFF_MAX_SAFE_FRONT">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/cbd/5C94/728/524aec193bf6" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Offset from the max safe front position to the related track kilometre reference</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="D_POSOFF_MIN_SAFE_FRONT">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/3e97/3BF1/310/524e7de26eaf" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Offset from the min safe front position to the related track kilometre reference</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/2110/808/1180/5249827d1543" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Structure associated of positions of a train</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Type name="s_os_area">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="D_START_OS_AREA">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/2126/808/1180/524985bd1e" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Incremental distance to the start of the OS area</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="M_MAMODE">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="enum_mamode"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/2130/808/1180/5249860a7c3c" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Required mode for a part of the MA</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="V_OS_AREA">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/2139/808/1180/5249867a6aae" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Speed of the OS area</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="L_OS_AREA">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/2142/808/1180/52498696c95" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Length of the OS area</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="L_ACK_OS_AREA">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/136d/493A/1240/524c02d23ac1" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Length of the acknowledgement area in rear of the start of the OS area</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/2125/808/1180/524985ac4efd" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Structure associated of the OS area</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Type name="enum_mamode">
+			<definition>
+				<Enum>
+					<values>
+						<Value name="PROFILE_OS">
+							<pragmas>
+								<ed:Value oid="!ed/2144/808/1180/524986f245f5" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>On Sight profile</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="PROFILE_SH">
+							<pragmas>
+								<ed:Value oid="!ed/2145/808/1180/524987402c5a" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Shunting profile</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="PROFILE_LS">
+							<pragmas>
+								<ed:Value oid="!ed/2146/808/1180/52498741459b" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Limited Supervision profile</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="NO_PROFILE">
+							<pragmas>
+								<ed:Value oid="!ed/48e/5C94/728/52499d156cc6" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>No profile</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+					</values>
+				</Enum>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/2143/808/1180/524986e01982" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Enumeration of the mode profile</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Type name="s_datas_in_dmi">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="Q_DRIVER_ACK_OS_MODE">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="bool"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/2174/808/1180/524989a43da1" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Acknowledgement for OS mode send by the driver</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/2173/808/1180/524989876759" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Structure associated to the inputs of the DMI sub-system</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Type name="s_datas_out_dmi">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="Q_ACK_REQUEST">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="bool"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/217e/808/1180/52498a3a61db" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Acknowledgement requested to the driver</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/217d/808/1180/52498a2a1c47" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Structure associated to the outputs of the DMI sub-system</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Type name="s_datas_out_biu">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="Q_SERVICE_BRAKE_COMMAND">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="bool"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/2188/808/1180/52498bbf2218" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Service brake command</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/2187/808/1180/52498ba4743b" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Structure associated to the outputs of the BIU sub-system</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Type name="enum_level_etcs">
+			<definition>
+				<Enum>
+					<values>
+						<Value name="LEVEL_0">
+							<pragmas>
+								<ed:Value oid="!ed/1a9/5C94/728/524996b2111b"/>
+							</pragmas>
+						</Value>
+						<Value name="LEVEL_NTC">
+							<pragmas>
+								<ed:Value oid="!ed/1aa/5C94/728/524997234636"/>
+							</pragmas>
+						</Value>
+						<Value name="LEVEL_1">
+							<pragmas>
+								<ed:Value oid="!ed/1ab/5C94/728/52499723ef3"/>
+							</pragmas>
+						</Value>
+						<Value name="LEVEL_2">
+							<pragmas>
+								<ed:Value oid="!ed/1ac/5C94/728/524997232a3d"/>
+							</pragmas>
+						</Value>
+						<Value name="LEVEL_3">
+							<pragmas>
+								<ed:Value oid="!ed/1ad/5C94/728/524997242ecd"/>
+							</pragmas>
+						</Value>
+					</values>
+				</Enum>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/1a8/5C94/728/524996a1326e" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Enumeration of ETCS levels</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Constant name="K_OS_AREA_DEF">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="s_os_area"/>
+					</type>
+				</NamedType>
+			</type>
+			<value>
+				<!-- {D_START_OS_AREA : 0, M_MAMODE : NO_PROFILE, V_OS_AREA : 0, L_OS_AREA : 0, L_ACK_... -->
+				<DataStructOp>
+					<data>
+						<LabelledExpression label="D_START_OS_AREA">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="M_MAMODE">
+							<flow>
+								<IdExpression>
+									<path>
+										<ConstVarRef name="NO_PROFILE"/>
+									</path>
+								</IdExpression>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="V_OS_AREA">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="L_OS_AREA">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="L_ACK_OS_AREA">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+					</data>
+				</DataStructOp>
+			</value>
+			<pragmas>
+				<ed:Constant oid="!ed/300/5C94/728/524998d9361c" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>OS area by default</comment>
+				</ed:Constant>
+			</pragmas>
+		</Constant>
+		<Type name="s_packet_geographical_position_information">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="NID_BG">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/ea5/5C94/728/524af3827102" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Identity number of the balise group</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="D_POSOFF">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/eae/5C94/728/524af3a42b80" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Offset from the location reference of the geographical position reference balise group to the related track kilometre reference</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="M_POSITION">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/e9c/5C94/728/524af33d5836" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Track kilometre reference value</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/e9b/5C94/728/524af30a6c4a" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Structure associated to the packet geographical location information for one or multiple references to the train</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Type name="s_packet_mode_profile">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="D_MAMODE">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/ebe/5C94/728/524af4ba71c5" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Incremental distance to the start of the next Mode Profile</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="M_MAMODE">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="enum_mamode"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/ec5/5C94/728/524af4c06760" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Required mode for a part of the MA</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="V_MAMODE">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/ed2/5C94/728/524af4c61e59" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Required mode related speed</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="L_MAMODE">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/ed8/5C94/728/524af4c95ef9" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Length of the area of the required mode </comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="L_ACKMAMODE">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/135e/493A/1240/524c027f21ba" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Length of the acknowledgement area in rear of the start of the required mode</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/eb7/5C94/728/524af40152bf" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Structure associated to the packet mode profile associated to an MA</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Type name="s_geo_pos_info">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="NID_BG">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/20c/493A/1240/524bb739553c" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Identity number of the balise group</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="D_POSOFF">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/212/493A/1240/524bb73c2112" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Offset from the location reference of the geographical position reference balise group to the related track kilometre reference</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="M_POSITION">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/218/493A/1240/524bb73f5c0" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Track kilometre reference value</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/205/493A/1240/524bb6f914a2" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Structure associated to the geographical position information</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Constant name="K_GEO_POS_INFO_DEF">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="s_geo_pos_info"/>
+					</type>
+				</NamedType>
+			</type>
+			<value>
+				<!-- {NID_BG : 0, D_POSOFF : 0, M_POSITION : 0} -->
+				<DataStructOp>
+					<data>
+						<LabelledExpression label="NID_BG">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="D_POSOFF">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="M_POSITION">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+					</data>
+				</DataStructOp>
+			</value>
+			<pragmas>
+				<ed:Constant oid="!ed/4d2/493A/1240/524bba471696" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Geographical position information by default</comment>
+				</ed:Constant>
+			</pragmas>
+		</Constant>
+		<Constant name="K_TRAIN_POSITIONS_DEF">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="s_train_positions"/>
+					</type>
+				</NamedType>
+			</type>
+			<value>
+				<!-- {M_POSITION : 0, D_POSOFF_MAX_SAFE_FRONT : 0, D_POSOFF_MIN_SAFE_FRONT : 0} -->
+				<DataStructOp>
+					<data>
+						<LabelledExpression label="M_POSITION">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="D_POSOFF_MAX_SAFE_FRONT">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="D_POSOFF_MIN_SAFE_FRONT">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+					</data>
+				</DataStructOp>
+			</value>
+			<pragmas>
+				<ed:Constant oid="!ed/7e0/493A/1240/524bbd551b89" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Positions by default of the train (in meters)</comment>
+				</ed:Constant>
+			</pragmas>
+		</Constant>
+		<Type name="s_train_information">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="M_TRAIN_POSITIONS">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="s_train_positions"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/c21/493A/1240/524bdf3d4920" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Positions of the train</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="V_TRAIN_SPEED">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/c2b/493A/1240/524bdf814e1d" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Speed of the train</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/c20/493A/1240/524bdf2827f3" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Structure associated to the informations of a train</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Constant name="K_TRAIN_SPEED_DEF">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="int"/>
+					</type>
+				</NamedType>
+			</type>
+			<value>
+				<ConstValue value="0"/>
+			</value>
+			<pragmas>
+				<ed:Constant oid="!ed/c34/493A/1240/524bdfb61ce6" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Speed by default of the train (in m/s)</comment>
+				</ed:Constant>
+			</pragmas>
+		</Constant>
+		<Constant name="K_PERIOD_APPLI">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="int"/>
+					</type>
+				</NamedType>
+			</type>
+			<value>
+				<ConstValue value="100"/>
+			</value>
+			<pragmas>
+				<ed:Constant oid="!ed/c3d/493A/1240/524be396166e" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Period of the application EVC (in milliseconds)</comment>
+				</ed:Constant>
+			</pragmas>
+		</Constant>
+		<Constant name="K_S_TO_MS">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="int"/>
+					</type>
+				</NamedType>
+			</type>
+			<value>
+				<ConstValue value="1000"/>
+			</value>
+			<pragmas>
+				<ed:Constant oid="!ed/f5e/493A/1240/524be57a6079" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Conversion seconds to milliseconds</comment>
+				</ed:Constant>
+			</pragmas>
+		</Constant>
+		<Type name="enum_evc_mode">
+			<definition>
+				<Enum>
+					<values>
+						<Value name="NP">
+							<pragmas>
+								<ed:Value oid="!ed/2bf4/1A5C/1008/524c233d5d17" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>No Power</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="SB">
+							<pragmas>
+								<ed:Value oid="!ed/2bf5/1A5C/1008/524c236138f1" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Stand By</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="PS">
+							<pragmas>
+								<ed:Value oid="!ed/2bf6/1A5C/1008/524c23612462" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Passive Shunting</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="SH">
+							<pragmas>
+								<ed:Value oid="!ed/2bf7/1A5C/1008/524c2361c07" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Shunting</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="FS">
+							<pragmas>
+								<ed:Value oid="!ed/2bf8/1A5C/1008/524c2361225c" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Full Supervision</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="LS">
+							<pragmas>
+								<ed:Value oid="!ed/2bf9/1A5C/1008/524c23615600" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Limited Supervision</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="SR">
+							<pragmas>
+								<ed:Value oid="!ed/2bfa/1A5C/1008/524c23627be0" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Staff Responsible</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="OS">
+							<pragmas>
+								<ed:Value oid="!ed/2bfb/1A5C/1008/524c238219cc" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>On Sight</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="SL">
+							<pragmas>
+								<ed:Value oid="!ed/2bfc/1A5C/1008/524c23835b90" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Sleeping</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="NL">
+							<pragmas>
+								<ed:Value oid="!ed/2bfd/1A5C/1008/524c23832519" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Non Leading</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="UN">
+							<pragmas>
+								<ed:Value oid="!ed/2bfe/1A5C/1008/524c238337b4" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Unfitted</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="TR">
+							<pragmas>
+								<ed:Value oid="!ed/2bff/1A5C/1008/524c23831f2e" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Trip</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="PT">
+							<pragmas>
+								<ed:Value oid="!ed/2c00/1A5C/1008/524c238340a" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Post Trip</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="SF">
+							<pragmas>
+								<ed:Value oid="!ed/2c01/1A5C/1008/524c23835808" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>System Failure</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="IS">
+							<pragmas>
+								<ed:Value oid="!ed/2c02/1A5C/1008/524c23b4170c" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Isolation</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="SN">
+							<pragmas>
+								<ed:Value oid="!ed/2c03/1A5C/1008/524c23b420f8" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>National System</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+						<Value name="RV">
+							<pragmas>
+								<ed:Value oid="!ed/2c04/1A5C/1008/524c23b567a" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Reversing</comment>
+								</ed:Value>
+							</pragmas>
+						</Value>
+					</values>
+				</Enum>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/2bf3/1A5C/1008/524c2327da1" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Enumeration of EVC mode</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+		<Type name="s_parameters">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="D_DISTANCE_ANTENNA_MAX_SAFE_FRONT">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/585e/3BF1/310/524ea3747b14" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Distance between the antenna and the max safe front position of the train</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+						<Field name="D_DISTANCE_ANTENNA_MIN_SAFE_FRONT">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/5864/3BF1/310/524ea3b4b06" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+									<comment>Distance between the antenna and the min safe front position of the train</comment>
+								</ed:Field>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/585d/3BF1/310/524ea3673d2f" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/4">
+					<comment>Structure associated of parameters</comment>
+				</ed:Type>
+			</pragmas>
+		</Type>
+	</declarations>
+</File>

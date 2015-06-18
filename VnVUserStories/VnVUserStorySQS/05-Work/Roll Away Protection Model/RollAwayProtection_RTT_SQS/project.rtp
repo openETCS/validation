@@ -1,0 +1,108 @@
+// PROJECT CONFIGURATION FILE -----------------------------------------------
+PROJECT; "_Project"
+
+// The baseline identification will be used in all
+// test procedure and test results documents
+BASELINE; "@PROJECT_BASELINE@"
+
+// Path where to find the tests
+TESTPATH; ${RTT_TESTCONTEXT}
+
+// Path where to find the file containing the headlines 
+// associated with the abbreviations (TLAs) of all software 
+// components to be tested. Sub-path to TEST
+COMPONENTNAMES; ${RTT_TESTCONTEXT}/componentnames.txt
+
+// Path where to find images that are automatically
+// included in the documents to be produced
+// (e.g. company logo).
+IMAGES; images\
+
+// -----------------------------------------------------------
+// Standard include files to be used in every
+// unit test. they are looked up under the
+// include paths specified in the CFLAGS section above.
+// If system-global headers are referenced, they
+// are surrounded by <..>.
+// -----------------------------------------------------------
+INCLUDE; <stdlib.h>
+       ; <stdio.h>
+
+// stub specifications available to all SWI tests and unit tests
+STUBS     ; ${RTT_TESTCONTEXT}/stubs
+
+// -----------------------------------------------------------
+// compile flags to be used in all make files for generation
+// of executable test cases
+// -----------------------------------------------------------
+CFLAGS	
+	; -I@{SOFTWAREPATH}/include
+	; -I$(RTT_TESTCONTEXT)/inc
+        ; "-I`find ${RTT_TESTCONTEXT}/inc -type d -not -name CVS -not -name .svn | xargs echo | sed -e 's/[ ]/ -I/g'`"
+	; -g3 -ggdb3
+
+// For backwards compatibility, the declarations of user-defined print
+// functions are automatically available for all {\tt *.\-rts} files.
+// As a drawback, the resulting dependencies imply that all {\tt *.\-rts}
+// files have to be re-compiled whenever _any_ user-defined print function is
+// added, removed, or modified.
+// In order to eliminate these dependencies (recommended),
+// uncomment the following compiler flag:
+//CFLAGS  ; "-DRTT_NOINC_USER_PRINTFUNS"
+
+// -----------------------------------------------------------
+// Declaration of global channel files
+// -----------------------------------------------------------
+//CHANNELS; sample_channel.cnl
+
+// -----------------------------------------------------------
+// linker flags
+// -----------------------------------------------------------
+LDPATH  ; 
+
+//NOTE: -l<lib> entries for stubs will be automatically 
+//      generated from the STUBS-entries.
+LDFLAGS; ""
+
+
+
+// -----------------------------------------------------------
+// Time resolution (millisecond/microsecond)
+// For SWI/unit tests on PCs, only millisecond is useful.
+// -----------------------------------------------------------
+//TIMERS; microsecond
+TIMERS; millisecond
+
+// -----------------------------------------------------------
+// Time stamp format to be used in test execution logs
+// 'absolute' generates format
+//     <year>:<month>:<day>:<hour>:<minute>:<second>.<millisecond>
+//     2003:12:31:15:22:59.123
+// 'relative' generates format 
+//     <millisecond since start of test>
+//      000000012345
+// The third column may contain the reference point of the time (optional):
+// 'local'    uses the local time zone (default)
+// 'gm'       uses Coordinated Universal Time (UTC)
+//            formerly known as Greenwich Mean Time (GMT)
+// The reference is listed only at the beginning of the test log.    
+// -----------------------------------------------------------
+TIMEFORMAT; relative; local
+
+// -----------------------------------------------------------
+// If 'yes', then process complete stack of name spaces
+// when parsing headers to genereate enumeration print functions.
+// If 'no' (default), allow at most first-level name-spacing.
+// -----------------------------------------------------------
+NAMESPACE_NESTING; no
+
+// -----------------------------------------------------------
+// If 'yes', then include all headers from all channels 
+// in all *.rts files.
+// If 'no' (default), then no automatic inclusion takes place.
+// -----------------------------------------------------------
+CHANNEL_HEADER_INCLUDE; no
+
+// -------------------------------------------------------------------------
+
+

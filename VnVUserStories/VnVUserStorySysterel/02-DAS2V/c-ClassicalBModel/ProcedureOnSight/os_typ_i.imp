@@ -1,0 +1,53 @@
+/************************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Types and scalar constants
+
+************************************************/
+
+IMPLEMENTATION
+	os_typ_i
+
+REFINES
+	os_typ
+
+PROPERTIES
+	t_abs   = NAT &
+	t_dist  = NAT &
+	t_speed = NAT
+
+VALUES
+	t_abs_i   = INT ;
+	t_dist_i  = INT ;
+	t_speed_i = INT ;
+
+	c_abs_indet   = -1 ;
+	c_dist_indet  = -1 ;
+	c_speed_indet = -1
+
+OPERATIONS
+
+	p_res <-- read_t_abs(p_abs) =
+	BEGIN
+		p_res := bool(0 <= p_abs)
+	END
+	;
+
+	p_res <-- read_t_dist(p_dist) =
+	BEGIN
+		p_res := bool(0 <= p_dist)
+	END
+	;
+
+	p_res <-- read_t_speed(p_speed) =
+	BEGIN
+		p_res := bool(0 <= p_speed)
+	END
+
+END
+

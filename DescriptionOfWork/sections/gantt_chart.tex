@@ -1,0 +1,98 @@
+\noindent{
+\begin{landscape}
+%-----------------------------------------------------------------------
+\section{GANTT chart}
+%-----------------------------------------------------------------------
+
+\begin{table}[h]
+%\caption{WP4 GANTT chart} %title of the table
+\begin{adjustbox}{height=\textheight/4*3}% ajusting graphic size for landscape
+%\begin{adjustbox}{width=\textwidth}% ajusting graphic size for non-landscape
+\begin{tikzpicture}[x=.5cm, y=1cm]
+\begin{ganttchart}%
+[hgrid=true, vgrid={*5{dotted},*1{solid},*5{dotted},*1{dashed}},%
+today=8,
+today label=\textcolor{blue}{Current Month}, 
+today rule/.style={blue, line width=3pt},
+y unit title=0.4cm,
+y unit chart=0.5cm,
+title label anchor/.style={below=-1.5ex},
+title height=1,
+bar height=.6,
+bar label font=\normalsize\color{black!80},
+milestone height=.6,
+milestone yshift=.6,
+milestone/.style={fill=black,draw=black},
+group right shift=0,
+group top shift=.6,
+group height=.3,
+group peaks={}{}{.2},
+inline
+]{36} %36 months
+
+% project title
+\gantttitle[title/.style={draw=none}, title height=1,
+title label font={\color{black}\scshape}%
+]{Verification \& Validation Strategy}{36} \\
+
+%timing header
+\gantttitle{2012}{6}
+\gantttitle{2013}{12}
+\gantttitle{2014}{12}
+\gantttitle{2015}{6} \\
+\gantttitlelist[title height=1]{7,...,12}{1}
+\gantttitlelist[title height=1]{1,...,12}{1}
+\gantttitlelist[title height=1]{1,...,12}{1}
+\gantttitlelist[title height=1]{1,...,6}{1} \\
+\gantttitlelist[title height=1]{1,...,36}{1} \\
+
+%project groups and tasks
+\\
+\ganttbar[name=T41, inline=false]{Idetntification of tools and profile usage \emph{T4.1}}{7}{13} 
+\ganttmilestone[name=D41a, bar label inline anchor/.style=left]{\emph{D 4.1a}}{9}  %Preliminary Evaluation criteria on V\&V \emph{D 4.1a}
+\ganttmilestone[name=D41,  bar label inline anchor/.style=left]{\emph{D 4.1}}{13} \\ %V\&V Plan \& Methodology \emph{D 4.1}
+\\
+\ganttgroup[]{V\&V of prototypical Model}{14}{16} \\
+\\
+\ganttgroup[]{V\&V of Model \& Functional API propotype}{20}{24} \\
+\\
+\ganttgroup[]{V\&V of Model \& Functional API final}{32}{35} \\
+\\
+\ganttbar[name=T42, inline=false]{V\&V of the formal model \emph{T4.2 }}{10}{35}
+\ganttmilestone[name=D42]{\emph{D 4.2}}{16} %Interim report on the applicability of the V\&V approach \emph{D 4.2}
+\ganttmilestone[name=M41]{\emph{M 4.1}}{24} %Applicability of the V\&V approach to the prototype \emph{M 4.1}
+\ganttmilestone[name=D43, , milestone label inline anchor/.style={anchor=south east}]{\emph{D 4.3}}{35} %Report on the prototypical application of the V\&V \emph{D 4.3}
+\ganttmilestone[name=D45]{{\emph{D 4.5}}}{36} \\ %Final report and conclusions \emph{D 4.5}
+\\
+\ganttgroup[]{V\&V of prototypical Code \& API}{14}{16} \\
+\\
+\ganttgroup[]{V\&V of Architecture \& System API propotype}{21}{24} \\
+\\
+\ganttgroup[]{V\&V of Architecture \& System API final}{32}{35} \\
+\\
+\ganttbar[name=T43, inline=false]{V\&V of the implementation \/ code \emph{T4.3}}{10}{35} 
+\ganttmilestone[name=D42]{\emph{D 4.2}}{16} %Interim report on the applicability of the V\&V approach \emph{D 4.2}
+\ganttmilestone[name=M41]{\emph{M 4.1}}{24} %Applicability of the V\&V approach to the prototype \emph{M 4.1}
+\ganttmilestone[name=D43, milestone label inline anchor/.style={anchor=south east}]{\emph{D 4.3}}{35} %Report on the prototypical application of the V\&V \emph{D 4.3}
+\ganttmilestone[name=D45]{{\emph{D 4.5}}}{36} \\ %Final report and conclusions \emph{D 4.5}
+\\
+\ganttbar[name=T44, inline=false]{Verification of the tools and processes \emph{T4.4}}{7}{35} 
+\ganttmilestone[name=D41a]{\emph{D 4.4a}}{9} %Preliminary Evaluation criteria on safety \emph{D 4.4a}
+\ganttmilestone[name=D43, milestone label inline anchor/.style={anchor=south east}]{\emph{D 4.3}}{35} %Report on the \ganttmilestone[name=D45]{{\emph{D 4.5}}}{36} \\ %Final report and conclusions \emph{D 4.5}
+\\
+\ganttgroup[]{\tbd}{8}{35} \\
+\\
+\ganttbar[name=T45, inline=false]{Internal Assessment \emph{T4.5}}{8}{35}
+\ganttmilestone[name=D45]{\emph{\todo{D 4.5}}}{35} \\  %Quality recommendation to prepare the Assessment \emph{D 4.5}
+
+%project linking between tasks
+%\ganttlink{D41a}{T43}
+%\ganttlink[link type=s-s]{T41}{T42}
+
+\end{ganttchart}
+\end{tikzpicture}
+\end{adjustbox}
+\end{table}
+
+\end{landscape}
+}

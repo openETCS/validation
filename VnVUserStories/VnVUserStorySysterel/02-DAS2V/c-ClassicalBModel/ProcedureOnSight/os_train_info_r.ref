@@ -1,0 +1,64 @@
+/************************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Train information : location and speed
+
+************************************************/
+
+REFINEMENT
+	os_train_info_r
+
+REFINES
+	os_train_info
+
+SEES
+	os_typ         ,
+	os_cte_conf_bs ,
+	os_in          ,
+	os_consist
+
+ABSTRACT_VARIABLES
+	posoff_max_safe_front ,
+	posoff_min_safe_front ,
+	train_speed
+
+INITIALISATION
+	posoff_max_safe_front := k_posoff_max_safe_front_def ||
+	posoff_min_safe_front := k_posoff_min_safe_front_def ||
+	train_speed           := 0
+
+OPERATIONS
+	
+	elaborate_train_location =
+	IF train_position /= train_position_prev THEN
+		posoff_max_safe_front := dist_antenna_max_safe_front ||
+		posoff_min_safe_front := dist_antenna_min_safe_front
+	ELSE
+		posoff_max_safe_front ,
+		posoff_min_safe_front :(
+			posoff_max_safe_front : t_abs_i &
+			posoff_max_safe_front : t_abs   &
+			posoff_max_safe_front = distance_odo + posoff_max_safe_front$0 &
+
+			posoff_min_safe_front : t_abs_i &
+			posoff_min_safe_front : t_abs   &
+			posoff_min_safe_front = distance_odo + posoff_min_safe_front$0)
+	END
+	;
+
+	elaborate_train_speed =
+	BEGIN
+		train_speed
+		:(
+			train_speed : t_speed_i &
+			train_speed : t_speed   &
+			train_speed = (distance_odo * k_s_to_ms) / k_period_appli)
+	END
+
+END
+

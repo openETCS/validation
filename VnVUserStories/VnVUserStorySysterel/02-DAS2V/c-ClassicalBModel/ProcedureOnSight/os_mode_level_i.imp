@@ -1,0 +1,193 @@
+/************************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Elaborating ETCS level and mode
+
+************************************************/
+
+IMPLEMENTATION
+	os_mode_level_i
+
+REFINES
+	os_mode_level_r
+
+SEES
+	elop_bs        ,
+	os_typ         ,
+	os_cte_conf_bs ,
+	os_in          ,
+	os_consist     ,
+	os_train_info
+
+IMPORTS
+	os_mode_level_1
+
+PROMOTES
+	read_etcs_level             ,
+	read_mamode_prec            ,
+	read_mode                   ,
+	read_waiting_for_ack        ,
+	read_waiting_for_ack_prec   ,
+	read_tempo                  ,
+	read_service_brake_command  ,
+	read_ack_request_os_mode    ,
+	read_os_mode_in_progress    ,
+	write_etcs_level            ,
+	write_mamode_prec           ,
+	write_mode                  ,
+	write_waiting_for_ack       ,
+	write_waiting_for_ack_prec  ,
+	write_tempo                 ,
+	write_service_brake_command ,
+	write_ack_request_os_mode   ,
+	write_os_mode_in_progress
+
+OPERATIONS
+
+	elaborate_level =
+	BEGIN
+		write_etcs_level(c_level_2)
+	END
+	;
+
+	elaborate_os_mode_in_progress =
+	VAR
+		l_mamode      ,
+		l_mamode_prec
+	IN
+		l_mamode      <-- read_mamode      ;
+		l_mamode_prec <-- read_mamode_prec ;
+
+		IF
+			l_mamode  = c_profile_OS &
+			l_mamode /= l_mamode_prec
+		THEN
+			write_os_mode_in_progress(TRUE)
+		END
+	END
+	;
+
+	elaborate_mode =
+	VAR
+		l_os_mode_in_progress   ,
+		l_mode                  ,
+		l_start_os_area         ,
+		l_posoff_max_safe_front ,
+		l_waiting_for_ack       ,
+		l_dist_ack_os_area      ,
+		l_train_speed           ,
+		l_os_area_speed         ,
+		l_dist_ack_zone
+	IN
+		l_os_mode_in_progress   <-- read_os_mode_in_progress   ;
+		l_mode                  <-- read_mode                  ;
+		l_start_os_area         <-- read_start_os_area         ;
+		l_posoff_max_safe_front <-- read_posoff_max_safe_front ;
+		l_waiting_for_ack       <-- read_waiting_for_ack       ;
+		l_dist_ack_os_area      <-- read_dist_ack_os_area      ;
+		l_train_speed           <-- read_train_speed           ;
+		l_os_area_speed         <-- read_os_area_speed         ;
+
+		l_dist_ack_zone := l_start_os_area - l_dist_ack_os_area ;
+
+		IF
+			l_os_mode_in_progress = TRUE &
+			(l_mode = c_mode_FS or l_mode = c_mode_LS or l_mode = c_mode_SB or
+				l_mode = c_mode_PT or l_mode = c_mode_SR or l_mode =  c_mode_UN or
+				l_mode = c_mode_SN or l_mode = c_mode_OS)
+		THEN
+			IF
+				l_start_os_area <= l_posoff_max_safe_front
+			THEN
+				IF
+					l_mode /= c_mode_SB &
+					l_mode /= c_mode_PT &
+					l_mode /= c_mode_OS
+				THEN
+					write_mode(c_mode_OS)
+				END ;
+
+				IF
+					l_waiting_for_ack = FALSE &
+					l_mode           /= c_mode_OS
+				THEN
+					write_waiting_for_ack(TRUE)     ;
+					write_tempo(k_delay_driver_ack)
+				END
+			ELSIF
+				l_dist_ack_zone <= l_posoff_max_safe_front &
+				l_train_speed < l_os_area_speed &
+				l_waiting_for_ack = FALSE
+			THEN
+				write_waiting_for_ack(TRUE)     ;
+				write_tempo(k_delay_driver_ack)
+			END
+		END
+	END
+	;
+
+	manage_delay =
+	VAR
+		l_waiting_for_ack    ,
+		l_driver_ack_os_mode ,
+		l_tempo
+	IN
+		l_waiting_for_ack    <-- read_waiting_for_ack    ;
+		l_driver_ack_os_mode <-- read_driver_ack_os_mode ;
+		l_tempo              <-- read_tempo              ;
+
+		IF l_waiting_for_ack = TRUE THEN
+			IF l_driver_ack_os_mode = TRUE THEN
+				write_waiting_for_ack(FALSE)       ;
+				write_mode(c_mode_OS)              ;
+				write_service_brake_command(FALSE) ;
+				write_os_mode_in_progress(FALSE)
+			ELSE
+				IF l_tempo = 0 THEN
+					write_service_brake_command(TRUE)
+				ELSE
+					write_tempo(l_tempo-1)
+				END
+			END
+		END
+	END
+	;
+
+	send_ack_request_driver =
+	VAR
+		l_waiting_for_ack      ,
+		l_waiting_for_ack_prec
+	IN
+		l_waiting_for_ack      <-- read_waiting_for_ack      ;
+		l_waiting_for_ack_prec <-- read_waiting_for_ack_prec ;
+
+		IF
+			l_waiting_for_ack      = TRUE &
+			l_waiting_for_ack_prec = FALSE
+		THEN
+			write_ack_request_os_mode(TRUE)
+		ELSE
+			write_ack_request_os_mode(FALSE)
+		END
+	END
+	;
+
+	copy_mode_level_prec =
+	VAR
+		l_mamode          ,
+		l_waiting_for_ack
+	IN
+		l_mamode          <-- read_mamode          ;
+		l_waiting_for_ack <-- read_waiting_for_ack ;
+
+		write_mamode_prec(l_mamode)                   ;
+		write_waiting_for_ack_prec(l_waiting_for_ack)
+	END
+
+END
+

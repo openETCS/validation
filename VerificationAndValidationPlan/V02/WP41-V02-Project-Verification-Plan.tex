@@ -1,0 +1,235 @@
+% \chapter{Verification Plan for the Project openETCS}
+% \label{sec:verification-plan-project}
+
+\section{Verification Overview}
+\label{sec:verif-overv}
+Describe the organization, schedule, resources, responsibilities,
+tools, techniques, and methodologies to be deployed in order to
+perform the verification activities.
+
+
+\subsection{Organisation}
+Define the relationship of verification to other efforts such as
+development, project management, quality assurance, and configuration
+management. Define the lines of communication within the verification
+effort, the authority for resolving issues, and the authority for
+approving verification deliverables.
+
+Organisation: a format for describing design artifacts subject to V\&V,
+  and a feedback format for the findings during V\&V.
+
+\subsection{Schedule}
+The schedule summarizes the various verification tasks and their
+relationship to the overall openETCS project.  It describes the
+project life cycle and project milestones including completion dates.
+Summarize the schedule of verification tasks and how verification
+results provide feedback to the whole openETCS process to support
+overall project management functions.  The objective of this section
+is to define an orderly flow of material between project activities
+and verification tasks.
+
+According to the Description of Work of WP~4 \cite{WP4DoW}, the verification
+activities will be structured into three main phases: 
+\begin{enumerate}
+\item First Level: Verification of prototypical system and API model
+  and prototypical code,
+\item Second Level: Verification of system model, functional API
+  prototype model, code architecture and system API prototype
+\item Third Level: Verification of final system and API model, final
+  code and the functional API model
+\end{enumerate}
+
+
+
+\section{Verification Activities---User Stories}
+\label{sec:verif-activ-user}
+
+The term ``User Story'' as used in openETCS stands for any kind
+application of tools, not just for the end user application of the
+system (EVC software) which is to be developed. This section shall
+describe such ``user stories'' of verifiers, i.e., it
+shall describe where which method or tool is to going to be applied to
+what artifact(s) (DAS2Vs). It thus shall tell coherently the
+\textbf{story} of verification activities. Later (sub)sections provide
+the organisational detail: \textbf{When} (Timeline,
+Sec.~\ref{sec:verif-activ-timel}) and \textbf{Contribution} (which of
+the verification obligations from Sec.~\ref{sec:verif-full-devel} are
+tackled by what approach.
+
+\bgcmmnt{the template for a user story should be included. It needs to
+be updated: Verification Levels 1 and 2 should be covered. One may
+include the old plan for Level 1, and mark changes appropriately.}
+
+
+\subsection{Reviews and Inspections}
+\label{sec:reviews-inspec-openETCS}
+
+\input{WP41-V02-UserStory-ReviewsInspections.tex}
+
+\subsection{Software Architecture Analysis Method (SAAM)}
+\label{sec:saam-openETCS}
+
+\input{WP41-V02-UserStory-SAAM.tex}
+
+\subsection{Architecture Tradeoff Analysis Method (ATAM)}	
+\label{sec:atam-openETCS}
+
+\input{WP41-V02-UserStory-ATAM.tex}
+
+\subsection{Formal Verification at Software Level}
+\label{sec:form-verif-soft-openETCS}
+
+\input{WP41-V02-UserStory-CEA-FOKUS.tex}
+
+\subsection{Applying RT-Tester to a
+  Model of a Component Handling the Acknowledgment  of a Level Transition Order }
+
+\input{WP41-V02-UserStory-DLR.tex}
+
+
+\subsection{Validation of the ETCS Specification with Colored Petri Nets (TWT)}
+\label{sec:VnVUsrStr:TWT}
+\input{VnVUsrStr-TWT.tex}
+
+
+\subsection{Verification with Model-Based Simulation using SystemC (TWT, URO)}
+\label{sec:model-based-sim-openETCS}
+\input{WP41-V02-UserStory-TWT-URO.tex}
+
+
+\subsection{System Integration  Testing (Uni Bremen/DLR)}
+\input{WP41-V02-UserStory-UB.tex}
+
+
+\subsection{Model Verification by applying the openETCS
+  Verification Tool Chain (Siemens)}
+\input{WP41-V02-UserStory-Siemens.tex}
+
+
+\section{Verification Activities---Timeline}
+\label{sec:verif-activ-timel}
+
+This section lists per partner/activity in which of the project
+phases according to Sec.~\ref{sec:verif-activ-timel} (first, second or
+third level of verification) a particular activity is planned. In the
+first version of the V\&V plan, only the first level needs to be detailed.
+
+
+\subsection{First Level of Verification}
+\label{sec:first-level-verif}
+
+This section gives only a short description, which should refer to an
+activity detailed earlier. Most probably the material will be
+organised in a table.
+
+\paragraph{TWT}
+TWT will continue with the analysis of methods for generating SystemC
+code from SysML models. In first investigations the Acceleo tool
+(Eclipse plugin, based on OMG standard) seems to be a promising
+candidate for model-to-text transformation. The approach will be
+aligned with URO and their SystemC model of the braking curves.  See
+also Sct.~\ref{sec:model-based-sim-openETCS}.
+
+In addition, TWT will start with the analysis on whether/how UML/SysML
+statecharts can be transformed to timed automata in a sensible manner
+while retaining as much structural information as possible. Timed
+automata provide a means for model checking real-time properties of
+systems. See also Sct.~\ref{sec:real-time-TA-openETCS}.
+
+\paragraph{URO}
+URO will continue their work on a modular and executable SystemC model
+for braking curves suitable for real-time simulation. An accompanying
+high-level SysML model will be constructed as well and aligned with
+TWT's activities on SysML $\rightarrow$ SystemC code generation.  See
+also Sct.~\ref{sec:model-based-sim-openETCS}.
+
+\paragraph{Uni. Bremen}
+Uni Bremen will start by developing and setting a simulation
+environment for the test of the EVC. The test models from the
+model-evaluation will be completed and the breaking curves will be
+added.  The set of tests generated will be then compared to the
+available ones of SUBSET-076.
+
+
+\subsection{Second Level of Verification}
+\label{sec:secon-level-verif}
+
+\subsection{Third Level of Verification}
+\label{sec:third-level-verif}
+
+
+\section{Verification Activities---Process View}
+\label{sec:verif-activ-proce}
+This section provides the detailed plan for the verification tasks
+throughout the openETCS project life cycle. It summarizes the
+activities performed by the project partners in relating them to the
+overall definition of verification activities in
+Sec.~\ref{sec:verif-full-devel}. 
+
+\section{Verification Reporting}
+This section describes how the results of implementing the
+Verification Plan will be documented.  Verification reporting will
+occur throughout the software life cycle.  The content, format, and
+timing of all verification reports shall be specified in this section.
+
+\bgcmmnt{Here we need the template for reporting.}
+
+\nthng{\textit{This subsection has to be revised to fit the restrictions of implementability within the project.}}
+
+The following reports will be generated during the verification process:
+\begin{itemize}
+\item \textbf{Anomaly reports:} 
+\item \textbf{Phase Summary Verification reports:} 
+\item \textbf{Final report:}
+\end{itemize}
+
+The structure of the Verification report is already defined in the
+\ref{sec:struct-verif-report} section of this document 
+
+\section{Administrative procedures}
+This section identifies the existing administrative procedures that
+are to be implemented as part of the Verification Plan. 
+Verification efforts consist of both management and technical tasks.
+Furthermore, it is the task of the SQA team to monitor whether the
+procedures as defined in the management plans ([QAplan], [SCMP],
+[Review and Revision processes]) are followed. 
+
+\subsection{Problem Report}
+The problem reporting procedure is described within the document
+Change/Problem Management Process.
+
+Any problem, failure and error encountered during the review
+activities (QA. Verification, Validation, Assessment) planned in the
+software development life-cycle, problems reported by users and
+customers as well as change requests initiated by any of the system
+stakeholders will be reported and managed following the Change/Problem
+Management Process detailed in
+\href{https://github.com/openETCS/governance/tree/master/Change-Problem%20Process}{[governance]} and through the Change/Problem Management Tool.
+
+\subsection{Task Iteration Process}
+Any change in the requirements (system, sub-systems, sw or components)
+require repeated verification and validation activities. 
+
+Once the change is accepted following the change/problem management
+procedure, the phases and items affected by it must be
+evaluated. These tests will be redesigned to reflect the change in the
+requirement and will be executed again. 
+
+In turn, a new analysis of the Software Integrity Level will involve
+the analysis of the activities requirements and documentation
+presented by the EN50128 standard and include such activities in the
+SVVP if necessary. 
+
+\subsection{Deviation Process}
+The Quality Manager will be informed in the case of detection of a
+deviation regarding Verification Plan. In addition, he/she also be
+informed if it is deemed necessary by an amendment to the Plan,
+whether or not motivated by a deviation 
+
+The Quality Manager will report such incidents to the Project Managers
+and with whom shall act appropriately. All persons listed in the
+Responsibilities section (Sec.~\ref{sec:vv-responsibilities}) shall be
+informed of a change in the Verification Plan
+
+\subsection{Control Procedure}
+Control procedures are specified in the Configuration Management Plan [SCMP]

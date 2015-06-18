@@ -1,0 +1,140 @@
+/************************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Elaborating ETCS level and mode
+
+************************************************/
+
+REFINEMENT
+	os_mode_level_r
+
+REFINES
+	os_mode_level
+
+SEES
+	os_typ         ,
+	os_cte_conf_bs ,
+	os_in          ,
+	os_consist     ,
+	os_train_info
+
+ABSTRACT_VARIABLES
+	etcs_level            ,
+	mamode_prec           ,
+	mode                  ,
+	waiting_for_ack       ,
+	waiting_for_ack_prec  ,
+	tempo                 ,
+	service_brake_command ,
+	ack_request_os_mode   ,
+	os_mode_in_progress
+
+INITIALISATION
+	etcs_level            := c_level_0    ||
+	mamode_prec           := c_profile_OS ||
+	mode                  := c_mode_NP    ||
+	waiting_for_ack       := FALSE        ||
+	waiting_for_ack_prec  := FALSE        ||
+	tempo                 := 0            ||
+	service_brake_command := FALSE        ||
+	ack_request_os_mode   := FALSE        ||
+	os_mode_in_progress   := FALSE
+
+OPERATIONS
+
+	elaborate_level =
+	BEGIN
+		/* arbitrary */
+		etcs_level := c_level_2
+	END
+	;
+
+	elaborate_os_mode_in_progress =
+	IF
+		mamode  = c_profile_OS &
+		mamode /= mamode_prec
+	THEN
+		os_mode_in_progress := TRUE
+	END
+	;
+
+	elaborate_mode =
+	IF /* OS mode processing in progress */
+		os_mode_in_progress = TRUE &
+		mode : {c_mode_FS, c_mode_OS, c_mode_LS, c_mode_SR,
+				c_mode_SB, c_mode_PT, c_mode_UN, c_mode_SN}
+	THEN
+		IF /* train is inside OS area */
+			start_os_area <= posoff_max_safe_front
+		THEN
+			IF /* mode is not SB, PT, nor OS */
+				mode /: {c_mode_SB, c_mode_PT, c_mode_OS}
+			THEN /* switch to OS mode */
+				mode := c_mode_OS
+			END ||
+
+			IF /* not already waiting for ACK and mode is not OS */
+				waiting_for_ack = FALSE &
+				mode           /= c_mode_OS
+			THEN /* start waiting for ACK */
+				waiting_for_ack := TRUE               ||
+				tempo           := k_delay_driver_ack
+			END
+		ELSIF /* train is inside ACK zone and speed is lower than OS area speed limit */
+			start_os_area - dist_ack_os_area <= posoff_max_safe_front &
+			train_speed < os_area_speed &
+			waiting_for_ack = FALSE
+		THEN /* start waiting for ACK */
+			waiting_for_ack := TRUE               ||
+			tempo           := k_delay_driver_ack
+		END
+	END
+	;
+			
+	manage_delay =
+	IF /* waiting for ACK */
+		waiting_for_ack = TRUE
+	THEN
+		IF /* driver sends ACK */
+			driver_ack_os_mode = TRUE
+		THEN /* stop waiting, switch to OS mode */
+			waiting_for_ack       := FALSE     ||
+			mode                  := c_mode_OS ||
+			service_brake_command := FALSE     ||
+			os_mode_in_progress   := FALSE
+		ELSE /* driver does not send ACK */
+			IF /* tempo is out */
+				tempo = 0
+			THEN /* activate service brake command */
+				service_brake_command := TRUE
+			ELSE /* decrease tempo */
+				tempo := tempo - 1
+			END
+		END
+	END
+	;
+
+	send_ack_request_driver =
+	IF /* waiting_for_ack is on a rising edge */
+		waiting_for_ack      = TRUE &
+		waiting_for_ack_prec = FALSE
+	THEN
+		ack_request_os_mode := TRUE
+	ELSE
+		ack_request_os_mode := FALSE
+	END
+	;
+
+	copy_mode_level_prec =
+	BEGIN
+		mamode_prec          := mamode          ||
+		waiting_for_ack_prec := waiting_for_ack
+	END
+
+END
+

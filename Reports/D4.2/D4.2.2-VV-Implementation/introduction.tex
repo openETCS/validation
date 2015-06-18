@@ -1,0 +1,117 @@
+
+\chapter{Introduction}
+
+In this intermediate report we describe the activities to formally verify
+the correctness of parts of the software developed in the OpenETCS project.
+
+While major parts of the functionality of {Subset 026} are modelled in 
+higher-level languages, there is also a substantial part of \emph{supporting} software
+that is developed in the programming language~C.
+
+In this document we report about \emph{preliminary} results on the verification
+of that C-code.
+In particular, we report on the use of static analysis methods (including formal methods)
+on C code that has been developed by the project partner Siemens.
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{figures/scope-of-formalization.pdf}
+\caption{\label{fig:scope-of-formalization} Scope of formal methods with in OpenETCS}
+\end{center}
+\end{figure}
+
+Figure~\ref{fig:scope-of-formalization} outlines the roles of formal methods
+within the OpenETCS project.
+Even a subsystem such as described by \emph{Subset 026} of the ETCS specification
+is usually too complex to be completely formally specified.
+Therefore, \emph{semi-formal modelling techniques} and \emph{tests} and 
+\emph{simulations} play a crucial role to verify that the implementation
+satisfies its specification.
+However, for clearly defined modules and select system properties, formal methods
+can well be applied to establish the correctness of an implementation.
+
+\clearpage
+
+Figure~\ref{fig:Bitwalker-Overview} gives an overview on the software that
+is in the focus of this report.
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.85\textwidth]{figures/Bitwalker-Overview.pdf}
+\caption{\label{fig:Bitwalker-Overview} The place of \bitwalker with the OpenETCS software}
+\end{center}
+\end{figure}
+
+\FloatBarrier
+
+The OpenETCS decoder is a large collection of functions dedicated to
+the reading of ETCS messages.
+In order to fulfill their task these function rely on the relatively
+small software package \inl{Bitwalker}.
+The \inl{Bitwalker} software, as seen by the OpenETCS decoder,
+is best understood as a ``class'' with a handful of methods.
+Note that this class is implemented in~C as a \inl{struct} where
+the methods are implemented as functions.
+The core functionality  of this class, which consists in converting bit sequences to integers
+and vice versa, depends on two more basic function, namely~\peek and~\poke.
+
+This software has been analyzed by the OpenETCS project partners SQS (Spain)
+and Fraunhofer FOKUS (Germany).
+SQS used several static analysis tools to identify defects and to derive useful metrics.
+Fraunhofer FOKUS, on the other hand, used the \framac tool set,
+which is developed by the French project partner \cealist,
+in order to \emph{formally verify} various properties of the \bitwalker.
+
+
+These analyses contribute to the ultimate verification goals, which are the following:
+
+\begin{enumerate}
+\item provide evidence that the Bitwalker software satisfies 
+      accepted quality standards
+\item develop a formal specification for the Bitwalker software
+\item verify that the Bitwalker software satisfies its formal specification
+\item show that the Bitwalker software does not raise runtime errors
+\item verify that OpenETCS decoder calls the Bitwalker software only
+      according to its specification
+\end{enumerate}
+
+We are confident that all these verification goals can be reached.
+For this preliminary verification report,
+we provide partial answers to the first four topics.
+In order to achieve the last goal, more development and verification
+work is currently conducted by Fraunhofer ESK and Fraunhofer FOKUS. 
+
+\section*{Structure of this document}
+
+Chapter~\ref{sec:frama-c} gives a short overview on the \framacwp tool
+that plays a central role in the verification of the Bitwalker functions.
+Here we also try to rectify some misunderstandings about formal verification
+that we have encountered in our work.
+
+In Chapter~\ref{sec:formal-verification} we analyze
+the functions \peek and \poke from the Bitwalker core and
+\begin{enumerate}
+\item formally specify the
+      expected functional behavior in the \acsl specification language of {Frama-C}
+      and
+\item report on the formal proof 
+	that these
+      C~functions do not raise runtime errors when called according to their
+      formal specification, established using 
+      the {Frama-C} verification platform.
+\end{enumerate}
+
+So far only a part of Siemens' \bitwalker has been formalized and verified.
+In the process of this work several enhancements for the \framac verification platform
+have been identified and reported to the developers at {CEA LIST}.
+
+In Chapter~\ref{sec:static-analysis}, we report about the results of
+SQS' application of a broad range of static analysis tools on the \bitwalker. 
+In contrast to \framac, these tools cannot exhaustively
+detect all potential defects of a given kind.
+Nevertheless, these they are very useful at finding well-known quality deficiencies that
+might occur in C or \CC\ software.
+
+In Chapter~\ref{sec:conclusions}, we draw conclusions from this preliminary work
+and outline the next steps in our verification efforts.
+

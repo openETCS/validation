@@ -1,0 +1,29 @@
+DECLARATIONS
+//eurobalise
+	component env chorD
+		stop[o,env]? [> 
+			[true]*(emergence[env,o]! + setSpeed[o,env]?<x>)
+	end component
+	
+	component e chorD
+		getPosition[o,e]? ; position[e,o] ! <z>
+	end component
+	
+	component o chorD
+		emergence[o,env]? [>
+		[true]*(
+			getPosition[o,e]! ; position[e,o]?<y> ; 
+				report[o,r]!y ; MA[r,o]?<y1> ; EoA[r,o]?<y2> ; 
+					setSpeed[o,env]!y1
+		) ; stop[o,env]!
+	end component
+	
+	component r chorD
+		[true]*(report[o,r]?<z> ; MA[r,o]!<z1> ; EoA[r,o]!<z2>)
+	end component
+	
+	component EoA chorD
+		MA[r,o].<x> ; EoA[r,o].<x1> position[e,o].<x2> ; report[o,r].<x3> ;
+		[x1 >= x and x3 <= x>] |> skip
+	end component
+COMMANDS

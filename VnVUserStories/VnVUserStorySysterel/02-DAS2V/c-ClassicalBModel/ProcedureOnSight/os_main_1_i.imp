@@ -1,0 +1,107 @@
+/************************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Main sequencer
+
+************************************************/
+
+IMPLEMENTATION
+	os_main_1_i
+
+REFINES
+	os_main_1
+
+SEES
+	os_typ
+
+IMPORTS
+	os_in         ,
+	os_consist    ,
+	os_train_info ,
+	os_mode_level ,
+	os_out
+
+LOCAL_OPERATIONS
+
+	/* Operation copy_level_etcs_prec
+		Saves the established ETCS level for the next cycle.
+		As the ETCS level is elaborated further down the cycle (os_mode_level module)
+		than its first use (os_consist), this copy operation is placed in the
+		sequencer. */
+	copy_level_etcs_prec =
+	BEGIN
+		level_etcs_prec :(
+			level_etcs_prec : t_level)
+	END
+	
+OPERATIONS
+
+	/* local operations */
+
+	copy_level_etcs_prec =
+	VAR
+		l_etcs_level
+	IN
+		l_etcs_level <-- read_etcs_level ;
+
+		write_level_etcs_prec(l_etcs_level)
+	END
+	;
+
+	/* global operations */
+
+	/* operation process_input
+		Input is not really processed as it is simply copied from the basic machine.
+		Thus, this operation is implemented by skip and the other modules access
+		the input variables by using the read operations defined in os_in. */
+	process_input =
+	BEGIN
+		skip
+	END
+	;
+
+	check_data_consistency =
+	BEGIN
+		elaborate_area_and_geopos
+	END
+	;
+
+	define_train_speed_and_position =
+	BEGIN
+		elaborate_train_location ;
+		elaborate_train_speed
+	END
+	;
+
+	elaborate_mode_level =
+	BEGIN
+		elaborate_level               ;
+		elaborate_os_mode_in_progress ;
+		elaborate_mode                ;
+		manage_delay                  ;
+		send_ack_request_driver
+	END
+	;
+
+	process_output =
+	BEGIN
+		build_output
+	END
+	;
+
+	/* operation copy_prec
+		Saves values of the current cycle for use in the next cycle.
+		The variables referring to previous cycle values are suffixed with _prev. */
+	copy_prec =
+	BEGIN
+		copy_level_etcs_prec ;
+		copy_consist_prec    ;
+		copy_mode_level_prec
+	END
+
+END

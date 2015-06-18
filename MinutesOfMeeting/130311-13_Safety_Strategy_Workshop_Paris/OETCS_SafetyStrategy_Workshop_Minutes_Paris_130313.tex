@@ -1,0 +1,371 @@
+\documentclass[a4paper]{article}
+%\documentclass[a4paper,german]{article}
+\usepackage{graphicx}
+\usepackage{xspace}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xifthen}% provides \isempty test
+
+\pagestyle{myheadings}
+\markright{openETCS \hfill {\tiny This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License} \hfill}
+
+
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+% % Deutsche Silbentrennung
+% \usepackage[ngerman]{babel}
+% % Deutsche Umlaute
+% \usepackage[ansinew]{inputenc}
+% %\usepackage[latin1]{inputenc}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+
+% editing
+
+% Starts a new line nearly everywhere
+\newcommand{\nl}{\mbox{}\\}
+
+%Texts in a box (eg. for comments)
+% Short text (no line break) 
+\newcommand{\cmmnt}[1]{\framebox{#1}}
+% Long text (separate lines
+\newcommand{\bgcmmnt}[1]{\nl\framebox{\parbox{.95\textwidth}{#1}}\nl[2mm]}
+
+% Macros for minutes
+\newcommand{\Q}[2]{\paragraph{Question} 
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty
+    : #2}
+\newcommand{\A}[2]{\newline{\textbf{Answer}}
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty    
+    : #2}
+\newcommand{\C}[2]{\newline{\textbf{Comment}}
+	\ifthenelse{\isempty{#1}}%
+    	{}% if #1 is empty
+    	{by #1}% if #1 is not empty    
+    : #2}
+
+
+\newcommand{\tablenewpage}[2]{
+		& #1	& #2
+		\end{longtable}
+        		\vskip 1 cm 
+		        \clearpage
+		\vskip 1 cm 
+	    \begin{longtable}{|p{0.83\textwidth}|p{.02\textwidth}|p{.15\textwidth}|}
+	    \hline
+	    \textbf{Description} & \textbf{T} & \textbf{Resp.} 
+	    \hline
+	    \endhead
+	    \vskip 0cm
+	    }
+    
+
+%Uncomment for getting rid of comments in output
+%\renewcommand{cmmnt}[1]{}
+%\renewcommand{\bgcmmnt}[1]{}
+
+
+% End of document marker
+\newcommand{\eod}{\rule{\textwidth}{1pt}\nl \textit{End of Document}}
+
+
+
+
+
+\begin{document}
+\title{Workshop on Safety Strategy  \\openETCS Meeting in Paris}
+\author{Marc Behrens}
+\date{Version 01, 2013-03-13}
+
+%\pagestyle{empty}
+
+\maketitle
+
+\section*{Document Control}
+
+\begin{tabular}{|l|r|*{2}{p{.3\textwidth}|}}
+\hline
+\multicolumn{4}{|l|}{\texttt{'OETCS\_SafetyStrategy\_Workshop\_Minutes\_Paris\_130313.tex'}}
+\\\hline
+\textbf{Version} & \textbf{Date} & \textbf{Author} & \textbf{Changes/Comment}
+\\\hline
+01 & 2013-03-13 &Marc  Behrens & All sections  
+\\\hline
+02 & 2013-03-27 &Marc  Behrens & Incorporating review from S.Baro to \S 2.3.2 
+\\\hline
+
+\end{tabular}
+
+\section*{Organizational Data}
+
+\begin{tabular}{|l|r|r|}
+\hline
+\textbf{Type of meeting} & \multicolumn{2}{|c|}{Face2Face}
+\\\hline
+\textbf{Start} & 2013-03-13 & 09:00
+\\\hline
+ \textbf{End} & 2013-03-13 & 12:00
+\\\hline
+\end{tabular}
+
+\medskip\noindent%
+
+\begin{tabular}{|l|r|}
+  \hline
+\textbf{Participant} & \textbf{Organisation}
+\\\hline
+Armand Nachtef & CEA List \\
+Baseliyos Jacob& DB \\
+Cyril Cornu &All4tec \\
+Fr\'{e}d\'{e}rique Val\'{e}e & All4tec \\
+Jan Welte & TU-BS \\
+Jens Gerlach & Fraunhofer \\
+Klaus-R\"udiger Hase & DB \\
+Marc Behrens & DLR \\
+Martin Schr\"{o}der & ERA \\
+Merlin Pokam & AEbt \\
+Pierre-Fran\c{c}ois Jauquet & ALSTOM\\
+Piero Petroccioli & UIC \\
+Stephan Jagusch & AEbt \\
+Sylvain Baro & SNCF
+\\\hline
+\end{tabular}
+
+\pagebreak
+
+\renewcommand{\contentsname}{Agenda}
+\label{sec:agenda}
+\tableofcontents
+
+%\begin{itemize}
+%\item[2.3.1] User story Internal-Assessor
+%\item[2.3.2] User story SNCF
+%\item[2.3.3] User story DB
+%\item[2.3.4] User story UIC
+%\item[2.3.5] User story ERA
+%\item[2.3.6] Conclusion
+%\end{itemize}
+
+\section*{Results}
+
+% Use several tabular environments to split long result lists over pages
+
+\setlength{\extrarowheight}{1.5pt}
+\begin{longtable}{|p{0.75\textwidth}|p{.025\textwidth}|p{.15\textwidth}|}
+% Number (consecutive for reference)
+% A (action item) OR D (decision) OR F (fact/finding) 
+% Description (free text)
+% responsible (for action items)
+% deadline (for action items)
+
+% header ------------------------
+\hline
+\textbf{Description} & \textbf{T} & \textbf{Resp.} 
+%\hline
+\endhead
+\hline
+\setcounter{section}{2}
+\setcounter{subsection}{2}
+\subsection{Global Safety Strategy} %2.3
+\subsubsection{User story Internal-Assessor} %2.3.1
+User Story of the Internal Assessor is presented by F. Val\'{e}e
+
+\Q{M.Schr\"{o}der}{Is the role separation mentioned in the TSI taken in account?}
+\A{J-F. Jauquet}{There is also an Internal Assessor at ALSTOM. Everything needs to be analysied in detail.} 
+\A{F. Val\'{e}e}{Issues need to be analysed as exhaustive as possible.}
+
+\Q{J. Welte}{How do we want to handle the document, showing the status of the document being important for the safety case.}
+
+\paragraph{Conclusion} A report explaining all work being done containing global conclusion and displaying the conviction whould be done before intermediate report.
+Work needs to be done on safety requirements as input to further work.
+& F
+& Fr\'{e}d\'{e}rique\ Val\'{e}e
+\\\hline
+
+\subsubsection{User Story SNCF}%2.3.2
+User Story of SNCF is presented by S. Baro:
+
+
+\begin{itemize}
+\item [a] formal specification of Subset-026 %aim: DB + SNCF
+\item [b] define (full) safety strategy complying to EN 50126, EN  50128, EN 50129 %aim: SNCF
+\item [c] provide tools chain on formal methods %DB+SNCF
+\item [d] apply safety strategy on a small part of the system 
+ (completely vertically on a small scale of the systrem) %SNCF
+\item [e] provide executable sw spec, non vital %DB+SNCF
+\end{itemize}
+
+\Q{K.-R.Hase}{Where are the resources for the additional goals coming from?}
+\A{S.Baro}{For us, this is not a change of scope because we always understood that the scope of work included safety, considering in particular the number of times the word is used in the FPP.}
+
+\Q{J-F.Jauquet}{What are the degraded mode on the test? -- If the test does not support the degraded mode, the  test model will never be taken.}
+\A{K.R.Hase}{Not sure we can cover all of the degraded modes, e.g. failure modes result in degraded modes, in the project.}
+
+
+\C{P.Petruccioli}UIC: Fully in line point (b) but cannot understand why only limited to subset-026. In total there are more than 60 relevant documents for on-board inside the TSI with ANNEX A being the head document. \newline 
+further should be taken in account:
+\begin{itemize}
+	\item e.g. Subset-040 engineering rules, also a chapter for on-board
+	\item e.g. Subset-041 i.e. ch5 maximum response time, maximum delay of receiving a balise message and reporting the result on-board ....
+\end{itemize}
+Final users are railway undertaking.
+The UIC is on the way to give official support to openETCS.
+
+\C{P.-F.Jauquet}{Performance of the basic functions is something very important e.g. performance of the odometry, you cannot decolourate the performance of the basic software and the performance of the functional software.}
+
+\Q{K.-R.Hase}{Who will do the work on the safety issues?}
+\A{S.Baro}{A sample of requirements will be chosen from Subset 91 by WP2. In my opinion, safety activities themselves were in the scope of WP4.}
+
+\tablenewpage{F}{S.Baro}    
+
+\Q{K.-R.Hase}{Who is doing the safety concept on system level?}
+\Q{P.-F.Jauquet}{Who is defining the SSRS (WP2 or WP3?)}
+\A{S.Baro}{Will be decided between WP2 and WP3.}
+\A{S.Baro}{A proposed document on the safety already exists.} 
+\A{J.Welte}{Safety Issues should be defined very well in order to be taken by WP-4.}
+\A{S.Baro}{SSRS is a huge task. SSRS is a semi formal architecture model.}
+
+\Q{M.Behrens}{How is the SSRS coordinated between Semi-Formal Model and the architecture activities?}
+\A{S.Baro}{TBD}
+ 
+& F
+& Sylvain\ Baro
+\\\hline
+\setcounter{subsubsection}{4}
+\subsubsection{User Story ERA} %2.3.5
+
+Do Impact Assessment on the Framework of ETCS
+Hans Bierlein - Dealing with certification 
+
+\begin{itemize}
+\item{Interest} to detect inconsistencies and errors inside the specification
+\item{Analyse Impact} of the proposed solutions of change requests
+ Baselines existing BL2, BL3
+How would the system react integrating a change
+How is Backwards compatibility dealt with
+
+CH6 Subset-026 - we need support here:
+Idea compatibility matrix: What is the behaviour and what are the combinations and how to deal with it
+
+Hans Bierlein is dealing with testing
+Are we sure the formal model realy is in line with the test  specification
+Support: Is our test specificaiton well, how can we improve it
+Support is needed
+\end{itemize}
+
+Unfortunaly the ERA project formalizating the Subset-026 was dropped %due to priorising the Basleine 3
+
+\newline
+to be completed
+\newline
+
+
+
+Feedback: Approach of SNCF going into the right direction
+& F
+& Martin\ Schr\"{o}der
+\\\hline
+\setcounter{subsubsection}{2}
+\subsubsection {User story DB} %2.3.3
+The DB user story is presented by K.-R. Hase.
+
+\begin{itemize}
+	\item [a)] formal specification
+Comment Klaus: Does not mean the other subsets are out
+	\item [b)] executing non-vital reference device
+	\item [c)] tools chain supporting (a) and (b) including generation of code, test cases and documentation.
+	\item [d)] Subset of the model is subject to safety assessment meeting EN 50128 requirements
+\end{itemize}
+
+\Q{P.Petroccioli}{Will information be lost, will it be consistant?}
+\A{J.Welte}{Tools will support, no push button approach expected.} 
+
+
+Fully formal specification used to proof properties. \newline
+\newline
+\C{J.Gerlach} The pie diagram on the modelling method should be degree of verification. \newline
+
+Evidence that the Strictly-Formal-Model complies to the Semi-Formal-Model is very different to do. \newline
+
+The code is outside of the safety demonstration.
+
+& F
+& Klaus-R\"{u}diger\ Hase
+\\\hline
+\setcounter{subsubsection}{3}
+\subsubsection {User Story UIC} %2.3.4
+The UIC user story is presented by P.Petruccioli.
+
+EIRENE Specification totally managed by UIC
+
+UIC would like to support openETCS as long as the conditions (see presentation) are fulfilled.
+
+\Q{K.-R.Hase}{Idea of reference for certification?}
+\A{P.Petruccioli}{Idea of the golden on-board to be used at European level, a real train with such a device supported able to run at a certain line which has been pre-qualified at the labs by tests with such a 'golden on-baord vehicle' is similar with the reference to the original meter. Idea: The on-board should react in the worst timely manner. 
+Expect: For the OBU to react in the worst possible way to be able to fully test the trackside.}
+\A{K.-R.Hase}{This is an Error detection device, more than a golden devic}
+
+\C{P.Petruccioli}{Designer Choices should be avoided thus to make a process for designer choices to have a common development.}
+
+& F
+& Piero Petruccioli 
+\\\hline
+\setcounter{subsubsection}{5}
+\subsubsection {Conclusion} %2.3.6
+
+\paragraph{User story Internal-Assessor} agreed on
+
+\paragraph{Userstory SNCF}
+\begin{itemize}
+	\item \emph{Work on safety requirements} is written within WP2
+	\item \emph{Work on SSRS} to be defined between WP2 and WP3
+	\item \emph{Definition of safety relevant SSRS} to be defined between WP2 and WP3 and WP4
+	\item \emph{Work on safety model} done within WP2/3
+	\item \emph{Work on safety verification} done within WP4
+	\item \emph{preliminary requirements} released planned by SNCF at end of March
+\end{itemize}
+
+\paragraph{Userstory ERA}
+\begin{itemize}
+	\item \emph{Regular update of openETCS to Mr. Bierlein} planned
+	\item \emph{Issues found on Subset-026} should be communicated via the representative sector organization CER, EIM and UNISIG (do not send the issues directly to ERA)
+	\item \emph{Licence of ERA specification BL3 to reuse inside openETCS} Marc sends a question to Mr. Schr\"{o}der and it will be provided to the legal services inside ERA
+	\item \emph{Operational Scenarios} Baseliyos: Checks with Angelo Chiappini if member states already notified to ERA - on what installed on the trackside see additional at RINF (Register of Infrastucture) Database , UIC Database MERITS 
+\end{itemize}
+
+\paragraph{Userstory DB} agreed on
+
+\paragraph{Userstory UIC} agreed on
+
+& D
+& Marc\newline Behrens
+\\\hline
+\end{longtable}
+
+\bgcmmnt{\textbf{T} for type of item:
+\begin{description}
+\item[A] action item
+\item[D] decision
+\item[F] fact / finding
+\end{description}}
+
+
+
+\section*{Notes}
+
+This format lacks references to ITEA~2 so far.
+
+% Optional for additional free text
+  
+\eod
+
+
+ 
+
+\end{document}

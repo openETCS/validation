@@ -1,0 +1,1736 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Mit XMLSpy v2012 sp1 (x64) (http://www.altova.com) generiertes W3C XML-Schema-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<!-- ___________________________________________________________________-->
+	<!-- ___________________________________________________________________-->
+	<xs:element name="ETCS_TEST">
+		<xs:annotation>
+			<xs:documentation>SUT interface, Root Element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="TrainInterfaceOutput"/>
+				<xs:element ref="TrainInterfaceInput"/>
+				<xs:element ref="OdometrySerialInterface"/>
+				<xs:element ref="StaticSpeedProfile"/>
+				<xs:element ref="ControlSUTComand"/>
+				<xs:element ref="ControlSUTStatus"/>
+				<xs:element ref="Message"/>
+			</xs:choice>
+			<xs:attributeGroup ref="ETCSProtocolAttributes"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ___________________________________________________________________-->
+	<xs:attribute name="Version" type="T_Version">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.79 
+Main System Version describing Incompatible/ Compatible  Baselines - used as protocol attribute</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="ProcolVersion" type="xs:int">
+		<xs:annotation>
+			<xs:documentation>Fixed Protocol Version relating to this XSD Testinterface Definition</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="SUTCommand" type="T_SutCommand">
+		<xs:annotation>
+			<xs:documentation>Command for System Under Test</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="SUTStatus" type="T_SutStatus">
+		<xs:annotation>
+			<xs:documentation>Status of System Under Test</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<!-- ___________________________________________________________________-->
+	<xs:attributeGroup name="SystemVersion">
+		<xs:annotation>
+			<xs:documentation>ETCS System Version, default version according to SUBSET-026-7.5.1.79 SRS v3.3.0</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="Version" use="optional" fixed="127"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="ETCSProtocolAttributes">
+		<xs:annotation>
+			<xs:documentation>Protocol Attributes that are sent with a message</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="SystemVersion"/>
+		<xs:attribute ref="ProcolVersion" use="required" fixed="001"/>
+		<xs:attribute ref="Timestamp" use="required"/>
+	</xs:attributeGroup>
+	<!-- ___________________________________________________________________-->
+	<xs:simpleType name="T_SutCommand">
+		<xs:annotation>
+			<xs:documentation>Type of Commant for System Under Test</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="startSUT"/>
+			<xs:enumeration value="askForStatus"/>
+			<xs:enumeration value="stopSUT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_SutStatus">
+		<xs:annotation>
+			<xs:documentation>Type of Status of System Under Test</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="SUTSwitchedOff"/>
+			<xs:enumeration value="SUTStarting"/>
+			<xs:enumeration value="SUTSwitchedOn"/>
+			<xs:enumeration value="SUTInitialising"/>
+			<xs:enumeration value="SUTReady"/>
+			<xs:enumeration value="SUTStopped"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Version">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.79, Version of ETCS system</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:byte">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="127"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ___________________________________________________________________-->
+	<xs:element name="StaticSpeedProfile" type="T_SSP">
+		<xs:annotation>
+			<xs:documentation>Static Speed Profile</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Message">
+		<xs:annotation>
+			<xs:documentation>Message Definition - to be replaced by Subset026 Chapter 8 when formalized</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="Packets"/>
+			</xs:all>
+			<xs:attribute name="Number" type="xs:int" use="required" form="unqualified"/>
+			<xs:attribute name="Name" type="xs:string" use="required" form="unqualified"/>
+			<xs:attribute name="TransmissionMedia" type="T_TransmissionMedia" use="required" form="unqualified"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ControlSUTComand" type="T_ControlSUTCommand">
+		<xs:annotation>
+			<xs:documentation>System Under Test Control Command from Testenvironment to SUT</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="ControlSUTStatus" type="T_ControlSUTStatus">
+		<xs:annotation>
+			<xs:documentation>System Under Test Status</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ___________________________________________________________________-->
+	<xs:complexType name="T_ControlSUTCommand">
+		<xs:annotation>
+			<xs:documentation>Command to SUT</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="SUT_StartingConditions" type="T_StartingConditions" form="unqualified">
+				<xs:annotation>
+					<xs:documentation>System Under Test Control Command from Testenvironment to SUT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attributeGroup ref="DirectionTrackTeToSut"/>
+		<xs:attribute ref="SUTCommand"/>
+	</xs:complexType>
+	<xs:complexType name="T_ControlSUTStatus">
+		<xs:annotation>
+			<xs:documentation>System Under Test Status</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="DirectionSutToTrackTe"/>
+		<xs:attribute ref="SUTStatus" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="T_StartingConditions">
+		<xs:annotation>
+			<xs:documentation>StartingConditions of SUT</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element ref="Level"/>
+			<xs:element ref="Mode"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="T_SSP">
+		<xs:annotation>
+			<xs:documentation>Set of Static Speed Profile Parameters</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Position" type="xs:int" form="unqualified"/>
+			<xs:element name="Speed" type="xs:int" form="unqualified"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="DirectionParaToTrackTe"/>
+	</xs:complexType>
+	<!-- ___________________________________________________________________-->
+	<!-- ___________________________________________________________________-->
+	<!-- ___________________________________________________________________-->
+	<xs:element name="Mode" type="T_Mode">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.72; Onboard operating mode</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Level" type="T_Level">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.65,Current Operating Level</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ___________________________________________________________________-->
+	<xs:element name="Current" type="T_Current">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.62.1, It defines the allowed current consumption to be used by the train</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PlatformHeight" type="T_PlatformHeigth">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.Nominal height of platform above rail level </xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PlatformPosition" type="T_PlatformPosition">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.126.2; Platform position (relative to direction of authorised movement)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Voltage" type="T_Voltage">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.78, It indicates the voltage of the traction system installed on a specific line or respectively that can be used by an engine</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ___________________________________________________________________-->
+	<xs:complexType name="T_Current">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.62.1, Allowed current consumption</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_CURRENT" form="qualified">
+				<xs:annotation>
+					<xs:documentation>See SUBSET-026-7.5.1.62.1 Allowed current consumption Resolution: 10A</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:unsignedShort">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="1000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="10"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_Level">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.65, Current Operating Level</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_LEVEL" form="qualified">
+				<xs:annotation>
+					<xs:documentation>See SUBSET-026-7.5.1.65, Current Operating Level</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="3"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_Mode">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.72, mode of SUT</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_MODE" form="qualified">
+				<xs:annotation>
+					<xs:documentation>See SUBSET-026-7.5.1.72, Onboard operating mode</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="15"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+		<xs:attribute ref="BitLength" fixed="4"/>
+	</xs:complexType>
+	<xs:complexType name="T_PlatformHeigth">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.75, Type of platform</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_PLATFORM" form="qualified">
+				<xs:annotation>
+					<xs:documentation>See SUBSET-026-7.5.1.75, Nominal height of platform above rail level </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="13"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="4"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_PlatformPosition">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.126.2, Platform position (relative to direction of authorised movement)</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Q_PLATFORM" form="qualified">
+				<xs:annotation>
+					<xs:documentation>See SUBSET-026-7.5.126.2 Platform position (relative to direction of authorised movement)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_Voltage">
+		<xs:annotation>
+			<xs:documentation>See SUBSET-026-7.5.1.78, Traction System voltage</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_VOLTAGE" form="qualified">
+				<xs:annotation>
+					<xs:documentation>See SUBSET-026-7.5.1.78</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="4"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<!--Variable_Types____________________________________________________-->
+	<xs:simpleType name="T_SendingDirection">
+		<xs:annotation>
+			<xs:documentation>Type of Direction the Information is allowed to be sent (informative)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="trackToTrain"/>
+			<xs:enumeration value="trainToTrack"/>
+			<xs:enumeration value="evcToInterface"/>
+			<xs:enumeration value="interfaceToEvc"/>
+			<xs:enumeration value="parameterToTe"/>
+			<xs:enumeration value=""/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_TriggerMessage">
+		<xs:annotation>
+			<xs:documentation>Type of Message ID to Trigger</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:byte"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_TriggerTime">
+		<xs:annotation>
+			<xs:documentation>Trigger Time in nanoseconds</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:long"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_TriggerType">
+		<xs:annotation>
+			<xs:documentation>Type of Trigger</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="triggeredByFixedTime"/>
+			<xs:enumeration value="triggeredByMaxTime"/>
+			<xs:enumeration value="triggeredByMinTime"/>
+			<xs:enumeration value="triggeredByEvent"/>
+			<xs:enumeration value="triggeredByPreviousMessage"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Interface">
+		<xs:annotation>
+			<xs:documentation>Interface the message refers to also representing the message identifier (direction is set by T_SendingDirection)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z]{3}"/>
+			<xs:enumeration value="TII"/>
+			<xs:enumeration value="TIO"/>
+			<xs:enumeration value="OSI"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Message_Attributes____________________________________________________-->
+	<xs:attribute name="BitLength">
+		<xs:annotation>
+			<xs:documentation>Bitstream Length additional information for en-coding to a non XML bit stream</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="T_BitLength"/>
+		</xs:simpleType>
+	</xs:attribute>
+	<xs:attribute name="BitCoding" type="T_BitCoding">
+		<xs:annotation>
+			<xs:documentation>Bitstream Coding additional information for en-coding to a non XML bit stream</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="SendingDirection" type="T_SendingDirection">
+		<xs:annotation>
+			<xs:appinfo source="ngffgd"/>
+			<xs:documentation>Direction of sent message</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="Timestamp" type="xs:time">
+		<xs:annotation>
+			<xs:documentation>XML Timestamp </xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="TriggerTime" type="T_TriggerTime">
+		<xs:annotation>
+			<xs:documentation>Cylce time in millisecond, message sent once each cycle</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="TriggerType" type="T_TriggerType">
+		<xs:annotation>
+			<xs:documentation>Type of trigger: triggerByFixedTime = fixed time cycle - message is expected at each end of cycle defined by trigger time; triggeredByMaxTime = message is expected to arrive before a trimeout defined by trigger time; triggerByMinTime = message is not expected before the end of trigger time; triggeredByEvent = message is not expected to arrive before event and after trigger time after event; messageByPreviousMessage =  message is not expected to arrive before previous message and after trigger time after event</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="TriggerMessage" type="T_TriggerMessage">
+		<xs:annotation>
+			<xs:documentation>Previous Message ID to trigger to</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<!--Attribute_Types____________________________________________________-->
+	<xs:simpleType name="T_BitCoding">
+		<xs:annotation>
+			<xs:documentation>Additional information for coding of the variables (binary, decimal, hexa decimal, binary coded decimal)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="b"/>
+			<xs:enumeration value="d"/>
+			<xs:enumeration value="hex"/>
+			<xs:enumeration value="bcd"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_BitLength">
+		<xs:annotation>
+			<xs:documentation>Length in bits of each variable</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:unsignedShort"/>
+	</xs:simpleType>
+	<!--Attribute_Groups____________________________________________________-->
+	<xs:attributeGroup name="Direction">
+		<xs:annotation>
+			<xs:documentation>Sending direction of message, default is trackToTrain</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="SendingDirection" use="optional" default="trackToTrain"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="DirectionOnboardTeToSut">
+		<xs:annotation>
+			<xs:documentation>Fixed sending direction: Onboard Test Environment to System Under Test</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="SendingDirection" use="optional" fixed="interfaceToEvc"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="DirectionParaToTrackTe">
+		<xs:annotation>
+			<xs:documentation>Fixed sending direction: Parameter to Trackside Test Environment</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="SendingDirection" use="optional" fixed="parameterToTe"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="DirectionSutToOnboardTe">
+		<xs:annotation>
+			<xs:documentation>Fixed sending direction: System Under Test to Onboard Test Environment</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="SendingDirection" use="optional" fixed="evcToInterface"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="DirectionSutToTrackTe">
+		<xs:annotation>
+			<xs:documentation>Fixed sending direction: System Under Test to Trackside Test Environment</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="SendingDirection" use="optional" fixed="trainToTrack"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="DirectionTrackTeToSut">
+		<xs:annotation>
+			<xs:documentation>Fixed sending direction: Trackside Test Environment to System Under Test</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="SendingDirection" use="optional" fixed="trackToTrain"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="Trigger">
+		<xs:annotation>
+			<xs:documentation>Message trigger configuration, default is a fixed time cycle of 100ms</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="TriggerType" use="optional" default="triggeredByFixedTime">
+			<xs:annotation>
+				<xs:documentation>Type of trigger: triggerByFixedTime = fixed time cycle - message is expected at each end of cycle defined by trigger time;
+triggeredByMaxTime = message is expected to arrive before a trimeout defined by trigger time; triggerByMinTime = message is not expected before the end of trigger time; triggeredByEvent = message is not expected to arrive before event and after trigger time after event; messageByPreviousMessage =  message is not expected to arrive before previous message and after trigger time after event</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute ref="TriggerTime" use="optional" default="100000"/>
+		<xs:attribute ref="TriggerMessage" use="optional" default="0"/>
+	</xs:attributeGroup>
+	<!--OSI_Messge_Elements_________________________________________________-->
+	<xs:element name="OdometrySerialInterface" type="T_OdometrySerialInterface">
+		<xs:annotation>
+			<xs:documentation>OSI message element</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="LaboratoryClock" type="T_LaboratoryClock">
+		<xs:annotation>
+			<xs:documentation>Time of the laboratory clock (test environment)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="SimulationDistance" type="T_SimulationDistance">
+		<xs:annotation>
+			<xs:documentation>Relative distance managed by the laboratory for every simulation</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="SpeedSign" type="T_SpeedSign">
+		<xs:annotation>
+			<xs:documentation>Indicates the sense of movement, considering which cabine of the train is being tested</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="SimulatedTrainSpeed" type="T_SimulatedTrainSpeed">
+		<xs:annotation>
+			<xs:documentation>Instantaneous value of the train speed</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="AccelerationSign" type="T_AccelerationSign">
+		<xs:annotation>
+			<xs:documentation>Indicates whether the train is braking or accelerating</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="SimulatedTrainAcceleration" type="T_SimulatedTrainAcceleration">
+		<xs:annotation>
+			<xs:documentation>Instantaneous value of the simulated train acceleration</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- Message_Types_____________________________________________________-->
+	<xs:complexType name="T_OdometrySerialInterface">
+		<xs:annotation>
+			<xs:documentation>ODS: Odometry Serial Message transmitted from Test Environment to Train Interface</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="NID_INTERFACE" type="T_Interface" fixed="OSI" form="qualified"/>
+			<xs:element ref="LaboratoryClock"/>
+			<xs:element ref="SimulationDistance"/>
+			<xs:element ref="SpeedSign"/>
+			<xs:element ref="SimulatedTrainSpeed"/>
+			<xs:element ref="AccelerationSign"/>
+			<xs:element ref="SimulatedTrainAcceleration"/>
+		</xs:all>
+		<xs:attributeGroup ref="Trigger"/>
+		<xs:attributeGroup ref="DirectionOnboardTeToSut"/>
+	</xs:complexType>
+	<xs:complexType name="T_LaboratoryClock">
+		<xs:annotation>
+			<xs:documentation>Time of the laboratory clock (test environment)</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="T_LAB" form="qualified">
+				<xs:annotation>
+					<xs:documentation>Resolution: 10 ms; 4294967295 - unknown</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:unsignedInt">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="4294967295"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="32"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_SimulationDistance">
+		<xs:annotation>
+			<xs:documentation>Relative distance managed by the laboratory for every simulation</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="D_LAB" form="qualified">
+				<xs:annotation>
+					<xs:documentation>Resolution: 10ms; 4294967295 - unknown</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:unsignedInt">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="4294967295"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="32"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_SpeedSign">
+		<xs:annotation>
+			<xs:documentation>Indicates the sense of movement, considering which cabine of the train is being tested</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Q_VEL" type="xs:boolean" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - forward movement (considering which cabine of the train is being tested); 1 - backwards movement</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="1"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_SimulatedTrainSpeed">
+		<xs:annotation>
+			<xs:documentation>Instantaneous value of the train speed</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="V_LAB" form="qualified">
+				<xs:annotation>
+					<xs:documentation>Resolution: 1mm/s; 262143 - unknown</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:unsignedInt">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="262143"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="18"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_AccelerationSign">
+		<xs:annotation>
+			<xs:documentation>Indicates whether the train is braking or accelerating</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Q_ACC" type="xs:boolean" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - train is braking; 1 - train is accelerating</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="1"/>
+		<xs:attribute ref="BitCoding" default="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_SimulatedTrainAcceleration">
+		<xs:annotation>
+			<xs:documentation>Instantaneous value of the simulated train acceleration</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="A_LAB" form="qualified">
+				<xs:annotation>
+					<xs:documentation>Resolution: 1mm/s^2; 4095 - unknown</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:unsignedShort">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="4095"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="12"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<!-- Message_Types______________________________________________________-->
+	<xs:complexType name="T_TrainInterfaceInput">
+		<xs:annotation>
+			<xs:documentation source="Subset-094-9.2.2.1">TII: Message transmitted from Test Environment to Train Interface </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NID_INTERFACE" type="T_Interface" default="TII" form="qualified"/>
+			<xs:element ref="Sleeping"/>
+			<xs:element ref="Isolation"/>
+			<xs:element ref="ServiceBrakeStatus"/>
+			<xs:element ref="EmergencyBrakeStatus"/>
+			<xs:element ref="PassengerEBStatus"/>
+			<xs:element ref="DoorControl"/>
+			<xs:element ref="DirectionController"/>
+			<xs:element ref="CABStatus"/>
+			<xs:element ref="TrainIntegrity"/>
+			<xs:element ref="NonLeading"/>
+			<xs:element ref="SystemFailure"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="Trigger"/>
+		<xs:attributeGroup ref="DirectionOnboardTeToSut"/>
+	</xs:complexType>
+	<xs:complexType name="T_TrainInterfaceOutput">
+		<xs:annotation>
+			<xs:documentation source="Subset-094-9.2.2.2">TIO: Message transmitted from Test Environment to Train Interface</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="NID_INTERFACE" type="T_Interface" fixed="TIO" form="qualified"/>
+			<xs:element ref="ServiceBrakeCommand"/>
+			<xs:element ref="EmergencyBrakeCommand"/>
+			<xs:element ref="RegenerativeBrakeCommand"/>
+			<xs:element ref="EddyCurrentBrakeCommand"/>
+			<xs:element ref="MagneticShoeBrakeCommand"/>
+			<xs:element ref="PassengerEBCommand"/>
+			<xs:element ref="Voltage"/>
+			<xs:element ref="PantographCommand"/>
+			<xs:element ref="AirTightness"/>
+			<xs:element ref="PlatformHeight"/>
+			<xs:element ref="PlatformPosition"/>
+			<xs:element ref="MainSwitchCommand"/>
+			<xs:element ref="TractionCutOff"/>
+			<xs:element ref="Current"/>
+		</xs:all>
+		<xs:attributeGroup ref="Trigger"/>
+		<xs:attributeGroup ref="DirectionSutToOnboardTe"/>
+	</xs:complexType>
+	<!-- TII_Message_Elements_________________________________________________-->
+	<xs:element name="TrainInterfaceInput" type="T_TrainInterfaceInput">
+		<xs:annotation>
+			<xs:documentation>TII message element</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Sleeping" type="T_Sleeping">
+		<xs:annotation>
+			<xs:documentation>Command Sleeping</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Isolation" type="T_Isolation">
+		<xs:annotation>
+			<xs:documentation>Command Isolation</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="ServiceBrakeStatus" type="T_ServiceBrakeSt">
+		<xs:annotation>
+			<xs:documentation>Status of Service Brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="EmergencyBrakeStatus" type="T_EmergencyBrakeSt">
+		<xs:annotation>
+			<xs:documentation>Status of Emergency Brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PassengerEBStatus" type="T_PassengerEBSt">
+		<xs:annotation>
+			<xs:documentation>Status of Passenger Emergency Brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="DoorControl" type="T_DoorControl">
+		<xs:annotation>
+			<xs:documentation>Status of Doors</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="DirectionController" type="T_DirectionController">
+		<xs:annotation>
+			<xs:documentation>Status of Direction Controller</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="CABStatus" type="T_CABStatus">
+		<xs:annotation>
+			<xs:documentation>Status CAB A and CAB B</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="TrainIntegrity" type="T_TrainIntegrity">
+		<xs:annotation>
+			<xs:documentation>Status of Train Integrity</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="NonLeading" type="T_NonLeading">
+		<xs:annotation>
+			<xs:documentation>Command NonLeading</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="SystemFailure" type="T_SystemFailure">
+		<xs:annotation>
+			<xs:documentation>Status of System Failure</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!--TIO_Message_Elements_________________________________________________-->
+	<xs:element name="TrainInterfaceOutput" type="T_TrainInterfaceOutput">
+		<xs:annotation>
+			<xs:documentation>TIO message element</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="ServiceBrakeCommand" type="T_ServiceBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the service brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="EmergencyBrakeCommand" type="T_EmergencyBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the emergency brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="RegenerativeBrakeCommand" type="T_RegenerativeBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the use of the regenerative brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="EddyCurrentBrakeCommand" type="T_EddyCurrentBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the use of the eddy current brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="MagneticShoeBrakeCommand" type="T_MagneticShoeBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the use of the magnetic shoe brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PassengerEBCommand" type="T_PassengerEBCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the use of the passenger emergency brake</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PantographCommand" type="T_PantographCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the pantograph</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="AirTightness" type="T_AirTightness">
+		<xs:annotation>
+			<xs:documentation>Indicates the action on the air tighness system</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="MainSwitchCommand" type="T_MainSwitchCm">
+		<xs:annotation>
+			<xs:documentation>Indicates the actions on the main switch</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="TractionCutOff" type="T_TractionCutOff">
+		<xs:annotation>
+			<xs:documentation>Indicates the action of the traction cut-off system</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- Variable_Types_______________________________________________________-->
+	<xs:complexType name="T_AirTightness">
+		<xs:annotation>
+			<xs:documentation>Air Tightness command (Closing of Flaps)</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_AIRTIGHTNESS" default="0" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Tunnel condition active; 2 - Tunnel condition not active; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_CABStatus">
+		<xs:annotation>
+			<xs:documentation>Cabine (Desk) status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_CABSTATUS" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Both desks are closed; 2 - Desk A is open; 3 - Desk B is open; 4 - Both desks are open; 5 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="3"/>
+		<xs:attribute ref="BitCoding" default="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_DirectionController">
+		<xs:annotation>
+			<xs:documentation>Direction Controller status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_DIRECTIONCONTROLLER" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not availabel; 1- Direction controller neutral; 2 - direction controller forward; 3- direction controller backward; 4 - Fail state </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="3"/>
+		<xs:attribute ref="BitCoding" default="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_DoorControl">
+		<xs:annotation>
+			<xs:documentation>Door Control status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_DOORCONTROL" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Both sides doors closed; 2 - Left side doors open; 3- Ride side doors open; 4 - Both side doors open; 5- Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="3"/>
+		<xs:attribute ref="BitCoding" default="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_EddyCurrentBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Eddy Current Brake inhibition command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_EDDYCURRENTBRAKECM" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Inhibit eddy current brake for service brake; 2 - Use eddy current brake for service brake; 3 - Inhibit eddy current brake for emergency brake; 4 - Use eddy current brake for emergency brake; 5 -Use eddy current brake for both brakes; 6 -Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="6"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="3"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_EmergencyBrakeSt">
+		<xs:annotation>
+			<xs:documentation>Emergency Brake signal status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_EMERGENCYBRAKEST" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Emergency Brake applied; 2 - Emergency Brake not applied; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_EmergencyBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Emergency Brake command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_EMERGENCYBRAKECM" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 -Information not available; 1- Apply emergency brake; 2 - Release emergency brake; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" default="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_Isolation">
+		<xs:annotation>
+			<xs:documentation>Isolation signal status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_ISOLATION" default="2" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1- Signal active; 2 - Signal not active; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_MagneticShoeBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Magnetic Shoe Brake inhibition command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_MAGNETICSHOEBRAKECM" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Inhibit magnetic shoe brake; 2 - Use magnetic shoe brake; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_MainSwitchCm">
+		<xs:annotation>
+			<xs:documentation>Main Switch command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_MAINSWITCHCM" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Open main switch; 2 - Close main switch; 3 -Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_NonLeading">
+		<xs:annotation>
+			<xs:documentation>Non Leading signal</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_NONLEADING" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1- Signal active; 2 - Signal not active; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_PantographCm">
+		<xs:annotation>
+			<xs:documentation>Pantograph command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_PANTOGRAPHCM" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Lower pantograph; 2 - Raise pantograph; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_PassengerEBCm">
+		<xs:annotation>
+			<xs:documentation>Passenger Emergency Brake command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_PASSENGEREBCM" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Inhibit passenger emergency brake; 2 - Use passenger emergency brake; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_PassengerEBSt">
+		<xs:annotation>
+			<xs:documentation>Passenger Emergency Brake status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_PASSENGEREBST" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Passenger Emergency Brake applied; 2 - Passenger Emergency Brake not applied; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_RegenerativeBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Regerneative Brake command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_REGENERATIVEBRAKECM" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 -Information not available; 1- Inhibit regenerative brake; 2 - Use regenerative brake; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_ServiceBrakeCm">
+		<xs:annotation>
+			<xs:documentation>Service Brake command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_SERVICEBRAKECM" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Indormation not available; 1- Apply service brake; 2 - Release service brake; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_ServiceBrakeSt">
+		<xs:annotation>
+			<xs:documentation>Service Brake signal status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_SERVICEBRAKEST" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1 - Service Brake applied; 2 - Service Brake not applied; 3 - fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_Sleeping">
+		<xs:annotation>
+			<xs:documentation>Sleeping signal status</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_SLEEPING" default="2" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1- Signal active; 2 - Signal not active; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_SystemFailure">
+		<xs:annotation>
+			<xs:documentation>System Failure signal</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_SYSTEMFAILURE" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1- Signal active; 2 - Signal not active; 3 - Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_TrainIntegrity">
+		<xs:annotation>
+			<xs:documentation>Train Integrity information</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_TRAININTEGRITY" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Information not available; 1- Train is not integer; 2 - Train is integer; 3- Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:complexType name="T_TractionCutOff">
+		<xs:annotation>
+			<xs:documentation>Traction cut-off command</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="M_TRACTIONCUTOFF" form="qualified">
+				<xs:annotation>
+					<xs:documentation>0 - Informatino not available; 1 - Aply traction cut-off; 2 - Release traction cut-off; 3 Fail state</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:byte">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute ref="BitLength" fixed="2"/>
+		<xs:attribute ref="BitCoding" fixed="b"/>
+	</xs:complexType>
+	<xs:simpleType name="T_Value">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="..."/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="5-255"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="8"/>
+			<xs:enumeration value="9"/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+			<xs:enumeration value="13"/>
+			<xs:enumeration value="13-127"/>
+			<xs:enumeration value="14"/>
+			<xs:enumeration value="15"/>
+			<xs:enumeration value="16"/>
+			<xs:enumeration value="17"/>
+			<xs:enumeration value="18"/>
+			<xs:enumeration value="19"/>
+			<xs:enumeration value="20"/>
+			<xs:enumeration value="21"/>
+			<xs:enumeration value="22"/>
+			<xs:enumeration value="23"/>
+			<xs:enumeration value="24"/>
+			<xs:enumeration value="25"/>
+			<xs:enumeration value="26"/>
+			<xs:enumeration value="27"/>
+			<xs:enumeration value="28"/>
+			<xs:enumeration value="29"/>
+			<xs:enumeration value="30"/>
+			<xs:enumeration value="31"/>
+			<xs:enumeration value="A-E"/>
+			<xs:enumeration value="F"/>
+			<xs:enumeration value="126"/>
+			<xs:enumeration value="127"/>
+			<xs:enumeration value="254"/>
+			<xs:enumeration value="255"/>
+			<xs:enumeration value="1023"/>
+			<xs:enumeration value="16383"/>
+			<xs:enumeration value="32767"/>
+			<xs:enumeration value="16777215"/>
+			<xs:enumeration value="4294967295"/>
+			<xs:enumeration value="0-126"/>
+			<xs:enumeration value="2-255"/>
+			<xs:enumeration value="3-15"/>
+			<xs:enumeration value="5-7"/>
+			<xs:enumeration value="6-7"/>
+			<xs:enumeration value="6-15"/>
+			<xs:enumeration value="9-255"/>
+			<xs:enumeration value="10-11"/>
+			<xs:enumeration value="10-15"/>
+			<xs:enumeration value="11-15"/>
+			<xs:enumeration value="121-125"/>
+			<xs:enumeration value="121-126"/>
+			<xs:enumeration value="121-127"/>
+			<xs:enumeration value="127-254"/>
+			<xs:enumeration value="127-255"/>
+			<xs:enumeration value="1.05 - 1.55"/>
+			<xs:enumeration value="00"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="000"/>
+			<xs:enumeration value="001"/>
+			<xs:enumeration value="010"/>
+			<xs:enumeration value="011"/>
+			<xs:enumeration value="100"/>
+			<xs:enumeration value="101"/>
+			<xs:enumeration value="110"/>
+			<xs:enumeration value="111"/>
+			<xs:enumeration value="0000"/>
+			<xs:enumeration value="0001"/>
+			<xs:enumeration value="0010"/>
+			<xs:enumeration value="0011"/>
+			<xs:enumeration value="0100"/>
+			<xs:enumeration value="0101"/>
+			<xs:enumeration value="0110"/>
+			<xs:enumeration value="0111"/>
+			<xs:enumeration value="1000"/>
+			<xs:enumeration value="1001"/>
+			<xs:enumeration value="1010"/>
+			<xs:enumeration value="1011"/>
+			<xs:enumeration value="1100"/>
+			<xs:enumeration value="1101"/>
+			<xs:enumeration value="1110"/>
+			<xs:enumeration value="1111"/>
+			<xs:enumeration value="001 0000"/>
+			<xs:enumeration value="001 0001"/>
+			<xs:enumeration value="001 0010"/>
+			<xs:enumeration value="001 0011"/>
+			<xs:enumeration value="001 0100"/>
+			<xs:enumeration value="001 0101"/>
+			<xs:enumeration value="001 0110"/>
+			<xs:enumeration value="001 0111"/>
+			<xs:enumeration value="001 1000"/>
+			<xs:enumeration value="001 1001"/>
+			<xs:enumeration value="001 1010"/>
+			<xs:enumeration value="001 1011"/>
+			<xs:enumeration value="001 1100"/>
+			<xs:enumeration value="001 1101"/>
+			<xs:enumeration value="001 1110"/>
+			<xs:enumeration value="001 1111"/>
+			<xs:enumeration value="010 0000"/>
+			<xs:enumeration value="010 0001"/>
+			<xs:enumeration value="101 0001"/>
+			<xs:enumeration value="111 1101"/>
+			<xs:enumeration value="111 1110"/>
+			<xs:enumeration value="111 1111"/>
+			<xs:enumeration value="1111 ... 1111"/>
+			<xs:enumeration value="1111 1111"/>
+			<xs:enumeration value="011-111"/>
+			<xs:enumeration value="1001-1022"/>
+			<xs:enumeration value="1011-1111"/>
+			<xs:enumeration value="001 0010 ... 001 1111"/>
+			<xs:enumeration value="010 0001 ... 111 1111"/>
+			<xs:enumeration value="1xx xxxx xxxx xxxx"/>
+			<xs:enumeration value="1xxx xxxx"/>
+			<xs:enumeration value="10000000-16777214"/>
+			<xs:enumeration value="Exception: FFFF FFFF"/>
+			<xs:enumeration value="FFFF FFFF"/>
+			<xs:enumeration value="FFFF FFFF FFFF FFFF"/>
+			<xs:enumeration value="V_MAIN = 0 means 'trip order'"/>
+			<xs:enumeration value="1xxxx"/>
+			<xs:enumeration value="x1xxx"/>
+			<xs:enumeration value="xx1xx"/>
+			<xs:enumeration value="xxx1x"/>
+			<xs:enumeration value="xxxx1"/>
+			<xs:enumeration value="000 XXXX"/>
+			<xs:enumeration value="0000 0000"/>
+			<xs:enumeration value="x1xx xxxx"/>
+			<xs:enumeration value="xx1x xxxx"/>
+			<xs:enumeration value="xxx1 xxxx"/>
+			<xs:enumeration value="xxxx 1xxx"/>
+			<xs:enumeration value="xxxx x1xx"/>
+			<xs:enumeration value="xxxx xx1x"/>
+			<xs:enumeration value="xxxx xxx1"/>
+			<xs:enumeration value="000 0000 0000 0000"/>
+			<xs:enumeration value="X1x xxxx xxxx xxxx"/>
+			<xs:enumeration value="Xx1 xxxx xxxx xxxx"/>
+			<xs:enumeration value="Xxx 1xxx xxxx xxxx"/>
+			<xs:enumeration value="Xxx x1xx xxxx xxxx"/>
+			<xs:enumeration value="Xxx xx1x xxxx xxxx"/>
+			<xs:enumeration value="Xxx xxx1 xxxx xxxx"/>
+			<xs:enumeration value="Xxx xxxx 1xxx xxxx"/>
+			<xs:enumeration value="Xxx xxxx x1xx xxxx"/>
+			<xs:enumeration value="Xxx xxxx xx1x xxxx"/>
+			<xs:enumeration value="Xxx xxxx xxx1 xxxx"/>
+			<xs:enumeration value="Xxx xxxx xxxx 1xxx"/>
+			<xs:enumeration value="Xxx xxxx xxxx x1xx"/>
+			<xs:enumeration value="Xxx xxxx xxxx xx1x"/>
+			<xs:enumeration value="Xxx xxxx xxxx xxx1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_TransmissionMedia">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Any"/>
+			<xs:enumeration value="Balise"/>
+			<xs:enumeration value="Loop"/>
+			<xs:enumeration value="RBC"/>
+			<xs:enumeration value="RIU"/>
+			<xs:enumeration value="RBC, RIU"/>
+			<xs:enumeration value="Balise, Loop"/>
+			<xs:enumeration value="Balise, RBC"/>
+			<xs:enumeration value="Balise, RBC, RIU"/>
+			<xs:enumeration value="Balise, Loop, RIU"/>
+			<!-- Definition in V3.3.0: 
+�Any� means that the packet can be transmitted by a balise, a loop, an RBC and a RIU.
+ -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_MinVal">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="-327.680 km"/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="0.0"/>
+			<xs:enumeration value="0 cm"/>
+			<xs:enumeration value="0 km/h"/>
+			<xs:enumeration value="0 m"/>
+			<xs:enumeration value="0 s"/>
+			<xs:enumeration value="0 m/s**2"/>
+			<xs:enumeration value="0 seconds"/>
+			<xs:enumeration value="0 A"/>
+			<xs:enumeration value="0 t"/>
+			<xs:enumeration value="0-327.680 km"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_MaxVal">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="1.00"/>
+			<xs:enumeration value="1.55"/>
+			<xs:enumeration value="2.54"/>
+			<xs:enumeration value="3.15 m/s**2"/>
+			<xs:enumeration value="14"/>
+			<xs:enumeration value="15"/>
+			<xs:enumeration value="31"/>
+			<xs:enumeration value="63"/>
+			<xs:enumeration value="63 m"/>
+			<xs:enumeration value="1022"/>
+			<xs:enumeration value="1022 s"/>
+			<xs:enumeration value="1023"/>
+			<xs:enumeration value="16382"/>
+			<xs:enumeration value="16383"/>
+			<xs:enumeration value="1048574 m"/>
+			<xs:enumeration value="253"/>
+			<xs:enumeration value="254"/>
+			<xs:enumeration value="254 s"/>
+			<xs:enumeration value="254 per mil"/>
+			<xs:enumeration value="254 per cent"/>
+			<xs:enumeration value="255"/>
+			<xs:enumeration value="255 s"/>
+			<xs:enumeration value="255 per mil"/>
+			<xs:enumeration value="255 per cent"/>
+			<xs:enumeration value="255 days"/>
+			<xs:enumeration value="327.660 km"/>
+			<xs:enumeration value="327.670 km"/>
+			<xs:enumeration value="32767 m"/>
+			<xs:enumeration value="40 t"/>
+			<xs:enumeration value="4095 m"/>
+			<xs:enumeration value="42949672.94  s"/>
+			<xs:enumeration value="511"/>
+			<xs:enumeration value="600 km/h"/>
+			<xs:enumeration value="8191"/>
+			<xs:enumeration value="10000 A"/>
+			<xs:enumeration value="999999"/>
+			<xs:enumeration value="9999999 m"/>
+			<xs:enumeration value="99999999"/>
+			<xs:enumeration value="9999999999999999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Formula">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0.02"/>
+			<xs:enumeration value="0.05"/>
+			<xs:enumeration value="0.5 t"/>
+			<xs:enumeration value="0.05 m/s**2"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="1 Byte"/>
+			<xs:enumeration value="1 Text String Element"/>
+			<xs:enumeration value="1 bit"/>
+			<xs:enumeration value="1 m"/>
+			<xs:enumeration value="1 day"/>
+			<xs:enumeration value="1 per mil"/>
+			<xs:enumeration value="1 per cent"/>
+			<xs:enumeration value="10 A"/>
+			<xs:enumeration value="10 cm, 1 m or 10 m depending on Q_SCALE"/>
+			<xs:enumeration value="10 ms"/>
+			<xs:enumeration value="1 s"/>
+			<xs:enumeration value="5 km/h"/>
+			<xs:enumeration value="Binary Coded Decimal"/>
+			<xs:enumeration value="Bitset"/>
+			<xs:enumeration value="Number"/>
+			<xs:enumeration value="Numbers"/>
+			<xs:enumeration value="integers"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Length">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="8"/>
+			<xs:enumeration value="9"/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="10+14"/>
+			<xs:enumeration value="12"/>
+			<xs:enumeration value="13"/>
+			<xs:enumeration value="14"/>
+			<xs:enumeration value="15"/>
+			<xs:enumeration value="20"/>
+			<xs:enumeration value="24"/>
+			<xs:enumeration value="32"/>
+			<xs:enumeration value="64"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_VarLen">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="1 bit"/>
+			<xs:enumeration value="2 bits"/>
+			<xs:enumeration value="3 bits"/>
+			<xs:enumeration value="4 bits"/>
+			<xs:enumeration value="5 bits"/>
+			<xs:enumeration value="6 bits"/>
+			<xs:enumeration value="7 bits"/>
+			<xs:enumeration value="8 bits"/>
+			<xs:enumeration value="9 bits"/>
+			<xs:enumeration value="10 bits"/>
+			<xs:enumeration value="10+14 bits"/>
+			<xs:enumeration value="12 bits"/>
+			<xs:enumeration value="13 bits"/>
+			<xs:enumeration value="14 bits"/>
+			<xs:enumeration value="15 bits"/>
+			<xs:enumeration value="16 bits"/>
+			<xs:enumeration value="20 bits"/>
+			<xs:enumeration value="24 bits"/>
+			<xs:enumeration value="32 bits"/>
+			<xs:enumeration value="64 bits"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_IDNumber">
+		<xs:restriction base="xs:short">
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="9"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+			<xs:enumeration value="13"/>
+			<xs:enumeration value="15"/>
+			<xs:enumeration value="16"/>
+			<xs:enumeration value="21"/>
+			<xs:enumeration value="27"/>
+			<xs:enumeration value="39"/>
+			<xs:enumeration value="40"/>
+			<xs:enumeration value="41"/>
+			<xs:enumeration value="42"/>
+			<xs:enumeration value="44"/>
+			<xs:enumeration value="45"/>
+			<xs:enumeration value="46"/>
+			<xs:enumeration value="49"/>
+			<xs:enumeration value="51"/>
+			<xs:enumeration value="52"/>
+			<xs:enumeration value="57"/>
+			<xs:enumeration value="58"/>
+			<xs:enumeration value="63"/>
+			<xs:enumeration value="64"/>
+			<xs:enumeration value="65"/>
+			<xs:enumeration value="66"/>
+			<xs:enumeration value="67"/>
+			<xs:enumeration value="68"/>
+			<xs:enumeration value="69"/>
+			<xs:enumeration value="70"/>
+			<xs:enumeration value="71"/>
+			<xs:enumeration value="72"/>
+			<xs:enumeration value="76"/>
+			<xs:enumeration value="79"/>
+			<xs:enumeration value="80"/>
+			<xs:enumeration value="88"/>
+			<xs:enumeration value="90"/>
+			<xs:enumeration value="131"/>
+			<xs:enumeration value="132"/>
+			<xs:enumeration value="133"/>
+			<xs:enumeration value="134"/>
+			<xs:enumeration value="135"/>
+			<xs:enumeration value="136"/>
+			<xs:enumeration value="137"/>
+			<xs:enumeration value="138"/>
+			<xs:enumeration value="139"/>
+			<xs:enumeration value="140"/>
+			<xs:enumeration value="141"/>
+			<xs:enumeration value="143"/>
+			<xs:enumeration value="145"/>
+			<xs:enumeration value="254"/>
+			<xs:enumeration value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="BothWays" type="T_BothWays"/>
+	<xs:element name="Comment" type="xs:string"/>
+	<xs:element name="Condition" type="xs:string"/>
+	<xs:element name="Conditional" type="T_Conditional"/>
+	<xs:element name="Content" type="T_Content"/>
+	<xs:element name="Definitions" type="T_Definitions">
+		<xs:annotation>
+			<xs:documentation>Root Element</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Description" type="xs:string"/>
+	<xs:element name="DetailedName" type="xs:string"/>
+	<xs:element name="IDNumber" type="T_IDNumber"/>
+	<xs:element name="Length" type="T_Length" default="5"/>
+	<xs:element name="List">
+		<xs:complexType>
+			<xs:attribute name="Number" type="xs:int" use="required"/>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LoopDoWhile" type="T_LoopDoWhile"/>
+	<xs:element name="LoopWhile" type="T_LoopWhile"/>
+	<xs:element name="Name" type="xs:string" default="N_ITER"/>
+	<xs:element name="Packet" type="T_Packet"/>
+	<xs:element name="Packets" type="T_Packets"/>
+	<xs:element name="Special">
+		<xs:complexType>
+			<xs:attribute name="Value" type="T_Value" use="required"/>
+			<xs:attribute name="Description" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Specs">
+		<xs:complexType>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="Special" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="Length" type="T_VarLen" use="required"/>
+			<xs:attribute name="MinVal" type="T_MinVal" use="optional"/>
+			<xs:attribute name="MaxVal" type="T_MaxVal" use="optional"/>
+			<xs:attribute name="Formula" type="T_Formula" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TrackToTrain" type="T_TrackToTrain"/>
+	<xs:element name="TrainToTrack" type="T_TrainToTrack"/>
+	<xs:element name="TransmissionMedia" type="T_TransmissionMedia"/>
+	<xs:element name="Value" type="xs:string"/>
+	<xs:element name="Variable" type="T_Variable"/>
+	<xs:element name="TlgVar" type="T_TlgVar"/>
+	<xs:element name="Variables" type="T_Variables"/>
+	<xs:complexType name="T_BothWays">
+		<xs:sequence>
+			<xs:element ref="List" maxOccurs="unbounded"/>
+			<xs:element ref="Packet"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_Conditional">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element ref="Condition"/>
+			<xs:element ref="Variables" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_Content">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element ref="TlgVar"/>
+			<xs:element ref="LoopDoWhile" maxOccurs="unbounded"/>
+			<xs:element ref="LoopWhile" maxOccurs="unbounded"/>
+			<xs:element ref="Conditional" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="T_Definitions">
+		<xs:sequence>
+			<xs:element ref="Packets"/>
+			<xs:element name="VarDef" type="T_VardefVar"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_LoopDoWhile">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element ref="TlgVar" maxOccurs="unbounded"/>
+			<xs:element ref="Conditional" minOccurs="0" maxOccurs="3"/>
+			<xs:element ref="LoopWhile" minOccurs="0" maxOccurs="3"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="T_LoopWhile">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element ref="TlgVar" maxOccurs="unbounded"/>
+			<xs:element ref="Conditional" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="T_Packet">
+		<xs:sequence>
+			<xs:element ref="Description" minOccurs="0"/>
+			<xs:element ref="Content"/>
+		</xs:sequence>
+		<xs:attribute name="Number" type="T_IDNumber" use="required"/>
+		<xs:attribute name="Name" type="xs:string" use="required"/>
+		<xs:attribute name="TransmissionMedia" type="T_TransmissionMedia" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="T_Packets">
+		<xs:sequence>
+			<xs:element ref="TrackToTrain"/>
+			<xs:element ref="TrainToTrack"/>
+			<xs:element ref="BothWays"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_TrackToTrain">
+		<xs:sequence>
+			<xs:element ref="List" maxOccurs="unbounded"/>
+			<xs:element ref="Packet" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_TrainToTrack">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element ref="List" maxOccurs="unbounded"/>
+			<xs:element ref="Packet" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_VardefVar">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element ref="Variable" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_TlgVar">
+		<xs:attribute name="Name" type="xs:string" use="required"/>
+		<xs:attribute name="Length" type="T_Length" use="required"/>
+		<xs:attribute name="Comment" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="T_Variable">
+		<xs:sequence>
+			<xs:element ref="DetailedName"/>
+			<xs:element ref="Description" minOccurs="0"/>
+			<xs:element ref="Specs"/>
+		</xs:sequence>
+		<xs:attribute name="Name" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="T_Variables">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element ref="LoopDoWhile" maxOccurs="3"/>
+			<xs:element ref="LoopWhile" minOccurs="0" maxOccurs="3"/>
+			<xs:element ref="TlgVar" maxOccurs="unbounded"/>
+			<xs:element ref="Conditional"/>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

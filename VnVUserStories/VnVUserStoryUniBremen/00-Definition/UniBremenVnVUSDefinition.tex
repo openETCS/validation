@@ -1,0 +1,126 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{todo}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{figures/pdf/}}
+
+
+\newgeometry{margin=3cm}
+\title{V\&V Users Stories : Bremen University, DLR, Siemens
+\\
+\normalsize{System Integration Testing with Model Based Testing}
+}
+\author{Cécile Braunstein \and Jan Peleska}
+\date{\today}
+
+% Makes Marginpars easier to read
+\setlength{\marginparwidth}{1in}
+
+\pagestyle{myheadings}
+\markright{openETCS \hfill {\tiny This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License} \hfill}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This document presents the experiments (to be) conducted by Uni Bremen, DLR
+and Siemens  for the system integration testing of parts of the OBU. 
+The method details may be found in the WP4 Verification and Validation
+Plan. This document summarize the task to achieve  and the state of
+this task.
+\end{abstract}
+
+
+
+\section{Document and folder description}
+\paragraph{01-Requirements}
+\begin{itemize}
+  \item WP4-Validation and Verification plan : Contains the methods
+  definition and the details of our task
+  \item SysML Management of Radio Communication model : SysML model of
+    the MoRC in xml format generated from an Enterprise architect description
+  \item SysML Management of Radio Communication doc : Explanation of
+    the SysML model, contains also the interface definition of the
+    MoRC. 
+\end{itemize}
+
+\section{Task Resume}
+The detail of the task may be found in the Verification and Validation
+plan.
+
+Uni Bremen will provide two SysML test model that represent the
+Management of the radio communication and the ceiling speed monitoring
+of the OBU. These models will be used to automatically generate test
+cases with the RT-tester tool. The tests will be used for system
+integration testing. Our goal is to have an test environment within
+the DLR laboratory for Hardware in the loop test and also use the same
+generated test cases to perform software int the loop testing with the
+generated code from SCADE.
+To show the strength of our tests, the test suites automatically
+generated will be analyzed according to the well known coverage
+measure. Moreover we will compare our test to those defined in the SUBSET-76.
+
+\section{Status of the task}
+\subsection{Providing Test environment}
+\begin{tabular}{p{.5\textwidth}cp{.3\textwidth}}\toprule
+Activity & Status & Remarks \\\midrule
+ Create a test model in SysML MoRC & Done &  From the model evaluation
+ of WP7\\\midrule
+Provide the test model for the ceiling speed monitoring & To be
+commited & Still some cleaning to do \\\midrule
+Generate test cases according to the defined interface given by
+  DLR. (RT-Tester) & Active & DLR confirm interface \\ \midrule
+Provide simulation environment for the
+  track-to-train simulation  along routes used
+  for testing & Active & \\\midrule
+Study the automatic generation of these track layouts and speed
+  simulations & & \\\midrule
+Set up a test environments for
+Hardware-in-the-loop Testing within DLR laboratory & & \\\midrule
+Set up a test environments for Software-in-loop testing with code
+provided by SCADE (Siemens) & & \\
+\bottomrule
+\end{tabular}
+
+\subsection{Test cases generation}
+Together with generated the test cases we will study the quality of
+the test suites.
+
+\begin{tabular}{p{.5\textwidth}cp{.3\textwidth}}\toprule
+Activity & Status & Remarks \\\midrule
+Check the test model (SysML) RTT-BMC  &&\\\midrule
+Add relevant LTL properties & Active&\\\midrule
+Structural coverage analysis & Done & Automatically performs by  RT-Tester\\\midrule
+ Requirement coverage analysis &&\\\midrule
+ Mutation coverage  analysis &&\\\midrule
+ Provide techniques and Howto describing how test cases from
+  Subset 76 can be executed in the RT-Tester environment &&\\\midrule
+ Compare new test cases created by RT-Tester to new test cases
+  for ceiling speed monitoring provided by ERTMS standardization
+  group &&\\
+\bottomrule
+\end{tabular}
+
+\subsection{Exchange Formats}
+Test models represented in XMI/Ecore are used as SysML test modeling
+standard. RT-Tester model parsers are extended to cope with this
+format.
+
+\begin{tabular}{p{.5\textwidth}cp{.3\textwidth}}\toprule
+Activity & Status & Remarks \\\midrule
+Test procedures general abstract syntax definition &Active&\\\midrule
+Test results (test execution logs) general format &&\\
+\bottomrule
+\end{tabular}
+
+\bibliographystyle{alpha}
+\bibliography{biblio} 
+\end{document}
+
+%  LocalWords:  cp

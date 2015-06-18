@@ -1,0 +1,80 @@
+
+\section{Introduction}
+\label{sec:introduction}
+
+The original, high-level description of the \bitwalker software is given here:
+
+\begin{quote}
+ 
+Task of the Bitwalker
+ 
+The Bitwalker shall sequentially read a bit field and convert it into a natural number.
+Conversely, the Bitwalker shall read a natural number and write it to a bit field.
+ 
+Description of the task
+ 
+A bit oriented field in memory is given.
+
+With a byte oriented representation in memory, the most significant bit
+would have the index 0 in Big-endian notation.
+The bit index increases monotonously by 1.
+Natural numbers that are given in Big-endian notation shall be read or written.
+The range of natural numbers is limited by the width of the bit field.
+
+Two access methods shall be provided:
+\begin{itemize}
+\item  Random read/write access to the bit field. 
+\item  Sequential read/write access to the bit field starting at a given index.
+\end{itemize}
+
+Each read/write operation shall ``consume'' the bits that have been accessed.
+The access functions shall be written in plain C and shall be reentrant.
+ 
+Context of the Bitwalker:
+ 
+ETCS uses telegrams in Big-endian notation to communicate between vehicle and track.
+In the scope of OpenETCS a generator shall be developed that
+automatically converts the telegram specification into an encoder/decoder.
+The Bitwalker will be used here as an auxiliary function.
+\end{quote}
+
+While this description provides basic information about the context
+of \bitwalker and about the intentions of the designer there are 
+many open questions:
+
+\begin{itemize}
+\item What are the exact names and signatures of the functions?
+\item Are there any error conditions for these functions?
+\item What does ``consumption of bits'' mean?
+\item What does \emph{reentrant} exactly mean?
+\end{itemize}
+
+
+The \bitwalker software can be considered to consist of a \emph{public} part
+(sequential access functions)
+and a \emph{private} part (random access functions).
+
+\begin{itemize}
+\item
+The public part consists of the \isoc data type \bitwalkertype and several \isoc functions
+that can be used to manipulate objects this type.
+
+\item
+The private part consists of the functions \peek and \poke
+that implement the core functionality of \bitwalker.
+\end{itemize}
+
+Before we informally specify \bitwalker
+we introduce some auxiliary concepts and formulate general assumptions.
+We would also like to point out the following:
+When we speak in this document of \emph{integers},
+then we refer to the infinite set of mathematical
+integers $\{\ldots, -1, 0, 1, \ldots\}$
+and not to one of the many finite representation provided by the type system of \isoc.
+
+This distinction is important because it usually makes more sense
+to describe the functionality of a piece of software in a more
+abstract way.
+In a later step the realities of specific the \isoc type system
+have to be taken into account.
+

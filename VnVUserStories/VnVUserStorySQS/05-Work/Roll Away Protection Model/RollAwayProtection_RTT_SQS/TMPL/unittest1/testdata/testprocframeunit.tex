@@ -1,0 +1,219 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% --------------------------------------------------------------------
+%
+% Document :  PDF test documentation document frame
+%
+% --------------------------------------------------------------------
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\nonstopmode
+
+
+%%%%%%%%%%%%%%%% PDF %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[pdftex,12pt]{report}
+\pdfoutput=1
+\pdfimageresolution=288
+\pdfcompresslevel=0
+
+\usepackage{refmanVerifiedPDF}
+\usepackage{verbatim}
+\usepackage{lscape}
+\usepackage{url,xspace,boxedminipage}
+\usepackage{graphicx,thumbpdf}
+\usepackage[colorlinks,bookmarks,
+  pdftitle={Test Procedure Documentation},
+  pdfsubject={RT-Tester Test Documentation},
+  pdfkeywords={},
+  pdfauthor={Verified Systems}]{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage{moreverb}
+\usepackage{longtable}
+\usepackage{color}
+%---  nice rts-file listings   ------------------------
+\IfFileExists{listings.sty}{
+\usepackage[savemem]{listings}
+\lstdefinelanguage[]{rts}[]{C}{alsoother={_}}
+\lstset{language=rts,extendedchars=true,columns=flexible,
+  numbers=left,stepnumber=1,numberstyle=\tiny,firstnumber=1,
+  breaklines=true,showstringspaces=false,basicstyle=\small\ttfamily,commentstyle=\small\ttfamily,
+  prebreak=\mbox{\tiny$\hookleftarrow$},postbreak=\mbox{\tiny$\hookrightarrow$}}
+}{}
+%---  section numbering   ------------------------
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+
+
+
+%----------------------------------------------------
+
+%%% \input{commands.tex}
+
+%%% \definecolor{myblue}{rgb}{0.0,0.03,0.5}
+\definecolor{myblue}{rgb}{0.0,0.0,1.0}
+
+\newcommand{\com}[1]{\framebox
+       {\parbox{\textwidth}{
+           {\sf #1}
+           }}}
+
+
+
+
+
+\newcommand{\chg}[1]{\begin{tabular}{l|}
+                      \parbox[t]{\textwidth}{ #1 } \\
+                      \end{tabular}}
+
+\newcommand{\percent}{\%}
+
+\def\pict#1#2#3{
+    \begin{figure}[htbp]
+      \hfill\centerline{\includegraphics[width=\textwidth]{#2}}\hfill
+      \caption{#1}\label{#3}
+    \end{figure}
+}
+
+
+\def\pictsmall#1#2#3{
+    \begin{figure}[htbp]
+      \hfill\centerline{\includegraphics[width=5cm]{#2}}\hfill
+      \caption{#1}\label{#3}
+    \end{figure}
+}
+
+\def\pictmed#1#2#3{
+    \begin{figure}[htbp]
+      \hfill\centerline{\includegraphics[width=8cm]{#2}}\hfill
+      \caption{#1}\label{#3}
+    \end{figure}
+}
+
+
+
+% Verified's marginpar
+\newcommand{\vmp}[1]{\marginpar{\raggedright{\textcolor{myblue}{\footnotesize\sf #1\normalsize}}}\ignorespaces}
+
+
+\newcounter{expectedresultscnt} 
+
+
+\input{testrelatedflags.tex}
+
+% 
+
+\pagestyle{empty}
+
+
+
+
+%----------------------------------------------------
+
+\begin{document}
+\begin{fullpage}
+\pagestyle{empty}
+
+
+\huge
+{\bf Verified Systems International GmbH} \vskip -8mm
+\rule{\textwidth}{0.5mm}
+\vfill
+
+
+\huge
+{\bf 
+     \_Project \\
+     \\
+     Test Cases, Procedures, and \\
+     Expected Results \\
+     \ \\
+     \aststlatitle\ (\aststla) \\
+     \aststestname: \aststestheadline
+     \ \\
+     \astscidsbaseline
+ }
+
+\bigskip
+\bigskip
+\large
+{\bf \makebox[7cm][l]{Test Documentation Date:} \today}
+
+
+\vfill
+\footnotesize
+
+
+Verified Systems International GmbH\\
+Parkstra{\ss}e 123\\
+28209 Bremen \\
+Germany\\
+\makebox[2cm][l]{Tel.  : } +49 421 57204-0 \\
+\makebox[2cm][l]{Fax   : } +49 421 57204-22\\
+\makebox[2cm][l]{e-mail: } info@verified.de\\
+\makebox[2cm][l]{www: } http://www.verified.de
+
+\makebox[7cm][l]{Author:} \astsauthor
+\normalsize
+\vfill
+\vbox{\hsize=\textwidth{\rule{\textwidth}{0.3mm}} %\vskip 3pt
+              \vskip -.6cm
+              \hbox to \textwidth{\tiny \hfil 
+              %%% \epsfxsize=1.8cm\epsfbox{pics/vlstamp_trans_red.eps}
+               \includegraphics[width=1.8cm]{logo.pdf}
+              }} 
+
+\end{fullpage} 
+%----------------------------------------------------
+\newpage
+\pagestyle{myheadings}
+\markright{RT-Tester 6.0 TQ -- \aststla\ \aststestname\ -- Test Cases, Procedures, Expected Results -- \astscidsbaseline}
+
+\tableofcontents
+%%% \listoffigures
+
+
+%------------------------------------------------------------------
+\input{testobj.tex}
+
+%-------------------------------------------------------
+\begin{fullpage}
+\chapter{Test Procedure - Generation and Execution Rules}
+
+\section{Abstract Machine Description}
+\input{amdescription.tex}
+
+\section{Abstract Machine Configuration}
+\input{\astsamconfiguration}
+
+\newpage
+\section{Test Configuration}
+\footnotesize
+\verbatiminput{../conf/unit.conf}
+\normalsize
+\end{fullpage}
+
+%-------------------------------------------------------
+\chapter{Test Cases and Expected Results -- Summary}
+
+\input{expectedresultssummary.tex}
+
+%-------------------------------------------------------
+\begin{fullpage}
+\chapter{Test Cases and Expected Results -- Detailed Specification}
+\input{\astsunittestscript}
+\end{fullpage}
+
+%-----------------------------------------------------------------
+\end{document}
+
+
+

@@ -1,0 +1,92 @@
+/**********************************
+To OS mode 
+test cases generation
+(SRS 4.6 v3.3.0)
+Associated Scade model for the proof :
+ManageModes
+**********************************/
+Declarations:
+// Mode in input
+'Level_And_Mode_Types_Pkg::T_Mode' Current_Mode;
+bool Driver_Ack_OS;
+'Level_And_Mode_Types_Pkg::T_Mode_Profile' Mode_Profile_On_Board;
+'TrainPosition_Types_Pck::trainPosition_T' Train_Position;
+'Obu_BasicTypes_Pkg::Speed_T' Train_Speed;
+
+/* [15] (An ackn. request for On Sight is displayed to the driver) AND
+(the driver acknowledges) see {1} here under
+
+{1} The request to acknowledge On Sight is displayed to the driver
+only if certain conditions are fulfilled. These conditions are not
+specified here. See the “On Sight” procedure” of SRS-§5 (for
+transitions from FS/LS/UN to OS) and the "Start of mission" procedure
+(for transition from SB to OS).*/
+bool condition_15;
+
+/* [34] (A Mode Profile defining an On Sight area is on-board) AND
+(The max safe front end of the train is inside the On Sight area) AND
+(The ERTMS/ETCS level switches to 1,2 or 3) */
+bool condition_34;
+
+/* [40] (A Mode Profile defining an On Sight area is on-board) AND
+(The max safe front end of the train is inside the On Sight area) */
+bool condition_40;
+bool max_safe_front_in_os_area;
+
+/* [73] (A Mode Profile defining an On Sight area is on-board) AND
+(The max safe front end of the train is inside the On Sight area) AND
+(The estimated front end of the train is not inside an LS
+acknowledgement area) */
+bool condition_73;
+
+
+Definitions:
+// currentMode is a Scade model output and initial mode is SB
+Current_Mode := pre(currentMode,'Level_And_Mode_Types_Pkg::SB');
+
+Driver_Ack_OS := Data_From_DMI.'Ack_OS';
+Mode_Profile_On_Board := Data_From_Track.'Mode_Profile_On_Board';
+Train_Position := Data_From_Localisation.'Train_Position';
+Train_Speed := Data_From_Localisation.'Train_Speed';
+
+
+
+// "Max safe front inside OS area"
+max_safe_front_in_os_area := Train_Position.'maxSafeFrontEndPostion' >= Mode_Profile_On_Board.'Distance' &
+			     Train_Position.'maxSafeFrontEndPostion' <= (Mode_Profile_On_Board.'Distance' + Mode_Profile_On_Board.'Length');
+
+
+//condition_15 := 
+
+
+
+condition_34 := Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::Profile_OS' & 
+	     	max_safe_front_in_os_area /*&
+		(Current_Level == 'M_LEVEL_Level_1' #
+		Current_Level == 'M_LEVEL_Level_2' #
+		Current_Level == 'M_LEVEL_Level_3')*/;
+
+condition_40 := Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::Profile_OS' & 
+	     	max_safe_front_in_os_area;
+
+
+
+//condition_73 := 
+
+
+
+Proof Obligations: 
+((Current_Mode = 'Level_And_Mode_Types_Pkg::UN' # 
+Current_Mode = 'Level_And_Mode_Types_Pkg::SN') & 
+~condition_34) -> (currentMode != 'Level_And_Mode_Types_Pkg::OS');
+
+
+/* Expected result */
+Declarations:
+'Level_And_Mode_Types_Pkg::T_Mode' HLL_currentMode;
+
+Definitions:
+HLL_currentMode := 'Level_And_Mode_Types_Pkg::OS';
+
+Outputs:
+HLL_currentMode;

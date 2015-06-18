@@ -1,0 +1,105 @@
+/************************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Elaborating ETCS level and mode
+Data refinement
+
+************************************************/
+
+IMPLEMENTATION
+	os_mode_level_1_i
+
+REFINES
+	os_mode_level_1
+
+SEES
+	os_typ
+
+IMPORTS
+	os_mode_level_2
+
+PROMOTES
+	write_etcs_level            ,
+	write_mamode_prec           ,
+	write_mode                  ,
+	write_waiting_for_ack       ,
+	write_waiting_for_ack_prec  ,
+	write_tempo                 ,
+	write_service_brake_command ,
+	write_ack_request_os_mode   ,
+	write_os_mode_in_progress
+
+INVARIANT
+	etcs_level            = etcs_level_i            &
+	mamode_prec           = mamode_prec_i           &
+	mode                  = mode_i                  &
+	waiting_for_ack       = waiting_for_ack_i       &
+	waiting_for_ack_prec  = waiting_for_ack_prec_i  &
+	tempo                 = tempo_i                 &
+	service_brake_command = service_brake_command_i &
+	ack_request_os_mode   = ack_request_os_mode_i   &
+	os_mode_in_progress   = os_mode_in_progress_i
+
+OPERATIONS
+
+	/* read operations */
+
+	p_res <-- read_etcs_level =
+	BEGIN
+		p_res := etcs_level_i
+	END
+	;
+
+	p_res <-- read_mamode_prec =
+	BEGIN
+		p_res := mamode_prec_i
+	END
+	;
+
+	p_res <-- read_mode =
+	BEGIN
+		p_res := mode_i
+	END
+	;
+
+	p_res <-- read_waiting_for_ack =
+	BEGIN
+		p_res := waiting_for_ack_i
+	END
+	;
+
+	p_res <-- read_waiting_for_ack_prec =
+	BEGIN
+		p_res := waiting_for_ack_prec_i
+	END
+	;
+
+	p_res <-- read_tempo =
+	BEGIN
+		p_res := tempo_i
+	END
+	;
+
+	p_res <-- read_service_brake_command =
+	BEGIN
+		p_res := service_brake_command_i
+	END
+	;
+
+	p_res <-- read_ack_request_os_mode =
+	BEGIN
+		p_res := ack_request_os_mode_i
+	END
+	;
+
+	p_res <-- read_os_mode_in_progress =
+	BEGIN
+		p_res := os_mode_in_progress_i
+	END
+END
+

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2012 sp1 (x64) (http://www.altova.com) von DLR (DLR) bearbeitet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Variable_Types____________________________________________________-->
+	<xs:simpleType name="T_SendingDirection">
+		<xs:annotation>
+			<xs:documentation>Type of Direction the Information is allowed to be sent (informative)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="trackToTrain"/>
+			<xs:enumeration value="trainToTrack"/>
+			<xs:enumeration value="evcToInterface"/>
+			<xs:enumeration value="interfaceToEvc"/>
+			<xs:enumeration value="parameterToTe"/>
+			<xs:enumeration value=""/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_TriggerMessage">
+		<xs:annotation>
+			<xs:documentation>Type of Message ID to Trigger</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:byte"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_TriggerTime">
+		<xs:annotation>
+			<xs:documentation>Trigger Time in nanoseconds</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:long"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_TriggerType">
+		<xs:annotation>
+			<xs:documentation>Type of Trigger</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="triggeredByFixedTime"/>
+			<xs:enumeration value="triggeredByMaxTime"/>
+			<xs:enumeration value="triggeredByMinTime"/>
+			<xs:enumeration value="triggeredByEvent"/>
+			<xs:enumeration value="triggeredByPreviousMessage"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Interface">
+		<xs:annotation>
+			<xs:documentation>Interface the message refers to also representing the message identifier (direction is set by T_SendingDirection)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z]{3}"/>
+			<xs:enumeration value="TII"/>
+			<xs:enumeration value="TIO"/>
+			<xs:enumeration value="OSI"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Message_Attributes____________________________________________________-->
+	<xs:attribute name="BitLength">
+		<xs:annotation>
+			<xs:documentation>Bitstream Length additional information for en-coding to a non XML bit stream</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="T_BitLength"/>
+		</xs:simpleType>
+	</xs:attribute>
+	<xs:attribute name="BitCoding" type="T_BitCoding">
+		<xs:annotation>
+			<xs:documentation>Bitstream Coding additional information for en-coding to a non XML bit stream</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="SendingDirection" type="T_SendingDirection">
+		<xs:annotation>
+			<xs:appinfo source="ngffgd"/>
+			<xs:documentation>Direction of sent message</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="Timestamp" type="xs:time">
+		<xs:annotation>
+			<xs:documentation>XML Timestamp </xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="TriggerTime" type="T_TriggerTime">
+		<xs:annotation>
+			<xs:documentation>Cylce time in millisecond, message sent once each cycle</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="TriggerType" type="T_TriggerType">
+		<xs:annotation>
+			<xs:documentation>Type of trigger: triggerByFixedTime = fixed time cycle - message is expected at each end of cycle defined by trigger time; triggeredByMaxTime = message is expected to arrive before a trimeout defined by trigger time; triggerByMinTime = message is not expected before the end of trigger time; triggeredByEvent = message is not expected to arrive before event and after trigger time after event; messageByPreviousMessage =  message is not expected to arrive before previous message and after trigger time after event</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="TriggerMessage" type="T_TriggerMessage">
+		<xs:annotation>
+			<xs:documentation>Previous Message ID to trigger to</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<!--Attribute_Types____________________________________________________-->
+	<xs:simpleType name="T_BitCoding">
+		<xs:annotation>
+			<xs:documentation>Additional information for coding of the variables (binary, decimal, hexa decimal, binary coded decimal)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="b"/>
+			<xs:enumeration value="d"/>
+			<xs:enumeration value="hex"/>
+			<xs:enumeration value="bcd"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_BitLength">
+		<xs:annotation>
+			<xs:documentation>Length in bits of each variable</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:unsignedShort"/>
+	</xs:simpleType>
+	<!--Attribute_Groups____________________________________________________-->
+	<xs:attributeGroup name="Direction">
+		<xs:annotation>
+			<xs:documentation>Sending direction of message, default is trackToTrain</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="SendingDirection" use="optional" default="trackToTrain"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="DirectionOnboardTeToSut">
+		<xs:annotation>
+			<xs:documentation>Fixed sending direction: Onboard Test Environment to System Under Test</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="SendingDirection" use="optional" fixed="interfaceToEvc"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="DirectionParaToTrackTe">
+		<xs:annotation>
+			<xs:documentation>Fixed sending direction: Parameter to Trackside Test Environment</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="SendingDirection" use="optional" fixed="parameterToTe"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="DirectionSutToOnboardTe">
+		<xs:annotation>
+			<xs:documentation>Fixed sending direction: System Under Test to Onboard Test Environment</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="SendingDirection" use="optional" fixed="evcToInterface"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="DirectionSutToTrackTe">
+		<xs:annotation>
+			<xs:documentation>Fixed sending direction: System Under Test to Trackside Test Environment</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="SendingDirection" use="optional" fixed="trainToTrack"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="DirectionTrackTeToSut">
+		<xs:annotation>
+			<xs:documentation>Fixed sending direction: Trackside Test Environment to System Under Test</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="SendingDirection" use="optional" fixed="trackToTrain"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="Trigger">
+		<xs:annotation>
+			<xs:documentation>Message trigger configuration, default is a fixed time cycle of 100ms</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="TriggerType" use="optional" default="triggeredByFixedTime">
+			<xs:annotation>
+				<xs:documentation>Type of trigger: triggerByFixedTime = fixed time cycle - message is expected at each end of cycle defined by trigger time;
+triggeredByMaxTime = message is expected to arrive before a trimeout defined by trigger time; triggerByMinTime = message is not expected before the end of trigger time; triggeredByEvent = message is not expected to arrive before event and after trigger time after event; messageByPreviousMessage =  message is not expected to arrive before previous message and after trigger time after event</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute ref="TriggerTime" use="optional" default="100000"/>
+		<xs:attribute ref="TriggerMessage" use="optional" default="0"/>
+	</xs:attributeGroup>
+</xs:schema>

@@ -1,0 +1,87 @@
+/************************************************
+
+Procedure On-Sight : classical B example
+
+Author : Benoît Lucet (benoit.lucet@systerel.fr)
+
+*************************************************
+
+Train information : location and speed
+
+************************************************/
+
+IMPLEMENTATION
+	os_train_info_i
+
+REFINES
+	os_train_info_r
+
+SEES
+	elop_bs        ,
+	os_typ         ,
+	os_cte_conf_bs ,
+	os_in          ,
+	os_consist
+
+IMPORTS
+	os_train_info_1
+
+PROMOTES
+	read_posoff_max_safe_front  ,
+	read_posoff_min_safe_front  ,
+	read_train_speed            ,
+	write_posoff_max_safe_front ,
+	write_posoff_min_safe_front ,
+	write_train_speed
+
+OPERATIONS
+
+	elaborate_train_location =
+	VAR
+		l_distance_odo                ,
+		l_train_position              ,
+		l_train_position_prev         ,
+		l_dist_antenna_max_safe_front ,
+		l_dist_antenna_min_safe_front ,
+		l_posoff_max_safe_front       ,
+		l_posoff_min_safe_front       ,
+		l_position_max_maj            ,
+		l_position_min_maj
+	IN
+		l_distance_odo                <-- read_distance_odo                ;
+		l_train_position              <-- read_train_position              ;
+		l_train_position_prev         <-- read_train_position_prev         ;
+		l_dist_antenna_max_safe_front <-- read_dist_antenna_max_safe_front ;
+		l_dist_antenna_min_safe_front <-- read_dist_antenna_min_safe_front ;
+		l_posoff_max_safe_front       <-- read_posoff_max_safe_front       ;
+		l_posoff_min_safe_front       <-- read_posoff_min_safe_front       ;
+
+		l_position_max_maj <-- add_int_int(l_distance_odo, l_posoff_max_safe_front) ;
+		l_position_min_maj <-- add_int_int(l_distance_odo, l_posoff_min_safe_front) ;
+
+		IF l_train_position /= l_train_position_prev THEN
+			write_posoff_max_safe_front(l_dist_antenna_max_safe_front) ;
+			write_posoff_min_safe_front(l_dist_antenna_min_safe_front)
+		ELSE
+			write_posoff_max_safe_front(l_position_max_maj) ;
+			write_posoff_min_safe_front(l_position_min_maj)
+		END
+	END
+	;
+
+	elaborate_train_speed =
+	VAR
+		l_distance_odo ,
+		l_dist_ms      ,
+		l_train_speed
+	IN
+		l_distance_odo <-- read_distance_odo                      ;
+		l_dist_ms      <-- mul_int_int(l_distance_odo, k_s_to_ms) ;
+
+		l_train_speed := l_dist_ms / k_period_appli ;
+
+		write_train_speed(l_train_speed)
+	END
+	
+END
+

@@ -1,0 +1,235 @@
+\documentclass{template/openetcs_article}
+% Use the option "nocc" if the document is not licensed under Creative Commons
+% \documentclass[nocc]{template/openetcs_article}
+\usepackage{lipsum,url}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{fixme}
+\usepackage{lscape} 
+\usepackage{pgfgantt}
+\usepackage{adjustbox}
+\usepackage{datetime}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{enumerate}
+\graphicspath{{schema/}}
+\usepackage{amsfonts}
+\definecolor{hblue}{RGB}{79,129,189}
+
+% user specified macros
+\input{macros.tex}
+
+
+\graphicspath{{./template/}{.}{./images/}}
+\begin{document}
+\frontmatter
+\project{openETCS}
+
+% Please do not change anything above this line ============================ The
+% document metadata is defined below
+
+\reportnum{OETCS/WP4/D4.2.1}
+
+% define your workpackage or task here
+\wp{openETCS@ITEA Work Package 4.2: ``Verification \& Validation of the Formal Model''}
+
+% set a title here
+\title{D.4.2.1 1st interim V\&V report on the applicability of the V\&V approach to the formal abstract model}
+
+% set a subtitle here
+\subtitle{Version 03}
+
+% set the date of the report here
+\date{January 2014\\revised April 2015 }
+
+%document approval                                                                                                                                          %define the name and affiliation of the people involved in the documents approbation here                                                                    
+\creatorname{Ana Cavalli}                                                                                                                                
+\creatoraffil{Institut Mines-Télécom}                                                                                                                                                                                                                                                                                   
+\techassessorname{Silvano Dal Zilio}                                                                                                                       
+\techassessoraffil{CNRS \/ LAAS - Vertics Group}                                                                                                                                                                                                                                                                        
+\qualityassessorname{Jan Welte}                                                                                                                       
+\qualityassessoraffil{TU Braunschweig}                                                                                                                      
+                                                                                                                                                            
+\approvalname{Klaus-R\"udiger Hase}                                                                                                                         
+\approvalaffil{DB Netz}  
+
+
+% define a list of authors and their affiliation here
+\author{Ana Cavalli \and João Santos \and Huu-Nghia Nguyen}
+
+\affiliation{Institut Mines-Télécom}
+
+\author{Marc~Behrens}
+
+\affiliation{Deutsches Zentrum für Luft und Raumfahrt e.V.}
+
+  
+\author{Stefan Rieger}
+
+\affiliation{TWT GmbH Science \& Inovation}
+
+\author{Cécile Braunstein}
+\affiliation{Uni Bremen}
+  
+\author{Uwe Steinke}
+\affiliation{Siemens}
+
+\author{Benoît~Lucet \and Matthias Güdemann \and Brice~Gombault \and Marielle~Petit-Doche} 
+
+\affiliation{Systerel}
+
+\author{Alexander Nitsch \& Benjamin Beichler}
+
+\affiliation{University of Rostock}
+ 
+\author{Silvano Dal Zilio \and Ning Ge}
+
+\affiliation{LAAS-CNRS}
+
+\author{Marc Pantel} 
+  
+\affiliation{INPT}
+ 
+% define the coverart
+\coverart[width=350pt]{openETCS_EUPL}
+
+% define the type of report
+\reporttype{}
+
+
+
+\begin{abstract}
+
+This document presents the interim results of the first iteration of
+verification and validation of formal model.
+Since the actual formal model of the ETCS system has not
+yet been initiated, no ``real'' input is currently applied.
+Specifically, the following sections present the contributions of partners of WP 4: 
+\begin{itemize}
+  \item Section~\ref{sec:int} --- Institut Mines-Télécom: Verification of the Movement Authority (Subset-026 chapter 3.8) 
+  \item Section~\ref{sec:twt} -- TWT GmbH Science \& Innovation: Verification of Procedures (Subset-026 chapter 5)
+  \item Section~\ref{sec:ubremen} -- University of Bremen: Verification of the Management of the Radio
+  Comumunication (Subset-026 chapter 3.5) 
+  \item Section~\ref{sec:urostock} -- University of Rostock: Verification of the Speed and distance  Monitoring  (Subset-026 chapter 3.13)
+  \item Section~\ref{sec:systerel} -- Systerel: Verification of Procedure on-Sight (Subset-026 chapter 5) and the Management of Radio Communication (Subset-026 chapter 3.5)
+  \item Section~\ref{sec:laas} --LAAS and INPT: Verification of the Speed and Distance Monitoring (Subset-026 chapter 3.13)
+\end{itemize}
+ 
+\end{abstract}
+
+% ============================= Do not change the next three lines
+\maketitle \tableofcontents \listoffiguresandtables \newpage
+% =============================
+
+% The actual document starts below this line =============================
+
+
+% Start here
+
+\section{Introduction}
+This verification evaluated in five different approaches that the design conforms to an excerpt of Subset-026 \cite{unisig_subset-026_2012}  related to the specification \cite{tsi-2012-88-eu} \cite{tsi-2012-696-eu}.  It is the first of three reports. It is performed before a design or development process is available. The design used for verification in this report is created and adapted to improve later results of verification. Due to the applicable restrictions the results of the first report focus on the verification itself rather than to give a verdict about conformity of design. All following reports will focus solely on the design provided by the work package "Modelling – Code Generation".
+
+To ensure the correctness and consistency of a design model and its implementation, the
+validation and verification has to be performed alongside with the modeling process. 
+As the model and code of the EVC are produced by WP3,
+thus this task will be performed repeatedly during WP3 and will provide
+feedback to it.
+
+
+\newpage
+
+\input{mines-telecom}
+
+\newpage
+
+
+\let\oldparagraph\paragraph
+\let\oldsubparagraph\subparagraph
+
+\renewcommand{\paragraph}[1]{\subsection{#1}}
+\renewcommand{\subparagraph}[1]{\subsubsection{#1}}
+
+\input{twt-D4-2-1}
+
+\newpage
+
+\input{UniBremen-D4-2-1}
+
+\newpage
+
+\input{URO-D4-2-1}
+
+\newpage
+
+
+\let\paragraph\oldparagraph
+\let\paragraph\oldsubparagraph
+
+
+\section{Systerel}
+\label{sec:systerel}
+Three approaches of VnV  on formal models have been experimented and are
+presented in this section:
+
+\begin{enumerate}
+\item VnV on classical B  model that cover software design level, in the objective to provide an open-source approach;
+\item VnV on Event-B model that cover system level and support safety analysis;
+\item VnV on Scade model that cover software design level.
+\end{enumerate}
+
+Classical B and Scade model specify the same example of Subset-026 chapter 5.9
+ ``Procedure on-Sight'', Event-B model specifies the ``Mangement of Radio
+communication'' function.
+
+\input{BmodelVnV}
+
+\input{EventB-Rodin-VnV}
+
+\input{ScadeModelVnV}
+
+
+\newpage
+
+\input{LAASINPT-D4-2-1}
+
+\section{Conclusion}
+\label{sec:conclusion}
+This deliverable presented the formal \vv of Institut
+Mines-Telecom, TWT GmbH Science \& Inovation, University of Bremen, University of Rostock, Systerel, LAAS-CNRS and INPT. 
+The V\&V activities are focused on the System Requirement Specifications in
+Subset-026 such as the Movement Authority (chapter 3.8), the Procedures (chapter 5),
+the Management of the Radio Communication (chapter 3.5), the Speed and Distance
+Monitoring (chapter 3.13), the Procedure on-Signt (chapter 5), and the Ceiling Speed Monitoring (part of the Speed and Distance Monitoring). 
+
+These requirements have been formalized in formal models such as  Extended Timed Finite
+State Machine, Colored Petri-Net, SCADE, Classical B, Event B and Time Petri Net. 
+The V\&V activities have been executed. They resulted
+the correctness of the Subset-026 but also
+some inconsistencies, ambiguities and gaps in Subset-026 being
+reported in the Specification Findings.
+
+The next steps are to refine the formal models and then to do the V\&V.
+The specification findings will be updated during this process.
+The test generation and then execution against the
+simulators will be also focused.
+
+
+
+
+%\nocite{*}
+%===================================================
+%Do NOT change anything below this line
+
+%\bibliographystyle{IEEEtran}
+\bibliographystyle{unsrt}
+
+\bibliography{biblio}
+%
+
+\end{document}

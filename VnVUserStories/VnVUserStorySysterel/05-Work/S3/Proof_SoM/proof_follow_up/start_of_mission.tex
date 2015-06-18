@@ -1,0 +1,118 @@
+\section{Proof of: Start Of Mission}
+\subsection{Files used for the proof}
+\begin{tabular}{|c|c|}
+\hline
+Used node & Property file \\ \hline
+Procedures::Procedure\_StartOfMission & start\_of\_mission.hll \\
+%\hline
+%ManageModes & start\_of\_mission\_topnode.hll \\
+\hline
+\end{tabular}
+
+\subsection{What we want to prove}
+We want to prove that the procedure Procedure\_StartOfMission is a
+correct implementation of the section ``5.6 Procedure Start of
+mission'' (cf. D1).
+
+The flowchart is not entirely modelized in the Scade model,
+communication with the driver doesn't seem to be implemented.
+
+Moreover, an implementation of emergency brake management is present in
+the Scade model. This may be an implementation of ``Standstill
+supervision''. Emergency brake can be triggered at any time during the
+procedure execution and the train shall be at standstill to start the
+procedure.
+
+States modelized are \texttt{S0}, state \texttt{S10}, states
+\texttt{S20} to \texttt{S25}, states \texttt{NL/SR/FS/OS/LS/SH/SN/UN
+  mode} and state \texttt{See procedure ``Shunting initiated by
+  Driver''}. 
+
+A part of the actual flowchart is drawn by figure~\ref{som-flowchart},
+only the part which is changed can be seen.
+
+The ``On Going Mission'' variable, input of SH Initiated by Driver, is
+forced to False. This is justified by SRS 5, section ``5.4.6 Entry to
+Mode Considered as a Mission''.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[%
+    >=triangle 60,              % Nice arrows; your taste may be different
+    start chain=going below,    % General flow is top-to-bottom
+    node distance=6mm and 60mm, % Global setup of box spacing
+    edge from parent/.style={->,draw},
+    ]
+% ------------------------------------------------- 
+% A few box styles 
+% <on chain> *and* <on grid> reduce the need for manual relative
+% positioning of nodes
+\tikzset{
+  base/.style={draw, on chain, on grid, align=center, minimum height=4ex},
+  state/.style={base, rectangle, text width=8em},
+  % -------------------------------------------------
+  % Connector line styles for different parts of the diagram
+  transition_label/.style ={base, rectangle, draw=none, thick, fill=none}
+}
+
+\node [state] (s0) {\texttt{S0}};
+\node [state] (s10) {\texttt{S10}}
+  child {node (c11) {...}}
+  child {node (c12) {...}}
+  child {node (c13) {...}};
+%\node [transition_label] (tvalid) [right=of s10] {\texttt{Valid\_Train\_Data\_Stored}};
+\node [state, right=of s10] (s20) {\texttt{S20}}
+  child {node (c21) {...}}
+  child {node (c22) {...}}
+  child {node (c23) {...}};
+
+
+\draw [->] (s0.south) -- (s10);
+\draw [->] (s10.east) -- node [above] {\texttt{Valid\_Train\_}} node [below] {\texttt{Data\_Stored}} (s20);
+%\draw [-] (s10.east) -- (tvalid);
+%\draw [->] (tvalid.east) -- (s20);
+
+\end{tikzpicture}
+\caption{Part of actual flowchart of Start of Mission procedure.}
+\label{som-flowchart}
+\end{figure}
+
+Also, assumptions are made for this procedure:
+\begin{enumerate}
+\item Level should not change: During Start of Mission procedure,
+  Level should not change.
+
+\item Train Data should not change: During Start of Mission
+  procedure, train data should not be modified. Then, their validity
+  should not change.
+\end{enumerate}
+
+
+\subsection{Results and conclusions}
+Considering assumptions made, the Scade model of Procedure Start of
+Mission does not correspond to the specification.
+
+This is explained by the following differences between the
+specification and the Scade model:
+\begin{enumerate}
+\item \label{s0-case} The state \texttt{S0} is not specified as a
+  usual state. It is specified as a condition that trigger the
+  procedure. In the Scade model, \texttt{S0} is implemented as a
+  condition that must be \texttt{True} to engaged the Start of Mission
+  procedure. When the condition is \texttt{False}, the procedure is
+  stopped.
+
+\item \label{sh-case} Same observations present in
+  section~\ref{SH-results-and-conclusions}.
+\end{enumerate}
+
+
+Here is propositions to resolve previous problems:
+\begin{description}
+\item[Proposition for \ref{s0-case}.] The ambiguity of \texttt{S0}
+  definition must be clarified: either it is a state with a clear
+  action in its definition, or it is a condition which trigger or not
+  the procedure.
+\item[Proposition for \ref{sh-case}.] It is the same propositions that
+  are made in section~\ref{SH-results-and-conclusions}.
+\end{description}

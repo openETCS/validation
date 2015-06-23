@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Operator xmlns="http://www.esterel-technologies.com/ns/scade/4" xmlns:ed="http://www.esterel-technologies.com/ns/scade/pragmas/editor/5" xmlns:kcg="http://www.esterel-technologies.com/ns/scade/pragmas/codegen/2" kind="function" name="Multiplexer_TestDriver">
+	<inputs>
+		<Variable name="in_TestStory">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="int"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/10ff51/7DDD/674/558967214845"/>
+			</pragmas>
+		</Variable>
+	</inputs>
+	<outputs>
+		<Variable name="acceleration">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="real"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/10ff47/7DDD/674/558966ec1807"/>
+			</pragmas>
+		</Variable>
+		<Variable name="initialVelocity">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="real"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/10ff50/7DDD/674/5589670a6907"/>
+			</pragmas>
+		</Variable>
+	</outputs>
+	<data>
+		<IfBlock name="IfBlock1">
+			<block>
+				<IfNode>
+					<if>
+						<!-- in_TestStory < 10 -->
+						<BinaryOp name="1" operator="&lt;">
+							<operands>
+								<IdExpression>
+									<path>
+										<ConstVarRef name="in_TestStory"/>
+									</path>
+								</IdExpression>
+								<ConstValue value="10"/>
+							</operands>
+						</BinaryOp>
+					</if>
+					<then>
+						<Action>
+							<locals>
+								<Variable name="_L2">
+									<type>
+										<NamedType>
+											<type>
+												<TypeRef name="real"/>
+											</type>
+										</NamedType>
+									</type>
+									<pragmas>
+										<ed:Variable oid="!ed/10ff8a/7DDD/674/5589686c2118"/>
+									</pragmas>
+								</Variable>
+								<Variable name="_L1">
+									<type>
+										<NamedType>
+											<type>
+												<TypeRef name="real"/>
+											</type>
+										</NamedType>
+									</type>
+									<pragmas>
+										<ed:Variable oid="!ed/10ff89/7DDD/674/5589686c81e"/>
+									</pragmas>
+								</Variable>
+							</locals>
+							<data>
+								<!-- _L1, _L2 = Test_Driver::Driver_ConstantSpeed100(); -->
+								<Equation>
+									<lefts>
+										<VariableRef name="_L1"/>
+										<VariableRef name="_L2"/>
+									</lefts>
+									<right>
+										<!-- Test_Driver::Driver_ConstantSpeed100() -->
+										<CallExpression>
+											<operator>
+												<OpCall name="1">
+													<operator>
+														<OperatorRef name="Test_Driver::Driver_ConstantSpeed100"/>
+													</operator>
+												</OpCall>
+											</operator>
+										</CallExpression>
+									</right>
+									<pragmas>
+										<ed:Equation oid="!ed/10ff88/7DDD/674/5589686c340a"/>
+									</pragmas>
+								</Equation>
+								<!-- acceleration = _L1; -->
+								<Equation>
+									<lefts>
+										<VariableRef name="acceleration"/>
+									</lefts>
+									<right>
+										<IdExpression>
+											<path>
+												<ConstVarRef name="_L1"/>
+											</path>
+										</IdExpression>
+									</right>
+									<pragmas>
+										<ed:Equation oid="!ed/10ff8f/7DDD/674/558968754c1a"/>
+									</pragmas>
+								</Equation>
+								<!-- initialVelocity = _L2; -->
+								<Equation>
+									<lefts>
+										<VariableRef name="initialVelocity"/>
+									</lefts>
+									<right>
+										<IdExpression>
+											<path>
+												<ConstVarRef name="_L2"/>
+											</path>
+										</IdExpression>
+									</right>
+									<pragmas>
+										<ed:Equation oid="!ed/10ff94/7DDD/674/558968784ccf"/>
+									</pragmas>
+								</Equation>
+							</data>
+							<pragmas>
+								<ed:Action oid="!ed/10ff7e/7DDD/674/55896801606e"/>
+							</pragmas>
+						</Action>
+					</then>
+					<else>
+						<Action>
+							<locals>
+								<Variable name="_L2">
+									<type>
+										<NamedType>
+											<type>
+												<TypeRef name="real"/>
+											</type>
+										</NamedType>
+									</type>
+									<pragmas>
+										<ed:Variable oid="!ed/10ffa1/7DDD/674/558968a2754c"/>
+									</pragmas>
+								</Variable>
+								<Variable name="_L1">
+									<type>
+										<NamedType>
+											<type>
+												<TypeRef name="real"/>
+											</type>
+										</NamedType>
+									</type>
+									<pragmas>
+										<ed:Variable oid="!ed/10ffa0/7DDD/674/558968a2321b"/>
+									</pragmas>
+								</Variable>
+							</locals>
+							<data>
+								<!-- acceleration = _L1; -->
+								<Equation>
+									<lefts>
+										<VariableRef name="acceleration"/>
+									</lefts>
+									<right>
+										<IdExpression>
+											<path>
+												<ConstVarRef name="_L1"/>
+											</path>
+										</IdExpression>
+									</right>
+									<pragmas>
+										<ed:Equation oid="!ed/10ff99/7DDD/674/5589689d687b"/>
+									</pragmas>
+								</Equation>
+								<!-- initialVelocity = _L2; -->
+								<Equation>
+									<lefts>
+										<VariableRef name="initialVelocity"/>
+									</lefts>
+									<right>
+										<IdExpression>
+											<path>
+												<ConstVarRef name="_L2"/>
+											</path>
+										</IdExpression>
+									</right>
+									<pragmas>
+										<ed:Equation oid="!ed/10ff9a/7DDD/674/5589689d158b"/>
+									</pragmas>
+								</Equation>
+								<!-- _L1, _L2 = Test_Driver::Driver_ConstantAcc(); -->
+								<Equation>
+									<lefts>
+										<VariableRef name="_L1"/>
+										<VariableRef name="_L2"/>
+									</lefts>
+									<right>
+										<!-- Test_Driver::Driver_ConstantAcc() -->
+										<CallExpression>
+											<operator>
+												<OpCall name="1">
+													<operator>
+														<OperatorRef name="Test_Driver::Driver_ConstantAcc"/>
+													</operator>
+												</OpCall>
+											</operator>
+										</CallExpression>
+									</right>
+									<pragmas>
+										<ed:Equation oid="!ed/10ff9f/7DDD/674/558968a25381"/>
+									</pragmas>
+								</Equation>
+							</data>
+							<pragmas>
+								<ed:Action oid="!ed/10ff7f/7DDD/674/55896801354e"/>
+							</pragmas>
+						</Action>
+					</else>
+					<pragmas>
+						<ed:IfNode oid="!ed/10ff7d/7DDD/674/55896801358d"/>
+					</pragmas>
+				</IfNode>
+			</block>
+			<pragmas>
+				<ed:IfBlock oid="!ed/10ff78/7DDD/674/558968015fb5"/>
+			</pragmas>
+		</IfBlock>
+	</data>
+	<pragmas>
+		<ed:Operator oid="!ed/10ff45/7DDD/674/558966d06e1e" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/5">
+			<diagrams>
+				<NetDiagram name="diagram_Multiplexer_TestDriver_1" landscape="true" format="A4 (210 297)" oid="!ed/10ff46/7DDD/674/558966d01dfe">
+					<presentationElements>
+						<IfBlockGE presentable="!ed/10ff78/7DDD/674/558968015fb5">
+							<position>
+								<Point x="2725" y="2937"/>
+							</position>
+							<size>
+								<Size width="10901" height="10768"/>
+							</size>
+						</IfBlockGE>
+						<ActionGE presentable="!ed/10ff7e/7DDD/674/55896801606e">
+							<position>
+								<Point x="4551" y="3440"/>
+							</position>
+							<size>
+								<Size width="7964" height="5106"/>
+							</size>
+						</ActionGE>
+						<ActionGE presentable="!ed/10ff7f/7DDD/674/55896801354e">
+							<position>
+								<Point x="4736" y="9684"/>
+							</position>
+							<size>
+								<Size width="7832" height="3492"/>
+							</size>
+						</ActionGE>
+						<IfNodeGE labelWidth="794" presentable="!ed/10ff7d/7DDD/674/55896801358d">
+							<position>
+								<Point x="3175" y="3519"/>
+							</position>
+						</IfNodeGE>
+						<EquationGE presentable="!ed/10ff88/7DDD/674/5589686c340a">
+							<position>
+								<Point x="5522" y="5019"/>
+							</position>
+							<size>
+								<Size width="3667" height="2027"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/10ff8f/7DDD/674/558968754c1a">
+							<position>
+								<Point x="11139" y="5424"/>
+							</position>
+							<size>
+								<Size width="317" height="502"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/10ff94/7DDD/674/558968784ccf">
+							<position>
+								<Point x="11060" y="6112"/>
+							</position>
+							<size>
+								<Size width="317" height="503"/>
+							</size>
+						</EquationGE>
+						<Edge leftVarIndex="2" rightExprIndex="1" srcEquation="!ed/10ff88/7DDD/674/5589686c340a" dstEquation="!ed/10ff94/7DDD/674/558968784ccf">
+							<positions>
+								<Point x="9181" y="6376"/>
+								<Point x="10134" y="6376"/>
+								<Point x="10134" y="6376"/>
+								<Point x="11113" y="6376"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/10ff88/7DDD/674/5589686c340a" dstEquation="!ed/10ff8f/7DDD/674/558968754c1a">
+							<positions>
+								<Point x="9181" y="5689"/>
+								<Point x="10186" y="5689"/>
+								<Point x="10186" y="5689"/>
+								<Point x="11192" y="5689"/>
+							</positions>
+						</Edge>
+						<EquationGE presentable="!ed/10ff99/7DDD/674/5589689d687b">
+							<position>
+								<Point x="10398" y="10901"/>
+							</position>
+							<size>
+								<Size width="318" height="503"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/10ff9a/7DDD/674/5589689d158b">
+							<position>
+								<Point x="9895" y="11351"/>
+							</position>
+							<size>
+								<Size width="318" height="503"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/10ff9f/7DDD/674/558968a25381">
+							<position>
+								<Point x="6853" y="10689"/>
+							</position>
+							<size>
+								<Size width="1772" height="1402"/>
+							</size>
+						</EquationGE>
+						<Edge leftVarIndex="2" rightExprIndex="1" srcEquation="!ed/10ff9f/7DDD/674/558968a25381" dstEquation="!ed/10ff9a/7DDD/674/5589689d158b">
+							<positions>
+								<Point x="8625" y="11615"/>
+								<Point x="9843" y="11615"/>
+								<Point x="9843" y="11615"/>
+								<Point x="9948" y="11615"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/10ff9f/7DDD/674/558968a25381" dstEquation="!ed/10ff99/7DDD/674/5589689d687b">
+							<positions>
+								<Point x="8625" y="11165"/>
+								<Point x="9525" y="11165"/>
+								<Point x="9525" y="11165"/>
+								<Point x="10451" y="11165"/>
+							</positions>
+						</Edge>
+					</presentationElements>
+				</NetDiagram>
+			</diagrams>
+		</ed:Operator>
+	</pragmas>
+</Operator>

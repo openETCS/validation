@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://www.esterel-technologies.com/ns/scade/4" xmlns:ed="http://www.esterel-technologies.com/ns/scade/pragmas/editor/5" xmlns:kcg="http://www.esterel-technologies.com/ns/scade/pragmas/codegen/2" name="test_InfraLibInt">
+	<declarations>
+		<Constant name="ReleaseDelta">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="real"/>
+					</type>
+				</NamedType>
+			</type>
+			<value>
+				<ConstValue value="1.5"/>
+			</value>
+			<pragmas>
+				<ed:Constant oid="!ed/127d8d/4A3B/1930/55894b7f6462"/>
+			</pragmas>
+		</Constant>
+		<Constant name="Half_Distance_Balises_in_BG">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="real"/>
+					</type>
+				</NamedType>
+			</type>
+			<value>
+				<!-- Distance_Balises_in_BG / 2.0 -->
+				<BinaryOp operator="/">
+					<operands>
+						<IdExpression>
+							<path>
+								<ConstVarRef name="Distance_Balises_in_BG"/>
+							</path>
+						</IdExpression>
+						<ConstValue value="2.0"/>
+					</operands>
+				</BinaryOp>
+			</value>
+			<pragmas>
+				<ed:Constant oid="!ed/127d7f/4A3B/1930/55894b7f693f"/>
+			</pragmas>
+		</Constant>
+		<Constant name="Distance_Balises_in_BG">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="real"/>
+					</type>
+				</NamedType>
+			</type>
+			<value>
+				<ConstValue value="3.0"/>
+			</value>
+			<pragmas>
+				<ed:Constant oid="!ed/127d71/4A3B/1930/55894b7f3d05"/>
+			</pragmas>
+		</Constant>
+		<Constant name="DEFAULT_BaliseTelegramHd">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="TM::BaliseTelegramHeader_int_T"/>
+					</type>
+				</NamedType>
+			</type>
+			<value>
+				<!-- {q_updown : 0, m_version : 0, q_media : 0, n_pig : 0, n_total : 0, m_dup : 0, m_m... -->
+				<DataStructOp>
+					<data>
+						<LabelledExpression label="q_updown">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="m_version">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="q_media">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="n_pig">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="n_total">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="m_dup">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="m_mcount">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="nid_c">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="nid_bg">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+						<LabelledExpression label="q_link">
+							<flow>
+								<ConstValue value="0"/>
+							</flow>
+						</LabelledExpression>
+					</data>
+				</DataStructOp>
+			</value>
+			<pragmas>
+				<ed:Constant oid="!ed/127d63/4A3B/1930/55894b7f463c"/>
+			</pragmas>
+		</Constant>
+		<Type name="TrainPosRaw_T">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="TrainPos_in">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="real"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/127db7/4A3B/1930/55894b7f1da9"/>
+							</pragmas>
+						</Field>
+						<Field name="OffsetTotal">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/127db8/4A3B/1930/55894b7f69c5"/>
+							</pragmas>
+						</Field>
+						<Field name="TrainPosCalibrated">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="real"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/127db9/4A3B/1930/55894b7f18fe"/>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/127db6/4A3B/1930/55894b7f528b"/>
+			</pragmas>
+		</Type>
+		<Type name="TrackSectionData_T">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="TrainPosRaw">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="TrainPosRaw_T"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/127dac/4A3B/1930/55894b7f6d1c"/>
+							</pragmas>
+						</Field>
+						<Field name="BG_Message">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="TM::CompressedBaliseMessage"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/127dad/4A3B/1930/55894b7f33c5"/>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/127dab/4A3B/1930/55894b7f770a"/>
+			</pragmas>
+		</Type>
+		<Type name="B_data_internal_T">
+			<definition>
+				<Struct>
+					<fields>
+						<Field name="header">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="TM::BaliseTelegramHeader_int_T"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/127d9c/4A3B/1930/55894b7fea6"/>
+							</pragmas>
+						</Field>
+						<Field name="packets">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="Common_Types_Pkg::CompressedPackets_T"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/127d9d/4A3B/1930/55894b7f7c05"/>
+							</pragmas>
+						</Field>
+						<Field name="engineering_BG_location">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/127d9e/4A3B/1930/55894b7f1002"/>
+							</pragmas>
+						</Field>
+						<Field name="TrainPos">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="real"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/127d9f/4A3B/1930/55894b7f762a"/>
+							</pragmas>
+						</Field>
+						<Field name="pig_nom_0">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="int"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/127da0/4A3B/1930/55894b7f7a05"/>
+							</pragmas>
+						</Field>
+						<Field name="balise_passed">
+							<type>
+								<NamedType>
+									<type>
+										<TypeRef name="bool"/>
+									</type>
+								</NamedType>
+							</type>
+							<pragmas>
+								<ed:Field oid="!ed/127da1/4A3B/1930/55894b7f356f"/>
+							</pragmas>
+						</Field>
+					</fields>
+				</Struct>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/127d9b/4A3B/1930/55894b7f2ec3"/>
+			</pragmas>
+		</Type>
+		<Operator name="TrackInit" href="TrackInit.xscade"/>
+		<Operator name="TrackDiscontinuity_CalcTrainPos" href="TrackDiscontinuity_CalcTrainPos.xscade"/>
+		<Operator name="TrackDiscontinuity" href="TrackDiscontinuity.xscade"/>
+		<Operator name="TrackClose" href="TrackClose.xscade"/>
+		<Operator name="TEMPLATE_BalisePackets" href="TEMPLATE_BalisePackets.xscade"/>
+		<Operator name="TEMPLATE_Balise_Group" href="TEMPLATE_Balise_Group.xscade"/>
+		<Operator name="TEMPLATE_Balise" href="TEMPLATE_Balise.xscade"/>
+		<Operator name="No_Packet" href="No_Packet.xscade"/>
+		<Operator name="No_Balise_Packets" href="No_Balise_Packets.xscade"/>
+		<Operator name="No_Balise" href="No_Balise.xscade"/>
+		<Operator name="Balise_Localisation" href="Balise_Localisation.xscade"/>
+		<Operator name="Balise_Interdistance" href="Balise_Interdistance.xscade"/>
+		<Operator name="Balise_Group_Init" href="Balise_Group_Init.xscade"/>
+		<Operator name="Balise_Group_Close" href="Balise_Group_Close.xscade"/>
+	</declarations>
+	<pragmas>
+		<ed:Package oid="!ed/11fc55/4A3B/1930/558925de4e6a" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/5">
+			<diagrams>
+				<TreeDiagram landscape="false" format="A4 (210 297)" oid="!ed/11fc56/4A3B/1930/558925de299" blockKind="constants"/>
+				<TreeDiagram landscape="false" format="A4 (210 297)" oid="!ed/11fc57/4A3B/1930/558925dee6" blockKind="types" columnsSize="0, 232, 273, 300"/>
+				<TreeDiagram landscape="false" format="A4 (210 297)" oid="!ed/11fc58/4A3B/1930/558925de12e3" blockKind="sensors"/>
+			</diagrams>
+		</ed:Package>
+	</pragmas>
+</Package>

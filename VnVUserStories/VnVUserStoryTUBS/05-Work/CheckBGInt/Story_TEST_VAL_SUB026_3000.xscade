@@ -127,18 +127,18 @@
 				<ed:Equation oid="!ed/126d44/4A3B/1930/55893430c91"/>
 			</pragmas>
 		</Equation>
-		<!-- _L49 = Test_Track_Elements::Test_BG001_100_Single(_L36, _L33, Test_Track_Elements... -->
+		<!-- _L49 = Test_Track_Elements::Test_Balises::Test_BG001_100_Single(_L36, _L33, Test_... -->
 		<Equation>
 			<lefts>
 				<VariableRef name="_L49"/>
 			</lefts>
 			<right>
-				<!-- Test_Track_Elements::Test_BG001_100_Single(_L36, _L33, Test_Track_Elements::test_... -->
+				<!-- Test_Track_Elements::Test_Balises::Test_BG001_100_Single(_L36, _L33, Test_Track_E... -->
 				<CallExpression>
 					<operator>
 						<OpCall name="1">
 							<operator>
-								<OperatorRef name="Test_Track_Elements::Test_BG001_100_Single"/>
+								<OperatorRef name="Test_Track_Elements::Test_Balises::Test_BG001_100_Single"/>
 							</operator>
 						</OpCall>
 					</operator>
@@ -155,28 +155,30 @@
 						</IdExpression>
 						<IdExpression>
 							<path>
-								<ConstVarRef name="Test_Track_Elements::test_BG001_100"/>
+								<ConstVarRef name="Test_Track_Elements::Test_Balises::test_BG001_100"/>
 							</path>
 						</IdExpression>
 					</callParameters>
 				</CallExpression>
 			</right>
 			<pragmas>
-				<ed:Equation oid="!ed/1286bd/4A3B/1930/55894d326d0d"/>
+				<ed:Equation oid="!ed/1286bd/4A3B/1930/55894d326d0d" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/5">
+					<comment>BG containing a single balise (N_TOTAL = 0, N_PIG = 0) with P72 - Plain text message</comment>
+				</ed:Equation>
 			</pragmas>
 		</Equation>
-		<!-- _L50 = Test_Track_Elements::Test_BG002_200_8BT(_L49, _L33, Test_Track_Elements::t... -->
+		<!-- _L50 = Test_Track_Elements::Test_Balises::Test_BG002_200_8BT(_L49, _L33, Test_Tra... -->
 		<Equation>
 			<lefts>
 				<VariableRef name="_L50"/>
 			</lefts>
 			<right>
-				<!-- Test_Track_Elements::Test_BG002_200_8BT(_L49, _L33, Test_Track_Elements::test_BG0... -->
+				<!-- Test_Track_Elements::Test_Balises::Test_BG002_200_8BT(_L49, _L33, Test_Track_Elem... -->
 				<CallExpression>
 					<operator>
 						<OpCall name="2">
 							<operator>
-								<OperatorRef name="Test_Track_Elements::Test_BG002_200_8BT"/>
+								<OperatorRef name="Test_Track_Elements::Test_Balises::Test_BG002_200_8BT"/>
 							</operator>
 						</OpCall>
 					</operator>
@@ -193,19 +195,51 @@
 						</IdExpression>
 						<IdExpression>
 							<path>
-								<ConstVarRef name="Test_Track_Elements::test_BG002_200"/>
+								<ConstVarRef name="Test_Track_Elements::Test_Balises::test_BG002_200"/>
 							</path>
 						</IdExpression>
 					</callParameters>
 				</CallExpression>
 			</right>
 			<pragmas>
-				<ed:Equation oid="!ed/1286c3/4A3B/1930/55894d357914"/>
+				<ed:Equation oid="!ed/1286c3/4A3B/1930/55894d357914" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/5">
+					<comment>pass BG containing 8 balises : (N_TOTAL = 7, N_PIG = {0,...,7})</comment>
+					<comment>&#x9;       0. P12 - MA</comment>
+					<comment>&#x9;       1. P21 - GP</comment>
+					<comment>&#x9;       2. P27 - SSP</comment>
+					<comment>&#x9;       3. P80 - MP-OS</comment>
+					<comment>&#x9;       4. P41 - LTO L2 (now)</comment>
+					<comment>&#x9;       5. P68 - TC (Air tightness)</comment>
+					<comment>&#x9;       6. P70 - Route Suit. Data (Max. Axle Load &lt; Train Axle Load)</comment>
+					<comment>&#x9;       7. P72 - Plain text message</comment>
+				</ed:Equation>
 			</pragmas>
 		</Equation>
 	</data>
 	<pragmas>
 		<ed:Operator oid="!ed/126d3d/4A3B/1930/558934306b3e" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/5">
+			<comment>#TEST-VAL-SUB026-3000#REF#  &#x9;</comment>
+			<comment>Fahrt ueber Single BG, Fahrt ueber 8er BG </comment>
+			<comment></comment>
+			<comment>Precondition:&#x9;SR/L1</comment>
+			<comment>Stimulation 1:&#x9;pass BG containing a single balise (N_TOTAL = 0, N_PIG = 0) with P72 - Plain text message</comment>
+			<comment>Reaction 1:&#x9;text displayed on DMI</comment>
+			<comment>&#x9;       balise message recorded on JRU</comment>
+			<comment>Stimulation 2:&#x9;pass BG containing 8 balises : (N_TOTAL = 7, N_PIG = {0,...,7})</comment>
+			<comment>&#x9;       0. P12 - MA</comment>
+			<comment>&#x9;       1. P21 - GP</comment>
+			<comment>&#x9;       2. P27 - SSP</comment>
+			<comment>&#x9;       3. P80 - MP-OS</comment>
+			<comment>&#x9;       4. P41 - LTO L2 (now)</comment>
+			<comment>&#x9;       5. P68 - TC (Air tightness)</comment>
+			<comment>&#x9;       6. P70 - Route Suit. Data (Max. Axle Load &lt; Train Axle Load)</comment>
+			<comment>&#x9;       7. P72 - Plain text message</comment>
+			<comment>Reaction 2:&#x9;mode changes to OS</comment>
+			<comment>&#x9;       level changes to L2</comment>
+			<comment>&#x9;       TC indicated on DMI</comment>
+			<comment>&#x9;       Route unsuitable indicated on DMI</comment>
+			<comment>&#x9;       Text message displayed</comment>
+			<comment>&#x9;       balise message recorded on JRU</comment>
 			<diagrams>
 				<NetDiagram name="diagram_Story_TEST_VAL_SUB026_3000_1" landscape="true" format="A4 (210 297)" oid="!ed/126d48/4A3B/1930/558934306a2e">
 					<presentationElements>

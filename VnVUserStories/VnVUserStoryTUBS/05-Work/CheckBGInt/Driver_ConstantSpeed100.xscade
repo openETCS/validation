@@ -51,6 +51,30 @@
 				<ed:Variable oid="!ed/10fef0/7DDD/674/55895f084500"/>
 			</pragmas>
 		</Variable>
+		<Variable name="_L3">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="real"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/1100cc/7525/FAC/558baa53292f"/>
+			</pragmas>
+		</Variable>
+		<Variable name="_L4">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="real"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/1100d6/7525/FAC/558baa5f5c0f"/>
+			</pragmas>
+		</Variable>
 	</locals>
 	<data>
 		<!-- _L1 = 100.0; -->
@@ -81,7 +105,7 @@
 				<ed:Equation oid="!ed/10feb9/7DDD/674/55895e8d55ad"/>
 			</pragmas>
 		</Equation>
-		<!-- out_initialvelocity = _L1; -->
+		<!-- out_initialvelocity = _L3; -->
 		<Equation>
 			<lefts>
 				<VariableRef name="out_initialvelocity"/>
@@ -89,7 +113,7 @@
 			<right>
 				<IdExpression>
 					<path>
-						<ConstVarRef name="_L1"/>
+						<ConstVarRef name="_L3"/>
 					</path>
 				</IdExpression>
 			</right>
@@ -107,6 +131,44 @@
 			</right>
 			<pragmas>
 				<ed:Equation oid="!ed/10feef/7DDD/674/55895f082650"/>
+			</pragmas>
+		</Equation>
+		<!-- _L3 = _L1 / _L4; -->
+		<Equation>
+			<lefts>
+				<VariableRef name="_L3"/>
+			</lefts>
+			<right>
+				<!-- _L1 / _L4 -->
+				<BinaryOp name="1" operator="/">
+					<operands>
+						<IdExpression>
+							<path>
+								<ConstVarRef name="_L1"/>
+							</path>
+						</IdExpression>
+						<IdExpression>
+							<path>
+								<ConstVarRef name="_L4"/>
+							</path>
+						</IdExpression>
+					</operands>
+				</BinaryOp>
+			</right>
+			<pragmas>
+				<ed:Equation oid="!ed/1100cb/7525/FAC/558baa5313b9"/>
+			</pragmas>
+		</Equation>
+		<!-- _L4 = 3.6; -->
+		<Equation>
+			<lefts>
+				<VariableRef name="_L4"/>
+			</lefts>
+			<right>
+				<ConstValue value="3.6"/>
+			</right>
+			<pragmas>
+				<ed:Equation oid="!ed/1100d5/7525/FAC/558baa5f46df"/>
 			</pragmas>
 		</Equation>
 	</data>
@@ -139,14 +201,6 @@
 								<Size width="318" height="503"/>
 							</size>
 						</EquationGE>
-						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/10feb8/7DDD/674/55895e8d2ce5" dstEquation="!ed/10febf/7DDD/674/55895eca23b0">
-							<positions>
-								<Point x="6218" y="7435"/>
-								<Point x="7805" y="7435"/>
-								<Point x="7805" y="7435"/>
-								<Point x="9604" y="7435"/>
-							</positions>
-						</Edge>
 						<EquationGE kind="OBJ_LIT" presentable="!ed/10feef/7DDD/674/55895f082650">
 							<position>
 								<Point x="5953" y="5186"/>
@@ -161,6 +215,46 @@
 								<Point x="7567" y="5345"/>
 								<Point x="7567" y="5292"/>
 								<Point x="9737" y="5292"/>
+							</positions>
+						</Edge>
+						<EquationGE presentable="!ed/1100cb/7525/FAC/558baa5313b9">
+							<position>
+								<Point x="7461" y="7223"/>
+							</position>
+							<size>
+								<Size width="1005" height="662"/>
+							</size>
+						</EquationGE>
+						<EquationGE kind="OBJ_LIT" presentable="!ed/1100d5/7525/FAC/558baa5f46df">
+							<position>
+								<Point x="6324" y="8070"/>
+							</position>
+							<size>
+								<Size width="211" height="317"/>
+							</size>
+						</EquationGE>
+						<Edge leftVarIndex="1" rightExprIndex="2" srcEquation="!ed/1100d5/7525/FAC/558baa5f46df" dstEquation="!ed/1100cb/7525/FAC/558baa5313b9">
+							<positions>
+								<Point x="6535" y="8229"/>
+								<Point x="6985" y="8229"/>
+								<Point x="6985" y="7673"/>
+								<Point x="7461" y="7673"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/10feb8/7DDD/674/55895e8d2ce5" dstEquation="!ed/1100cb/7525/FAC/558baa5313b9">
+							<positions>
+								<Point x="6218" y="7435"/>
+								<Point x="6826" y="7435"/>
+								<Point x="6826" y="7435"/>
+								<Point x="7461" y="7435"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/1100cb/7525/FAC/558baa5313b9" dstEquation="!ed/10febf/7DDD/674/55895eca23b0">
+							<positions>
+								<Point x="8467" y="7567"/>
+								<Point x="9022" y="7567"/>
+								<Point x="9022" y="7435"/>
+								<Point x="9604" y="7435"/>
 							</positions>
 						</Edge>
 					</presentationElements>

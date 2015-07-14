@@ -32,7 +32,7 @@ Throughput Graph
 5. Commit your changes (`git commit -am 'Added some verification results'`)
 6. Push to the branch (`git push origin my-new-verification-operator`)
 7. Create new Pull Request via http://github.com/you
-8. Configure pulling your repository from the master (`git remote set-url https://github.com/openETCS/validation.git`)
-9. Configure pushing your repository to the fork (`git remote set-url https://github.com/you/validation.git`)
+8. Configure pulling your repository from the master (`git remote set-url origin https://github.com/openETCS/validation.git`)
+9. Configure pushing your repository to the fork (`git remote set-url --push origin  https://github.com/you/validation.git`)
 
 Please replace _you_ by your github username.

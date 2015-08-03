@@ -149,6 +149,42 @@
 				<ed:Variable oid="!ed/293df9/3720/1298/559e52ec643e"/>
 			</pragmas>
 		</Variable>
+		<Variable probe="true" name="TrackTeleHead">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="BG_Types_Pkg::TelegramHeader_T"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/4ef18a/529B/634/55bf43b430e1"/>
+			</pragmas>
+		</Variable>
+		<Variable probe="true" name="BTMBG">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="CheckBGInputChannel_Pkg::ReceivedBG"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/4ef190/529B/634/55bf43ed8bc"/>
+			</pragmas>
+		</Variable>
+		<Variable probe="true" name="OBUBG">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="Common_Types_Pkg::ReceivedMessage_T"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/4ef1a8/529B/634/55bf44382ba2"/>
+			</pragmas>
+		</Variable>
 		<Variable name="_L67">
 			<type>
 				<NamedType>
@@ -1804,6 +1840,54 @@
 				<ed:Equation oid="!ed/5f6728/1CD7/1D98/55bf232430ce"/>
 			</pragmas>
 		</Equation>
+		<!-- TrackTeleHead = _L234; -->
+		<Equation>
+			<lefts>
+				<VariableRef name="TrackTeleHead"/>
+			</lefts>
+			<right>
+				<IdExpression>
+					<path>
+						<ConstVarRef name="_L234"/>
+					</path>
+				</IdExpression>
+			</right>
+			<pragmas>
+				<ed:Equation oid="!ed/4ef18b/529B/634/55bf43b4168d"/>
+			</pragmas>
+		</Equation>
+		<!-- BTMBG = _L91; -->
+		<Equation>
+			<lefts>
+				<VariableRef name="BTMBG"/>
+			</lefts>
+			<right>
+				<IdExpression>
+					<path>
+						<ConstVarRef name="_L91"/>
+					</path>
+				</IdExpression>
+			</right>
+			<pragmas>
+				<ed:Equation oid="!ed/4ef191/529B/634/55bf43ed795f"/>
+			</pragmas>
+		</Equation>
+		<!-- OBUBG = _L51; -->
+		<Equation>
+			<lefts>
+				<VariableRef name="OBUBG"/>
+			</lefts>
+			<right>
+				<IdExpression>
+					<path>
+						<ConstVarRef name="_L51"/>
+					</path>
+				</IdExpression>
+			</right>
+			<pragmas>
+				<ed:Equation oid="!ed/4ef1a9/529B/634/55bf44386d0d"/>
+			</pragmas>
+		</Equation>
 	</data>
 	<pragmas>
 		<ed:Operator oid="!ed/293d8f/3720/1298/559e52ec30be" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/5">
@@ -2610,8 +2694,8 @@
 							<positions>
 								<Point x="5556" y="4313"/>
 								<Point x="5980" y="4313"/>
-								<Point x="5980" y="4339"/>
-								<Point x="6588" y="4339"/>
+								<Point x="5980" y="4313"/>
+								<Point x="6588" y="4313"/>
 							</positions>
 						</Edge>
 						<Edge leftVarIndex="1" rightExprIndex="3" srcEquation="!ed/293da5/3720/1298/559e52ec2403" dstEquation="!ed/293da2/3720/1298/559e52ec264b">
@@ -2658,8 +2742,8 @@
 							<positions>
 								<Point x="4604" y="7223"/>
 								<Point x="5583" y="7223"/>
-								<Point x="5583" y="7250"/>
-								<Point x="6588" y="7250"/>
+								<Point x="5583" y="7223"/>
+								<Point x="6588" y="7223"/>
 							</positions>
 						</Edge>
 						<Edge leftVarIndex="1" rightExprIndex="5" srcEquation="!ed/293da5/3720/1298/559e52ec2403" dstEquation="!ed/293da2/3720/1298/559e52ec264b">
@@ -2700,6 +2784,54 @@
 								<Point x="5715" y="6403"/>
 								<Point x="5715" y="6271"/>
 								<Point x="6588" y="6271"/>
+							</positions>
+						</Edge>
+						<EquationGE presentable="!ed/4ef18b/529B/634/55bf43b4168d">
+							<position>
+								<Point x="11033" y="23839"/>
+							</position>
+							<size>
+								<Size width="212" height="317"/>
+							</size>
+						</EquationGE>
+						<Edge leftVarIndex="2" rightExprIndex="1" srcEquation="!ed/293dbc/3720/1298/559e52ec7df6" dstEquation="!ed/4ef18b/529B/634/55bf43b4168d">
+							<positions>
+								<Point x="9843" y="23495"/>
+								<Point x="10478" y="23495"/>
+								<Point x="10478" y="24077"/>
+								<Point x="11139" y="24077"/>
+							</positions>
+						</Edge>
+						<EquationGE presentable="!ed/4ef191/529B/634/55bf43ed795f">
+							<position>
+								<Point x="32623" y="26379"/>
+							</position>
+							<size>
+								<Size width="212" height="317"/>
+							</size>
+						</EquationGE>
+						<Edge leftVarIndex="4" rightExprIndex="1" srcEquation="!ed/293d9d/3720/1298/559e52ec45e5" dstEquation="!ed/4ef191/529B/634/55bf43ed795f">
+							<positions>
+								<Point x="32200" y="25850"/>
+								<Point x="32464" y="25850"/>
+								<Point x="32464" y="26617"/>
+								<Point x="32729" y="26617"/>
+							</positions>
+						</Edge>
+						<EquationGE presentable="!ed/4ef1a9/529B/634/55bf44386d0d">
+							<position>
+								<Point x="34713" y="3334"/>
+							</position>
+							<size>
+								<Size width="212" height="317"/>
+							</size>
+						</EquationGE>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/293d91/3720/1298/559e52ec56e4" dstEquation="!ed/4ef1a9/529B/634/55bf44386d0d">
+							<positions>
+								<Point x="33232" y="4101"/>
+								<Point x="34025" y="4101"/>
+								<Point x="34025" y="3572"/>
+								<Point x="34819" y="3572"/>
 							</positions>
 						</Edge>
 					</presentationElements>

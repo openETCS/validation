@@ -165,9 +165,9 @@ e015_transition := if (Driver_Req_SH) then
 		   'initial_state';
 
 // D020 modelisation, taking into account the point 1.
-d020_diamond := if (Current_Level = 'Level_And_Mode_Types_Pkg::LNTC' #
-		   Current_Level == 'Level_And_Mode_Types_Pkg::L0' #
-		   Current_Level == 'Level_And_Mode_Types_Pkg::L1') then
+d020_diamond := if (Current_Level == 'M_LEVEL_Level_NTC_specified_by_NID_NTC' #
+		   Current_Level == 'M_LEVEL_Level_0' #
+		   Current_Level == 'M_LEVEL_Level_1') then
 		   a050_rounded_from_d020
 		   else
 		   a045_rounded_from_d020;
@@ -202,26 +202,26 @@ a050_rounded_from_e090 := d040_diamond;
 // A045 can be read from initial state throug E015 transition and D020
 a045_activation := (last_state = 'initial_state') & 
 		   Driver_Req_SH & // E015
-		   (Current_Level == 'Level_And_Mode_Types_Pkg::L2' # // D020
-		   Current_Level == 'Level_And_Mode_Types_Pkg::L3'); 
+		   (Current_Level == 'M_LEVEL_Level_2' # // D020
+		   Current_Level == 'M_LEVEL_Level_3'); 
 
 // A050 can be read in two cases :
 // - From the initial state through E015 transition and D020
 // - From S050 state through E090 transition
 a050_activation := ((last_state = 'initial_state') & 
 		   Driver_Req_SH & // E015
-		   (Current_Level == 'Level_And_Mode_Types_Pkg::L0' # // D020
-		   Current_Level == 'Level_And_Mode_Types_Pkg::L1' # 
-		   Current_Level == 'Level_And_Mode_Types_Pkg::LNTC')) #
+		   (Current_Level == 'M_LEVEL_Level_0' # // D020
+		   Current_Level == 'M_LEVEL_Level_1' # 
+		   Current_Level == 'M_LEVEL_Level_NTC_specified_by_NID_NTC')) #
 		   ((last_state = 's050') & 
 		   Shunting_Granted_By_RBC); // E090
 
 // A100 can be read from D040 if A050 is also read
 a100_activation := (((last_state = 'initial_state') & 
 		   Driver_Req_SH & // E015
-		   (Current_Level == 'Level_And_Mode_Types_Pkg::L0' # // D020
-		   Current_Level == 'Level_And_Mode_Types_Pkg::L1' # 
-		   Current_Level == 'Level_And_Mode_Types_Pkg::LNTC')) #
+		   (Current_Level == 'M_LEVEL_Level_0' # // D020
+		   Current_Level == 'M_LEVEL_Level_1' # 
+		   Current_Level == 'M_LEVEL_Level_NTC_specified_by_NID_NTC')) #
 		   ((last_state = 's050') & 
 		   Shunting_Granted_By_RBC)) & // E090
 		   On_Going_Mission;

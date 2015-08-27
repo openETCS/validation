@@ -4,16 +4,33 @@
 \usepackage{url}
 \usepackage{amsfonts}
 \usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{xspace}
+\usepackage{relsize}
 
-\title{Verification of SCADE models with S3 model-checker}
+
+\newcommand{\smartsolver}{\mbox{S\textsmaller[1]{3}}\xspace}
+\newcommand{\SAT}{{SAT}}
+\newcommand{\HLL}{{HLL}}
+\newcommand{\LLL}{{LLL}}
+\newcommand{\openETCS}{\textsf{openETCS}}
+\newcommand{\ETCS}{\textsf{ETCS}}
+\newcommand{\SCADE}{\textsc{Scade}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\ie}{\textit{i.e.}}
+
+
+
+
+\begin{document}
+\title{Verification of \SCADE{} models with \smartsolver{} model-checker}
 \author{Marielle Petit-Doche, Matthias Güdemann, Roméo Courbis\\Systerel}
 \date{\today}
 
-\begin{document}
 \maketitle
 
 \begin{abstract}
-This document describes the verification and validation processes applicable to SCADE models usin the S3 model-checker.
+This document describes the verification and validation processes applicable to \SCADE{} models using the \smartsolver{} model-checker.
 \end{abstract}
 
 \tableofcontents
@@ -22,109 +39,136 @@ This document describes the verification and validation processes applicable to 
 
 \section{Introduction}
 
-This document gives a description of the VnV process applied on a Scade design model.
-The Scade model covers two functions of the ETCS on-board unit:
+This document gives a description of the VnV process applied on a \SCADE{} design model.
+The \SCADE{} model covers two functions of the ETCS on-board unit:
 \begin{description}
 \item[Level Management function], described in SRS-26 §5.10
 \item[Mode Management function], described in SRS-26, §4.6, §5.4, 5.6, 5.7, 5.9, 5.11, 5.13, 5.19
 \end{description}
 
-\section{Verification processes applicable to a\\SCADE~model}
+\section{Verification processes applicable to a\\SCADE{}~model}
 
-The principe of verification consists in the definition of properties in textual languages, and verification of these properties by model-checking techniques on a textual translation of the Scade Model.
+The principe of verification consists in the definition of properties in textual languages, and verification of these properties by model-checking techniques on a textual translation of the \SCADE{} Model.
 
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1\textwidth]{S3_process}
-\caption{Procedure of verification of Scade model}
+\caption{Procedure of verification of \SCADE{} model}
 \label{fig:procos}
 \end{figure}
 
 Figure \ref{fig:procos} describes the process:
 \begin{itemize}
-\item the main input is a Scade model to  verify (same approach and tool can be applied to a C program) which is translated in a High Level Language (a textual description of the model)
-\item the second input is the propreties to verify, written in HLL
-\item these both inputs are merged in aunique HLL file, used directly as input of the Systerel Smart Solver (S3 model-checker) for verification
-\item result of the S3 tool is Success or Failure; in case of failure counter-example is provided for analyse.
+\item the main input is a \SCADE{} model to  verify (same approach and tool can be applied to a C program) which is translated in a High Level Language (a textual description of the model)
+\item the second input is the properties to verify, written in \HLL{}
+\item these both inputs are merged in a unique \HLL{} file, used directly as input of the Systerel Smart Solver (\smartsolver{} model-checker) for verification
+\item result of the \smartsolver{} tool is Success or Failure; in case of failure counter-example is provided for analysis.
 \end{itemize}
 
-The S3 tool is a model-checker which manages as well an internal SATs solver as external SAT solvers.
+The \smartsolver{} tool is a model-checker which manages as well an internal \SAT{} solver as external \SAT{} solvers.
 
 This process can be apply to cover three purposes:
 
 
-\paragraph{ Properties of an HLL Model: } The prover may be used to prove or disprove properties of an HLL model. Those properties are modeled as proof obligations.
+\paragraph{ Properties of an \HLL{} Model: } The prover may be used to prove or disprove properties of an \HLL{} model. Those properties are modeled as proof obligations.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1\textwidth]{Use_property_checker}
-\caption{Properties of an HLL Model}
+\caption{Properties of an \HLL{} Model}
 \label{fig:proch}
 \end{figure}
 
-\paragraph{ Solving Properties of an HLL Model: } The prover may be used as a solver, by finding values for the streams that comply with some property P. To do so, just put the negation of P as a proof obligation. If the prover succeeds to disprove the proof obligation, it will provide a solution solving P. If the prover succeeds to prove the proof obligation, then this proves that the property cannot be solved.
+\paragraph{ Solving Properties of an \HLL{} Model: } The prover may be used as a solver, by finding values for the streams that comply with some property P. To do so, just put the negation of P as a proof obligation. If the prover succeeds to disprove the proof obligation, it will provide a solution solving P. If the prover succeeds to prove the proof obligation, then this proves that the property cannot be solved. This solution can be used to defined test cases too.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1\textwidth]{Use_property_solver}
-\caption{Solving Properties of an HLL Model}
+\caption{Solving Properties of an \HLL{} Model}
 \label{fig:prosolv}
 \end{figure}
 
-\paragraph{ Proving the Equivalence of 2 HLL Models: } The prover may be used to prove that 2 HLL models with the same interface (the same input streams and output streams) are equivalent. To do so, an equivalent model is produced with proof obligations stating that for all input streams values, each output of the first HLL model is equal to the output of the second model with the same name.
+\paragraph{ Proving the Equivalence of 2 \HLL{} Models: } The prover may be used to prove that 2 \HLL{} models with the same interface (the same input streams and output streams) are equivalent. To do so, an equivalent model is produced with proof obligations stating that for all input streams values, each output of the first \HLL{} model is equal to the output of the second model with the same name.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1\textwidth]{Use_equivalence_checker}
-\caption{Proving the Equivalence of 2 HLL Models}
+\caption{Proving the Equivalence of 2 \HLL{} Models}
 \label{fig:eqch}
 \end{figure}
 
 
 \section{Specified properties and results}
 
-\subsection{Proof of simple properties}
+\begin{tabular}{|l|l|l|l|l}
+\hline
+\textbf{Name} & \textbf{Type} & \textbf{Model} & \textbf{SRS coverage} & \textbf{section} \\ \hline
+isolate & simple proof & Modes  & 4.6.2 C1 &\\
+no\_power & simple proof & Modes  & 4.6.2 C4 &\\
+level case & use case & Level  & 5.10 &\\
+shunting initiated by driver & validation & Modes  & 5.6 &\\
+start of mission & validation & Modes  & 5.4 &\\
+%\hline
+%ManageModes & start\_of\_mission\_topnode.hll \\
+\hline
+\end{tabular}
 
+
+\subsection{Application of \smartsolver{}: Static analysis}
+\label{sec:static-analysis}
 
 At first, the formal verification of the model was used to find bugs in the developed
-Scade model.
-A set of basic properties are automatically verified to check the well definition
-of the Scade model: non-zero division, overflow, underflow, data range check,
-initialization check,...
+\SCADE{} model.
+\smartsolver{} adds some proof obligations to assess that the \HLL{}
+model is correctly defined:
+\begin{itemize}
+\item Indexes of arrays belong to their ranges
+\item Latch definition range check
+\item No division by 0
+\item No overflow and no underflow on arithmetic expressions
+\item Output and constraint initialization check
+\end{itemize}
 
-Then as we are focusing on sub-functions it is difficult to identify safety properties
-to check on the whole model.
+Besides, the translators from a language to \HLL{} can also generate proof obligations to be analyzed by \smartsolver{},
+to check that the code does not have undefined behavior with respect to the source language.
 
-\subsubsection{Well definition of previous level}
-
-\paragraph{Files used for the proof} The proof is defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Proof_SoM/shunting_initiated_by_driver.hll} and it is verified on the top node \emph{xxx} of the Scade model \emph{Level Management}.
-
-\paragraph{What is proved ?}
-
-
-\paragraph{Constraints used}
+For example the C-translator adds some proof obligations to ensure conformance with the C99 standard.
 
 
 \paragraph{Results}
+The three models have been verified on their topnode:
+
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{\SCADE{} model} & \textbf{Top Node} & \textbf{Results}  \\ \hline
+Modes & ManageModes &  PO 1-5: valid \\
+Levels & ManageLevels &  PO 1-5: valid \\
+ModesAndLevels & ManageLevelAndMode & PO 1-5: valid \\
+\hline
+\end{tabular}
 
 \subsubsection{Conditions to Isolate mode}
+\label{sec:isolate}
 
-
-\paragraph{Files used for the proof} The proof is defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Proof_SoM/xxx} and it is verified on the top node \emph{xxx} of the Scade model \emph{Modes Management}.
+\paragraph{Files used for the proof} The proof is defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Small_Proof/isolate.hll} and it is verified on the top node \emph{ManageModes} of the \SCADE{} model \emph{Modes}.
 
 
 \paragraph{What is proved ?}
+The Condition 1 of SRS § 4.6 "The driver isolates the ERTMS/ETCS on-board equipment" is proved, ie; as soon as the input of \SCADE{} model \texttt{Data\_From\_DMI.'ETCS\_Isolated'} becomes true, the output \texttt{currentMode} becomes 'isolated' (\texttt{Level\_And\_Mode\_Types\_Pkg::IS}) and internal condition  is activated.
 
 
 \paragraph{Constraints used}
 
+None.
 
 \paragraph{Results}
+
+The property is proved.
 
 \subsection{Verification of use case}
 
 \emph{levels}
 
 
-\paragraph{Files used for the proof} The proof is defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Proof_SoM/shunting_initiated_by_driver.hll} and it is verified on the top node \emph{xxx} of the Scade model \emph{Level Management}.
+\paragraph{Files used for the proof} The proof is defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Proof_SoM/shunting_initiated_by_driver.hll} and it is verified on the top node \emph{xxx} of the \SCADE{} model \emph{Level Management}.
 
 \paragraph{What is proved ?}
 
@@ -139,7 +183,7 @@ to check on the whole model.
 
 \subsubsection{Procedure Shunting initiated by Driver}
 
-\paragraph{Files used for the proof} The proof is defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Proof_SoM/shunting_initiated_by_driver.hll} and it is verified on the top node \emph{SH\_Initiated\_By\_Driver} of the Scade model \emph{Modes Management}.
+\paragraph{Files used for the proof} The proof is defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Proof_SoM/shunting_initiated_by_driver.hll} and it is verified on the node \emph{Procedure\_SH\_Initiated\_By\_Driver} of the \SCADE{} model \emph{Modes Management}. The same proof is also defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Proof_SoM/shunting_initiated_by_driver_topnode.hll} to be verified on the top node \emph{ManageModes} of the \SCADE{} model \emph{Modes Management}.
 
 \paragraph{What is proved ?}
 We want to prove that the procedure SH\_Initiated\_By\_Driver is a
@@ -153,7 +197,7 @@ elements \texttt{D030}, \texttt{A030}, \texttt{A095}, \texttt{S100} and
 \paragraph{Constraints used}
 One hypothesis is used in this model to avoid a counter-example: when we are in \texttt{A100} the request of ``End of
 Mission'' procedure correspond to the value of the input
-\texttt{On-going Mission} as it is specified in the Scade model.
+\texttt{On-going Mission} as it is specified in the \SCADE{} model.
 
 This hypothesis is justified by the fact that, according to
 \texttt{A050}, \texttt{D040} and \texttt{A100}, if the input
@@ -164,21 +208,21 @@ Mission'' request is made, the system should go to SH mode (or another
 mode except SB mode). 
 
 \paragraph{Results}
-Considering the constraint and our model, the Scade model of
-SH\_Initiated\_By\_Driver corresponds to the specification. Proof of this property allow to detect an error in Scade model: operator \emph{AND} was used instead operator \emph{OR}.
-Besides the specification in Scade  of the computation of the output \emph{End\_Of\_Mission} was corrected.
+Considering the constraint and our model, the \SCADE{} model of
+SH\_Initiated\_By\_Driver corresponds to the specification. Proof of this property allow to detect an error in \SCADE{} model: operator \emph{AND} was used instead operator \emph{OR}.
+Besides the specification in \SCADE{}  of the computation of the output \emph{End\_Of\_Mission} was corrected.
 
 \subsubsection{Procedure Start of Mission}
 
 \paragraph{Files used for the proof}
-The proof is defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Proof_SoM/startofmission_topnode_proof.hll} and it is verified on the top node \emph{ManageModes} of the Scade model \emph{Modes Management}.
+The proof is defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Proof_SoM/startofmission_topnode_proof.hll} and it is verified on the node \emph{Procedure\_StartOfMission} of the \SCADE{} model \emph{Modes}.
 
 
 \paragraph{What is proved ?}
 We want to prove that the procedure Procedure\_StartOfMission is a
 correct implementation of the section 5.6 Procedure Start of mission of SRS-26.
 
-Only the down part of the flowchart, from S10 and from S20, relative to the modes management, is specified in the Scade model.
+Only the down part of the flowchart, from S10 and from S20, relative to the modes management, is specified in the \SCADE{} model.
 
 
 
@@ -200,15 +244,15 @@ Mode Considered as a Mission''.
 
 
 \paragraph{Results}
-Considering constraints and our hll model, the Scade model of Procedure
+Considering constraints and our \HLL{} model, the \SCADE{} model of Procedure
 Start of Mission corresponds to the specification.
-Some errors have been detected in the Scade model: links between nodes were wrong.
+Some errors have been detected in the \SCADE{} model: links between nodes were wrong.
 
 \subsubsection{Procedure On-Sight}
 \emph{On going work}
 
 
-\paragraph{Files used for the proof} The proof is defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Proof_SoM/xxx} and it is verified on the top node \emph{xxx} of the Scade model \emph{Modes Management}.
+\paragraph{Files used for the proof} The proof is defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Proof_SoM/xxx} and it is verified on the top node \emph{xxx} of the \SCADE{} model \emph{Modes Management}.
 
 \paragraph{What is proved ?}
 
@@ -219,12 +263,12 @@ Some errors have been detected in the Scade model: links between nodes were wron
 \paragraph{Results}
 
 
-\subsection{Comparison of Scade models}
+\subsection{Comparison of \SCADE{} models}
 
 \emph{levels}\\
 \\
 
-\paragraph{Files used for the proof} The proof is defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Proof_SoM/shunting_initiated_by_driver.hll} and it is verified on the top node \emph{xxx} of the Scade model \emph{Level Management}.
+\paragraph{Files used for the proof} The proof is defined in the file \url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/05-Work/S3/Proof_SoM/shunting_initiated_by_driver.hll} and it is verified on the top node \emph{xxx} of the \SCADE{} model \emph{Level Management}.
 
 \paragraph{What is proved ?}
 

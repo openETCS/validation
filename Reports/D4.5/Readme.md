@@ -1,7 +1,7 @@
 This folder is orginized following the outputs and delivrable define in the description of work
 
 * Outputs and deliverables
-* Currently the *.odt 
+* Currently the *.odt will be the source and converted to *.tex at the end
 
  Type   | Name                                                     | due      | pdf | source
 ----|----|----|---|---

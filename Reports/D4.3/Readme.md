@@ -1,6 +1,7 @@
 This folder is orginized following the outputs and delivrable define in the description of work
 
 * Outputs and deliverables
+* The deliverables cover all detail findings within the process of the verification and validation
 
  Type   | Name                                                     | due      | pdf | source
 ----|----|----|---|---

@@ -1,0 +1,65 @@
+
+
+
+rttModelVars_t     *rttStatePre;
+rttModelVars_t     *rttStatePost;
+
+
+rttInterface_t     *rttIOPre;
+rttInterface_t     *rttIOPost;
+rttModelSimVars_t  *rttSimStatePre;
+rttModelSimVars_t  *rttSimStatePost;
+
+@abstract machine am_timetick()
+{
+@INIT:{
+    rttIOPre = (rttInterface_t *) calloc(1, sizeof(rttInterface_t));
+    rttIOPost = (rttInterface_t *) calloc(1, sizeof(rttInterface_t));
+    rttStatePre = (rttModelVars_t *) calloc(1, sizeof(rttModelVars_t));
+    rttStatePost = (rttModelVars_t *) calloc(1, sizeof(rttModelVars_t));
+    rttSimStatePre = (rttModelSimVars_t *) calloc(1, sizeof(rttModelSimVars_t));
+    rttSimStatePost = (rttModelSimVars_t *) calloc(1, sizeof(rttModelSimVars_t));
+  }
+@FINIT:{
+  }
+@PROCESS:{
+    int                 _timeTickOld = @t;
+    while (@rttIsRunning) {
+// Reset flag indicating whether a discrete transition took place in the last cycle
+      rttHaveDiscreteTrans = 0;
+// Copy post state to actual pre-state
+      memcpy(rttIOPre, rttIOPost, sizeof(rttInterface_t));
+      memcpy(rttStatePre, rttStatePost, sizeof(rttModelVars_t));
+      memcpy(rttSimStatePre, rttSimStatePost, sizeof(rttModelSimVars_t));
+      _timeTick = @t;
+      _timeTickDiff = _timeTick - _timeTickOld;
+      _timeTickOld = _timeTick;
+      @rttYield;
+    }
+  }
+
+}
+
+
+// Declare abstract machine stimulating the target
+@abstract machine am_stimulator()
+{
+@INIT:{
+  }
+@FINIT:{
+  }
+@PROCESS:{
+    stimulator();
+  }
+}
+
+@abstract machine am__ora_RollAwayProtection()
+{
+@INIT:{
+  }
+@FINIT:{
+  }
+@PROCESS:{
+    _ora_RollAwayProtection();
+  }
+}

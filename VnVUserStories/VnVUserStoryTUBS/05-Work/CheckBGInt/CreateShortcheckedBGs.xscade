@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Operator xmlns="http://www.esterel-technologies.com/ns/scade/4" xmlns:ed="http://www.esterel-technologies.com/ns/scade/pragmas/editor/5" xmlns:kcg="http://www.esterel-technologies.com/ns/scade/pragmas/codegen/2" kind="function" name="CreateShortcheckedBGs">
+	<inputs>
+		<Variable name="checkedBGs">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="CheckBGInputChannel_Pkg::outBGchecks"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/116c3b/4C4B/1B20/558d2ff95217"/>
+			</pragmas>
+		</Variable>
+	</inputs>
+	<outputs>
+		<Variable name="short_checkedBGs">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="CheckBGInputChannel_Pkg::outBGchecks_short"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/116c3c/4C4B/1B20/558d2ffa701e"/>
+			</pragmas>
+		</Variable>
+	</outputs>
+	<locals>
+		<Variable name="_L1">
+			<type>
+				<NamedType>
+					<type>
+						<TypeRef name="CheckBGInputChannel_Pkg::outBGchecks"/>
+					</type>
+				</NamedType>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/116c72/4C4B/1B20/558d3096578d"/>
+			</pragmas>
+		</Variable>
+		<Variable name="_L76">
+			<type>
+				<Table>
+					<type>
+						<NamedType>
+							<type>
+								<TypeRef name="CheckBGInputChannel_Pkg::checkedBG_short"/>
+							</type>
+						</NamedType>
+					</type>
+					<size>
+						<IdExpression>
+							<path>
+								<ConstVarRef name="CheckBGInputChannel_Pkg::c_BGArraySize"/>
+							</path>
+						</IdExpression>
+					</size>
+				</Table>
+			</type>
+			<pragmas>
+				<ed:Variable oid="!ed/116dd1/4C4B/1B20/558d331e3d96"/>
+			</pragmas>
+		</Variable>
+	</locals>
+	<data>
+		<!-- _L1 = checkedBGs; -->
+		<Equation>
+			<lefts>
+				<VariableRef name="_L1"/>
+			</lefts>
+			<right>
+				<IdExpression>
+					<path>
+						<ConstVarRef name="checkedBGs"/>
+					</path>
+				</IdExpression>
+			</right>
+			<pragmas>
+				<ed:Equation oid="!ed/116c71/4C4B/1B20/558d3096121f"/>
+			</pragmas>
+		</Equation>
+		<!-- short_checkedBGs = _L76; -->
+		<Equation>
+			<lefts>
+				<VariableRef name="short_checkedBGs"/>
+			</lefts>
+			<right>
+				<IdExpression>
+					<path>
+						<ConstVarRef name="_L76"/>
+					</path>
+				</IdExpression>
+			</right>
+			<pragmas>
+				<ed:Equation oid="!ed/116c77/4C4B/1B20/558d3097729a"/>
+			</pragmas>
+		</Equation>
+		<!-- _L76 = (map Convert_checkBG_to_checkBGshort <<CheckBGInputChannel_Pkg::c_BGArrayS... -->
+		<Equation>
+			<lefts>
+				<VariableRef name="_L76"/>
+			</lefts>
+			<right>
+				<!-- (map Convert_checkBG_to_checkBGshort <<CheckBGInputChannel_Pkg::c_BGArraySize>>)(... -->
+				<CallExpression>
+					<operator>
+						<IteratorOp name="1" iterator="map">
+							<operator>
+								<OpCall>
+									<operator>
+										<OperatorRef name="Convert_checkBG_to_checkBGshort"/>
+									</operator>
+								</OpCall>
+							</operator>
+							<size>
+								<IdExpression>
+									<path>
+										<ConstVarRef name="CheckBGInputChannel_Pkg::c_BGArraySize"/>
+									</path>
+								</IdExpression>
+							</size>
+						</IteratorOp>
+					</operator>
+					<callParameters>
+						<IdExpression>
+							<path>
+								<ConstVarRef name="_L1"/>
+							</path>
+						</IdExpression>
+					</callParameters>
+				</CallExpression>
+			</right>
+			<pragmas>
+				<ed:Equation oid="!ed/116dd3/4C4B/1B20/558d331e343f"/>
+			</pragmas>
+		</Equation>
+	</data>
+	<pragmas>
+		<ed:Operator oid="!ed/116c39/4C4B/1B20/558d2fd1182f" xmlns="http://www.esterel-technologies.com/ns/scade/pragmas/editor/5">
+			<diagrams>
+				<NetDiagram name="diagram_CreateShortcheckedBGs_1" landscape="true" format="A4 (210 297)" oid="!ed/116c3a/4C4B/1B20/558d2fd1216d">
+					<presentationElements>
+						<EquationGE presentable="!ed/116c71/4C4B/1B20/558d3096121f">
+							<position>
+								<Point x="3096" y="5583"/>
+							</position>
+							<size>
+								<Size width="264" height="502"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/116c77/4C4B/1B20/558d3097729a">
+							<position>
+								<Point x="15531" y="5583"/>
+							</position>
+							<size>
+								<Size width="318" height="502"/>
+							</size>
+						</EquationGE>
+						<EquationGE presentable="!ed/116dd3/4C4B/1B20/558d331e343f">
+							<position>
+								<Point x="8387" y="3784"/>
+							</position>
+							<size>
+								<Size width="3852" height="4064"/>
+							</size>
+						</EquationGE>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/116dd3/4C4B/1B20/558d331e343f" dstEquation="!ed/116c77/4C4B/1B20/558d3097729a">
+							<positions>
+								<Point x="12250" y="5821"/>
+								<Point x="12859" y="5821"/>
+								<Point x="12859" y="5847"/>
+								<Point x="15584" y="5847"/>
+							</positions>
+						</Edge>
+						<Edge leftVarIndex="1" rightExprIndex="1" srcEquation="!ed/116c71/4C4B/1B20/558d3096121f" dstEquation="!ed/116dd3/4C4B/1B20/558d331e343f">
+							<positions>
+								<Point x="3360" y="5847"/>
+								<Point x="5847" y="5847"/>
+								<Point x="5847" y="5821"/>
+								<Point x="8387" y="5821"/>
+							</positions>
+						</Edge>
+					</presentationElements>
+				</NetDiagram>
+			</diagrams>
+		</ed:Operator>
+	</pragmas>
+</Operator>

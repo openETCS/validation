@@ -1,0 +1,511 @@
+\newpage
+\section{Formal Semantics -- the Transition Relation}\label{sec:transrel}
+% =========================================================================
+
+
+
+% ================================================================================
+\subsection{Semantic Definition Scope}
+In this section   the formal behavioural semantics of the CSM model ${\cal M}$ written in SysML 
+is specified. The exposition is restricted to the situation where the CSM has already been switched on; this scenario is completely captured by state machine  {\sf CSM\_ON} depicted in Fig.~\ref{fig:csmsm}. This restriction is motivated by the fact that the activation/deactivation scenario for the CSM as shown in state machine {\sf CSM} (Fig.~\ref{fig:csmsmtl}) is incomplete without the models for TSM and RSM. These model components define the SUT behaviour when CSM is in state {\sf CSM\_OFF}.
+
+
+
+% ================================================================================
+\subsection{State Transition System Semantics}
+The behaviour of the CSM SysML model ${\cal M}$ can be formalised by mapping ${\cal M}$ to a {\it state transition system (STS)} ${\cal S} = (S,s_0,R)$ with state space $S$, initial state
+ $s_0\in S$ and transition relation $R\subseteq S\times S$. An infinite   sequence $\pi = s.s_1.s_2 \ldots$ of ${\cal S}$-states  is called a \emph{computation} or a \emph{path} of ${\cal S}$, if and only if it satisfies 
+\[
+    s = s_0 \wedge  \left(\forall i \in \N: (s_{i-1},s_i)\in R\right) 
+\]
+A finite computation prefix is called  a {\it trace}.
+
+The behavioural semantics of a SysML model ${\cal M}$ is   given by the set of computations that can be executed by the state transition system ${\cal S}$ associated with ${\cal M}$. 
+
+
+% ================================================================================
+\subsection{State Space}
+For mapping ${\cal M}$ to ${\cal S}$,
+we use state spaces over variable valuations: let   $V$ be a finite set  of variable symbols for variables $v\in V$ with values in some domain $D=\bigcup_{v\in V} D_v$.  
+The state space $S$ of ${\cal S}$ is the set of all variable valuations $s : V \rightarrow D$ with $s(v) \in D_v$.   The variables of $V$ are partitioned into input variables, internal model variables, and output variables; for the CSM model this results in
+\begin{eqnarray*}
+V & = & I \cup M \cup O
+\\
+I & = & \{ \vest, \vmax, \areb \}
+\\
+M & = & \{ \ell, \sbicmd  \}
+\\
+O & = & \{ \dmicmd, \ticmd  \}
+\end{eqnarray*}
+ 
+These variables have domains as introduced in Section~\ref{sec:modeldesc}, but here we use 
+integer values instead of enumeration types. The enumeration to integer association is defined in Fig.~\ref{fig:sysif}.
+\[
+\begin{array}{l}
+ D_\vest = D_\vmax =  [0,350]
+\\
+D_\areb=D_\sbicmd=D_\ell  = \{0,1\}
+\\
+D_\ticmd =\{0,1,2\}
+\\
+D_\dmicmd = \{0,1, 2,3,4\}
+\end{array}
+\]
+Internal variable $\ell$ does not occur in the SysML model described in Section~\ref{sec:modeldesc}; it is used here to reduce the state space: each of the basic states {\sf NORMAL}, {\sf OVERSPEED}, {\sf WARNING}, as well as the intervention states  of the state machine in Fig.~\ref{fig:csmsm}  are associated with specific outputs on $\dmicmd$. Therefore {\it all}
+basic states of this machine are completely identified if we have a means to distinguish {\sf SERVICE\_BRAKE} from {\sf EMER\_BRAKE} in the case $\dmicmd =  4$ (INTERVENTION). To this end, auxiliary variable $\ell$ will be set to 1 if   the state machine of Fig.~\ref{fig:csmsm} resides in basic state $\text {SERVICE\_BRAKE}$; otherwise $\ell$ will be set to 0. Using $\ell$ in this way allows us to identify the basic states as specified in Table~\ref{tab:basicstates}.
+\begin{table}[htdp]
+\caption{Identification of basic states in machine {\sf CSM\_ON}}
+\begin{center}
+\footnotesize
+\begin{tabular}{|c|c|}
+\hline\hline
+{\bf State Machine in Basic State} & {\bf Equivalent to}
+\\\hline\hline
+{\sf NORMAL} & $\dmicmd = 0$
+\\\hline
+{\sf OVERSPEED} & $\dmicmd = 2$
+\\\hline
+{\sf WARNING} & $\dmicmd = 3$
+\\\hline
+{\sf SERVICE\_BRAKE} & $\dmicmd = 4 \wedge \ell = 1$
+ \\\hline
+{\sf EMER\_BRAKE} & $\dmicmd = 4 \wedge \ell = 0 $
+\\\hline\hline
+\end{tabular}
+\normalsize
+\end{center}
+\label{tab:basicstates}
+\end{table}%
+
+We use a short-hand   tuple notation for states: $s = (d_1,\dots,d_7)$ with $d_i\in D$ denotes the state
+satisfying
+\[
+\begin{array}{l}
+ s(\vest) = d_1, s(\vmax) = d_2, s(\areb) = d_3, 
+\\
+s(\ell) = d_4, s(\sbicmd) = d_5,
+\\
+s(\dmicmd) = d_6, s(\ticmd) = d_7
+\end{array}
+\]
+ 
+
+% ================================================================================
+\subsection{Quiescent and Transient States}
+
+The STS covered by our testing theory have state spaces that can be partitioned into disjoint sets $S = S_Q \cup S_T$, where $S_Q$ denotes {\it quiescent} states and $S_T$ {\it transient} states.
+In quiescent states, the system is stable and cannot progress without a change of inputs. When these inputs change, internal states and outputs remain unchanged. Transitions emanating from quiescent states may lead to other quiescent states or to transient states. In contrast to this, each transient state has exactly one  post-state which is quiescent, and the transition to this post-state is immediate and may change internal state variables and outputs only. The initial state $s_0$ of the
+STS under consideration is always quiescent.
+
+From the intuitive interpretation of the CSM model, we see, for example, that the states
+$s_i = (\vest, \vmax,\areb,\ell,\sbicmd,\dmicmd,\ticmd)$, 
+\begin{eqnarray*}
+s_0 & = & (50,100,0,0,1,0,0)
+\\
+s_1 & = & (100.1,100,0,1,1,4,1)
+\\
+s_2 & = & (50,100,0,0,1,4,2)
+\end{eqnarray*}
+are quiescent, while the states
+\begin{eqnarray*}
+s_3 & = & (100.7,100,0,0,1,0,0)
+\\
+s_4 & = & (99.8,100,0,1,1,4,1)
+\\
+s_5 & = & (0,100,0,0,1,4,2)
+\end{eqnarray*}
+are transient.
+
+
+
+
+% ================================================================================
+\subsection{Initial State}\label{sec:initialstate}
+
+The initial state corresponds to the CSM in its de-activated state. We associate the deactivation state with encoding 
+$$
+s_0 = (0,0,0,0,0,0,0)
+$$
+and the first input change activates the CSM.
+
+The existence of a service brake ($\sbicmd = 1$) is a configuration parameter of the train hardware. Therefore it cannot be regarded as an input to the CSM that may change arbitrarily during its execution, but as a constant value $\sbicmd = \sbz  \in \{0,1\}$ that remains invariant during each test execution.
+
+
+%
+%The set of initial states, $S_0$ is infinite, because we allow for real-valued inputs $\vest, \vmax$, and on CSM startup, arbitrary values $(\vest,\vmax)\in D_\vest\times D_\vmax$ are allowed.
+%Therefore $S_0$ cannot be enumerated. Instead, all possible initial states are identified by 
+%a proposition ${\cal I}(V)$ over free variables from $V$, such that
+%$$
+%S_0 = \{ s~|~{\cal I}[s(v)/v~|~v\in V]  \}
+%$$
+%Proposition ${\cal I}[s(v)/v~|~v\in V]$ results from ${\cal I}$ by replacing every occurrence 
+%of $v\in V$ by its initial state value $s(v)$. For the CSM, the initial state proposition is 
+%$$
+%{\cal I}(V) \equiv \ell = 0 \wedge \dmicmd = 0 \wedge \ticmd = 0 \wedge \sbicmd = \sbz
+%$$
+%Here $\sbz$ is a constant value which is 1 if a service brake is available and 0 otherwise. As discussed in Section~\ref{sec:req}, the availability of the service brake does not change during CSM operation, so $\sbicmd = \sbz$ is an invariant. Summarising, all initial states have the same value for service brake availability, and the {\sf CSM\_ON} state machine is in state {\sf NORMAL}. Note that, depending on the actual values of $\vest$ and $\vmax$, initial states may be transient or quiescent.
+
+
+% ================================================================================
+\subsection{Transition Relation -- General Construction Rules}
+
+The transition relation $R\subseteq S\times S$ 
+specifying the possible state changes of the STS associated with the CSM   is  infinite, since the
+input domains are infinite. 
+The transition relation, however, can be represented by means of a 
+finite predicate ${\cal R}$
+relating pre-states to post-states. ${\cal R}$ is a proposition with free variables in $V$ and $V' = \{v'~|~v\in V\}$, the primed variable symbols denoting post-states. The transition relation is specified by ${\cal R}$ via
+$$
+R  =  \{ (s_0,s_1)\in S\times S~|~{\cal R}[s_0(v)/v,s_1(v)/v'~|~v\in V]\}
+$$
+Predicate ${\cal R}[s_0(v)/v,s_1(v)/v'~|~v\in V]$ results from ${\cal R}$ by replacing every unprimed variable $v\in V$ occurring in $R$ 
+by its pre-state value $s_0(v)$, and every primed variable $v'\in V'$ by its post-state value $s_1(v)$.
+
+The propositional representation of the transition relation is crucial for automated test data generation: as explained in~\cite{EPTCS111.1}, concrete test data is calculated by means of constraint solving techniques applied to formulas of the type
+$$
+tc \equiv J(s_0) \wedge \bigwedge_{i=1}^n R(s_{i-1},s_i) \wedge
+G(s_0,\ldots,s_n)
+$$
+where $G(s_0,\ldots,s_{n+1})$ encodes a test objective and $\bigwedge_{i=1}^n R(s_{i-1},s_i)$ asserts that every solution is a trace of the model. Each $R(s_{i-1},s_i)$ is represented by means
+of ${\cal R}$ as a proposition where new inputs to be selected in quiescent state $s_i$ can be freely chosen by the solver, but their effect on internal model variables and outputs is determined by ${\cal R}$. Thus we are interested in propositional representations ${\cal R}$ mainly for the purpose of tool construction.
+
+While    ${\cal R}$ is not uniquely determined in the general case, well-defined construction rules are implied by~\cite{peleska2013ictss}, if ${\cal R}$ is to be applied for the purpose of equivalence class construction.
+\begin{enumerate}
+\item The canonic structure of ${\cal R}$ is
+$$
+{\cal R} \equiv  \bigvee_{i=0}^k \big( \varphi_i(V) \wedge \psi_i(V,V') \big)
+$$
+where $\varphi_i(V)$ is a proposition with free variables  in $V$ only, and $\psi_i(V,V')$ has
+free variables in $V$ and $V'$. $\varphi_i(V)$ describes the precondition for a transition to fire, and $\psi_i(V,V')$ specifies the transition's effect.
+
+\item Each $\varphi_i(V)$ specifies a set of reachable quiescent states, or a set of reachable transient states.  
+
+\item All atomic propositions occurring in ${\cal R}$ and involving primed or unprimed internal state variables or output variables $v, v'$, $v\in M\cup O$, must be of the form
+$$
+     v = d \ \ \text{or}\ \ v' = d, \ \ \  \text{with}\ \ d\in D_v
+$$
+Recall that the domains of internal state   and outputs variables are finite, therefore the number of atomic propositions $v = d$ is finite. 
+Moreover, every atomic proposition involving variables from $I$ and $M\cup O$ can be transformed into a disjunction of conjunctions of atomic propositions $p$ with free variables from either $I$ or  $M\cup O$ only\footnote{Consider, for example, atomic proposition $x < m$ with $D_x = \R$ and $D_m = \{0,1\}$. Then $x < m \equiv (x < 0 \wedge m = 0) \vee (x < 1 \wedge m = 1)$.}.
+
+\item For transitions emanating from   quiescent states, $\varphi_i(V)$ is constructed according to the rules
+\begin{itemize}
+\item Every state $s$ satisfying $\varphi_i(V)$ must be reachable and quiescent.
+\item For any reachable quiescent state $s$ there is a unique $\varphi_i(V)$ such that $s$ satisfies $\varphi_i(V)$.
+\item Every state $s$ satisfying $\varphi_i(V)$  has the same valuation of internal state and output variables. 
+\item For any reachable quiescent states $s$ and $r$ with the same valuation of internal state and output variables, $s$ and $r$ satisfy the same $\varphi_i(V)$. 
+\end{itemize}
+Again, since the domains of internal state   and outputs variables are finite, this construction rule leads to a finite number of propositions $\varphi_i(V)$. We assume that propositions
+$\varphi_i(V), i = 0,\dots,k_0-1$ specify quiescent states.
+
+\item For transitions emanating from transient states, $\varphi_i(V)$ is constructed according to the rules
+\begin{itemize}
+\item Every state $s$ satisfying $\varphi_i(V)$ must be reachable and transient.
+
+\item For any transient state $s$ there is a unique $\varphi_i(V)$ such that $s$ satisfies $\varphi_i(V)$.
+
+\item There exists an index $j$, such that $\varphi_j(V)$ specifies a set of quiescent states
+according to Rule~3, and every state $s$ satisfying $\varphi_i(V)$ has a post-state satisfying 
+$\varphi_j(V)$.
+
+\item For any transient states $s$ and $r$ with post-states  satisfying the same $\varphi_j(V)$, $s$ and $r$ satisfy the same $\varphi_i(V)$. 
+\end{itemize}
+\end{enumerate}
+
+We assume that 
+$\varphi_{k_0+i}(V), i = 0,\dots, \le k_0-1$ specify transient states. By construction of $\varphi_i(V)$ and $\varphi_{k_0+i}(V)$, the number of propositions specifying quiescent states according to Rule~4 is greater than or  equals the number of transient-state propositions built according to Rule~5. This is easy to see, because each transient state $s$ satisfying $\varphi_{k_0+i}(V)$ has a post-state satisfying the same $\varphi_j(V)$, and this $\varphi_j(V)$ is unique. If the number of quiescent $\varphi_i(V)$ is grater than the number of transient $\varphi_{k_0+i}(V)$, then there are some reachable quiescent states which do not have any transient pre-states. This may only occur for the quiescent state $s_0$. As a consequence we can assume that  proposition $\varphi_0(V)$ specifies the quiescent initial  state, and the propositions $\varphi_k(V)$, $k> 0$, are ordered in such a way that the quiescent post-states visited from transient states satisfying $\varphi_{k_0+i}(V)$ are all specified by $\varphi_i(V)$.  The existence of $\varphi_{k_0}(V)$ depends on whether there is a transition from transient states to $s_0$ or if the initial state is never re-visited.
+
+In the case of quiescent pre-states, $\psi_i(V,V')$ is always the same proposition $\qpsc(V,V')$,
+where ``qpsc'' stands for {\it quiescent post-state condition}.
+\begin{eqnarray*}
+\qpsc(V,V') & \equiv  & \left(\bigvee_{x\in I}x' \neq x\right) \wedge
+ \left(\bigwedge_{v\in M\cup O} v' = v\right)
+\end{eqnarray*}
+This specifies that at least one input variable must change its value during a transition from a quiescent state, and all internal state and output valuations remain unchanged.
+
+Transitions from transient states to quiescent states always leave inputs unchanged; this leads to the complementary {\it transient post-state condition}
+\begin{eqnarray*}
+\tpsc(V,V') & \equiv  & \bigwedge_{v\in I} v' = v
+\end{eqnarray*}
+so the effect of the transition from transient pre-state to quiescent post-state can be written
+as 
+$$
+  \psi_{k_0+i}(V,V') \equiv  \overline{\psi}_{k_0+i}(V,V') \wedge \tpsc(V,V')
+$$
+where $\overline{\psi}_{k_0+i}(V,V')$ is still to be determined.
+
+
+As a consequence of Rule~4, every $\varphi_i(V)$ characterising a subset of quiescent states is of the form
+\begin{eqnarray}\label{eq:phiquiescent}
+\varphi_i(V) & \equiv & \varphi_i^I(I) \wedge \xi_i(M\cup O)
+\\
+ \xi_i(M\cup O) & \equiv &  \bigwedge_{m\in M} (m = d_i^m) \wedge 
+\bigwedge_{y\in O}(y = d_i^y), \ \ \ d_i^m\in D_m,\ d_i^y\in D_y
+\end{eqnarray}
+so that $\varphi_i^I(I)$ is a (generally non-atomic) proposition over free variables from $I$. 
+
+As a consequence of Rule~5 and of our numbering conventions, each $\varphi_{k_0+i}(V)$ characterising a subset of transient states satisfies
+$$
+\forall s_1,s_2\in S: s_1(\varphi_{k_0+i}) \wedge R(s_1,s_2) \Rightarrow s_2(\varphi_i)
+$$ 
+This means that  $\varphi_{k_0+i}(V)$ is constructed for transient states in such a way that {\it all} post-states of the transient state set 
+$$
+B_i = \{s\in S~|~s(\varphi_{k_0+i}(V))\}
+$$ 
+are members
+of the same set 
+$$
+A_i = \{s\in S~|~s(\varphi_i(V))\}
+$$ 
+of quiescent states.
+Therefore each $\psi_{k_0+i}(V,V')$ specifying the effect of a transition from transient to quiescent state can be structured as 
+$$
+\psi_{k_0+i}(V,V') \equiv   \xi_i[m'/m,y'/y~|~m\in M, y\in O]  \wedge\tpsc(V,V')
+$$
+where $\xi_i[m'/m,y'/y~|~m\in m, y\in O]$ is the proposition specifying internal state and output values for the associated set $A_i$ of quiescent states, but each internal model state variable $m$ and each output variable $y$ are replaced by their primed versions $m'$ and $y'$, respectively. Conversely, if $B_i$ can be reached from quiescent state set $A_k$ by means of   input changes satisfying a certain proposition  $\varphi_{k,i}^I$,  these reachable elements $s\in B_i$ satisfy $\varphi_{k,i}^I \wedge \xi_k$, since internal state values and outputs do not change when transiting from an $A_k$-state to a $B_i$-state. As a consequence,   
+the proposition $\varphi_{k_0+i}(V)$ characterising $B_i$-states has a canonic structure
+\begin{equation}\label{eq:phitransient}
+\varphi_{k_0+i}(V) \equiv \bigvee_{q=0}^{k_0-1} \big(\varphi_{q,i}^I(V) \wedge \xi_q(V)\big)
+\end{equation}
+where $\varphi_{q,i}^I(V) \equiv \isf$, if there are no transitions from $A_q$-states to $B_i$-states.
+
+
+
+
+Summarising, the   systems covered by our equivalence class testing theory have a behavioural semantics that can be expressed by an associated STS whose transition relation can be specified by means of a proposition
+\begin{eqnarray}\label{eq:canonicr}
+{\cal R}(V,V') & \equiv & \bigvee_{i=0}^{k_0-1}\big( \varphi_i^I(I) \wedge \xi_i(M\cup O) \wedge \qpsc(V,V')\big) \vee {}
+\\ & & \bigvee_{i=0}^{k_0-1}\big((\bigvee_{q=0}^{k_0-1}\varphi_{q,i}^I(I)\wedge\xi_q(M\cup O)) 
+\wedge {}
+\\ & & \hspace*{20mm}
+\xi_{i}[m'/m,y',y~|~m\in M, y\in O] \wedge \tpsc(V,V') \big)
+\end{eqnarray}
+where $k_0 +1$ is the number of reachable quiescent state classes $A_i$, each determined by a specific valuation of internal states and outputs, as specified by~$\xi_i$.
+
+% ================================================================================
+\subsection{Transition Relation for the CSM}\label{sec:transrelcsm}
+
+ 
+With the  preparations of the previous section at hand, we are now in the position to specify the proposition ${\cal R}$ for the ceiling speed monitor, as 
+applicable to all states of $S$ that are reachable from   initial state  $s_0$.
+To this end, the propositions occurring in the canonic representation shown in Equation~(\ref{eq:canonicr}) are specified one by one.
+
+% .............................................................................
+\subsubsection{Propositions Specifying Internal State and Outputs -- $\xi_i$.}
+The following combinations of internal state values and output values are reachable; this results in $k_0 = 5$ and in the following propositions.
+\footnotesize
+\begin{eqnarray*}
+\xi_0(V) &  \equiv  & \ell=0  \wedge \dmicmd =0 \wedge \ticmd=0
+\\
+\xi_1(V) & \equiv  & \ell=0 \wedge  \dmicmd=2 \wedge \ticmd=0 
+\\
+\xi_2(V) &  \equiv  &   \ell=0  \wedge \dmicmd=3 \wedge \ticmd=0
+ \\
+\xi_3(V) & \equiv &    \ell=1 \wedge \dmicmd=4 \wedge \ticmd=2 - \sbz
+\\ 
+\xi_4(V) & \equiv &  \ell=0  \wedge \dmicmd=4 \wedge \ticmd=2
+\end{eqnarray*}
+\normalsize
+
+
+% .............................................................................
+\subsubsection{Propositions Specifying Input Conditions for Quiescent Classes -- $\varphi_i^I$.}
+The input conditions for the 5 quiescent class $A_0,\dots,A_4$ -- each class $A_i$ 
+associated with internal state and output valuation $\xi_i$ -- are defined as follows.
+\footnotesize
+\begin{eqnarray}
+\label{eq:phiI0}
+\varphi_0^I(V) &  \equiv  &  \vest \le \vmax
+\\
+\varphi_1^I(V) & \equiv  &  \vmax < \vest \wedge \vest \le \vmax + \dvw(\vmax) 
+\\
+\varphi_2^I(V) &  \equiv  &  \vmax < \vest \wedge \vest \le \vmax + \dvs(\vmax)  
+ \\
+\varphi_3^I(V) & \equiv &    \vmax < \vest \wedge \vest \le \vmax + \dve(\vmax)
+\\ 
+\label{eq:phiI4}
+\varphi_4^I(V)  & \equiv &   (0 < \vest   \wedge \areb=0) \vee (\vmax < \vest  \wedge \areb=1)
+\end{eqnarray}
+\normalsize
+
+The propositions $\varphi_i^I(V), \xi_i(V)$ cover the following quiescent state classes.
+\begin{description}
+\item[$\varphi_0^I(V)\wedge\xi_0(V)$] specifies the quiescent states associated with basic state {\sf NORMAL}, while the train speed does not exceed $\vmax$.
+
+ \item[$\varphi_1^I(V)\wedge\xi_1(V)$] specifies the quiescent states associated with basic state {\sf OVERSPEED}, while the train speed does not exceed the boundary for transiting to the {\sf WARNING} state, and the speed has not yet been reduced enough to transit back to {\sf NORMAL}.
+ 
+\item[$\varphi_2^I(V)\wedge\xi_2(V)$] specifies the quiescent states associated with basic state 
+ {\sf WARNING}, while the train speed does not exceed the boundary for transiting to the {\sf SERVICE\_BRAKE} state, and the speed has not yet been reduced enough to transit back to {\sf NORMAL}.
+ 
+\item[$\varphi_3^I(V)\wedge\xi_3(V)$] specifies the quiescent states associated with basic state 
+ {\sf SERVICE\_BRAKE}, while the train speed does not exceed the boundary for transiting to the {\sf EMER\_BRAKE} state, and the speed has not yet been reduced enough to transit back to {\sf NORMAL}. Output specification $\ticmd=2 - \sbz$ which is part of $\xi_3(V)$ requires that the
+ service brake is triggered ($\ticmd=1$) if such a brake is available (constant $\sbz = 1$); otherwise the emergency brake is triggered ($\ticmd=2$).
+ 
+\item[$\varphi_4^I(V)\wedge\xi_4(V)$] specifies the quiescent states associated with basic state
+\newline 
+{\sf EMER\_BRAKE}, while either
+\begin{itemize}
+\item the speed $\vest$ is still greater zero and input $\areb = 0$ forbids to return to {\sf NORMAL} before the train has come to a standstill,
+ or
+\item the CSM may return to  {\sf NORMAL} as soon as $\vest \le \vmax$ because 
+$\areb = 1$, but currently the estimated speed is still greater than $\vmax$. 
+\end{itemize}
+\end{description}
+
+For building more fine-grained equivalence classes (see Section~\ref{sec:iecpstart} below) it is important to observe that the functions $\dvw(\vmax), \dvs(\vmax), \dve(\vmax)$ contain  internal case distinctions as specified in Equations~(\ref{eq:dvw} --- \ref{eq:dvwe}). Inserting 
+these case distinctions into the inequalities referencing  these functions in propositions 
+$\varphi_i^I(V), i = 1,2,3$ results in refined predicates 
+\footnotesize
+\begin{eqnarray}
+\varphi_1^I(V) & \equiv  &  (\vmax \le 110 \wedge   \vmax <  \vest \le \vmax +4) \vee {}
+\\ & & (110<\vmax  \le 140  \wedge \vmax < \vest \le \frac{31}{30}\vmax +\frac{1}{3} )
+\vee {}
+\\ & & (140<\vmax \wedge  \vmax < \vest \le \vmax +5)
+\\
+\varphi_2^I(V) &  \equiv  &  (\vmax \le 110 \wedge  \vmax < \vest \le \vmax + 5.5 ) \vee {} 
+\\ & & (110 <\vmax  \le 210 \wedge 
+\vmax < \vest \le\frac{209}{200}\vmax +\frac{55}{100}) \vee {}
+\\ & &  (210 < \vmax  \wedge  \vmax <  \vest \le\vmax + 10)  
+ \\
+\varphi_3^I(V) & \equiv & (\vmax \le 110 \wedge \vmax < \vest \le  \vmax + 7.5) \vee {}
+\\ & & (110<\vmax  \le 210 \wedge  \vmax < \vest \le  \frac{43}{40}\vmax -\frac{3}{4})
+\vee {}
+\\ & & (210<\vmax   \wedge  \vmax < \vest \le  \vmax +15)
+\end{eqnarray}
+\normalsize
+
+
+
+% .............................................................................
+\subsubsection{Quiescent Post-State Condition -- $\qpsc$.}
+For the CSM, this conditions is defined as follows.
+\footnotesize
+\begin{eqnarray*}
+\qpsc &\equiv& (\vest',\vmax',\areb') \neq (\vest,\vmax,\areb) \wedge {}
+\\ & & \ell' = \ell \wedge \dmicmd' = \dmicmd \wedge \ticmd' = \ticmd \wedge \sbicmd' = \sbz
+\end{eqnarray*}
+\normalsize
+
+
+
+% .............................................................................
+\subsubsection{Transient Post-State Condition -- $\tpsc$.}
+For the CSM, this conditions is defined as follows.
+\footnotesize
+\begin{eqnarray*}
+\tpsc &\equiv& \vest' = \vest \wedge \vmax' = \vmax \wedge \areb' = \areb \wedge {}
+\\ & & \sbicmd' = \sbz
+\end{eqnarray*}
+\normalsize
+
+% .............................................................................
+\subsubsection{Transient State Input Conditions -- $\varphi_{q,i}^I$.}\label{sec:transientinputcond}
+As explained in the previous section, the transient states of some class $B_i$ are characterised 
+by disjunctions of  
+predicates  $\varphi_{q,i}^I(V) \wedge \xi_q(V)$, where $\varphi_{q,i}^I$ denotes the condition on
+input changes required to reach $B_i$ states from $A_q$ states. These propositions are specified as follows.
+\footnotesize
+\begin{eqnarray}
+\label{eq:phiIa}
+\varphi_{0,1}^I(V) &\equiv& \vmax < \vest \wedge \vest \le \vmax + \dvw(\vmax)
+\\
+\varphi_{0,2}^I(V) &\equiv& \vmax + \dvw(\vmax) < \vest   \le \vmax + \dvs(\vmax)  
+\\
+\varphi_{0,3}^I(V) &\equiv& \vmax + \dvs(\vmax) < \vest   \le \vmax + \dve(\vmax)
+\\
+\varphi_{0,4}^I(V) &\equiv& \vmax + \dvs(\vmax) < \vest 
+\\
+\varphi_{1,2}^I(V) &\equiv& \varphi_{0,2}^I(V)
+\\  
+\varphi_{1,3}^I(V) &\equiv& \varphi_{0,3}^I(V)
+\\
+\varphi_{1,4}^I(V) &\equiv& \varphi_{0,4}^I(V)
+\\
+\varphi_{2,3}^I(V) &\equiv& \varphi_{0,3}^I(V)
+\\ 
+\varphi_{2,4}^I(V) &\equiv& \varphi_{0,4}^I(V)
+\\
+\varphi_{3,4}^I(V) &\equiv& \varphi_{0,4}^I(V)
+\\
+\varphi_{1,0}^I(V) &\equiv& \vest \le \vmax  
+\\
+\varphi_{2,0}^I(V) &\equiv& \varphi_{1,0}^I(V)  
+\\
+\varphi_{3,0}^I(V) &\equiv& \varphi_{1,0}^I(V)  
+\\
+\label{eq:phiIz}
+\varphi_{4,0}^I(V) &\equiv& \vest = 0 \vee (\vest \le \vmax \wedge \areb = 1)
+\\
+\end{eqnarray}
+\normalsize
+
+Again, taking into account the internal decisions in 
+$\dvw(\vmax)$, $\dvs(\vmax)$, and $\dve(\vmax)$,
+the propositions representing these functions can be refined; this leads to
+\footnotesize
+\begin{eqnarray*}
+\varphi_{0,1}^I(V) &\equiv& \vmax < \vest \wedge {}
+\\ & & ((\vmax \le 110 \wedge   \vest \le \vmax +4) \vee {}
+\\ & & \ \ (110<\vmax \le 140  \wedge \vest \le \frac{31}{30}\vmax +\frac{1}{3} ) \vee {}
+\\ & & \ \ (140<\vmax \wedge  \vest \le \vmax +5))
+\\
+\varphi_{0,2}^I(V) &\equiv& (\vmax \le 110 \wedge \vmax +4 < \vest \le \vmax + 5.5 )
+\vee {}
+\\ & &  (110 <\vmax  \le 140 \wedge \frac{31}{30}\vmax +\frac{1}{3} < \vest \le\frac{209}{200}\vmax +\frac{55}{100}) \vee {}
+\\ & &  (140 < \vmax \le 210 \wedge \vmax +5 < \vest \le\frac{209}{200}\vmax +\frac{55}{100}) \vee {}
+\\ & &  (210 < \vmax  \wedge  \vmax +5 < \vest \le\vmax + 10) 
+\\
+\varphi_{0,3}^I(V) & \equiv &  (\vmax \le 110 \wedge \vmax + 5.5 < \vest \le  \vmax + 7.5) \vee {}
+\\ & & (110<\vmax \le 210 \wedge \frac{209}{200}\vmax +\frac{55}{100}< \vest \le  \frac{43}{40}\vmax -\frac{3}{4}) \vee {}
+\\ & & (210<\vmax   \wedge \vmax +10 < \vest \le  \vmax +15)
+\\
+\varphi_{0,4}^I(V) &\equiv& (\vmax \le 110 \wedge \vmax + 7.5 < \vest ) \vee {}
+\\ & & (110<\vmax \le 210 \wedge  \frac{43}{40}\vmax -\frac{3}{4}< \vest ) \vee {}
+\\ & & (210<\vmax   \wedge \vmax +15 < \vest )  
+\end{eqnarray*}
+\normalsize
+
+Summarising, the transition relation of the CSM is specified by the following proposition, where 
+$\phi_i$ has been introduced in Equation~(\ref{eq:phiquiescent}),
+$\phi_{k_0+i}$ in Equation~(\ref{eq:phitransient}), and
+all terms $\varphi_i^I$, $\qpsc$, $\tpsc$, $\varphi_{q,i}^I$, and $\xi_i$ have been specified above.
+\footnotesize
+\begin{eqnarray}
+\label{eq:rcsm}
+{\cal R} &\equiv&  \bigvee_{i=0}^{k_0-1}\big(\varphi_i \wedge \qpsc\big) \vee 
+\bigvee_{i=0}^{k_0-1}\big(\varphi_{k_0+i} \wedge \xi_i[m'/m,y'/y~|~m\in M, y\in O]\wedge \tpsc\big) 
+\\
+k_0 & = & 5
+\\
+\label{eq:phi0}
+\varphi_0 & = & \varphi_0^I \wedge \xi_0
+\\ 
+\varphi_1 & = & \varphi_1^I \wedge \xi_1
+\\
+\varphi_2 & = & \varphi_2^I \wedge \xi_2
+\\
+\varphi_3 & = & \varphi_3^I \wedge \xi_3
+\\
+\label{eq:phi4}
+\varphi_4 & = & \varphi_4^I \wedge \xi_4
+\\
+\varphi_{k_0}& =  &  \bigvee_{q=1}^4(\varphi_{q,0}^I \wedge \xi_q)
+\label{eq:phik0}
+\\ 
+\varphi_{k_0+1}& =  & (\varphi_{0,1}^I \wedge \xi_0)
+\\ 
+\varphi_{k_0+2}& =  &  (\varphi_{0,2}^I \wedge (\xi_0 \vee \xi_1)) 
+\\
+\varphi_{k_0+3}& =  &  (\varphi_{0,3}^I \wedge (\xi_0 \vee \xi_1 \vee \xi_2)) 
+\\ 
+\varphi_{k_0+4}& =  & (\varphi_{0,4}^I \wedge (\xi_0 \vee \xi_1 \vee \xi_2 \vee \xi_3)) 
+\label{eq:phik4} 
+\end{eqnarray}
+\normalsize
+
+
+ 
+
+
+
+
+ 

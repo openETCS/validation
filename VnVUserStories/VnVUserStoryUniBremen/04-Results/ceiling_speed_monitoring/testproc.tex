@@ -1,0 +1,146 @@
+\newpage
+\section{Test Procedures}\label{sec:conventionaltests}
+
+
+\subsection{Test Automation Tool}
+
+The tests for the CSM provided under www.mbt-benchmarks.org have been performed with the model-based testing component RTT-MBT of the test automation tool RT-Tester~\cite{EPTCS111.1}.
+RT-Tester supports all test levels from unit testing to system
+integration testing and provides different functions  for manual test
+procedure development, automated test case, test data and test procedure
+generation, as well as management functions
+for large test campaigns. The typical application scope covers (potentially
+safety-critical) embedded real-time
+systems involving concurrency, time constraints, discrete control decisions as
+well as integer and floating point data and calculations. While the tool has
+been used in industry for about 15 years and has been qualified for avionic, automotive and railway 
+control systems under test according to the standards~\cite{do178b,iso26262-4,CENELEC50128}, its MBT functionality is based on more recent extensions that have been validated during the
+last years in various projects from the transportation domains and are  
+now made available to the public.
+
+% =========================================================================
+\subsection{Test Categories}
+
+The tests presented for the CSM under www.mbt-benchmarks.org can be structured according to the following coverage strategies. 
+\begin{enumerate}
+  \item Test procedures aiming at  basic state coverage
+  \item Test procedures aiming at    transition coverage
+  \item Test procedures aiming at   MC/DC coverage
+  \item Test procedures based on  user defined test cases, aiming at requirements coverage
+  \item Test procedures based on input equivalence class partitioning principle described in this technical report. These are described in Section~\ref{sec:iecptestresults}.
+\end{enumerate}
+
+\begin{table}[htbp]
+\centering
+\caption{\label{table:tp} Test procedures}
+\bgroup
+\def\arraystretch{1.5}% 
+\begin{tabular}{|l|c|c|c|c|c|c|}\hline\hline
+TP Name & MCDC & UD & HITR & TR & BCS & REQ \\\hline
+TP-001-BCS & 42\% & 15\% & 0\% & 45\% & 100\% & 12\% \\\hline
+TP-001-BCS-NOSB & 42\% & 15\% & 0\% & 45\% & 100\% & 12\% \\\hline
+TP-002-OnlyCSM\_ON & 57\% & 23\% & 0\% & 81\% & 100\% & 40\% \\\hline
+TP-002-OnlyCSM\_ON-NOSB & 57\% & 23\% & 0\% & 81\% & 100\% & 36\% \\\hline
+TP-002-Transition & 64\% & 38\% & 100\% & 90\% & 100\% & 56\% \\\hline
+TP-002-Transition-NOSB & 78\% & 23\% & 100\% & 100\% & 100\% & 52\% \\\hline
+TP-003-MCDC & 85\% & 15\% & 0\% & 54\% & 100\% & 20\% \\\hline
+TP-003-MCDC-NOSB & 85\% & 30\% & 0\% & 54\% & 100\% & 20\% \\\hline
+TP-004-3.13.10-DMIOutputs & 85\% & 46\% & 100\% & 90\% & 100\% & 80\% \\\hline
+TP-004-3.13.10-DMIOutputs-NOSB & 85\% & 61\% & 100\% & 90\% & 100\% & 80\% \\\hline
+TP-005-3.13.10-EBvsSB & 64\% & 30\% & 20\% & 90\% & 100\% & 48\% \\\hline
+TP-006-3.13.10-IndicationStatus & 57\% & 38\% & 60\% & 63\% & 100\% & 24\% \\\hline
+TP-006-3.13.10-IndicationStatus-NOSB & 57\% & 46\% & 60\% & 63\% & 100\% & 28\% \\\hline
+TP-007-3.13.10-RevokeCmd & 57\% & 15\% & 0\% & 81\% & 100\% & 36\% \\\hline
+TP-007-3.13.10-RevokeCmd-NOSB & 64\% & 30\% & 0\% & 81\% & 100\% & 36\% \\\hline
+TP-008-3.13.10-Trigger & 85\% & 38\% & 100\% & 90\% & 100\% & 76\% \\\hline
+TP-008-3.13.10-Trigger-NOSB & 85\% & 69\% & 100\% & 90\% & 100\% & 84\% \\\hline
+\hline
+\end{tabular}
+
+%\begin{tabular}{|l|c|c|c|c|c|}\hline\hline
+%  Test procedures    & BC    & TC    & MC/DC & Requirements & time\\\hline\hline
+%  TP-001-BCS         & 100\% & 37\%  & 35\%  &   8\%        & 2s \\\hline
+%  TP-002-Transitions & 100\% & 100\% & 78\%  &   64\%       & 6s\\\hline 
+%  TP-003-MC/DC       & 100\% & 75\%  & 100\% &   20\%       & 20s \\\hline 
+%  TP-004             & 100\% & 93\%  & 57\%  &   80\%       & 16s \\\hline 
+%  TP-005             & 100\% & 69\%  & 78\%  &   52\%       & 3s \\\hline 
+%  TP-006             & 100\% & 62\%  & 57\%  &   28\%       & 4s  \\\hline 
+%  TP-007             & 100\% & 56\%  & 64\%  &   52\%       & 5s  \\\hline 
+%  TP-008             & 100\% & 93\%  & 78\%  &   84\%       & 25s \\\hline 
+%\hline 
+%\end{tabular}
+\egroup
+\end{table}
+
+
+% =========================================================================
+\subsection{Tests of Categories 1 --- 4}
+
+
+Table \ref{table:tp} summarises the coverage achieved by the generated
+tests of categories 1 --- 4. Each test procedure is duplicated to take into account the
+different values of the flag \verb+SBAvailable+, except for the test
+procedure TP-005 that checks the behaviour only when service brakes are
+available. TP-001-BCS is the
+test procedure realising the basic state coverage, TP-002-Transitions
+the transition coverage and TP-003-MC/DC the MC/DC coverage.
+Requirement-based testing is performed by the Test procedures TP-004
+to TP-008. Table~\ref{table:tp-req} defines the requirements associated
+with each test procedure. TP-004 focuses on the DMI interface.  TP-005
+provides a test to check the behaviour when the service brake is not
+available. TP-006 validates the special transition when entering the
+ceiling speed monitoring with the indication status set to
+one. TP-007 and TP-008 are the test procedure for testing the
+revocation and the triggering of $\dmicmd$ and $\ticmd$.
+
+\begin{table}[htbp]
+ \centering
+\caption{\label{table:tp-req} Requirement-based Test procedures}
+\bgroup
+\def\arraystretch{1.5}% 
+\begin{tabular}{|l|l|}\hline\hline
+Test Procedure & Requirements \\\hline
+               & REQ-3.13.10.2.1 \\
+ TP-004        & REQ-3.13.10.3.1\\
+               & REQ-3.13.10.3.2\\\hline
+               & REQ-3.13.10.2.3\\
+TP-005         & REQ-3.13.10.2.4\\
+               & REQ-3.13.10.3.3.r1\\\hline
+TP-006         & REQ-3.13.10.3.6\\
+               & REQ-3.13.10.2.5\\\hline
+               & REQ-3.13.10.2.5\\
+TP-007         & REQ-3.13.10.3.3.r0\\
+               & REQ-3.13.10.3.3.r1\\\hline
+TP-008         & REQ-3.13.10.3.3.t[1-5]\\
+               & REQ-3.13.10.3.4\\
+
+
+\hline \hline
+\end{tabular}
+\egroup
+\end{table}
+
+\input{mutant-table}
+
+\subsection{Tests of Category 5 -- IECP Tests}\label{sec:iecptestresults}
+
+In addition to the   tests of categories 1 --- 4 described above, an IECP test suite was
+generated, based on a prototype implementation of the IECP test strategy described in
+Section~\ref{sec:iecpstart} in RTT-MBT.   This implementation was used to generate IECP test cases
+for the lower-level state machine CSM\_ON modelling 
+the behaviour of the active CSM with the  input, output, and 
+internal model variables  $\vest$, $\vmax$, $\dmicmd$, $\ticmd$, $\sbidisplay$. The tests were based further on the assumptions $\sbz = 1$ and $\areb = 0$
+
+In addition to the IECP test suites introduced in Section~\ref{sec:completesuites}, a refined test suite based on 66 input equivalence classes was performed; this suite provided full requirements
+coverage and adds selected boundary value test cases.   The generation of input classes, selection of the input alphabet, and the application of the W-Method results in 1630 test cases,
+assuming no additional states in the implementation ($m = 4$).
+The generation of the whole test suite took approx.~11 minutes. 
+As expected, the IECP test suites killed the three mutants from Example~1 --- 3.
+ For more details readers are referred to www.mbt-benchmarks.org. 
+
+ 
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End: 

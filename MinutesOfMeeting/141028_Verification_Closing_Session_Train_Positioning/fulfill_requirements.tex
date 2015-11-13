@@ -1,0 +1,60 @@
+\subsection{Adequacy to fulfill Software Requirements}
+by Bernd Gonska
+
+\subsubsection{Description of the developed train positioning system}
+The train positioning system clearly deviates from the SRS on purpose. This is justified by the intended operational performance.
+
+It basically implements the following concepts:
+\begin{itemize}
+\item All distances are given as the triple of safe distances (minimum,nominal,maximal)
+
+\item The estimated position, (also named nominal position) is calculated to be the middle of the maximum safe position and the minimum safe position.
+
+\item Each Balise Group (BG) has a an own accuracy and position, relative to the Last Relevant Balise Group (LRBG) and the LRBG accuracy. Locations do not change their reference BG.
+  
+\item Linking distances and accuracies are used to improve the accuracy when ever possible.
+
+\item Accuracy of a distance is calculated taking the worst possible case into account. For example: The accuracy of the distance between two ends of a linking chain includes the first and the last BG accuracy. The distance between two BG without linking is the odometry measured distance. The accuracy is the odometry acuracy during that distance. This inaccuracy is not reseted later.
+
+\item The confidence interval of an announced location never increases when a new BG is accepted. Always use the most accurate information. The odometry error estimation is trustworthy enough to optimize linking accuracy and distances.
+\end{itemize}
+
+\subsubsection{Deviations}
+Within this paragraph the deviations to the specification is described by first mentioning the number of the Subset-026 paragraph \cite{SRS}
+and then stating how the design deviates:
+
+\begin{description}
+\item[3.6.4.1 REMARK:] There are several confidence intervals: They depend on the announced location.
+\item[3.6.4.2:] In addition, the odometry inaccuracy of older track areas and older linking accuracy can be taken into account to widen a the confidence interval for safety reasons. The location accuracy of the LRBG is shortened on if the detected Balise group position is extreme. An old confidence interval can be taken instead of a larger new one.//
+3.6.4.2.2: An odometer inaccuracy may not be reset at the new LRBG.
+\item[3.6.4.3:] Even if the linking chain is not complete, linked parts replace odometry distances if they provide higher accuracy.
+
+In the "sandwich problem" where two linked BGs enclose an unlinked BG 
+(linked BG1 $\rightarrow$ unlinked BG2 $\rightarrow$ linked BG3) 
+the distance and the accuracy between BG2 and BG3 can be calculated involving the linking accuracy of BG1and BG3 and the linking distance between BG1 and BG3. 
+
+The estimated distance may differ from the linking distance and from the odometry measured distance. The estimated distance is set to the middle of the maximum and minimum safe distance.
+
+\item[3.6.4.3.1:]
+The train takes responsibility, it does not reset inaccuracies if this could lead to unsafe behavior. 
+\item[Figure 13 a,b,c:]
+There is more than one confidence interval.
+
+The confidence interval is calculated differently.
+
+The estimated distance can be different since it is the middle of the maximum and minimum safe distance.
+
+Linking distance is not used if it leads to a less accurate distances.
+
+\item[3.6.4.4:]
+The estimated distance is the middle of the maximum and the minimum safe position with respect to the possible LRBG position. It may differ from the measured traveled distance.
+
+\item[3.6.4.4.1:]
+analogue for the rear end position.
+
+\item[3.6.4.7.1:]
+The unlinked BG confidence interval is not reset at the next LRBG.
+
+\item[3.6.4.7.2]
+The unlinked BG confidence interval is not reset at the next unlinked BG. In some cases the estimated traveled distance between two unlinked BG is calculated by using other rules.
+\end{description}

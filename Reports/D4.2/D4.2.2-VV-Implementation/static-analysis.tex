@@ -816,6 +816,8 @@ If we cross the values ​​obtained in the analysis with the indicative table 
 
 In addition to the Limited Size and Complexity in Functions, Subrutines and Methods and Coding Standard techniques, at following we can see that taking into account the modular approach where one of its rule mentions that it shall specify a restriction for the number of paramenters (normally 5) the Parameter Number Limit is fulfilled.
 
+Furthermore, from the previous definition of recommended values for lines of code measures (see \ref{lst:recom}), we can see there is not documentation for some functions.
+
 Now, an example of the cyclomatic complexity calculation for the bitwalker\_Poke function is shown to compare the correctness of these results .
 
 \begin{listing}[hbt]
@@ -993,8 +995,8 @@ Below the \underline{MISRA-C tested rules} are listed:
 \end{itemize}
 \end{itemize}
 \end{itemize}
-
-After a review of the MISRA-C rules by partners it has been decided that some of them are not to be implemented/approved due to its application can get worse understanbility of the code.
+ 
+After a review of the subset of MISRA-C rules taking into account project requirements and sector standard or best practices it is necessary to decide which of some of them are not to be implemented/approved due to its application can get worse understanbility of the code and which other rules of other standard will be applied.
 
 The table below shows the non approved MISRA-C rules.
 
@@ -1007,6 +1009,10 @@ The table below shows the non approved MISRA-C rules.
     \endhead
     \hline\hline
     \endfoot
+    \textbf{Global 5.1}
+& no recommended
+    \\
+    \hline
     \textbf{Global 5.6}
 & no recommended
     \\
@@ -1893,7 +1899,7 @@ In the tables below are presented the results obtained per file and per function
     \hline
    \end{longtable}
    
-\begin{longtable}{||p{.475\textwidth}|p{.070\textwidth}|p{.1\textwidth}|p{.085\textwidth}|p{.075\textwidth}|p{.080\textwidth}||}
+\begin{longtable}{||p{.475\textwidth}|p{.070\textwidth}|p{.125\textwidth}|p{.085\textwidth}|p{.075\textwidth}|p{.090\textwidth}||}
   \caption{Halsted metrics 2 per file}\\
     \hline\hline
     \textbf{File} &\textbf{B} & \textbf{E} & \textbf{T} & \textbf{D} & \textbf{V}\\
@@ -1975,7 +1981,8 @@ The volume of a function should be at least 20 and at most 1000. The volume of a
 The volume of a file should be at least 100 and at most 8000. These limits are based on volumes measured for files whose LOCpro and v(G) are near their recommended limits. The limits of volume can be used for double-checking.
 
 Halstead's delivered bugs (B) is an estimate for the number of errors in the implementation.
-Delivered bugs in a file should be less than 2. Experiences have shown that, when programming with C or C++, a source file almost always contains more errors than B suggests. The number of defects tends to grow more rapidly than B.
+Delivered bugs in a file should be less than 2. 
+Experiences have shown that, when programming with C or C++, a source file almost always contains more errors than B suggests. The number of defects tends to grow more rapidly than B.
 
 By analyzing the results, one can observe that all the Halsted metrics obtained in relation to functions and file are inside the recommendations.
 
@@ -2101,6 +2108,884 @@ with really bad pieces of code (big, uncommented, unstructured) the MI value can
 
 As a first conclusion, the values from the tables above indicate the functions and file have a good maintanability.
 
+\section{MISRA and Mü8004 Rules Comparation}
+This section analyses the requirements designed in MISRA-C : 2004 standard and Mü8004 standard and makes a comparison between rules they might have in common and describes the most important features of the ones they don’t have in common. 
+
+\begin{center}
+\textsc{\underline{ENVIRONMENT:}}
+\end{center}
+
+%% Debut FRR
+\paragraph{MISRA –C Environment Rule 1.1}
+MISRA-C Rule 1.1 All code shall conform to ISO/IEC 9899:1990
+“Programming languages — C”, amended and corrected by
+ISO/IEC 9899/COR1:1995, ISO/IEC 9899/AMD1:1995, and
+ISO/IEC 9899/COR2:1996.
+
+This rule is not included in Mü8004 standard. It never mentions which version of C is applied.
+
+\paragraph{MISRA –C Environment Rule 1.2}
+MISRA-C Rule 1.2 No reliance shall be placed on undefined or unspecified
+behaviour.
+
+This rule is not included in Mü8004 standard. No requirement on behaviour is specified.
+%% Fin FRR
+
+\paragraph{MISRA –C Environment Rule 1.3}
+MISRA-C Rule 1.3 Description: If a module is to be implemented in a language other than C, or compiled on a different C compiler, then it is essential to ensure that the module will integrate correctly with other modules.
+
+This rule is not included in Mü8004 standard. Mü8004 standard establishes in rule 0.2.22 that it is not allowed to change the programming language inside a program module, but not between different modules.
+
+\paragraph{MISRA –C Environment Rule 1.4}
+MISRA-C Rule 1.4 Description: The compiler/linker shall be checked to ensure that 31 character significance and case sensitive are supported for external identifiers. If the compiler/linker is not capable of meeting this limit, then use the limit of the compiler.
+
+This rule is not included in Mü8004 standard, although in 0.2.9 rule it is referred that names and identifiers must be chosen in a way that differs significantly in the first 31 positions. This rule should be added.
+
+\paragraph{MISRA –C Environment Rule 1.5}
+MISRA-C Rule 1.5 Description: Floating-point implementations should comply with a defined floating-point standard.
+
+This rule is not included in Mü8004 standard and it would be useful adding it to overcome a wide range of problems associated with the use of floating-point arithmetics.
+
+\begin{center}
+\textsc{\underline{LANGUAGE EXTENSION:}}
+\end{center}
+
+\paragraph{MISRA –C Language extensions 2.1}
+MISRA-C Rule 2.1 Description: Where assembly language instructions are required it is recommended that they be encapsulated and isolated in either (a) assembler functions, (b) functions or (c) macros.
+
+This rule is included in Mü8004 Rule 0.2.22, as it establishes that assembler implemented subroutines can be called from C and vice versa. It would be useful to point out that assembler language should not be embedded in normal code.
+
+\paragraph{MISRA –C Language extensions 2.2}
+MISRA-C Rule 2.2 Description: Source code shall only use /*…*/ style comments.
+
+This is less restrictive in Mü8004 standard, as // comments are allowed in Mü8004 Rule 0.2.8 if it is supported by compiler. This is correctly focused as this way consistency is not in danger.
+
+\paragraph{MISRA –C Language extensions 2.3}
+MISRA-C Rule 2.2 Description: The character sequence /* shall not be used within a comment.
+
+This rule is included in Mü8004 Rule 0.2.8, as it establishes that comments must not be nested. This is an important requirement whom omission would cause critical errors otherwise.
+
+\paragraph{MISRA –C Language extensions 2.4}
+MISRA-C Rule 2.4 Description: Sections of code should not be “commented out”
+
+This rule is not included in Mü8004 standard. It would be useful to use conditional compilation (\#if or \#ifdef) for sections of source code not to be compiled, as start and end comment markers for this purpose is dangerous because C does not support nested comments.
+
+%%% debut FRR
+\begin{center}
+\textsc{\underline{CHARACTER SETS:}}
+\end{center}
+
+\paragraph{MISRA –C Character sets 4.1}
+MISRA-C Rule 4.1 Only those escape sequences that are defined in the ISO C
+standard shall be used.
+
+Mü8004 standard does not include this rule. This rules is useful for code portabiliy.
+ 
+\paragraph{MISRA –C Character sets 4.2}
+MISRA-C Rule 4.2 Trigraphs shall not be used.
+
+
+Mü8004 standard does not include this rule. This rules is useful for code understanding. This rule should be mandatory.
+
+%% Fin FRR
+
+\begin{center}
+\textsc{\underline{IDENTIFIERS:}}
+\end{center}
+
+\paragraph{MISRA –C Identifiers 5.1}
+MISRA-C Rule 5.1 Description: Identifiers (internal and external) shall not rely on the significance of more than 31 characters.
+
+This rule is included in Mü8004 Rule 0.2.9, as it establishes that names and identifiers must be chosen in a way that they differ significantly in the first 31 positions.
+
+\paragraph{MISRA –C Identifiers 5.2}
+MISRA-C Rule 5.2 Description: Identifiers in an inner scope shall not use the same name as an identifier in an outer scope, and therefore hide that identifier.
+
+This rule is not included in Mü8004 standard, but it would be useful adding it to avoid confusion between identifiers in the code.
+
+
+\paragraph{MISRA –C Identifiers 5.3}
+MISRA-C Rule 5.3 Description: A typedef name shall be a unique identifier.
+
+This rule is not included in Mü8004 standard, but it would be useful adding it to avoid the reuse this names within a program.
+
+
+\paragraph{MISRA –C Identifiers 5.4}
+MISRA-C Rule 5.4 Description: A tag name shall be a unique identifier.
+
+This rule is not included in Mü8004 standard. Although Mü8004 Rule 0.2.9 establishes that same variables should not serve different purposes and it would be useful to avoid the reuse of names within a program for same purposes. This would be useful adding it to avoid confusion.
+
+
+\paragraph{MISRA –C Identifiers 5.5}
+MISRA-C Rule 5.5 Description: No object or function identifier with static storage duration should be reused.
+
+This rule is not included in Mü8004 standard. It would be useful adding it because the possibility exists for the user to incorrectly associate unrelated variables with the same name.
+
+\paragraph{MISRA –C Identifiers 5.6}
+MISRA-C Rule 5.6 Description: No identifier in one name space should have the same spelling as an identifier in another name space, with the exception of structure member and union member names.
+
+This rule is not included in Mü8004 standard. It extends the avoidance of using same names for same or different purposes. It could be an advisory request to avoid confusion.
+
+\paragraph{MISRA –C Identifiers 5.7}
+MISRA-C Rule 5.7 Description: No identifier name should be reused (across any files in the system).
+
+This rule is not included in Mü8004 standard. It incorporated the Rules 5.2, 5.3, 5.4, 5.5 and 5.6. It would be an extremely severe requirement to avoid confusion between names.
+
+\paragraph{Mü8004 Identifiers 0.2.9}
+Some points of this section, as the following ones, are very important to avoid confusion between names and are not included in Identifiers section in MISRA-C standard:
+\begin{itemize}
+\item Uppercase and lowercase letters, numbers from 0 to 9, and the sign \$ and \_ are allowed for defining names. ‘\_’ must not be the first character
+\item Identifiers that differ only in uppercase/lowercase characters must not have different meaning
+\item Identifiers for macros shall be written in uppercase letter
+\end{itemize}
+
+\begin{center}
+\textsc{\underline{TYPES:}}
+\end{center}
+
+\paragraph{MISRA –C Types 6.1}
+MISRA-C Rule 6.1 Description: The plain char type shall be used only for the storage and use of character values
+
+This rule is not included in Mü8004 standard. This rule could be useful to set the restriction in the work with this type of data.
+
+\paragraph{MISRA –C Types 6.2}
+MISRA-C Rule 6.2 Description: signed and unsigned char type shall be used only for the storage and use of numeric values. Plain char type shall be used for character data.
+
+This rule is not included in Mü8004 standard. This rule could be useful to make a difference between the work with numeric and character data.
+
+\paragraph{MISRA –C Types 6.3}
+MISRA-C Rule 6.3 Description: Typedefs that indicate size and signedness should be used in place of the basic numerical types
+
+Mü8004 standard does not show how to use typedef with different data types. However, it shows in Rule 0.2.6 that float and double data types are not supported. This could be a drawback for the precision of variables and operations between them.
+
+\paragraph{MISRA –C Types 6.4}
+MISRA-C Rule 6.4 Description: Bit fields shall only be defined to be of type unsigned int or signed int.
+
+This rule is not included in Mü8004 standard, although Mü8004 Rule 0.2.6 establishes that bitfields are permitted. This rule could be useful for the correctness in the work with bitfields.
+
+\paragraph{MISRA –C Types 6.5}
+MISRA-C Rule 6.5 Description: Bit fields of signed type shall be at least 2 bits long.
+
+This rule is not included in Mü8004 standard
+
+\begin{center}
+\textsc{\underline{CONSTANTS:}}
+\end{center}
+
+\paragraph{MISRA –C Types 7.1}
+MISRA-C Rule 7.1 Description: Octal constants (other than zero) and octal escape sequences shall not be used
+
+This rule is not included in Mü8004 standard for the definition of constants. Although it defines how to create constants using “const” keyword, it could be interesting not to mix constants and octal, because of potential errors when working with fixed length constants
+
+\paragraph{Mü8004 – 0.2.10 Constants}
+Mü8004 – 0.2.10 Constants Rule: Although MISRA-C adds 7.1 Rule that describes the work with octal constants in the standard, Mü8004 - 0.2.10 Constants rule specifies better which is the way to define constants of different type, and the way to use them along the code.
+
+\begin{center}
+\textsc{\underline{DECLARATIONS AND DEFINITIONS:}}
+\end{center}
+
+\paragraph{MISRA –C Types 8.1}
+MISRA-C Rule 7.1 Description: Functions shall have prototype declarations and the prototype shall be visible at both the function definition and call
+
+Mü8004 standard includes at Rule 0.2.15 that function prototypes shall be used for every function whenever the compiler supports it. It would be useful to set the visibility of prototypes for the integrity of function definitions and calls.
+
+\paragraph{MISRA –C Declarations and Definitions 8.2}
+MISRA-C Rule 8.2 Description: Whenever an object or function is declared or defined, its type shall be explicitly stated
+
+Mü8004 standard includes at Rule 0.2.15 that function header have to define the function type.
+
+\paragraph{MISRA –C Declarations and Definitions 8.3}
+MISRA-C Rule 8.3 Description: For each function parameter the type given in the declaration and definition shall be identical, and the return types shall also be identical
+
+Mü8004 standard does not include this rule, but this rule should be necessary for the proper operation of the function. 
+
+\paragraph{MISRA –C Declarations and Definitions 8.4}
+MISRA-C Rule 8.4 Description: If objects or functions are declared more than once their types shall be compatible
+
+Mü8004 standard does not include this rule. It might be good to add this rule to the proper functioning of the code, even though it would be recommendable not to declare objects or functions more than once in order to reduce the number of mistakes made.
+
+\paragraph{MISRA –C Declarations and Definitions 8.5}
+MISRA-C Rule 8.5 Description: There shall be no definitions of objects or functions in a header file
+
+Mü8004 standard does not include this rule.  Although Mü8004 Rule 0.2.5 establishes that function prototypes shall only be used in header files, there is no reference to the definition of objects and functions. To prohibit the definition of objects and functions in the header file would be a good programming rule.
+
+\paragraph{MISRA –C Declarations and Definitions 8.6}
+MISRA-C Rule 8.6 Description: Functions shall be declared at file scope
+
+There is a restriction in Mü8004 standard Rule 0.2.5 when declaring functions at file scope, because it establishes that function prototypes shall only be used in header files.
+
+\paragraph{MISRA –C Declarations and Definitions 8.7}
+MISRA-C Rule 8.7 Description: Objects shall be defined at block scope if they are only accessed from within a single function
+
+Mü8004 standard Rule 0.2.14 establishes that global definitions of structures shall be defined in header files. It would be interesting to add MISRA-C Rule 8.7 for objects that are only used in functions or in block scope.  
+
+\paragraph{MISRA –C Declarations and Definitions 8.8}
+MISRA-C Rule 8.8 Description: An external object or function shall be declared in one and only one (external) file
+
+This rule can be added to Mü8004 standard to improve 0.2.14 Rule, as it defines that global definition of structures shall be defined in header files
+
+\paragraph{MISRA –C Declarations and Definitions 8.9}
+MISRA-C Rule 8.9 Description: An identifier with external linkage shall have exactly one external definition
+
+Mü8004 does not include this rule. It is necessary to add this rule to fix the work with extern parameter.
+
+\paragraph{MISRA –C Declarations and Definitions 8.10, 8.11}
+MISRA-C Rule 8.10 Description: All declarations and definitions of objects or functions at file scope shall have internal linkage unless external linkage is required
+
+MISRA-C Rule8.11 Description: The static storage class specifier shall be used in definitions and declarations of objects and functions that have internal linkage
+
+Mü8004 does not include these rules. It would be useful to avoid confusion between objects with internal scope and objects with external scope.
+
+\paragraph{MISRA –C Declarations and Definitions 8.12}
+MISRA-C Rule 8.12 Description: When an array is declared with external linkage, its size shall be stated explicitly or defined implicitly by initialization 
+
+Mü8004 does not include this rule. It could be interesting to add this rule to Mü8004 standard to establish the work with arrays when they are declared with external linkage.
+
+
+\begin{center}
+\textsc{\underline{INITIALIZATION:}}
+\end{center}
+
+\paragraph{MISRA –C Initialization 9.1}
+MISRA-C Rule 9.1 Description: All automatic variables shall have been assigned a value before being used 
+
+Mü8004 standard includes at Rule 0.2.12 that all variables and fields shall be initialized before they are used the first time.
+
+\paragraph{MISRA –C Initialization 9.2}
+MISRA-C Rule 9.2 Description: Braces shall be used to indicate and match the structure in the non-zero initialization of arrays and structures
+
+The use of braces is included in Mü8004 standard Rule 0.2.6, as it establishes that for clearness, the initialization shall be put in curly brackets.
+
+\paragraph{MISRA –C Initialization 9.3}
+MISRA-C Rule 9.3 Description: In an enumerator list, the “=” construct shall not be used to explicitly initialize members other than the first, unless all items are explicitly initialized
+
+Mü8004 does not include this rule. It is necessary to avoid making mistakes when initializing enumerators.
+
+%% Debut FRR
+\begin{center}
+\textsc{\underline{CONVERSIONS:}}
+\end{center}
+
+\paragraph{MISRA -C Conversions 10.1}
+MISRA-C Rule 10.1 Description: The value of an expression of integer type shall not be implicitly
+converted to a different underlying type if:\\
+(a) it is not a conversion to a wider integer type of the same
+signedness, or \\
+(b) the expression is complex, or \\
+(c) the expression is not constant and is a function argument, or \\
+(d) the expression is not constant and is a return expression.
+
+Mü8004 includes this rule. It is a precision of the third phrase of the chapter 0.2.18.
+
+\paragraph{MISRA -C Conversions 10.2}
+MISRA-C Rule 10.2 Description: The value of an expression of floating type shall not be implicitly
+converted to a different type if:\\
+(a) it is not a conversion to a wider floating type, or\\
+(b) the expression is complex, or\\
+(c) the expression is a function argument, or\\
+(d) the expression is a return expression.
+
+Mü8004 includes this rule. It is a precision of the thrid phrase of the chapter 0.2.18.
+
+\paragraph{MISRA -C Conversions 10.3}
+MISRA-C Rule 10.3 Description: The value of a complex expression of integer type shall only be
+cast to a type of the same signedness that is no wider than the
+underlying type of the expression.
+
+Mü8004 includes this rule. It is a precision of the third sentence of the chapter 0.2.18.
+
+\paragraph{MISRA -C Conversions 10.4}
+MISRA-C Rule 10.4 Description: The value of a complex expression of floating type shall only be cast to a floating type that is narrower or of the same size.
+
+Mü8004 includes this rule. It is a precision of the third sentence of the chapter 0.2.18.
+
+\paragraph{MISRA -C Conversions 10.5}
+MISRA-C Rule 10.4 Description: If the bitwise operators
+\~ and $<<$ are applied to an operand of underlying type
+unsigned char or unsigned short, the result shall
+be immediately cast to the underlying type of the operand.
+
+Mü8004 does not include this rule. This operators converts the data in the type having a small size. This convertion causes overflow and bug.
+
+
+\paragraph{MISRA -C Conversions 10.6}
+MISRA-C Rule 10.6 Description: A “U” suffix shall be applied to all constants of unsigned type.
+
+Mü8004 does not include this rule. This rule is useful for the maintenability and code review.
+
+\paragraph{MISRA -C Conversions 11.1}
+MISRA-C Rule 11.1 Description: Conversions shall not be performed between a pointer to a function and any type other than an integral type.
+
+Mü8004 does not include this rule. If this rule is not respected, the code has an undefined behavior. This rule must be mandatory. In addition, the code becomes independent of the compiler.
+
+\paragraph{MISRA -C Conversions 11.2}
+MISRA-C Rule 11.2 Description: Conversions shall not be performed between a pointer to object and any type other than an integral type, another pointer to object type or a pointer to void.
+
+Mü8004 does not include this rule. This rule is for the determinism of the cast system. This rules indicates that we do not have to mix pointer and object.
+
+\paragraph{MISRA -C Conversions 11.3}
+MISRA-C Rule 11.3 Description: A cast should not be performed between a pointer type and an integral type. 
+
+Mü8004 does not include this rule. This rule is used for not mixing data and pointer. Those two objects are different.
+
+\paragraph{MISRA -C Conversions 11.4}
+MISRA-C Rule 11.4 Description: A cast should not be performed between a pointer to object type and a different pointer to object type.
+
+Mü8004 does not include this rule. This rule is used for not mixing different pointer types for data alignement. This rule allows to execute the code in a safety way.
+
+\paragraph{MISRA -C Conversions 11.5}
+MISRA-C Rule 11.5 Description: A cast shall not be performed that removes any {\it const} or {\it volatile} qualification from the type addressed by a pointer.
+
+Mü8004 does not include this rule. This rule is used for not modifying a constant data or a volatile. This rule allows to execute the code in a safety way.
+%% end FRR
+
+\begin{center}
+\textsc{\underline{EXPRESSIONS:}}
+\end{center}
+
+\paragraph{MISRA –C Expressions 12.1}
+MISRA-C Rule 12.1 Description: Limited dependence should be placed on C’s operator precedence rules in expressions
+
+Mü8004 does not include this rule. This could be a good advisory rule for the developer that has to be careful with made mistakes because of precedence rule of C. Parentheses should be used to reduce made mistakes.
+
+\paragraph{MISRA –C Expressions 12.2}
+MISRA-C Rule 12.2 Description: The value of an expression shall be the same under any order of evaluation that the standard permits
+
+Mü8004 standard makes reference to the importance of the influence of evaluation order in expressions.  That’s why Mü8004 Rule 0.2.13 establishes that assignments inside expressions are forbidden and Mü8004 Rule12.2 establishes that post increment and post decrement operators are only allowed if they are placed in a separate expression. However, an advice should be made to the influence of access order in expressions where functions calls, access to volatile objects… are used.
+
+\paragraph{MISRA –C Expressions 12.3}
+MISRA-C Rule 12.3 Description: The sizeof operator shall not be used on expressions that contain side effects
+
+Mü8004 Rule 0.2.4 establishes that sizeof operator must not be used after \#if. This operator cannot be used to evaluate an expression. It shall only be applied to an operand which is a type or object.
+
+\paragraph{MISRA –C Expressions 12.4}
+MISRA-C Rule 12.4 Description: The right-hand operand of a logical \&\& or || operator shall not contain side effects
+
+Mü8004 standard does not include this rule. This could be a good rule for the developer that has to be careful with side effects when working with these operators.
+
+\paragraph{MISRA –C Expressions 12.5}
+MISRA-C Rule 12.5 Description: The operands of a logical \&\& or || shall be primary-expressions
+Mü8004 standard does not include this rule. This could be a good rule for both readability of code and for ensuring that the behavior is as the programmer intended.
+
+\paragraph{MISRA –C Expressions 12.6}
+MISRA-C Rule 12.6 Description: The operands of logical operators (\&\&, || and !) should be effectively Boolean. Expressions that are effectively Boolean should not be used as operands to operators other than (\&\&, ||, !, =, ==, != and ?:)
+
+Mü8004 Rule 0.2.4 establishes the difference between logical operators (\&\&, ||, !, =, ==, != and ?:) and bitwise (\&=, |, \^, -, >>, <<) operators
+
+\paragraph{MISRA –C Expressions 12.7}
+MISRA-C Rule 12.7 Description: Bitwise operators shall not be applied to operands whose underlying type is signed
+
+Mü8004 Rule 0.2.4 establishes that bitwise operators and right shift operators shall only be used with unsigned variables.
+
+\paragraph{MISRA –C Expressions 12.8}
+MISRA-C Rule 12.8 Description: The right-hand operand of a shift operator shall lie between zero and one less than the width in bits of the underlying type of the left-hand operand
+
+Mü8004 standard does not include this rule. It could be useful to add this rule and others that talk about the limitations in the work with different operands.
+
+\paragraph{MISRA –C Expressions 12.9}
+MISRA-C Rule 12.9 Description: The unary minus operator shall not be applied to an expression whose underlying type is unsigned
+
+Mü8004 Rule 0.2.6 explains the problematic of combining signed and unsigned variables in arithmetic operations. However, this should be extended to explain the problems generated when doing operations as applying operators like unary minus to unsigned variables.
+
+\paragraph{MISRA –C Expressions 12.10}
+MISRA-C Rule 12.10 Description: The comma operator shall not be used
+
+Mü8004 Rule 0.2.4 establishes that Mü8004 standard does not support the work with comma operator. 
+
+\paragraph{MISRA –C Expressions 12.11}
+MISRA-C Rule 12.11 Description: Evaluation of constant unsigned integer expressions should not lead to wrap-around
+
+Mü8004 standard does not include this rule. This could be a helpful rule to avoid the overflow of unsigned integer expressions.
+
+\paragraph{MISRA –C Expressions 12.12}
+MISRA-C Rule 12.12 Description: The underlying bit representations of floating-point values shall not be used
+
+Mü8004 standard does not include this rule. This could be an interesting rule to avoid the errors caused by the way floating-point values are stored, in case this data types would be supported by the compiler.
+
+\paragraph{MISRA –C Expressions 12.13}
+MISRA-C Rule 12.13 Description: The increment (++) and decrement (--) operators should not be mixed with other operators in an expression
+
+Mü8004 Rule 0.2.4 establishes the restrictions when working with these operators. Post increment and post decrement operators are only allowed if they are placed in a separate expression.
+
+
+\begin{center}
+\textsc{\underline{CONTROL STATEMENT EXPRESSIONS:}}
+\end{center}
+
+\paragraph{MISRA –C Control statement expressions 13.1}
+MISRA-C Rule 13.1 Description: Assignment operators shall not be used in expressions that yield a Boolean value
+
+Mü8004 Rule 0.2.13 establishes that assignment operators shall not be used inside expressions that are considered to have a Boolean value.
+
+\paragraph{MISRA –C Control statement expressions 13.2}
+MISRA-C Rule 13.2 Description: Tests of a value against cero should be made explicit, unless the operand is effectively Boolean
+
+Mü8004 standard does not include this rule. It could be useful to add this rule for the appropriate work with “not equal” operator.
+
+\paragraph{MISRA –C Control statement expressions 13.3}
+MISRA-C Rule 13.3 Description: Floating-point expressions shall not be tested for equality or inequality
+
+Mü8004 standard does not include this rule. This could be an interesting rule if floating-point values are allowed.
+
+\paragraph{MISRA –C Control statement expressions 13.4}
+MISRA-C Rule 13.4 Description: The controlling expression of a for statement shall not contain any object of floating type
+
+Mü8004 standard does not include this rule. This could be an interesting rule to avoid making mistakes with for statement, if floating-point values are allowed.
+
+\paragraph{MISRA –C Control statement expressions 13.5}
+MISRA-C Rule 13.5 Description: The three expressions of a for statement shall be concerned only with loop control
+
+Mü8004 standard does not include this rule. This is a necessary rule that explains how to work correctly with for statement.
+
+\paragraph{MISRA –C Control statement expressions 13.6}
+MISRA-C Rule 13.6 Description: Numeric variables being used within a for loop for iteration counting shall not be modified in the body of the loop
+
+Mü8004 standard does not include this rule. This is a basic rule for the correct work of for loop.
+
+\paragraph{MISRA –C Control statement expressions 13.7}
+MISRA-C Rule 13.7 Description: Boolean operations whose results are invariant shall not be permitted
+
+Mü8004 standard does not include this rule. This could be a good rule to avoid the propagation of errors in the program due to wrongly implemented Boolean operations.
+
+
+\begin{center}
+\textsc{\underline{CONTROL FLOW:}}
+\end{center}
+
+\paragraph{MISRA –C Control flow 14.1}
+MISRA-C Rule 14.1 Description: There shall be no unreachable code
+
+Mü8004 standard does not include this rule, but it is a necessary to avoid mistakes due to code that it is never executed.
+
+\paragraph{MISRA –C Control flow 14.2}
+MISRA-C Rule 14.2 Description: All non-null statements shall either: (a) have at least one side-effect however executed, or (b) cause control flow to change
+
+Mü8004 standard does not include this rule. This is a necessary rule to avoid making errors when creating statements.
+
+\paragraph{MISRA –C Control flow 14.3}
+MISRA-C Rule 14.3 Description: Before preprocessing, a null statement shall only occur on a line by itself; it may be followed by a comment provided that the first character following the null statement is a white-space character
+
+Mü8004 standard does not include this rule. This is a necessary rule if null statements are allowed to be used. However, the safest way would be not to permit embedding null statements in the code. 
+
+\paragraph{MISRA –C Control flow 14.4}
+MISRA-C Rule 14.4 Description: The \textit{goto} statement shall not be used
+
+Mü8004 standard does not include this statement in the list of permitted statements.
+
+\paragraph{MISRA –C Control flow 14.5}
+MISRA-C Rule 14.5 Description: The \textit{continue} statement shall not be used
+
+Mü8004 Rule 0.2.3 includes this statement in the list of permitted statements, even though it is recommended to avoid working with it, if possible.
+
+\paragraph{MISRA –C Control flow 14.6}
+MISRA-C Rule 14.6 Description: For any iteration statement there shall be at most one break statement used for loop termination
+
+Mü8004 Rule 0.2.3 establishes that every case branch must contain a statement and end with break. This rule is in the interest of good structured programming.
+
+\paragraph{MISRA –C Control flow 14.7}
+MISRA-C Rule 14.7 Description: A function shall have a single point of exit at the end of the function
+
+Mü8004 Rule 0.2.3 includes this restriction, as it establishes the use, once per function, of the return statement as the exit point of the function. 
+
+\paragraph{MISRA –C Control flow 14.8}
+MISRA-C Rule 14.8 Description: The statement forming the body of a \textit{switch, while, do … while} or \textit{for} statement shall be a compound statement.
+
+Mü8004 Rule 0.2.3 establishes that to facilitate the examination, the program shall be structured with brackets and indentation of lines. This rule should be extended to mention specific cases as, \textit{switch, while, do … while} and \textit{for} cases.
+
+\paragraph{MISRA –C Control flow 14.9}
+MISRA-C Rule 14.9 Description: An \textit{if} (expression) construct shall be followed by a compound statement. The \textit{else} keyword shall be followed by either a compound statement, or another \textit{if} statement
+
+Mü8004 Rule 0.2.3 defines the construction of \textit{if} expression. However, it is less restrictive as for an \textit{if} expression with a single statement, braces are not required.
+
+\paragraph{MISRA –C Control flow 14.10}
+MISRA-C Rule 14.10 Description: All \textit{if … else if} construct shall be terminated with an else clause
+
+Mü8004 Rule 0.2.3 defines the construction of \textit{if} expression. However, it does not establish how it is the work with this advanced structure. 
+
+
+\begin{center}
+\textsc{\underline{SWITCH STATEMENTS:}}
+\end{center}
+
+\paragraph{MISRA –C Switch Statement 15.0}
+MISRA-C Rule 15.0 Description: The MISRA C \textit{switch} syntax shall be used
+
+Mü8004 Rule 0.2.3 includes, in a less detailed way, how the construction of a \textit{switch} statement is. 
+
+\paragraph{MISRA –C Switch Statement 15.1}
+MISRA-C Rule 15.1 Description: A \textit{switch} label shall only be used when the most closely-enclosing compound statement is the body of a \textit{switch} statement
+
+Mü8004 Rule 0.2.3 includes how \textit{switch, case} and \textit{default} labels have to be used in a \textit{switch} statement.
+
+\paragraph{MISRA –C Switch Statement 15.2}
+MISRA-C Rule 15.2 Description: An unconditional \textit{break} statement shall terminate every non-empty \textit{switch} clause
+
+Mü8004 Rule 0.2.3 establishes that every case branch in a \textit{switch} statement must contain a statement and end with \textit{break}.
+
+\paragraph{MISRA –C Switch Statement 15.3}
+MISRA-C Rule 15.3 Description: The final clause of a \textit{switch} statement shall be the default clause
+
+Mü8004 Rule 0.2.3 establishes that a default case must be defined in a \textit{switch} statement, and that this is the last statement in the \textit{switch} block.
+
+\paragraph{MISRA –C Switch Statement 15.4}
+MISRA-C Rule 15.4 Description: A \textit{switch} expression shall not represent a value that is effectively Boolean
+
+Mü8004 standard does not include this rule. It could be a useful rule to know which data types can be used with \textit{switch} statement, and avoid making mistakes when the \textit{switch} statement is 
+
+\paragraph{MISRA –C Switch Statement 15.5}
+MISRA-C Rule 15.5 Description: Every \textit{switch} statement shall have at least one \textit{case} clause
+
+Mü8004 standard does not include this rule. It could be useful to add this rule to clarify the necessity of adding at least one case clause in every \textit{switch} statement.
+
+%%% debut FRR v2
+
+\begin{center}
+\textsc{\underline{FUNCTION:}}
+\end{center}
+
+
+\paragraph{MISRA -C Rule 16.1}
+MISRA -C Rule 16.1 Description : Functions shall not be defined with a variable number of arguments.
+
+This rule is included in Mü8004 standard. This rule is mandatory. A variable number of arguments is dangerous for the code. It can introduce undefined behavior.
+
+\paragraph{MISRA -C Rule 16.2}
+MISRA -C Rule 16.2 Description : Functions shall not call themselves, either directly or indirectly.
+
+This rule is included in Mü8004 standard. This rule is mandatory. The functions who call themselves, introduce a recursive behavior. And with recursive functions, it is difficult to justify the program stop. 
+
+ \paragraph{MISRA -C Rule 16.3}
+MISRA -C Rule 16.3 Description : Identifiers shall be given for all of the parameters in a function prototype declaration.
+
+This rule is not included in Mü8004 standard. This rule is used for compatibility, clarity and maintainability aspects.
+
+\paragraph{MISRA -C Rule 16.4}
+MISRA -C Rule 16.4 Description : The identifiers used in the declaration and definition of a function shall be identical.
+
+This rule is not included in Mü8004 standard. This rule is useful for the coherency between the c file and the h file.  
+
+\paragraph{MISRA -C Rule 16.5}
+MISRA -C Rule 16.5 Description : Functions with no parameters shall be declared and defined with the parameter list void.
+
+This rule is not included in Mü8004 standard. This rule is used for standardizing the list parameter and the return of the function. 
+
+\paragraph{MISRA -C Rule 16.6}
+MISRA -C Rule 16.5 Description : The number of arguments passed to a function shall match the number of parameters.
+
+This rule is not included in Mü8004 standard. This rule is related to the rule 16.1. This rule is used for standardizing the definition and the call function.
+
+\paragraph{MISRA -C Rule 16.7}
+MISRA -C Rule 16.7 Description : A pointer parameter in a function prototype should be declared as pointer to {\it const} if the pointer is not used to modify the adressed object.
+
+This rule is not included in Mü8004 standard. This rule is mandatory. Thanks to this rule verifications can be made by the compiler.
+
+\paragraph{MISRA -C Rule 16.8}
+MISRA -C Rule 16.8 Description : All exit paths from a function with non-void return type shall have an explicit {\it return} statement with an expression.
+
+%%This rule is not included in Mü8004 standard. The C norm does not define the behaviour when there is not in  the dataflow. This rule prevents an unwanted behavior.
+This rule is not included in Mü8004 standard. The C norm does not define the behaviour when there is no expression in  the dataflow. This rule prevents an unwanted behavior.
+
+\paragraph{MISRA -C Rule 16.9}
+MISRA -C Rule 16.9 Description : A function identifier shall only be used with either a preceding \&,or with a parenthesised parameter list, which may be empty.
+
+This rule is not included in Mü8004 standard. In the example of Misra, we cannot make the difference between the null test of a pointer or the return of the function. To avoid a confusion, this rule is mandatory.
+
+\paragraph{MISRA -C Rule 16.9}
+MISRA -C Rule 16.9 Description : A function identifier shall only be used with either a preceding \&,or with a parenthesised parameter list, which may be empty.
+
+This rule is not included in Mü8004 standard. This rule is obvious. However the rule 20.3 indicates that a test before the call function is recommended.
+
+We have noticed that there was no many information about the behavior and the function call in this standard, but a lot of information on the documentation and the declaration of the function.
+%%% Fin FRR v2
+
+\begin{center}
+\textsc{\underline{POINTERS AND ARRAYS:}}
+\end{center}
+
+\paragraph{MISRA –C Pointers and Arrays 17.1}
+MISRA-C Rule 17.1 Description: Pointer arithmetic shall only be applied to pointers that address an array or array element
+
+Mü8004 standard does not include this rule. This is a necessary rule to determine how pointers arithmetic has to be applied in order to have an expected behaviour.
+
+\paragraph{MISRA –C Pointers and Arrays 17.2}
+MISRA-C Rule 17.2 Description: Pointer subtraction shall only be applied to pointers that address elements of the same array
+
+Mü8004 standard does not include this rule. This is a necessary rule if the result we want to get is the number of elements separating the pointers.
+
+\paragraph{MISRA –C Pointers and Arrays 17.3}
+MISRA-C Rule 17.3 Description: >, >=, <, <= shall not be applied to pointer types except where they point to the same array
+
+Mü8004 standard does not include this rule. This is a necessary rule if the behavior we want to obtain after the comparison of the pointers it is a well-defined behavior.
+
+\paragraph{MISRA –C Pointers and Arrays 17.4}
+MISRA-C Rule 17.4 Description: Array indexing shall be the only allowed form of pointer arithmetic
+
+Mü8004 standard does not include this rule. This rule would help to avoid making mistakes like accessing to invalid memory addresses after manipulation of pointers.
+
+\paragraph{MISRA –C Pointers and Arrays 17.5}
+MISRA-C Rule 17.5 Description: The declaration of objects should contain no more than 2 levels of pointer indirection
+
+Mü8004 standard does not include this rule. Although this would not be a required rule, it would help to improve the readability of the code and avoid making mistakes because of the complexity of instructions.
+
+\paragraph{MISRA –C Pointers and Arrays 17.6}
+MISRA-C Rule 17.6 Description: The address of an object with automatic storage shall not be assigned to another object that may persist after the first object has ceased to exist
+
+Mü8004 Rule 0.2.17 does include this rule, as it establishes that addresses of auto variables shall only be stored in auto variables of the same visibility. 
+
+\paragraph{Mü8004 – 0.2.17 Pointer}
+Mü8004 – 0.2.17 Pointer Rule: Although MISRA-C includes rules about Pointers, it is necessary to establish the limitation of the relation between pointers and the functions, and pointers and the definition of some variables.
+
+\begin{center}
+\textsc{\underline{STRUCTURES AND UNIONS:}}
+\end{center}
+
+\paragraph{MISRA –C Structures and Unions 18.1}
+MISRA-C Rule 18.1 Description: All structure and union types shall be complete at the end of a translation unit
+
+Mü8004 standard does not include this rule. This is a basic rule that shows how the definition of structures has to be made.
+
+\paragraph{MISRA –C Structures and Unions 18.2}
+MISRA-C Rule 18.2 Description: An object shall not be assigned to an overlapping object
+
+Mü8004 standard does not include this rule. Although this rule refers to low-level programming, it could be useful in case it is permitted to create two objects having some overlap in memory.
+
+\paragraph{MISRA –C Structures and Unions 18.3}
+MISRA-C Rule 18.3 Description: An area of memory shall not be reused for unrelated purposes
+
+Mü8004 standard does not include this rule. This could be an interesting rule to avoid making mistakes by storing unrelated data in the same piece of memory. However, exceptions should be made for requirements of memory efficiency.
+
+\paragraph{MISRA –C Structures and Unions 18.4}
+MISRA-C Rule 18.4 Description: Unions shall not be used
+
+Mü8004 Rule 0.2.6 contradicts this rule. Unions could be used in situations in which the use of unions is advisable for an implementation that has to be efficient in terms of memory.
+
+%%% begin FRR v2
+\begin{center}
+\textsc{\underline{PREPROCESSING DIRECTIVES:}}
+\end{center}
+
+\paragraph{MISRA -C Rule 19.1}
+MISRA -C Rule 19.1 Description : \#include statements in a file should only be preceded by other preprocessor directives or comments.
+
+This rule is included in Mü8004. This rule is advisory in MISRA -C but mandatory in the Mü8004. This rule describes the pattern of the files and makes the files more readable.
+
+\paragraph{MISRA -C Rule 19.2}
+MISRA -C Rule 19.3 Description : Non-standard characters should not occur in header file names in \#include directives.
+
+This rule is not included in Mü8004. This rule is useful for the portability of the code.
+
+\paragraph{MISRA -C Rule 19.3}
+MISRA -C Rule 19.3 Description : The \#include directive shall be followed by either a <filename> or "filename" sequence.
+
+This rule is included in Mü8004. This rule is used to demonstrate the dependence of the modular code.
+
+\paragraph{MISRA -C Rule 19.4}
+MISRA -C Rule 19.4 Description : C macros shall only expand to a braced initialiser, a constant, a string literal, a parenthesised expression, a type qualifier, a storage class specifier, or a do-while-zero construct.
+
+This rule is not included in Mü8004. This rule reduces C macros. This reduction is useful for the maintainability and readability of the code. This rule is used only to define macro instructions and not a function. 
+
+\paragraph{MISRA -C Rule 19.5}
+MISRA -C Rule 19.5 Description : Macros shall not be \#define’d or \#undef’d within a block.
+
+This rule is not included in Mü8004. This rule is not reduce the scope of the macro in a code. When it defines a macro, the scope of the instruction must be at same level.
+
+\paragraph{MISRA -C Rule 19.6}
+MISRA -C Rule 19.6 Description : \#undef shall not be used.
+
+This rule is included in Mü8004. \#undef  is no used. And this instruction can lead to confusion.
+
+\paragraph{MISRA -C Rule 19.7}
+MISRA -C Rule 19.7 Description : A function should be used in preference to a function-like macro
+
+This rule is not included in Mü8004. This rule is used to not confuse the modular aspect and the programming.
+
+\paragraph{MISRA -C Rule 19.8}
+MISRA -C Rule 19.8 Description : A function-like macro shall not be invoked without all of its arguments.
+
+This rule is not included in Mü8004. This rule is mandatory. This rule is used to avoid the unwanted behaviour. 
+
+\paragraph{MISRA -C Rule 19.9}
+MISRA -C Rule 19.9 Description : Arguments to a function-like macro shall not contain tokens that look like preprocessing directives.
+
+This rule is not included in Mü8004.  This rule is for readable. If this rule is not respected, the software maintainer will be allowed to confuse the macro and preprocessing directive?
+
+\paragraph{MISRA -C Rule 19.10}
+MISRA -C Rule 19.10 Description : In the definition of a function-like macro each instance of a parameter shall be enclosed in parentheses unless it is used as the operand of \# or \#\#.
+
+This rule is not included in Mü8004. This rule is used to create the unwanted behaviour, when the pre-processor instances the macro.
+
+\paragraph{MISRA -C Rule 19.11}
+MISRA -C Rule 19.11 Description : All macro identifiers in preprocessor directives shall be defined before use, except in \#ifdef and \#ifndef preprocessor directives and the defined() operator.
+
+This rule is not included in Mü8004. This rule is for the modular aspect and comprehension. Because The identifier is clearly defined.
+
+\paragraph{MISRA -C Rule 19.12}
+MISRA -C Rule 19.12 Description : There shall be at most one occurrence of the \# or \#\# operators in a single macro definition.
+
+This rule is not included in Mü8004. This rule is used to avoid unspecified directive preprocessor.
+
+\paragraph{MISRA -C Rule 19.13}
+MISRA -C Rule 19.13 Description : The \# and \#\# operators should not be used.
+
+This rule is not included in Mü8004. This rule is used to avoid unspecified directive preprocessor.
+
+\paragraph{MISRA -C Rule 19.14}
+MISRA -C Rule 19.14 Description : The defined preprocessor operator shall only be used in one of the two standard forms.
+
+This rule is not included in Mü8004. This rule is useful for the portability of the code.
+
+\paragraph{MISRA -C Rule 19.15}
+MISRA -C Rule 19.15 Description : Precautions shall be taken in order to prevent the contents of a header file being included twice.
+
+This rule is not included in Mü8004. This rule is used to avoid incoherence file inclusion. 
+
+\paragraph{MISRA -C Rule 19.16}
+MISRA -C Rule 19.16 Description : Preprocessing directives shall be syntactically meaningful even when excluded by the preprocessor.
+
+This rule is not included in Mü8004. This rule is here to avoid a breach of C norm. If prepocessing directives is badly formed, the compiler will ignor it without warning.
+
+\paragraph{MISRA -C Rule 19.17}
+MISRA -C Rule 19.17 Description : All \#else, \#elif and \#endif preprocessor directives shall reside in the same file as the \#if or  \#ifdef directive to which they are related.
+
+This rule is not included in Mü8004. This rule is used for the maintenance of the code because the imbrication of preprocessor directive makes the code hard to read.
+
+\begin{center}
+\textsc{\underline{STANDARD LIBRARIES:}}
+\end{center}
+
+\paragraph{MISRA -C Rule 20.1}
+MISRA -C Rule 20.1 Description : Reserved identifiers, macros and functions in the standard library, shall not be defined, redefined or undefined.
+
+This rule is not included in Mü8004. This rule is  both for the standardization and readability of the code.
+
+\paragraph{MISRA -C Rule 20.2}
+MISRA -C Rule 20.2 Description : The names of standard library macros, objects and functions shall not be reused.
+
+This rule is not included in Mü8004. This rule is both for standardization and readability of the code. 
+
+\paragraph{MISRA -C Rule 20.3}
+MISRA -C Rule 20.3 Description : The validity of values passed to library functions shall be checked.
+
+This rule is included in Mü8004. This rule is mandatory. When a standard function is called , the values passed to the function are checked. This rule is important because it avoids unwanted behaviour.
+
+\paragraph{MISRA -C Rule 20.4}
+MISRA -C Rule 20.4 Description : Dynamic heap memory allocation shall not be used.
+
+This rule is included in Mü8004. Dynamic heap memory utilisation is a source of errors such as memory leak or null pointer. 
+
+\paragraph{MISRA -C Rule 20.5}
+MISRA -C Rule 20.5 Description : The error indicator {\it errno} shall not be used.
+
+This rule is not included in Mü8004. In the standard {\it errno} is poorly defined. To avoid unwanted behaviour this construction must be prohibited.
+
+paragraph{MISRA -C Rule 20.6}
+MISRA -C Rule 20.6 Description : The macro {\it offsetof}, in library {\it <stddef.h>}, shall not be used.
+
+This rule is not included in Mü8004. In the standard the macro offsetof is bad defined. To avoid unwanted behaviour this construction must be prohibited.
+
+\paragraph{MISRA -C Rule 20.7}
+MISRA -C Rule 20.7 Description : The {\it setjmp} macro and the {\it longjmp} function shall not be used.
+
+This rule is included in Mü8004. The utilisation of this instruction avoid to use goto and label. This instructions provide "spaghetti code".
+
+\paragraph{MISRA -C Rule 20.8}
+MISRA -C Rule 20.8 Description : The signal handling facilities of {\it <signal.h>} shall not be used.
+
+This rule is not included in Mü8004. The behaviour of {\it <signal.h>} is undefined for some values. And a critical code must not have undefined behavior. 
+
+\paragraph{MISRA -C Rule 20.9}
+MISRA -C Rule 20.9 Description : The input/output library {\it <stdio.h>} shall not be used in production code.
+
+This rule is not included in Mü8004. The behaviour of {\it <stdio.h>} is undefined for some values. And a critical code must not have undefined behavior.
+
+\paragraph{MISRA -C Rule 20.10}
+MISRA -C Rule 20.10 Description : The library functions {\it atof}, {\it atoi} and {\it atol} from library {\it <stdlib.h>} shall not be used.
+
+This rule is not included in Mü8004. In the standard the macro atof, atoi and atol are bad defined. To avoid unwanted behaviour this construction shall be prohibited.
+
+\paragraph{MISRA -C Rule 20.11}
+MISRA -C Rule 20.11 Description : The library functions {\it abort}, {\it exit}, {\it getenv} and {\it system} from library {\it <stdlib.h>} shall not be used.
+
+This rule is not included in Mü8004. This function are not need in embedded code. Therefore it is forbidden. 
+
+\paragraph{MISRA -C Rule 20.12}
+MISRA -C Rule 20.12 Description : The time handling functions of library {\it <time.h>} shall not be used.
+
+This rule is not included in Mü8004. The behaviour of <time.h> is undefined for some values. And a critical code must not have undefined behavior. 
+
+%%% End FRR v2
+
+\begin{center}
+\textsc{\underline{DOCUMENTATION:}}
+\end{center}
+
+\paragraph{MISRA –C Documentation 3.1}
+MISRA-C Rule 3.1 Description: All usage of implementation-defined behavior shall be documented
+
+Mü8004 standard does not include this rule. This could be a useful rule to guarantee that the standard’s behavior is completely documented and covered by the defined rules.
+
+\paragraph{MISRA –C Documentation 3.2}
+MISRA-C Rule 3.2 Description: The character set and the corresponding encoding shall be documented
+
+Mü8004 standard does not include this rule. As standard’s requirements have to be documented, same thing should be made with encoding of permitted character sets.
+
+\paragraph{MISRA –C Documentation 3.3}
+MISRA-C Rule 3.3 Description: The implementation of integer division in the chosen compiler should be determined, documented and taken into account
+
+Mü8004 standard does not include this rule. It should be documented the way arithmetic operations are done, and what are the limitations of operators and the expected behavior.
+
+\paragraph{MISRA –C Documentation 3.4}
+MISRA-C Rule 3.4 Description: All uses of \textit{\#pragma} directive shall be documented and explained
+
+Mü8004 standard does not include this rule. Although Mü8004 Rule 0.2.5 establishes that the use of the \textit{\#pragma} command requires a special explanation in the proof of functionality, it doesn’t require documenting its use. 
+
+\paragraph{MISRA –C Documentation 3.5}
+MISRA-C Rule 3.5 Description: If it is being relied upon, the implementation defined behavior and packing of bitfields shall be documented
+
+Mü8004 standard does not include this rule. It could be a useful rule to settle how the work with bit fields has to be done. 
+
+\paragraph{MISRA –C Documentation 3.6}
+MISRA-C Rule 3.6 Description: All libraries used in production code shall be written to comply with the provisions of this document, and shall have been subject to appropriate validation
+
+Mü8004 standard does not include this rule. It could be a useful rule to document what libraries have been used in the production of the code, or the ones supplied by the compiler.
+
+\paragraph{Mü8004 – 0.2.3 Coding of Basic Structures}
+Mü8004 – 0.2.3 Coding of Basic Structures Rule: Although MISRA-standard includes the way of working with basic structures like if-else, switch-case and do-while, Mü8004 standard defines clearly how this structures have to be defined.
+
+\paragraph{Mü8004 – 0.2.4 Operators}
+Mü8004 – 0.2.4 Operator Rule: Although MISRA-standard includes explanation for the most important operators, it is helpful to have a general overview of them within a table.
+
+\paragraph{Mü8004 - 0.2.5 Preprocessor Commands} 
+This rule is used to the portability of the code. \#pragma directive is for the optimization compiler, and often it is not portable. This commands must be forbid.
+
+\paragraph{Mü8004 - 0.2.7 Memory Classes} 
+The permitted memory classes is classical. But the utilisation of static is problematic because the code is unreadable.
+
+\paragraph{Mü8004 – 0.2.11 Variables}
+Mü8004 – 0.2.11 Variables Rule: Mü8004 - 0.2.11 Variables rule explains the correct way of defining variables. Although the content of this rule has been treated in MISRA-C standard, it is appropriate to use a specific section to explain the work with variables.
+
+\paragraph{Mü8004 0.2.14 Sources Files} 
+This rule is more restrictive than MISRA. The pattern of Mü8004 describes all the file.
+
+\paragraph{Mü8004 – 0.2.19 Data References}
+Mü8004 – 0.2.19 Data References Rule: Although MISRA-C includes rules about Documentation, it is necessary to make a reference to the documentation of data related and not related to the project planning, and not only to the data and to the libraries used along the code.
+
+\paragraph{Mü8004 – 0.2.20 Cross Reference List}
+Mü8004 – 0.2.20 Cross Reference List Rule: MISRA-C doesn’t include the necessity of using cross reference list for the data of the code. It also could be useful to add the characteristics that need to have the development tools used for this purpose.
+
+\paragraph{Mü8004 – 0.2.21 Assembler Coding}
+Mü8004 – 0.2.21 Assembler Coding Rule: MISRA-C doesn’t include the necessity of justifying the use of assembler coding. It is helpful to specifying that assembler could be useful in time critical programming.
+
+\paragraph{Mü8004 - 0.2.23 Libraries Routine}  
+This section defined some restrictive utilisation of the standard library. But This restriction is less restrictive than MISRA.
+
+
+\paragraph{Mü8004 - 0.2.24 Program Protocol} this rule is obvious but it is not delivered of metric in the code for readable, the maximum number of line in the function or in the file ...
+
+
+\paragraph{Mü8004 – 0.2.25 Optimization}
+Mü8004 – 0.2.25 Optimization Rule: Although MISRA-standard includes the importance of the characteristics of compiler used in the development environment, it is useful to explain the influence of optimization in the compiler.
+
 \section{Conclusions}
 
 Static analysis tools are very good due to the detection of several problem/errors at code level that are usually difficult to detect by manual inspection. Furthermore, they help enforce coding standards and keep code complexity low.
@@ -2109,47 +2994,163 @@ However, these tools sometimes report false positives so it is necessary review 
 
 In order to ensure the correctness of the obtained results mentioned in the previous sections, a comparison of them was executed.
 
-As a result of this comparison we obtain that between the tools there are some small deviations regarding some code metrics like eLOC or comments. Thus it was necessary to check how each aspect/metric is defined into each tool. In relation to the MISRA-C rules, as each tool verifies a subset of the rules defined in this standard, the results are different. However, the violations relationed with rules that are included in both RMS and Understand tool have been detected by both tools.
-
-
-\begin{longtable}{||p{.475\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
-  \caption{function Cyclomatic Complexity comparation}\\
-    \hline\hline
-    \textbf{Function} &\textbf{RSM} & \textbf{Understand} \\
+\begin{longtable}{||p{.225\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
+  \caption{File Size metrics comparation}\\
     \hline\hline
     \endhead
     \hline\hline
     \endfoot
-    Bitwalker\_Peek & 3 & 3 
+\multicolumn{5}{||l||}{\textbf{Bitwalker.c}}
+\\\hline
+\ \textbf{Metric} & \textbf{RSM} & \textbf{LocMetric} & \textbf{Understand} & \textbf{CMT++}
+\\\hline
+\ Total lines: & 109 & \textcolor{red}{110} & 109 & 109
+\\\hline
+\ Code/program lines: & 58 & 58 & 58 & 58
+\\\hline
+\ Comment lines: & \textcolor{red}{29} & 28+5 = 33 & 33 & 33 
+\\\hline
+\ Blank lines: & - & \textcolor{red}{24} & 23 & 23
+ \\\hline
+\end{longtable}
+
+As a result of this comparison we obtain that between the tools there are some small deviations regarding some code metrics like total lines, comments or blank lines. Thus it was necessary to check how each aspect/metric is defined into each tool.
+
+A manual inspection was done and the source of inconsistency is due to LocMetricss counts the last blank line of the file and RSM tool does not count the blank lines that are inside one commented section.
+
+In addition to code size metrics of file, size code metrics per function were compared.
+
+\begin{longtable}{||p{.225\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
+  \caption{Functions Size metrics comparation}\\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+\ \textbf{Metric} & \textbf{RSM} & \textbf{LocMetric} & \textbf{Understand} & \textbf{CMT++}
+\\\hline
+\multicolumn{5}{||l||}{\textbf{Bitwalker\_Peek}}
+\\\hline
+\ Total lines: & \textcolor{red}{19} & - & 20 & 20
+\\\hline
+\ Code/program lines: & \textcolor{red}{12} & - & 13 & 13
+\\\hline
+\ Comment lines: & 5 & - & 5 & 5 
+\\\hline
+\ Blank lines: & - & - & 4 & 4
+ \\\hline
+ \multicolumn{5}{||l||}{\textbf{Bitwalker\_Poke}}
+\\\hline
+\ Total lines: & \textcolor{red}{23} & - & 24 & 24
+\\\hline
+\ Code/program lines: & \textcolor{red}{16} & - & 17 & 17
+\\\hline
+\ Comment lines: & 6 & - & 6 & 6 
+\\\hline
+\ Blank lines: & - & - & 4 & 4
+ \\\hline
+ \multicolumn{5}{||l||}{\textbf{Bitwalker\_IncrementalWalker\_Init}}
+\\\hline
+\ Total lines: & \textcolor{red}{5} & - & 6 & 6
+\\\hline
+\ Code/program lines: & \textcolor{red}{5} & - & 6 & 6
+\\\hline
+\ Comment lines: & 0 & - & 0 & 0 
+\\\hline
+\ Blank lines: & - & - & 0 & 0
+ \\\hline
+ \multicolumn{5}{||l||}{\textbf{Bitwalker\_IncrementalWalker\_Peek\_Next}}
+\\\hline
+\ Total lines: & \textcolor{red}{6} & - & 7 & 7
+\\\hline
+\ Code/program lines: & \textcolor{red}{5} & - & 6 & 6
+\\\hline
+\ Comment lines: & 1 & - & 1 & 1 
+\\\hline
+\ Blank lines: & - & - & 0 & 0
+ \\\hline
+ \multicolumn{5}{||l||}{\textbf{Bitwalker\_IncrementalWalker\_Peek\_Finish}}
+\\\hline
+\ Total lines: & \textcolor{red}{3} & - & 4 & 4
+\\\hline
+\ Code/program lines: & \textcolor{red}{3} & - & 4 & 4
+\\\hline
+\ Comment lines: & 0 & - & 0 & 0 
+\\\hline
+\ Blank lines: & - & - & 0 & 0
+ \\\hline
+ \multicolumn{5}{||l||}{\textbf{Bitwalker\_IncrementalWalker\_Poke\_Next}}
+\\\hline
+\ Total lines: & \textcolor{red}{6} & - & 7 & 7
+\\\hline
+\ Code/program lines: & \textcolor{red}{5} & - & 6 & 6
+\\\hline
+\ Comment lines: & 1 & - & 1 & 1 
+\\\hline
+\ Blank lines: & - & - & 0 & 0
+ \\\hline
+ \multicolumn{5}{||l||}{\textbf{Bitwalker\_IncrementalWalker\_Poke\_Finish}}
+\\\hline
+\ Total lines: & \textcolor{red}{3} & - & 4 & 4
+\\\hline
+\ Code/program lines: & \textcolor{red}{3} & - & 4 & 4
+\\\hline
+\ Comment lines: & 0 & - & 0 & 0 
+\\\hline
+\ Blank lines: & - & - & 0 & 0
+ \\\hline
+\end{longtable}
+
+The total lines and program lines counts produced by some of the tool for the same product differ a little bit. 
+The results clearly demonstrate the effects of existing ambiguities in code counting methodology and a variety of interpretations.
+
+McCabe cyclomatic complexity was another complexity metric calculated by different of the selected tools. 
+
+\begin{longtable}{||p{.475\textwidth}|p{.125\textwidth}|p{.125\textwidth}|p{.125\textwidth}||}
+  \caption{function Cyclomatic Complexity comparation}\\
+    \hline\hline
+    \textbf{Function} &\textbf{RSM} & \textbf{Understand} & \textbf{CMT++} \\
+    \hline\hline
+    \endhead
+    \hline\hline
+    \endfoot
+    Bitwalker\_Peek & 3 & 3 & 3
     \\
     \hline
-    Bitwalker\_Poke & 5 & 5 
+    Bitwalker\_Poke & 5 & 5 & 5 
     \\
     \hline
-    Bitwalker\_IncrementalWalker\_Init & 1 & 1 
+    Bitwalker\_IncrementalWalker\_Init & 1 & 1 & 1
     \\
     \hline
-    Bitwalker\_IncrementalWalker\_Peek\_Next & 1 & 1 
+    Bitwalker\_IncrementalWalker\_Peek\_Next & 1 & 1 & 1
     \\
     \hline
-    Bitwalker\_IncrementalWalker\_Peek\_Finish & 1 & 1 
+    Bitwalker\_IncrementalWalker\_Peek\_Finish & 1 & 1 & 1
     \\
     \hline
-    Bitwalker\_IncrementalWalker\_Poke\_Next & 1 & 1 
+    Bitwalker\_IncrementalWalker\_Poke\_Next & 1 & 1 & 1
     \\
     \hline
-    Bitwalker\_IncrementalWalker\_Poke\_Finish & 1 & 1 
-    \\
-    \hline
-    main.c & 1 & 1 
+    Bitwalker\_IncrementalWalker\_Poke\_Finish & 1 & 1 & 1
     \\
     \hline
 \end{longtable}
 
-Taking into account the obtained results, we can concluded that:
+According to McCabe a value of 10 is a practical upper limit for the cyclomatic complexity of a given module. When the complexity exceeds this value, it becomes very difficult to prove, understand and modify the module. However, in some circumstances, it may be appropriate to relax the restriction and permit modules with a complexity as high as 15.
+
+Analyzing the cyclomatic complexity metric measured one can observe the low risk of each function and all tools measured it in the same way.
+
+In relation to the MISRA-C rules, as each tool verifies a subset of the rules defined in this standard, the results are different. However, the violations relationed with rules that are included in both RMS and Understand tool have been detected by both tools.
+
+The accepted values for the metrics are defined based on the specific project requirements, project quality criteria or sector best practices. Depending on the metrics required for a project, one or more tools can be used. By this reason a selection of some MISRA-C and other standard to be applied shall be done and each specific violation and quality notice shall be analysed to check the suitability of applied the rule or not. 
+
+Taking into account all the obtained results, we can concluded that:
 \begin{itemize}
-\item the complexity of bitwalker.c functions ............. According to McCabe a value of 10 is a practical upper limit for the cyclomatic complexity of a given module. When the complexity exceeds this value, it becomes very difficult to prove, understand and modify the module. However, in some circumstances, it may be appropriate to relax the restriction and permit modules with a complexity as high as 15.
-\item there are some misra-c rules violations and quality notice. It would be recommendable to modify the specific lines if it is possible in order to improve code quality.
+\item the functions and file have a good maintanability due to the maintainability Index is >85 in both of them
+\item the functions have little logic and low risk regarding to the cyclomatic complexity values
+\item the functions and file have an appropiate size and inside the recommendations due to line metrics and Halstead metrics.
+\item there are some misra-c rules violations and quality notice although these shall be taken into account only in case they are related to the selected ruled to be applied.
+\item there are some functions never used
 \end{itemize}
 
 In addition to these, as each existing static analysis tool implements different and very specific techniques (code metrics analysis, semantic analysis, context analysis -interactions between multiple functions calls-, creation of new rules, support coding rules/standard rules, ...) to achieve the required assessment or verification objectives, it is recommended to select different static analysis to cover all the commom areas where problems can occur.

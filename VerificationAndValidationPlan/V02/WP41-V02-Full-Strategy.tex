@@ -1,0 +1,247 @@
+% \chapter{\VV Strategy for a Full Development }
+% \label{sec:vv-strategy-full}
+
+
+
+The overall strategy is to support the design process as specified in
+D2.3 and its partial instantiations within openETCS. In accordance
+with the project approach, V\&V shall be done in a FLOSS style, and it
+has to suit a model-based development. A further main consideration
+shall be to strive for conformance with the requirements of the
+standards (EN~50128 and further). Of particular importance in that
+respect is of course the interface to the safety considerations and
+the contribution of V\&V to the safety case.
+
+Here, the ideal shall be described: How will the V\&V part of a FLOSS
+development of the open-source EVC software look like, what are its
+constituents, and how do they act together in developing and
+maintaining this software within the openETCS ecosystem.
+
+\section{Verification Strategy for a Full Development}
+\label{sec:verif-strategy-full}
+
+This section defines the strategy for verifying a full development of
+the EVC software from the requirements source
+(ss~026+TSIs+\ldots). This ends with the verification of the
+software/hardware integration. In current view, the API defines the
+interface and relevant properties of the hardware. Thus, SW/HW
+integration for openETCS will most probably done virtually with an
+instantiation of the API playing the role of the hardware. 
+
+\subsection{System Test Campaigns}
+Testing is one of the main means for verification. The three main
+features of test campaigns which need to be specified are:
+\begin{itemize}
+\item Definition of the different campaigns for each design phase and
+  their characteristics.
+\item Definition of the campaign objectives, and of the kind of test
+  to be performed in order to achieve these objectives.
+\item Traceability matrix between characteristics to check/ validate
+  and test cases.
+\end{itemize}
+
+\subsection{V\&V Actions Criteria}
+These criteria shall define the acceptance of system or component
+modification, and the interruption criteria shall define the condition
+under which a test campaign should be stopped for instance. These
+criteria have to bet set during the V\&V plan redaction.  During the
+verification phase, these items are verified thanks to the actions
+criteria list described in the subpart related to the development
+phases and items verification.
+
+\subsection{Organization Charts and Responsibilities} 
+The plan shall define the roles and responsibilities of people
+involved in the V\&V activities (according to standards and project
+needs). Must also be defined the teams compositions, and the
+deliverables product owners, as well as the group and committee for
+modification.  These items are verified during the verification phase.
+
+\subsection{Internal Means and Tools} 
+The plan shall list and define the means and tools needed for V\&V
+actions (also when they are needed).  These items are verified during
+the verification phase.
+
+\subsection{External Means and Tools} 
+The plan shall list and define the means and the tools used by the
+interfaces with the project, and which company or structure is using
+them.  These items are verified during the verification phase.
+
+\subsection{Development Phases and Item Verification}
+\bgcmmnt{Needs to be revised. }
+
+The plan for the development phases verification is based on
+requiement coverage at system and sub-system level.  The requirements
+are usually decomposed and gathered in a table, and this table
+constitutes a road-map for verification activities, and is closely
+followed in order to figure out if the required items are covered, and
+if so, in which document.  The following items give an overview of
+items checked during verification phases, regarding the kind of
+prescriptions checked, and the appropriate related development phase.
+
+\begin{description}
+\item[Introduction:] This part gives an overview of Verification
+  general purposes, of main verification phases (Safety Specification
+  of Software, architecture, and overall test campaign), and
+  verification support formalism (harmonized against different
+  Verification activities, can be a simple table).
+\item[ Software Security/Safety Prescriptions Specification Phase:]
+  Gives a list of prescriptions (specifications top level from a top
+  level specification providing the customer needs), and trace their
+  coverage (justification and in which document this justification is
+  provided).  Here is an example: ``Prescription specification related
+  to Software safety should come out from upper level system safety
+  prescriptions and from prescriptions from Security schedule.  This
+  information should be communicated to the Software developer.''
+\item[Design Phases and Software Development:] This phase is based on
+  the same approach of the previous part, and prescriptions are
+  gathered in a table.  The different categories considered are
+  defined in the following parts: (), , detailed design and
+  development prescriptions, coding prescriptions, Software modular
+  tests and Software integration tests prescriptions.
+\item[General Requiements:] For instance: design representations shall
+  be based on a clearly defined notations, or limited to clearly
+  stated characteristics
+\item[Software Architecture Related Requirements:]. For instance: Any
+  System Safety prescription modification related to security should
+  be documented and acknowledged by the developer.
+\item[Support Tools and Coding Languages Requirements:]. For instance:
+  According to the type of development, the compliance with the given
+  prescriptions is under the software supplier responsibility.
+\item[Detailed Design and Development Prescriptions:] For instance:
+  ``The Software shall be produced in order to insure the required
+  modularity, testability and modification ease.''
+\item[Coding Prescriptions:] For instance: ``Each Software code
+  module shall be reviewed''
+\item[Software Modular Tests Prescriptions:] For instance: ``Modular
+  tests shall be documented''
+\item[Software Integration Tests Requirements:] For instance:
+  ``Integration test specification shall encompass: integration groups
+  easily manageable, test cases and test data, test kinds,
+  environment, tools configuration on test program, test acceptance
+  criteria, corrective actions procedures''
+\item[Software Security Validation Planning:] The same formalism as
+  previous parts can be used, and this part sums up the different
+  requirements/specification for the planning regarding the safety
+  activity. For instance: ``Planning shall be managed in order to
+  specify technical and process steps necessary to prove that the
+  software is compliant with safety prescriptions''.
+\item[Programmed Electronic Components (Hardware and Software):] This
+  part is specifically related to the integration conditions. This
+  part is not supposed to be considered in openETCS, as no
+  integration is planned in the project so far.
+\item[Software Safety Validation:] For instance: ``Validation
+  activities shall be performed as specified in the validation plan''.
+\item[Conclusion:] (related to the requirements coverage). In our
+  case, the prescriptions are the requirements explained in the WP4
+  (these prescriptions have to be refined from the different project
+  inputs, such as CENELEC, SRS, FPP\ldots).
+\end{description}
+
+
+\section{Validation Strategy for a Full Development}
+\label{sec:valid-strategy-full}
+
+Validation, according to the standard, starts after SW/HW
+integration. In this section, it shall be detailed how this should
+look like for the openETCS architecture approach (with SSRS and
+API). Ideal would be a description of how a full openETCS EVC software
+could be taken up by some manufacturer and brought to life in a
+product (validation aspect only, of course). Validation will use tests
+covering operational scenarios.  
+
+Not-so-classical validation can start earlier when executable models
+become available. If a model can be animated to run an operational
+scenario (perhaps with some additional environment/rest-of-system
+modeling), design defects may get unveiled before the real
+validation. This is, however, not an activity which is mentioned as a
+development activity in the standard EN~50128. Thus, to use results of
+``early validation'' in a validation report requires a definition of
+its role and an argument for its usefulness.
+
+\subsection{Validation Case}
+The aim of the Validation Report is to demonstrate that the objectives
+of validation which have been set in the validation plan have been
+achieved. This concerns the adequacy of the software design
+documentation and that components and system behavior is compliant
+with the software requirements.
+
+The inputs for validation at system level are:
+\begin{itemize}
+\item Software Requirement Specification (design, architecture),
+\item Sub-System Requirement Specification (encompassing the architecture, 
+interface description and requirement allocation),
+\item Application Programming Interface,
+\item Internal and External constraints,
+\item Validation constraints list,
+\item Validation Plan,
+\end{itemize}
+
+The inputs for validation at software level are:
+\begin{itemize}
+\item Components Requirements Specification,
+\item Integration Specification,
+\item Integration Report,
+\item Test Specifications,
+\item Test reports.
+\end{itemize}
+
+
+The outputs are:
+\begin{itemize}
+\item Software Validation Report (Verdict on software ability to fulfill 
+the objectives and functionalities defined in the requirement specification.),
+\item Software Validation Verification Report,
+\end{itemize}
+
+\section{Safety Interface}
+\label{sec:safety-interface}
+
+\bgcmmnt{There are two aspects: (1) Safety requirements come from a hazard
+and risk analysis. (2) The main contribution of \vv of the openETCS SW
+of the EVC for the safety case of the
+EVC (HW and SW) should be the validation report of the software. This
+has to prove that the software as implement achieves all its safety
+goals which have been assigned to it. These two aspects are adressed
+(partly) in D4.2.3. The following text should be adapted.}
+
+The safety activities in the software development process are closely
+connected to the \vv activities as these provide the overall system
+safety requirements, derive corresponding safety related design
+specifications and collect the \vv documentation to build the safety
+case. The safety activities are identifying unwanted accidents
+resulting in harm and analyses the potential hazards, which could lead
+to the harm. Resulting from this in depth analysis certain
+requirements are derived, which provide the overall safety goals for
+the system. If the initial risk of a hazard resulting in harm has to
+be reduced or the possibility of harm shall be eliminated at all
+specific safety designs are developed to reach the required risk. The
+\vv process has to verify these specifications and validated that the
+requirements hold for the developed software. Respectively, a complete
+documentation is needed to show in the safety case that this steps
+have been done according to the overall \vv plan.
+
+Therefore three main interfaces to the safety activities have to be
+maintained in the \vv process:
+\begin{itemize}
+\item \textbf{Verification of safety design specification}: Based on
+  risk control measures documented in the Hazard Log specific safety
+  design specifications are derived and written in the backlogs for
+  model and code development. As it is done for the overall model and
+  code specification the verification activities have to demonstrate
+  that all of the safety specifications have been implemented
+  properly.
+\item \textbf{Validation of safety requirements}: The overall software
+  validation has to demonstrated that the safety goals are met by the
+  developed product. Therefore the safety requirements which have been
+  stated based on potential accidents and accepted risk levels have to
+  be validated. As these in many cases requires proof for the absence
+  of certain conditions, it is important that \vv activities work in a
+  close iterations with the safety activities to ensure that the
+  safety requirements are stated in a way that can be validated.
+\item \textbf{Creation of \vv documentation}: As the safe case has to
+  provide the complete argumentation that all needed steps to ensure a
+  qualified and safe development process have been performed properly,
+  it is important that the \vv plan and all resulting \vv reports are
+  coherent and allow to show a close chain of arguments.
+\end{itemize}
+

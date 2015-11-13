@@ -1,0 +1,438 @@
+
+#include "rttExternDecl.h"
+
+
+@func void _ora_RollAwayProtection()
+{
+  {
+    double              _rtt_Old_BrakeCommand;
+    double              _rtt_Old_BrakingIndicator;
+    double              _rtt_Old_RAPAckReq;
+    {
+      int                 currentLocation;
+      int                 cycleCtr;
+      int                 triggered;
+/* Set initial location to 'RollAwayProtection.Initial0' */
+      currentLocation = 7;
+      cycleCtr = 0;
+      while (@rttIsRunning) {
+	triggered = 0;
+	if (rttIOPre->BrakeCommand != _rtt_Old_BrakeCommand) {
+	  _rtt_Old_BrakeCommand = rttIOPre->BrakeCommand;
+	  @logSig["%.17g"] ("BrakeCommand", (double) rttIOPre->BrakeCommand);
+	}
+	if (rttIOPre->BrakingIndicator != _rtt_Old_BrakingIndicator) {
+	  _rtt_Old_BrakingIndicator = rttIOPre->BrakingIndicator;
+	  @logSig["%.17g"] ("BrakingIndicator", (double) rttIOPre->BrakingIndicator);
+	}
+	if (rttIOPre->RAPAckReq != _rtt_Old_RAPAckReq) {
+	  _rtt_Old_RAPAckReq = rttIOPre->RAPAckReq;
+	  @logSig["%.17g"] ("RAPAckReq", (double) rttIOPre->RAPAckReq);
+	}
+/* Handle location 'RollAwayProtection.Initial0' */
+	if ((currentLocation == 7) && (triggered == 0)) {
+	  if (triggered == 0) {
+	    rttHaveDiscreteTrans = 1;
+/* New location is 'RollAwayProtection.Standstill' */
+	    currentLocation = 8;
+/** @rttPrint
+ * Model coverage goal: basic control state coverage
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-BCS-0001 Cover basic control state Standstill
+ * @condition TRUE
+ * @event     Component IMR.SystemUnderTest.RollAwayProtection
+ *            reaches basic control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.Standstill
+ * @expected  The actions associated with the transition entering
+ *            this control state, and the control state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ * @req 3.14.2.7
+ */
+
+	    if (sut_RollAwayProtection_tags) {
+	      free(sut_RollAwayProtection_tags);
+	    }
+	    sut_RollAwayProtection_tags = strdup("TC-RollAwayProtection_RTT_SQS_v7-BCS-0001");
+	    triggered = 2;
+	  }
+	  triggered = (triggered + 1);
+	}
+/* Handle location 'RollAwayProtection.Standstill' */
+	if ((currentLocation == 8) && (triggered == 0)) {
+	  if ((triggered == 0) && ((rttIOPre->SpeedDirection == 0) && (rttIOPre->ControllerPosition == 2))) {
+	    rttHaveDiscreteTrans = 1;
+/* New location is 'RollAwayProtection.CalculateRollAwayDistance' */
+	    currentLocation = 20;
+/** @rttPrint
+ * Model coverage goal : transition coverage
+ * Cover transition of component IMR.SystemUnderTest.RollAwayProtection
+ *   RollAwayProtection.Standstill
+ *       -- [ ((IMR.SpeedDirection == 0) && (IMR.ControllerPosition == 2)) ] --> 
+ *   RollAwayProtection.CalculateRollAwayDistance
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-TR-0001 Cover transition Standstill --> CalculateRollAwayDistance
+ * @condition Component IMR.SystemUnderTest.RollAwayProtection
+ *            resides in control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.Standstill
+ * @event     Trigger condition for specified transition becomes true
+ * @expected  The actions associated with the transition specified above,
+ *            and the target state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ * @req 3.14.2.2
+ */
+
+/** @rttPrint
+ * Model coverage goal: basic control state coverage
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-BCS-0003 Cover basic control state CalculateRollAwayDistance
+ * @condition TRUE
+ * @event     Component IMR.SystemUnderTest.RollAwayProtection
+ *            reaches basic control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.CalculateRollAwayDistance
+ * @expected  The actions associated with the transition entering
+ *            this control state, and the control state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ */
+
+	    if (sut_RollAwayProtection_tags) {
+	      free(sut_RollAwayProtection_tags);
+	    }
+	    sut_RollAwayProtection_tags =
+	      strdup("TC-RollAwayProtection_RTT_SQS_v7-TR-0001,TC-RollAwayProtection_RTT_SQS_v7-BCS-0003");
+	    triggered = 2;
+	  }
+	  if ((triggered == 0) && ((rttIOPre->SpeedDirection == 2) && (rttIOPre->ControllerPosition == 0))) {
+	    rttHaveDiscreteTrans = 1;
+/* New location is 'RollAwayProtection.CalculateRollAwayDistance' */
+	    currentLocation = 20;
+/** @rttPrint
+ * Model coverage goal: basic control state coverage
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-BCS-0003 Cover basic control state CalculateRollAwayDistance
+ * @condition TRUE
+ * @event     Component IMR.SystemUnderTest.RollAwayProtection
+ *            reaches basic control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.CalculateRollAwayDistance
+ * @expected  The actions associated with the transition entering
+ *            this control state, and the control state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ */
+
+	    if (sut_RollAwayProtection_tags) {
+	      free(sut_RollAwayProtection_tags);
+	    }
+	    sut_RollAwayProtection_tags = strdup("TC-RollAwayProtection_RTT_SQS_v7-BCS-0003");
+	    triggered = 2;
+	  }
+	  if ((triggered == 0) && ((rttIOPre->SpeedDirection == 0) && (rttIOPre->ControllerPosition == 1))) {
+	    rttHaveDiscreteTrans = 1;
+/* New location is 'RollAwayProtection.CalculateRollAwayDistance' */
+	    currentLocation = 20;
+/** @rttPrint
+ * Model coverage goal: basic control state coverage
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-BCS-0003 Cover basic control state CalculateRollAwayDistance
+ * @condition TRUE
+ * @event     Component IMR.SystemUnderTest.RollAwayProtection
+ *            reaches basic control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.CalculateRollAwayDistance
+ * @expected  The actions associated with the transition entering
+ *            this control state, and the control state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ */
+
+	    if (sut_RollAwayProtection_tags) {
+	      free(sut_RollAwayProtection_tags);
+	    }
+	    sut_RollAwayProtection_tags = strdup("TC-RollAwayProtection_RTT_SQS_v7-BCS-0003");
+	    triggered = 2;
+	  }
+	  if ((triggered == 0) && ((rttIOPre->SpeedDirection == 2) && (rttIOPre->ControllerPosition == 1))) {
+	    rttHaveDiscreteTrans = 1;
+/* New location is 'RollAwayProtection.CalculateRollAwayDistance' */
+	    currentLocation = 20;
+/** @rttPrint
+ * Model coverage goal: basic control state coverage
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-BCS-0003 Cover basic control state CalculateRollAwayDistance
+ * @condition TRUE
+ * @event     Component IMR.SystemUnderTest.RollAwayProtection
+ *            reaches basic control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.CalculateRollAwayDistance
+ * @expected  The actions associated with the transition entering
+ *            this control state, and the control state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ */
+
+	    if (sut_RollAwayProtection_tags) {
+	      free(sut_RollAwayProtection_tags);
+	    }
+	    sut_RollAwayProtection_tags = strdup("TC-RollAwayProtection_RTT_SQS_v7-BCS-0003");
+	    triggered = 2;
+	  }
+	  if ((triggered == 0) && ((rttIOPre->ControllerPosition == 0) && (rttIOPre->SpeedDirection == 0))) {
+	    rttHaveDiscreteTrans = 1;
+/* New location is 'RollAwayProtection.TrainMovement' */
+	    currentLocation = 21;
+/** @rttPrint
+ * Model coverage goal: basic control state coverage
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-BCS-0004 Cover basic control state TrainMovement
+ * @condition TRUE
+ * @event     Component IMR.SystemUnderTest.RollAwayProtection
+ *            reaches basic control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.TrainMovement
+ * @expected  The actions associated with the transition entering
+ *            this control state, and the control state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ */
+
+	    if (sut_RollAwayProtection_tags) {
+	      free(sut_RollAwayProtection_tags);
+	    }
+	    sut_RollAwayProtection_tags = strdup("TC-RollAwayProtection_RTT_SQS_v7-BCS-0004");
+	    triggered = 2;
+	  }
+	  if ((triggered == 0) && ((rttIOPre->ControllerPosition == 2) && (rttIOPre->SpeedDirection == 2))) {
+	    rttHaveDiscreteTrans = 1;
+/* New location is 'RollAwayProtection.TrainMovement' */
+	    currentLocation = 21;
+/** @rttPrint
+ * Model coverage goal : transition coverage
+ * Cover transition of component IMR.SystemUnderTest.RollAwayProtection
+ *   RollAwayProtection.Standstill
+ *       -- [ ((IMR.ControllerPosition == 2) && (IMR.SpeedDirection == 2)) ] --> 
+ *   RollAwayProtection.TrainMovement
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-TR-0006 Cover transition Standstill --> TrainMovement
+ * @condition Component IMR.SystemUnderTest.RollAwayProtection
+ *            resides in control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.Standstill
+ * @event     Trigger condition for specified transition becomes true
+ * @expected  The actions associated with the transition specified above,
+ *            and the target state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ */
+
+/** @rttPrint
+ * Model coverage goal: basic control state coverage
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-BCS-0004 Cover basic control state TrainMovement
+ * @condition TRUE
+ * @event     Component IMR.SystemUnderTest.RollAwayProtection
+ *            reaches basic control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.TrainMovement
+ * @expected  The actions associated with the transition entering
+ *            this control state, and the control state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ */
+
+	    if (sut_RollAwayProtection_tags) {
+	      free(sut_RollAwayProtection_tags);
+	    }
+	    sut_RollAwayProtection_tags =
+	      strdup("TC-RollAwayProtection_RTT_SQS_v7-TR-0006,TC-RollAwayProtection_RTT_SQS_v7-BCS-0004");
+	    triggered = 2;
+	  }
+	  if (triggered == 0) {
+	    rttIOPost->RAPAckReq = 0;
+	    rttIOPost->RAPAck = 0;
+	    rttIOPost->TrainLocationLastStandstill = rttIOPre->TrainLocation;
+	    rttIOPost->BrakeCommand = 0;
+	    rttIOPost->BrakingIndicator = 0;
+	  }
+	  triggered = (triggered + 1);
+	}
+/* Handle location 'RollAwayProtection.Brake' */
+	if ((currentLocation == 14) && (triggered == 0)) {
+	  if ((triggered == 0) && ((rttIOPre->SpeedDirection == 1) && (rttIOPre->RAPAck == 1))) {
+	    rttHaveDiscreteTrans = 1;
+	    rttIOPost->BrakeCommand = 0;
+/* New location is 'RollAwayProtection.Standstill' */
+	    currentLocation = 8;
+/** @rttPrint
+ * Model coverage goal: basic control state coverage
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-BCS-0001 Cover basic control state Standstill
+ * @condition TRUE
+ * @event     Component IMR.SystemUnderTest.RollAwayProtection
+ *            reaches basic control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.Standstill
+ * @expected  The actions associated with the transition entering
+ *            this control state, and the control state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ * @req 3.14.2.7
+ */
+
+	    if (sut_RollAwayProtection_tags) {
+	      free(sut_RollAwayProtection_tags);
+	    }
+	    sut_RollAwayProtection_tags = strdup("TC-RollAwayProtection_RTT_SQS_v7-BCS-0001");
+	    triggered = 2;
+	  }
+	  if (triggered == 0) {
+	    rttIOPost->RAPAckReq = 1;
+	    rttIOPost->BrakeCommand = 1;
+	    rttIOPost->BrakingIndicator = 1;
+	  }
+	  triggered = (triggered + 1);
+	}
+/* Handle location 'RollAwayProtection.CalculateRollAwayDistance' */
+	if ((currentLocation == 20) && (triggered == 0)) {
+	  if ((triggered == 0) && (rttIOPre->SpeedDirection == 1)) {
+	    rttHaveDiscreteTrans = 1;
+/* New location is 'RollAwayProtection.Standstill' */
+	    currentLocation = 8;
+/** @rttPrint
+ * Model coverage goal: basic control state coverage
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-BCS-0001 Cover basic control state Standstill
+ * @condition TRUE
+ * @event     Component IMR.SystemUnderTest.RollAwayProtection
+ *            reaches basic control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.Standstill
+ * @expected  The actions associated with the transition entering
+ *            this control state, and the control state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ * @req 3.14.2.7
+ */
+
+	    if (sut_RollAwayProtection_tags) {
+	      free(sut_RollAwayProtection_tags);
+	    }
+	    sut_RollAwayProtection_tags = strdup("TC-RollAwayProtection_RTT_SQS_v7-BCS-0001");
+	    triggered = 2;
+	  }
+	  if ((triggered == 0) &&
+	      (((rttIOPre->TrainLocation - rttIOPre->TrainLocationLastStandstill) > rttIOPre->D_NVROLL) ||
+	       ((rttIOPre->TrainLocation - rttIOPre->TrainLocationLastStandstill) > (-rttIOPre->D_NVROLL)))) {
+	    rttHaveDiscreteTrans = 1;
+	    rttIOPost->BrakeCommand = 1;
+/* New location is 'RollAwayProtection.Brake' */
+	    currentLocation = 14;
+/** @rttPrint
+ * Model coverage goal : transition coverage
+ * Cover transition of component IMR.SystemUnderTest.RollAwayProtection
+ *   RollAwayProtection.CalculateRollAwayDistance
+ *       -- [ (((IMR.TrainLocation - IMR.TrainLocationLastStandstill) > IMR.D_NVROLL) || ((IMR.TrainLocation - IMR.TrainLocationLastStandstill) > (-IMR.D_NVROLL))) ] --> 
+ *   RollAwayProtection.Brake
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-TR-0009 Cover transition CalculateRollAwayDistance --> Brake
+ * @condition Component IMR.SystemUnderTest.RollAwayProtection
+ *            resides in control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.CalculateRollAwayDistance
+ * @event     Trigger condition for specified transition becomes true
+ * @expected  The actions associated with the transition specified above,
+ *            and the target state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ * @req 3.14.2.4
+ */
+
+/** @rttPrint
+ * Model coverage goal: basic control state coverage
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-BCS-0002 Cover basic control state Brake
+ * @condition TRUE
+ * @event     Component IMR.SystemUnderTest.RollAwayProtection
+ *            reaches basic control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.Brake
+ * @expected  The actions associated with the transition entering
+ *            this control state, and the control state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ * @req 3.14.2.6
+ */
+
+	    if (sut_RollAwayProtection_tags) {
+	      free(sut_RollAwayProtection_tags);
+	    }
+	    sut_RollAwayProtection_tags =
+	      strdup("TC-RollAwayProtection_RTT_SQS_v7-TR-0009,TC-RollAwayProtection_RTT_SQS_v7-BCS-0002");
+	    triggered = 2;
+	  }
+	  triggered = (triggered + 1);
+	}
+/* Handle location 'RollAwayProtection.TrainMovement' */
+	if ((currentLocation == 21) && (triggered == 0)) {
+	  if ((triggered == 0) && (rttIOPre->SpeedDirection == 1)) {
+	    rttHaveDiscreteTrans = 1;
+/* New location is 'RollAwayProtection.Standstill' */
+	    currentLocation = 8;
+/** @rttPrint
+ * Model coverage goal : transition coverage
+ * Cover transition of component IMR.SystemUnderTest.RollAwayProtection
+ *   RollAwayProtection.TrainMovement
+ *       -- [ (IMR.SpeedDirection == 1) ] --> 
+ *   RollAwayProtection.Standstill
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-TR-0010 Cover transition TrainMovement --> Standstill
+ * @condition Component IMR.SystemUnderTest.RollAwayProtection
+ *            resides in control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.TrainMovement
+ * @event     Trigger condition for specified transition becomes true
+ * @expected  The actions associated with the transition specified above,
+ *            and the target state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ */
+
+/** @rttPrint
+ * Model coverage goal: basic control state coverage
+ * 
+ * @tag       TC-RollAwayProtection_RTT_SQS_v7-BCS-0001 Cover basic control state Standstill
+ * @condition TRUE
+ * @event     Component IMR.SystemUnderTest.RollAwayProtection
+ *            reaches basic control state IMR.SystemUnderTest.RollAwayProtection.RollAwayProtection.Standstill
+ * @expected  The actions associated with the transition entering
+ *            this control state, and the control state's entry actions are
+ *            performed as specified in the model.
+ * 
+ * @note These checks are performed by the test oracles associated
+ *       with component IMR.SystemUnderTest.RollAwayProtection
+ * @req 3.14.2.7
+ */
+
+	    if (sut_RollAwayProtection_tags) {
+	      free(sut_RollAwayProtection_tags);
+	    }
+	    sut_RollAwayProtection_tags =
+	      strdup("TC-RollAwayProtection_RTT_SQS_v7-TR-0010,TC-RollAwayProtection_RTT_SQS_v7-BCS-0001");
+	    triggered = 2;
+	  }
+	  triggered = (triggered + 1);
+	}
+	if (1) {
+	  @rttYield;
+	  cycleCtr = 0;
+	}
+	cycleCtr = (cycleCtr + 1);
+      }
+    }
+  }
+}

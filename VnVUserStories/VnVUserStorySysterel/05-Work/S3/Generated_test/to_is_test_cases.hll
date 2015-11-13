@@ -1,0 +1,56 @@
+/**********************************
+To IS mode and condition 1 
+test cases generation
+(SRS 4.6 v3.3.0)
+Associated Scade model for the proof :
+ManageModes
+**********************************/
+Declarations:
+// Mode in input
+'Level_And_Mode_Types_Pkg::T_Mode' Current_Mode;
+
+
+// [1] The driver isolates the ERTMS/ETCS on-board equipment.
+bool condition_1;
+
+
+Definitions:
+// currentMode is a Scade model output and initial mode is SB
+Current_Mode := pre(currentMode,'Level_And_Mode_Types_Pkg::SB');
+
+condition_1 := Data_From_DMI.'ETCS_Isolated';
+
+Proof Obligations: 
+/* Test objectives are: If the train is in a mode and if condition 1
+is verified then the next mode is IS. */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::NP' & condition_1); /* PO 6 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::SB' & condition_1); /* PO 7 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::PS' & condition_1); /* PO 8 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::SH' & condition_1); /* PO 9 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::FS' & condition_1); /* PO 10 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::LS' & condition_1); /* PO 11 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::SR' & condition_1); /* PO 12 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::OS' & condition_1); /* PO 13 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::SL' & condition_1); /* PO 14 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::NL' & condition_1); /* PO 15 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::UN' & condition_1); /* PO 16 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::TR' & condition_1); /* PO 17 */ 
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::PT' & condition_1); /* PO 18 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::SF' & condition_1); /* PO 19 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::IS' & condition_1); /* PO 20 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::SN' & condition_1); /* PO 21 */
+~(Current_Mode = 'Level_And_Mode_Types_Pkg::RV' & condition_1); /* PO 22 */
+~(Current_Mode != 'Level_And_Mode_Types_Pkg::IS' & condition_1); /* PO 23 */
+
+
+
+
+/* Expected result */
+Declarations:
+'Level_And_Mode_Types_Pkg::T_Mode' HLL_currentMode;
+
+Definitions:
+HLL_currentMode := 'Level_And_Mode_Types_Pkg::IS';
+
+Outputs:
+HLL_currentMode;

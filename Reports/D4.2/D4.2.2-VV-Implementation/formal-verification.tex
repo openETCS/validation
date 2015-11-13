@@ -16,7 +16,7 @@ In this chapter we use slightly more complex features of \framacwp
 in order to verify key aspects of the \bitwalker functions \peek and \poke.
 In particular, we formally specify and (almost completely) verify the
 main operational modes of these functions.
-In particular  we shows that no runtime errors will occur if the
+In particular, we show that no runtime errors will occur if the
 preconditions of the operational modes are satisfied.
 
 After shortly describing our verification method in Section~\ref{sec:verification-method},
@@ -66,7 +66,7 @@ Figure~\ref{fig:method} shows the method with the involved verification tools.
 \end{figure}
 
 Starting point is an informal specification of a function with which in mind
-a implementation is written.
+an implementation is written.
 This informal specification is then formalized using the specification language
 \acsl (ANSI\slash ISO-\isoc Specification Language)~\cite{acsl}
 that comes with \framac and
@@ -296,21 +296,18 @@ is faced with the problem that it
 \input{informal-specifications}
 \clearpage
 
-\section{Tests for \peek and \poke}
+\section{Relationship with \inl{boost::dynamic_bitset}}
 \label{sec:bitwalker-tests}
 
-In this section we show some tests for \peek and \poke.
-These tests were derived from the informal specification in 
-Section~\ref{sec:informal-specification}.
-
-We use the \CC\ class \inl{boost::dynamic_bitset} in order to represent
-\inl{bit sequences} in our tests.
+While analyzing \peek and \poke
+we also had a look at the \CC\ class \inl{boost::dynamic_bitset}.
 This class, which is part of the \textsf{Boost} libraries, provides a higher-level and 
 easier to use interface to bit sequences than is possible in~C.\footnote{%
   See \url{http://www.boost.org/doc/libs/1_55_0/libs/dynamic_bitset/dynamic_bitset.html}
 }
 
-Specifically, we use in our \CC\ test code the following typedefs
+Specifically, we have used \inl{boost::dynamic_bitset}
+with the following typedefs
 
 \begin{lstlisting}[style = acsl-block]
     typedef std::vector<uint8_t>              Bytestream;
@@ -330,7 +327,7 @@ In addition, it allows to
        thus representing the functionality of \poke
 \end{itemize}
 
-While testing the \bitwalker was not our main objective it proved useful for
+While systematic testing the \bitwalker was not our main objective it proved useful for
 the following reasons.
 
 \begin{itemize}
@@ -340,6 +337,11 @@ the following reasons.
       \peek in Listing~\ref{lst:peek-alternative} is not equivalent to the
       original implementation in Listing~\ref{lst:peek-original}.
 \end{itemize}
+
+If \inl{boost:dynamic_bitset} did not, as its name already suggests, rely
+on dynamic memory allocation, it would be a more suitable candidate
+to represent the \bitwalker functionality, than the hand-crafted
+and somewhat contrived code at hand.
 
 \clearpage
 
@@ -376,6 +378,7 @@ The structure of this contract is as follows:
 
 \begin{description}
 \item[Default behavior]
+~
 
 \begin{itemize}
 \item
@@ -475,7 +478,7 @@ behaviors.
 \end{itemize}
 
 These clauses, which support the writing complete and non-contradictory specifications,
-will be checked \framacwp.
+will be checked by \framacwp.
 \end{description}
 
 \clearpage
@@ -687,7 +690,7 @@ version \texttt{Neon 20140301}.\footnote{%
    See \url{http://frama-c.com/download/frama-c-Neon-20140301.tar.gz}
 }
 For a detailed description of these options we refer to the documentation
-of \framac.
+of \framac~\cite{fcman,wp}.
 
 \begin{verbatim}
     -wp
@@ -736,7 +739,7 @@ The unproven obligations are related to the loop invariant that
 states that in iteration~$i$ the value \inl{retval} is less than~$2^i$
 (see Listing~\ref{lst:impl-peek}).
 In the case of \poke, the two unproven obligations are related
-to an issue how \framac treats bitwise-and operations.
+to an issue in how \framac treats bitwise-and operations.
 
 Table~\ref{tbl:results-peek-and-poke} also lists how many proof
 obligations were discharged by the various provers.

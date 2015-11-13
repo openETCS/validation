@@ -1,0 +1,320 @@
+/**********************************
+Procedure
+On Sight
+(SRS 5.6 v3.3.0)
+Associated Scade model for the proof :
+Procedures::Procedure_OnSight
+**********************************/
+
+Constraints:
+Train_Position.'estimatedFrontEndPosition' >= 0;
+Train_Position.'maxSafeFrontEndPostion' >= 0;
+Mode_Profile_On_Board.'Speed' >= 0;
+Mode_Profile_On_Board.'Length' >= 0;
+Mode_Profile_On_Board.'Length_Ack' >= 0;
+Mode_Profile_On_Board.'Distance' >= 0;
+Mode_Profile_On_Board.'Length_Ack' <= Mode_Profile_On_Board.'Distance';
+
+Constants:
+int ACK_DELAY := 5000; // ms, Level_And_Mode_Types_Pkg::C_Driver_Ack_Delay
+int CYCLE_DURATION := 300; // ms, Level_And_Mode_Types_Pkg::C_Cycle_Duration
+
+
+
+
+/* Types and Inputs are a copy from Scade model */
+Types:
+int 'NID_BG';
+int 'NID_C';
+int 'NID_LRBG';
+int 'D_LINK';
+int 'M_MCOUNT';
+int 'Q_LOCACC';
+int 'Q_NVLOCACC';
+int 'Obu_BasicTypes_Pkg::L_internal_Type';
+int 'Obu_BasicTypes_Pkg::V_internal_Type';
+int 'Obu_BasicTypes_Pkg::T_internal_Type';
+int 'Obu_BasicTypes_Pkg::A_internal_Type';
+enum{'Q_DLRBG_Reverse','Q_DLRBG_Nominal','Q_DLRBG_Unknown'} 'Q_DLRBG';
+enum{'Q_DIRLRBG_Reverse','Q_DIRLRBG_Nominal','Q_DIRLRBG_Unknown'} 'Q_DIRLRBG';
+'BG_Types_Pkg::LinkedBG_T'^(4) 'BG_Types_Pkg::LinkedBGs_T';
+enum{'Q_DIRTRAIN_Reverse','Q_DIRTRAIN_Nominal','Q_DIRTRAIN_Unknown'} 'Q_DIRTRAIN';
+enum{'Obu_BasicTypes_Pkg::unknownDirection','Obu_BasicTypes_Pkg::cabAFirst','Obu_BasicTypes_Pkg::cabBFirst'} 'Obu_BasicTypes_Pkg::odoMotionDirection_T';
+enum{'Obu_BasicTypes_Pkg::noMotion','Obu_BasicTypes_Pkg::Motion'} 'Obu_BasicTypes_Pkg::odoMotionState_T';
+enum{'N_TOTAL_1_balise_in_the_group','N_TOTAL_2_balises_in_the_group','N_TOTAL_3_balises_in_the_group','N_TOTAL_4_balises_in_the_group','N_TOTAL_5_balises_in_the_group','N_TOTAL_6_balises_in_the_group','N_TOTAL_7_balises_in_the_group','N_TOTAL_8_balises_in_the_group'} 'N_TOTAL';
+struct{'v_safeNominal':'Obu_BasicTypes_Pkg::V_internal_Type','v_rawNominal':'Obu_BasicTypes_Pkg::V_internal_Type','v_lower':'Obu_BasicTypes_Pkg::V_internal_Type','v_upper':'Obu_BasicTypes_Pkg::V_internal_Type'} 'Obu_BasicTypes_Pkg::OdometrySpeeds_T';
+enum{'Q_LINK_Unlinked','Q_LINK_Linked'} 'Q_LINK';
+enum{'Q_MEDIA_Balise','Q_MEDIA_Loop'} 'Q_MEDIA';
+struct{'o_nominal':'Obu_BasicTypes_Pkg::L_internal_Type','o_min':'Obu_BasicTypes_Pkg::L_internal_Type','o_max':'Obu_BasicTypes_Pkg::L_internal_Type'} 'Obu_BasicTypes_Pkg::OdometryLocations_T';
+struct{'valid':bool,'timestamp':'Obu_BasicTypes_Pkg::T_internal_Type','odo':'Obu_BasicTypes_Pkg::OdometryLocations_T','speed':'Obu_BasicTypes_Pkg::OdometrySpeeds_T','acceleration':'Obu_BasicTypes_Pkg::A_internal_Type','motionState':'Obu_BasicTypes_Pkg::odoMotionState_T','motionDirection':'Obu_BasicTypes_Pkg::odoMotionDirection_T'} 'Obu_BasicTypes_Pkg::odometry_T';
+enum{'M_VERSION_Previous_versions_according_to_e_g_EEIG_SRS_and_UIC_A200_SRS','M_VERSION_Version_1_0_introduced_in_SRS_1_2_0_and_reused_in_SRSs_2_0_0_and_2_2_2_and_2_3_0','M_VERSION_Version_1_1_introduced_in_SRS_3_3_0','M_VERSION_Version_2_0_introduced_in_SRS_3_3_0'} 'M_VERSION';
+enum{'Q_UPDOWN_Down_link_telegram','Q_UPDOWN_Up_link_telegram'} 'Q_UPDOWN';
+enum{'Q_LINKORIENTATION_The_balise_group_is_seen_by_the_train_in_reverse_direction','Q_LINKORIENTATION_The_balise_group_is_seen_by_the_train_in_nominal_direction'} 'Q_LINKORIENTATION';
+enum{'Q_LINKREACTION_Train_trip','Q_LINKREACTION_Apply_service_brake','Q_LINKREACTION_No_Reaction'} 'Q_LINKREACTION';
+struct{'valid':bool,'q_updown':'Q_UPDOWN','m_version':'M_VERSION','q_media':'Q_MEDIA','n_total':'N_TOTAL','m_mcount':'M_MCOUNT','nid_c':'NID_C','nid_bg':'NID_BG','q_link':'Q_LINK','bgPosition':'Obu_BasicTypes_Pkg::odometry_T','BG_centerDetectionInaccuraccuracies':'Obu_BasicTypes_Pkg::LocWithInAcc_T','q_nvlocacc':'Q_NVLOCACC','noCoordinateSystemHasBeenAssigned':bool,'trainOrientationToBG':'Q_DIRLRBG','trainRunningDirectionToBG':'Q_DIRTRAIN'} 'BG_Types_Pkg::BG_Header_T';
+struct{'valid':bool,'BG_Header':'BG_Types_Pkg::BG_Header_T','linkedBGs':'BG_Types_Pkg::LinkedBGs_T'} 'BG_Types_Pkg::passedBG_T';
+enum{'Q_NEWCOUNTRY_Same_country__or__railway_administration_no_NID_C_follows','Q_NEWCOUNTRY_Not_the_same_country__or__railway_administration_NID_C_follows'} 'Q_NEWCOUNTRY';
+enum{'Q_SCALE_10_cm_scale','Q_SCALE_1_m_scale','Q_SCALE_10_m_scale'} 'Q_SCALE';
+enum{'Q_DIR_Reverse','Q_DIR_Nominal','Q_DIR_Both_directions'} 'Q_DIR';
+struct{'valid':bool,'nid_LRBG':'NID_LRBG','q_dir':'Q_DIR','q_scale':'Q_SCALE','d_link':'D_LINK','q_newcountry':'Q_NEWCOUNTRY','nid_c':'NID_C','nid_bg':'NID_BG','q_linkorientation':'Q_LINKORIENTATION','q_linkreaction':'Q_LINKREACTION','q_locacc':'Q_LOCACC'} 'BG_Types_Pkg::LinkedBG_T';
+struct{'nominal':'Obu_BasicTypes_Pkg::L_internal_Type','d_min':'Obu_BasicTypes_Pkg::L_internal_Type','d_max':'Obu_BasicTypes_Pkg::L_internal_Type'} 'Obu_BasicTypes_Pkg::LocWithInAcc_T';
+'Obu_BasicTypes_Pkg::V_internal_Type' 'Obu_BasicTypes_Pkg::Speed_T';
+enum{'Level_And_Mode_Types_Pkg::Profile_OS','Level_And_Mode_Types_Pkg::Profile_LS','Level_And_Mode_Types_Pkg::Profile_SH','Level_And_Mode_Types_Pkg::No_Profile'} 'Level_And_Mode_Types_Pkg::T_MA';
+'Obu_BasicTypes_Pkg::L_internal_Type' 'Obu_BasicTypes_Pkg::Location_T';
+enum{'M_LEVEL_Level_0','M_LEVEL_Level_NTC_specified_by_NID_NTC','M_LEVEL_Level_1','M_LEVEL_Level_2','M_LEVEL_Level_3'} 'M_LEVEL';
+struct{'valid':bool,'nid_bg_fromLinkingBG':'NID_BG','nid_c_fromLinkingBG':'NID_C','expectedLocation':'Obu_BasicTypes_Pkg::LocWithInAcc_T','d_link':'Obu_BasicTypes_Pkg::LocWithInAcc_T','linkingInfo':'BG_Types_Pkg::LinkedBG_T'} 'TrainPosition_Types_Pck::infoFromLinking_T';
+enum{'Level_And_Mode_Types_Pkg::NP','Level_And_Mode_Types_Pkg::SB','Level_And_Mode_Types_Pkg::PS','Level_And_Mode_Types_Pkg::SH','Level_And_Mode_Types_Pkg::FS','Level_And_Mode_Types_Pkg::LS','Level_And_Mode_Types_Pkg::SR','Level_And_Mode_Types_Pkg::OS','Level_And_Mode_Types_Pkg::SL','Level_And_Mode_Types_Pkg::NL','Level_And_Mode_Types_Pkg::UN','Level_And_Mode_Types_Pkg::TR','Level_And_Mode_Types_Pkg::PT','Level_And_Mode_Types_Pkg::SF','Level_And_Mode_Types_Pkg::IS','Level_And_Mode_Types_Pkg::SN','Level_And_Mode_Types_Pkg::RV'} 'Level_And_Mode_Types_Pkg::T_Mode';
+struct{'valid':bool,'nid_c':'NID_C','nid_bg':'NID_BG','q_link':'Q_LINK','location':'Obu_BasicTypes_Pkg::LocWithInAcc_T','seqNoOnTrack':int,'infoFromLinking':'TrainPosition_Types_Pck::infoFromLinking_T','infoFromPassing':'BG_Types_Pkg::passedBG_T'} 'TrainPosition_Types_Pck::positionedBG_T';
+struct{'Distance':'Obu_BasicTypes_Pkg::Location_T','Mode':'Level_And_Mode_Types_Pkg::T_MA','Speed':'Obu_BasicTypes_Pkg::Speed_T','Length':'Obu_BasicTypes_Pkg::Location_T','Length_Ack':'Obu_BasicTypes_Pkg::Location_T'} 'Level_And_Mode_Types_Pkg::T_Mode_Profile';
+struct{'valid':bool,'timestamp':'Obu_BasicTypes_Pkg::T_internal_Type','trainPositionIsUnknown':bool,'noCoordinateSystemHasBeenAssigned':bool,'trainPosition':'Obu_BasicTypes_Pkg::LocWithInAcc_T','estimatedFrontEndPosition':'Obu_BasicTypes_Pkg::Location_T','minSafeFrontEndPosition':'Obu_BasicTypes_Pkg::Location_T','maxSafeFrontEndPostion':'Obu_BasicTypes_Pkg::Location_T','LRBG':'TrainPosition_Types_Pck::positionedBG_T','prvLRBG':'TrainPosition_Types_Pck::positionedBG_T','nominalOrReverseToLRBG':'Q_DLRBG','trainOrientationToLRBG':'Q_DIRLRBG','trainRunningDirectionToLRBG':'Q_DIRTRAIN','linkingIsUsedOnboard':bool} 'TrainPosition_Types_Pck::trainPosition_T';
+
+Inputs:
+'Level_And_Mode_Types_Pkg::T_Mode' Current_Mode;
+bool Driver_Ack_OS;
+'Level_And_Mode_Types_Pkg::T_Mode_Profile' Mode_Profile_On_Board;
+'TrainPosition_Types_Pck::trainPosition_T' Train_Position;
+'Obu_BasicTypes_Pkg::Speed_T' Train_Speed;
+
+
+
+Types:
+// State names
+enum {'initial_state','to_fs_ls','to_os','start_os','end_os','end_os_from_ack',
+     'ack_sb_pt_fs_ls','ack_fs_ls_sr_un_sn','service_brake'} on_sight_states;
+
+
+Declarations:
+bool procedure_start;
+bool SCADE_confirmation; // /!\ COPY FROM SCADE MODEL
+
+/* Declarations of actions took (= output(s) are set to a value) for
+each state: */
+bool all_false_state;
+bool driver_ack_os_outputs;
+bool service_brake_outputs;
+
+
+/* Transitions and diamonds */
+on_sight_states mode_profile_os_transition;
+on_sight_states beginning_os_area_diamond;
+on_sight_states mode_diamond;
+on_sight_states time_out_transitions;
+on_sight_states start_os_transitions;
+on_sight_states ack_sb_pt_fs_ls_transitions;
+on_sight_states to_fs_ls_transitions; // /!\ COPY FROM SCADE MODEL
+
+
+/* Main proof obligation declaration */
+bool po;
+
+Definitions:
+/*****************************
+ * OUTPUTS VALUES DEFINITION *
+ *****************************/
+/* Definitions of actions took (= output(s) are set to a value) for
+each state: */
+all_false_state := ~Condition15 & ~Condition34 & ~Condition40 & 
+		   ~Condition73 & ~Ack_OS_Req_To_Driver & ~Service_Brake_Command;
+
+
+
+driver_ack_os_outputs := Condition15 & ~Condition34 & ~Condition40 & 
+		      	 ~Condition73 & ~Ack_OS_Req_To_Driver & ~Service_Brake_Command;
+
+
+service_brake_outputs := ~Condition15 & ~Condition34 & ~Condition40 & 
+		      	 ~Condition73 & ~Ack_OS_Req_To_Driver & Service_Brake_Command;
+
+
+
+/***********************
+ * HLL FLOWCHART MODEL *
+ **********************/
+
+procedure_start := (Current_Mode
+		   | 'Level_And_Mode_Types_Pkg::FS' => True
+		   | 'Level_And_Mode_Types_Pkg::LS' => True
+		   | 'Level_And_Mode_Types_Pkg::OS' => False//True // /!\ COPY FROM SCADE MODEL
+		   | 'Level_And_Mode_Types_Pkg::SR' => True
+		   | 'Level_And_Mode_Types_Pkg::SB' => False//True // /!\ COPY FROM SCADE MODEL
+		   | 'Level_And_Mode_Types_Pkg::PT' => False//True // /!\ COPY FROM SCADE MODEL
+		   | 'Level_And_Mode_Types_Pkg::UN' => True
+		   | 'Level_And_Mode_Types_Pkg::SN' => True
+		   | _ => False);
+		   
+SCADE_confirmation := 'Procedures::Procedure_OnSight_#1/Procedures::Procedure_With_Mode_Profile_##1/%last_984';
+//'Procedures::Procedure_OnSight_#1/Procedures::Procedure_With_Mode_Profile_##1/|Loc_Confirmation';// /!\ COPY FROM SCADE MODEL
+// Definition of last state stream. Initial state is called 'initial_state'.
+last_state := pre(current_state,'initial_state');
+
+// Definition of transitions between states
+current_state := (last_state,procedure_start
+		 | 'ack_fs_ls_sr_un_sn',_ => time_out_transitions // /!\ COPY FROM SCADE MODEL: this state is not influenced by procedure_start condition
+		 | _,False => 'initial_state'
+		 | 'initial_state',True => mode_profile_os_transition
+		 | 'to_fs_ls',True => to_fs_ls_transitions//'start_os'// /!\ COPY FROM SCADE MODEL
+		 | 'start_os',True => start_os_transitions
+		 | 'to_os',True => 'ack_fs_ls_sr_un_sn'
+		 | 'end_os',True => 'end_os' // Final state
+		 | 'ack_sb_pt_fs_ls',True => ack_sb_pt_fs_ls_transitions
+		 | 'service_brake',True => 'end_os'
+		 | 'end_os_from_ack',True => 'end_os_from_ack'
+		 );
+
+
+// A mode profile for OS area has been received (and is used)
+mode_profile_os_transition := if (Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::Profile_OS') then
+      			      beginning_os_area_diamond
+			      else
+      			      'initial_state';
+
+
+// validity stream of a OS mode profile and train position
+valid_os_mode_profile_data := (Mode_Profile_On_Board.'Mode' = 'Level_And_Mode_Types_Pkg::Profile_OS') & 
+			      Train_Position.'valid';
+
+// Flowchart transition:
+// "Max safe front inside OS area"
+max_safe_front_in_os_area := Train_Position.'maxSafeFrontEndPostion' >= Mode_Profile_On_Board.'Distance' &
+			     Train_Position.'maxSafeFrontEndPostion' <= (Mode_Profile_On_Board.'Distance' + Mode_Profile_On_Board.'Length');
+
+// Flowchart transition:
+// "Estimated front in acknowledgment windows"
+estimated_front_in_ack_area := Train_Position.'estimatedFrontEndPosition' <= Mode_Profile_On_Board.'Distance' & 
+		    	       Train_Position.'estimatedFrontEndPosition' >= Mode_Profile_On_Board.'Distance' -
+		    					       	  	     Mode_Profile_On_Board.'Length_Ack';
+
+// Flowchart transition:
+// "Max safe front overpasses begin os OS area"
+max_safe_front_overpasses_os_area := Train_Position.'maxSafeFrontEndPostion' >= Mode_Profile_On_Board.'Distance';
+
+// Flowchart transition:
+// "Speed in acknowledgment windows"
+train_speed_lower_os_speed_limit := Train_Speed <= Mode_Profile_On_Board.'Speed';
+
+
+// Flowchart transition:
+// further location
+// = not(max_safe_front_in_os_area)
+
+// Beginning of OS area? Max safe front inside OS area/further location
+beginning_os_area_diamond := if (max_safe_front_in_os_area & valid_os_mode_profile_data) then
+			     mode_diamond
+			     else // further location
+			    'start_os'; //'to_fs_ls'; /!\ COPY FROM SCADE MODEL
+
+
+// Flowchart transitions:
+// Max safe front overpasses begin of OS area;
+// estimated front and speed in acknowledgement window
+start_os_transitions := if (max_safe_front_overpasses_os_area) then
+		     	'ack_fs_ls_sr_un_sn'//'to_os' /!\ COPY FROM SCADE MODEL
+		     	elif (estimated_front_in_ack_area & train_speed_lower_os_speed_limit & valid_os_mode_profile_data) then 
+			'ack_sb_pt_fs_ls'
+			else
+			'start_os';
+
+// FOLLOWING TRANSITION IS A COPY FROM SCADE MODEL
+to_fs_ls_transitions := if (max_safe_front_overpasses_os_area) then
+		     	'ack_fs_ls_sr_un_sn'
+			elif (Current_Mode = 'Level_And_Mode_Types_Pkg::FS' #
+	     		Current_Mode = 'Level_And_Mode_Types_Pkg::LS') then
+			'start_os'
+			else
+			'to_fs_ls';
+
+// Flowchart transitions:
+// Max safe front overpasses begin of OS area;
+// Driver acknowledges
+ack_sb_pt_fs_ls_transitions := if (max_safe_front_overpasses_os_area) then
+			       'ack_fs_ls_sr_un_sn'//'to_os' /!\ COPY FROM SCADE MODEL
+			       elif (Driver_Ack_OS) then 
+			       'end_os_from_ack'
+			       else
+			       'ack_sb_pt_fs_ls';
+
+
+
+// Mode? OS/SB,PT/FS,LS,SR,UN,SN
+mode_diamond := if (Current_Mode = 'Level_And_Mode_Types_Pkg::FS' #
+	     	Current_Mode = 'Level_And_Mode_Types_Pkg::LS' #
+		Current_Mode = 'Level_And_Mode_Types_Pkg::SR' #
+		Current_Mode = 'Level_And_Mode_Types_Pkg::UN' #
+		Current_Mode = 'Level_And_Mode_Types_Pkg::SN') then
+		'ack_fs_ls_sr_un_sn'//'to_os' /!\ COPY FROM SCADE MODEL
+		elif (Current_Mode = 'Level_And_Mode_Types_Pkg::OS') then
+		'end_os'
+		elif (Current_Mode = 'Level_And_Mode_Types_Pkg::SB' #
+	     	Current_Mode = 'Level_And_Mode_Types_Pkg::PT') then
+		'ack_sb_pt_fs_ls'
+		else
+		'initial_state';
+
+
+
+
+
+// Flowchart transitions:
+// Driver acknowledges within 5sec;
+// 5 sec are elapsed & no ack by driver
+time_out_transitions := if (~procedure_start & SCADE_confirmation) then // /!\ COPY FROM SCADE MODEL
+		     	'initial_state'
+		     	elif (Driver_Ack_OS & timer <= ACK_DELAY) then
+		     	'end_os_from_ack'
+			elif (~Driver_Ack_OS & timer > ACK_DELAY) then
+			'service_brake'
+			else
+			'ack_fs_ls_sr_un_sn';
+
+
+timer_activation := last_state = 'initial_state' # last_state = 'ack_sb_pt_fs_ls' # last_state = 'start_os';//last_state = 'to_os';
+
+timer := if (timer_activation) then
+      	 0
+      	 else
+	 pre(timer,0) + CYCLE_DURATION;
+
+
+
+
+/* Main proof obligation */
+po := (current_state
+      | 'initial_state' => all_false_state
+      | 'to_fs_ls' => True
+      | 'to_os' => True
+      | 'start_os' => True
+      | 'end_os' => True
+      | 'end_os_from_ack' => driver_ack_os_outputs
+      | 'ack_sb_pt_fs_ls' => True
+      | 'ack_fs_ls_sr_un_sn' => True
+      | 'service_brake' => service_brake_outputs
+      | _ => False
+      );
+
+/* Expexted outputs: */
+Declarations:
+bool HLL_Condition15;
+bool HLL_Condition34;
+bool HLL_Condition40;
+bool HLL_Condition73;
+bool HLL_Ack_OS_Req_To_Driver;
+bool HLL_Service_Brake_Command;
+
+
+Definitions:
+HLL_Condition15 := False;
+HLL_Condition34 := False;
+HLL_Condition40 := False;
+HLL_Condition73 := False;
+HLL_Ack_OS_Req_To_Driver := False;
+HLL_Service_Brake_Command := True;
+
+
+
+Outputs:
+HLL_Condition15;
+HLL_Condition34;
+HLL_Condition40;
+HLL_Condition73;
+HLL_Ack_OS_Req_To_Driver;
+HLL_Service_Brake_Command;

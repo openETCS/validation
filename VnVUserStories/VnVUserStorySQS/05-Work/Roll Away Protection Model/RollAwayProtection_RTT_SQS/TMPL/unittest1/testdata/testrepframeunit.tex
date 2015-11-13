@@ -1,0 +1,349 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% --------------------------------------------------------------------
+%
+% Document :  PDF test documentation document frame
+%
+% --------------------------------------------------------------------
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\nonstopmode
+
+%%%%%%%%%%%%%%%% PDF %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[pdftex,12pt]{report}
+\pdfoutput=1
+\pdfimageresolution=288
+\pdfcompresslevel=0
+
+\usepackage{refmanVerifiedPDF}
+\usepackage{verbatim}
+
+\usepackage{url,xspace,boxedminipage}
+\usepackage{graphicx,thumbpdf}
+\usepackage[colorlinks,bookmarks,
+  pdftitle={Test Results Documentation},
+  pdfsubject={RT-Tester Test Documentation},
+  pdfkeywords={},
+  pdfauthor={Verified Systems}]{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage{moreverb}
+\usepackage{longtable}
+\usepackage{lscape}
+\usepackage{color}
+%---  section numbering   ------------------------
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+%-------------------------------------------------
+% This is necessary to display µ:
+\DeclareInputText{181}{$\mu$}
+
+
+%----------------------------------------------------
+
+%%% \input{commands.tex}
+
+%%% \definecolor{myblue}{rgb}{0.0,0.03,0.5}
+\definecolor{myblue}{rgb}{0.0,0.0,1.0}
+
+\newcommand{\com}[1]{\framebox
+       {\parbox{\textwidth}{
+           {\sf #1}
+           }}}
+
+
+
+
+
+\newcommand{\chg}[1]{\begin{tabular}{l|}
+                      \parbox[t]{\textwidth}{ #1 } \\
+                      \end{tabular}}
+
+\newcommand{\percent}{\%}
+
+\def\pict#1#2#3{
+    \begin{figure}[htbp]
+      \hfill\centerline{\includegraphics[width=\textwidth]{#2}}\hfill
+      \caption{#1}\label{#3}
+    \end{figure}
+}
+
+
+\def\pictsmall#1#2#3{
+    \begin{figure}[htbp]
+      \hfill\centerline{\includegraphics[width=5cm]{#2}}\hfill
+      \caption{#1}\label{#3}
+    \end{figure}
+}
+
+\def\pictmed#1#2#3{
+    \begin{figure}[htbp]
+      \hfill\centerline{\includegraphics[width=8cm]{#2}}\hfill
+      \caption{#1}\label{#3}
+    \end{figure}
+}
+
+
+
+% Verified's marginpar
+\newcommand{\vmp}[1]{\marginpar{\raggedright{\textcolor{myblue}{\footnotesize\sf #1\normalsize}}}\ignorespaces}
+
+\input{testrelatedflags.tex}
+
+
+% 
+
+\pagestyle{empty}
+
+%----------------------------------------------------
+
+\begin{document}
+\begin{fullpage}
+\pagestyle{empty}
+
+
+\huge
+{\bf Verified Systems International GmbH} \vskip -8mm
+\rule{\textwidth}{0.5mm}
+\vfill
+
+
+\huge
+{\bf 
+     \_Project \\
+     \\
+     Test Results Document \\
+     \ \\
+     \aststlatitle\ (\aststla) \\
+     \aststestname: \aststestheadline
+     \ \\
+     \astscidsbaseline
+
+ }
+
+\bigskip
+\bigskip
+\large
+{\bf \makebox[7cm][l]{Test Execution Date:} \aststestexecutiondate}\\
+{\bf \makebox[7cm][l]{Test Documentation Date:} \today}
+
+\vfill
+\footnotesize
+
+
+Verified Systems International GmbH\\
+Parkstra{\ss}e 123\\
+28209 Bremen \\
+Germany\\
+\makebox[2cm][l]{Tel.  : } +49 421 57204-0 \\
+\makebox[2cm][l]{Fax   : } +49 421 57204-22\\
+\makebox[2cm][l]{e-mail: } info@verified.de\\
+\makebox[2cm][l]{www: } http://www.verified.de
+
+\makebox[7cm][l]{Author:} \astsauthor\\
+\makebox[7cm][l]{Test execution performed by:} \aststestexecutionby\ on \aststestexecutiondate
+
+\normalsize
+\vfill
+\vbox{\hsize=\textwidth{\rule{\textwidth}{0.3mm}} %\vskip 3pt
+              \vskip -.6cm
+              \hbox to \textwidth{\tiny \hfil 
+              %%% \epsfxsize=1.8cm\epsfbox{pics/vlstamp_trans_red.eps}
+               \includegraphics[width=1.8cm]{logo.pdf}
+              }} 
+
+\end{fullpage} 
+%----------------------------------------------------
+\newpage
+\pagestyle{myheadings}
+\markright{RT-Tester 6.0 TQ -- \aststla\ \aststestname\ --  Test Results Documentation -- \astscidsbaseline}
+
+\tableofcontents
+%%% \listoffigures
+
+
+%------------------------------------------------------------------
+\input{testobj.tex}
+%-------------------------------------------------------
+
+\chapter{Test Results}
+
+%...................................................................
+\section{Discrepancies}\label{sec:discrep}
+
+\input{discrepancies.tex}
+
+%...................................................................
+\input{remarks.tex}
+
+%...................................................................
+\section{Result from Automatic Test Execution}
+
+
+\small
+\input{GENERATEDVERDICT.tex}
+\normalsize
+\bigskip
+
+%...................................................................
+\section{Overall Test Result}
+
+The verdict established by the automatic test execution may be overridden due
+to manual analysis. If this is the case, the reasons are given in
+Section~\ref{sec:discrep}. 
+
+\bigskip
+
+\input{verdict.tex}
+
+%...................................................................
+\chapter{Test Case Coverage}
+
+\input{coverage.tex}
+
+
+%-------------------------------------------------------------------
+\begin{fullpage} 
+\chapter{How to Read the Test Execution Log}
+
+The test execution log provides near-complete information in a single file.
+Every entry is preceded by a line of the following form.
+\begin{verbatim}
+TM 00000000000 UNIT O 
+\end{verbatim}
+The number after TM is the time stamp, counted in seconds. 
+%% @todo: update when time tick is im milli/micro
+During unit tests, only output ("O") entries exist.
+
+\section{Test Context Information}
+
+The startup information of a test informs about the
+user, application, and test case.
+The local time of the test start is documented in the following form.
+\begin{verbatim}
+START OF TEST : <YEAR>:<MONTH>:<DAY>:<HOUR>:<MINUTE>:<SECONDS>
+\end{verbatim}
+
+The test termination information summarises
+the number of
+errors   (failures of @rttAssert conditions),
+and the number of 
+warnings (failures of @rttCheck conditions).
+The verdict of the test run has one of the following values.
+
+\begin{tabular}{l@{~:~~~}l}
+{\tt PASS}       & successful execution of the test; no errors; potentially warnings 
+\\
+{\tt FAIL}       & test execution did yield one or more errors
+\\
+{\tt INCONC}     & inconclusive: test run was not finished properly
+\\
+{\tt TESTERROR}  & test execution failed, the test run is unreliable
+\\
+\end{tabular}
+
+In case of {\tt TESTERROR} the observed information on the SUT cannot be used.
+Some typical scenarios for this situations are
+\begin{itemize}
+\item   interrupt signals were caught,
+\item   files could not be opened, 
+\item  a user-defined
+   {\tt @rtt\-Test\-Error} 
+   situation was reached
+\end{itemize}
+
+%% -------------------------------------------------------------
+
+\section{Test Step Information}
+
+\begin{itemize}
+\item start of a test step, indicated by a block of the form
+\begin{verbatim}
+============================================================================
+======================== BEGIN of RTT Test Step <N> ========================
+============================================================================
+\end{verbatim}
+\item formatted entries, where the following information may be 
+  provided by the user
+  \begin{itemize}
+  \item {\tt CONDITION} : precondition        (generated situation of the SUT)
+  \item {\tt EVENT}     : execution situation (e.g, a function call)
+  \item {\tt EXPECTED}  : expected SUT behaviour
+  \item {\tt TAG}       : test case tag this test step corresponds to
+  \end{itemize}
+\item comparison of expected and observed behaviour (@rttAssert)
+\item end of a test step, indicated by a block of the form
+\begin{verbatim}
+------------------------  END  of RTT Test Step <N> ------------------------
+\end{verbatim}
+\end{itemize}
+
+%% -------------------------------------------------------------
+
+\section{Stub Call Information}
+
+Calls to stub functions are documented in the test execution log in 
+the following form:
+\begin{verbatim}
+TM 00000000000 UNIT O CALL of stub function <function name>(...):
+                       <QUALIFIER> <variable>     = <value>
+                      --------------------------------
+                       <QUALIFIER> <variable>     = <value>
+                      ========================================================
+\end{verbatim}
+The line ``{\tt ------------}'' separates input and output parameters.
+The {\tt \verb+<+QUALIFIER\verb+>+} information is one of 
+{\tt IN}, {\tt OUT}, or {\tt INOUT},  or {\tt RETURN}.
+The {\tt IN}, {\tt OUT}, {\tt INOUT} information has to be provided in the stub declaration 
+(see the {\tt .\-stubs} file), {\tt RETURN} denotes the return value of the
+ parameter. 
+
+
+For pointer values, by convention the variable names are preceded by a
+``{\tt *}'' and the values pointed to are printed.
+E.g, for a function {\tt a\_\-pointer} with the stub signature
+\begin{verbatim}
+  int* a_pointer(@inout int* counter_p);
+\end{verbatim}
+the following log entry may be generated.
+\begin{verbatim}
+TM 00000000000 UNIT O CALL of stub function a_pointer(...):
+                       INOUT *counter_p =    17
+                      --------------------------------
+                       INOUT *counter_p =    18
+                      RETURN *a_pointer =     2
+                      ========================================================
+\end{verbatim}
+
+
+%----------------------------------------------------------------------------
+\input{glossary.tex}
+
+%----------------------------------------------------------------------------
+\begin{landscape}
+\chapter{Complete Test Execution Log}
+
+\footnotesize
+\verbatiminput{\aststestexecutionlog}
+\normalsize
+\end{landscape}
+%-----------------------------------------------------------------
+\input{astsversion.tex}
+
+%-----------------------------------------------------------------
+\input{testreportappendix.tex}
+
+\end{fullpage} 
+%-----------------------------------------------------------------
+\end{document}
+
+%% -------------------------------------------------------------------------
+% LocalWords:  SUT rttAssert rttCheck TM CIDS GmbH

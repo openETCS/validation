@@ -1,0 +1,754 @@
+\documentclass{template/openetcs_report}
+% Use the option "nocc" if the document is not licensed under Creative Commons
+%\documentclass[nocc]{template/openetcs_article} 
+\usepackage{lipsum,url}
+\usepackage{supertabular}
+\usepackage{multirow}
+\usepackage{color, colortbl}
+\definecolor{gray}{rgb}{0.8,0.8,0.8}
+\usepackage[modulo]{lineno}
+
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{fixme}
+\usepackage{lscape} 
+\usepackage{pgfgantt}
+\usepackage{adjustbox}
+\usepackage{datetime}
+\usepackage{appendix}
+\usepackage{enumerate}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{breakurl}
+\usepackage{color, colortbl}
+\definecolor{myblue}{rgb}{0.6,.6,1}
+\definecolor{mydarkblue}{rgb}{0,0,0.5}
+\definecolor{mylightblue}{rgb}{0.8,0.8,1}
+\usetikzlibrary{arrows,shapes,automata,petri,calc}
+
+
+%user specified macros
+\input{macros.tex}
+\input{req.tex}
+\def\reqt{R-WP2/D2.6}
+\newenvironment{justif}{
+	\begin{quote}
+	\begin{itshape}Justification. 
+}{
+	\end{itshape}
+	\end{quote}
+}
+
+\renewcommand{\tbd}[1]{\nthng{#1}}
+
+
+\graphicspath{{./template/}{.}{./images/}}
+\begin{document}
+\frontmatter
+\project{openETCS}
+
+%Please do not change anything above this line
+%============================
+% The document metadata is defined below
+\newcommand{\crrntMnVrsn}{03}
+\newcommand{\crrntSbVrsn}{01}
+\newcommand{\crrntVrsn}{\crrntMnVrsn.\crrntSbVrsn}
+
+%assign a report number here
+\reportnum{OETCS/WP4/D4.1V\crrntVrsn}
+
+%define your workpackage here
+\wp{Work Package 4: ``Validation \& Verification Strategy''}
+
+%set a title here
+\title{openETCS Validation \& Verification Plan}
+
+%set a subtitle here
+\subtitle{Version \crrntVrsn}
+
+%set the date of the report here
+\date{13 Nov, 2015}
+
+%document approval
+%define the name and affiliation of the people involved in the documents approbation here
+\creatorname{Hardi Hungar}
+\creatoraffil{DLR}
+
+\techassessorname{Marc Behrens}
+\techassessoraffil{DLR}
+
+\qualityassessorname{Jens Gerlach}
+\qualityassessoraffil{Fraunhofer FOKUS}
+
+\approvalname{Klaus-R\"udiger Hase}
+\approvalaffil{DB Netz}
+
+
+%define a list of authors and their affiliation here
+
+\author{
+Hardi Hungar (Ed.)\\
+\small
+{\it Contributions by:} \\
+ Frederic Badeau (Systerel), Marc Behrens (DLR),\\
+ Cecile Braunstein (U Bremen), Mirko Caspar (DLR),\\
+ Cyril Cornu (All4Tec),\\
+ Christophe Gaston (CEA), Jens Gerlach (Fraunhofer),\\
+ Ainhoa Gracia (SQS), Hardi Hungar (DLR),\\
+Stephan Jagusch (AEbt), Alexander Nitsch (U Rostock),\\
+ Jan Peleska (U Bremen), Marielle Petit-Doche (Systerel),\\
+ Virgile Prevosto (CEA),  Stefan Rieger (TWT),\\ 
+Izaskun de la Torre (SQS), Jan Welte(TU-BS)}
+
+\affiliation{DLR\\
+  Lilienthalplatz 7\\
+  38108 Brunswick, Germany
+   \\eMail:hardi.hungar@dlr.de }
+
+  
+% define the coverart
+\coverart[width=350pt]{openETCS_EUPL}
+
+%define the type of report
+\reporttype{Deliverable}
+
+
+
+\begin{abstract}
+%define an abstract here
+
+  This document describes strategy and plan of the verification and
+  validation in the development of the software of the EVC (European
+  Vital Computer) in the openETCS approach. It revises the previous
+  versions (V01, V01.01) of this document. This document refers to the
+  process for openETCS as defined in \cite{openETCS:D2.3a-V02}. It
+  comprises the current versions of the artifacts ``0-03~Verification
+  Plan'' and ``0-04~Validation Plan'' as defined there.
+
+  The structure of the document follows the distinction from
+  \cite{openETCS:D2.3a-V02} between the current \emph{openETCS project},
+  funded as part of the EUREKA cluster programme ITEA~2, and the
+  \emph{openETCS activity} as a whole, which encompasses the project.
+
+  In its three main parts, the current document addresses:
+%
+  \begin{itemize}
+    \item  verification and validation for the full
+  development (openETCS activity) 
+    \item verification and validation for the current ITEA~2 project
+    \item details about \vv tools and methods   
+  \end{itemize}
+%
+  The current document shall provide an important part of the basis
+  for deliverable D4.4, the Final Report of the project on \VV.
+
+\bgcmmnt{Some of the revision work needed to be done for this version
+  is indicated in the form of comments like this one. Most of the
+  comments are missing themselves, though.}
+\end{abstract}
+
+%=============================
+%Do not change the next three lines
+\maketitle\tableofcontents
+\listoffiguresandtables
+\newpage
+%=============================
+
+
+
+
+\chapter{Document Control}
+
+\begin{tabular}{|p{4.4cm}|p{8.7cm}|}
+  \hline
+  \multicolumn{2}{|c|}{Document information} \\
+  \hline
+  Work Package &  WP4  \\
+  Deliverable ID or doc.\ ref.\ & D4.1\\
+  \hline
+  Document title & openETCS Validation \& Verification Plan\\
+  Document version & \crrntVrsn \\
+  Document authors (org.)  &
+  Frederic Badeau (Systerel), Marc Behrens (DLR), Cecile Braunstein (U Bremen),
+  Mirko Caspar (DLR), Cyril Cornu (All4Tec), Christophe Gaston (CEA), Jens Gerlach 
+  (Fraunhofer), Ainhoa Gracia (SQS), Hardi Hungar (DLR), Stephan Jagusch
+  (AEbt), Alexander Nitsch (U Rostock), Jan Peleska (U Bremen),
+  Marielle Petit-Doche (Systerel), Virgile Prevosto (CEA), Stefan
+  Rieger (TWT), Izaskun de la Torre (SQS), Jan Welte(TU-BS)\\
+  \hline
+\end{tabular}
+
+
+\begin{tabular}{|p{4.4cm}|p{8.7cm}|}
+\hline
+\multicolumn{2}{|c|}{Review information} \\
+\hline
+Last version reviewed & -- \\
+\hline
+Main reviewers & -- \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{2.2cm}|p{4cm}|p{4cm}|p{2cm}|}
+\hline
+\multicolumn{4}{|c|}{Approbation} \\
+\hline
+  &  Name & Role & Date   \\
+\hline  
+Written by    &  Hardi Hungar & WP4-T4.1 Task Leader  & November 2015\\
+\hline
+Approved by & Marc Behrens & WP4 Leader & \emph{tbd}\\
+\hline
+\end{tabular}
+
+\begin{tabular}{|p{1.5cm}|p{2cm}|p{3.5cm}|p{6cm}|}
+\hline
+\multicolumn{4}{|c|}{Document evolution} \\
+\hline
+Version &  Date & Author(s) & Comment  \\
+\hline  
+03.01 & 13/11/2015 & H. Hungar &  Revision of document structure and
+content (partially) based on V01.01 and on D4.2.1, D4.2.2
+\\ 
+\hline
+03.02 & &  &
+\\\hline
+03.03 & & &
+\\\hline
+03. & dd.mm.2015 & M. Behrens & Review and approval
+\\\hline
+\end{tabular}
+
+% The actual document starts below this line
+%=============================
+
+
+%Start here
+
+\mainmatter
+
+\part{General Definitions}
+
+\chapter{Purpose and Structure of the Document}
+\label{sec:purpose}
+
+This document describes strategy and plan of the verification and
+validation in openETCS. It revises the previous versions (V01, V01.01)
+of this document.  This document refers to the process for openETCS as
+defined in \cite{openETCS:D2.3a-V02}. It comprises the current versions
+of the artifacts ``0-03~Verification Plan'' and ``0-04~Validation
+Plan'' as defined there.
+
+The structure of the document follows the distinction from
+\cite{openETCS:D2.3a-V02} between the current \emph{openETCS project},
+funded as part of the EUREKA cluster programme ITEA~2, and the
+\emph{openETCS activity} as a whole, which encompasses the project.
+
+
+\begin{enumerate}
+\item The first part defines (in this section) the role and purpose of
+  the document. It provides basic definitions of verification and
+  validation and provides a generic description of how to perform
+  them.
+\item The second part defines verification and validation for the full
+  development. In its final version, it shall be a CENELEC-compliant
+  plan for verification and validation of the openETCS EVC software.
+\item The third part plans those activities which will actually
+  be performed within the current project. These are related to
+  the overall plan from the second part. They focus on the particular
+  instantiation of the development in the project. They define concrete
+  verification activities for the artifacts which are produced.
+\item A fourth part collects descriptions of methods and tools. Most of
+  these are already available from project partners or third
+  parties. Some of them are subject to adaptations or even further
+  development within openETCS. The second and third part refer to
+  relevant methods and tools from the fourth part---ones which are used
+  or could be used for verification or validation. Vice versa, the
+  descriptions specify for which activity they can be used.
+\end{enumerate}
+  
+In both the second and third part, the \vv strategy, the verification
+plan and the validation plan are defined. Verification and validation
+share some of their methods and tools, and in some case are applied to
+the same design artifacts. Therefore, the plans for both are included
+in this document. Nevertheless, these activities are intended to be
+and remain independent.
+
+Verification and validation play an important role in the safety
+case. This document identifies the V\&V activities which do contribute
+and refers to the safety plan for further details on the additional
+requirements to be met and a precise statement of what has to be
+established.
+
+\chapter{Definitions}
+\label{sec:definitions}
+
+%\todo{Further Info, perhaps put the project context here }
+
+\section{Verification}
+\label{sec:definition-verification}
+
+According to \cite[3.1.48]{EN50128:2011}, verification is an activity
+to check whether the output of a development phase meets the
+requirements. This concerns the following aspects.
+%
+\begin{description}
+\item[Formalities:] \cite[5.3.2.7 to 10]{EN50128:2011}
+  \begin{enumerate}
+  \item The unambiguous identifiability of the artifacts which make up
+    the objects of verification, their versions and their relationship
+    with other artifacts by the consistent use of unique reference numbers.
+\item Consistency in the usage of terms, names, descriptions
+\item Formal completeness in addressing all applicable 
+  requirements laid down in the process plan.  
+  \end{enumerate}
+\item[Traceability:] \cite[6.5.4.14 to 17]{EN50128:2011} Most of the
+  artifacts subjected to verification must provide detailed tracing information which
+  establishes a relation between the constituting items of each object
+  of verification and other artifacts, in particular the input
+  artifacts of the design step whose output is verified. 
+\item[Completeness, Correctness and Consistency:] These properties
+  refer to the specific content of the artifact.
+\end{description}
+%
+ The openETCS process \cite{openETCS:D2.3a-V02} requires
+verification to be done in each of the phases. Verification has to check aspects of
+formal nature and those that refer to the content of the artifacts.
+
+A typical example of verification is the check of a design
+refinement. The refined design must cover all required aspects, refine
+all requirements coming from the previous design step, and provide
+adequate tracing information.  The requirements must all be correctly
+refined, and the refined design must in itself be consistent. Though
+correctness and consistently are not independent, it is usually
+beneficial to address both aspects explicitly. Furthermore, the
+refining artifacts must be readable and clearly structured.
+
+Tracing information must be provided by the Quality Assurance Plan
+(0-01), the Verification Plan (0-03), the Validation Plan (0-04), the
+SW Requirement Specification (3-16), the Overall SW Test Specification
+(3-17), the SW Architecture and Design
+Specification (4-19), the SW Interface Specification (4-20), the SW
+Integration Test Specification (4-21), the SW Component Test
+Specification (4-22), the SW Components (5-24), the SW Component Test
+Report (5-25), the SW Integration Test Report (6-27), the Overall SW
+Test Report (7-29), the Validation Report (7-30).
+
+
+\section{Validation}
+\label{sec:definition-validation}
+%\nocite{*}
+Validation is name for the activity by which the compliance of an
+artifact with the user requirements is checked. Here, this means that
+the developed SW of the EVC is fit for its purpose: correct, safe,
+operational and fills its role in the EVC architecture.
+
+\nthng{For openETCS, this means that the demonstrator (or parts of it) are
+checked against the SS~026 or one of its close descendants (i.e.,
+SSRS), taking also further sources of requirements from operational
+scenarios and TSIs into accoutn. This will consist of testing the
+equipment according to a test plan derived from the requirements and
+detailed into concrete test cases at some later stage. Tool support
+for validation will thus mainly concern test execution and evaluation,
+perhaps supplemented by test derivation or test management. Ambitious
+techniques like formal proof are most likely not applicable here.
+
+Thus, the tool support for validation will not differ substantially
+from that for similar verification activities.}
+
+One might also consider ``early'' validation activities, e.g.\
+``validating'' an executable model against requirements from the
+SS~026. These are not mandated by the standards and can per se neither
+replace  verification nor validation steps. They may be worthwhile
+as means for early defect detection, and may also be integrated into
+verification activities, but they are not made parts of the current
+verification and validation plans. 
+
+Further (mostly complementary) information on V\&V can be found in the
+report on the CENELEC standards (D2.2).
+
+\section{Review}
+\label{sec:review}
+
+Most verification and validation activities consist in reviewing
+artifacts produced in the development process.
+
+A \emph{review} is 
+\begin{itemize}
+\item a systematic analysis
+\item of a document or set of documents, the object of the review,
+\item performed by suitably trained personnel
+\item to determine the satisfaction of a specified set of properties
+\item potentially taking into account evidential material
+\item producing a documentation in a defined, structured format.
+\end{itemize}
+%
+The \emph{object of the review}  may be text or structured text, can
+contain graphics, include formal notations of logical or mathematical
+nature, may be formal or semi-formal descriptions, programs or
+engineering descriptions.
+
+The \emph{documentation} classifies results as positive, negative or
+inconclusive with detailed references which items of the objects of
+the review and the properties to be checked these verdicts
+concern. Verdicts may be required to be substantiated by explanations. 
+
+% \chapter{Document Evolution}
+
+% The verification and validation plan shall be revised in the course of
+% the project as the design progresses and gets detailed and experiences
+% with verification and validation are made. This is in accordance with
+% the EN~50128, where it is required that the plan shall be maintained
+% throughout the development cycle.
+
+% \begin{description}
+% \item[V01, T0+18:] First version of the plan. 
+% \item[V02, T0+22:] First revision (this document), based on the 1st
+%   V\&V interim reports on applicability of the V\&V approach to model
+%   and implementation/code (D4.2.1, D4.2.2), and a definition of the
+%   hazard and risk analysis methodology (D4.2.3)
+% \item[V03, T0+30:] Second revision, based on the internal reports on
+%   the applicability of the V\&V approach to prototypes of design
+%   models and code
+% \item[V04, T0+42:] Final version as part of the final V\&V report (D4.4) 
+% \end{description}
+
+% \oldtext{
+% The first version of the plan was based on the available information of
+% the design process. This is not yet very detailed as also the
+% description in Chapter~\ref{cha:vv-design-process} of this report
+% shows. In particular, the nature of the SSRS is yet to be defined
+% precisely, and the architecture description including the HW/SW
+% partitioning needs to be revised.}
+
+% \oldtext{Concrete plans of activities are thus still to be made, and methods
+% and tools to be applied will have to be selected. Only the first phase
+% of V\&V activities is described in Sec.~\ref{sec:first-level-verif}.}
+
+% \chapter{\VV in the Design Process}
+% \label{cha:vv-design-process}
+
+% D2.3 defines the openETCS process on an abstract level. It already
+% defines the main steps. A slightly more detailed picture than the one
+% given in D2.3 is given in Fig.~\ref{fig:openETCSProcess}. 
+
+% \begin{figure}[htb]
+%   \centering
+%   \includegraphics[width=.9\textwidth]{images/ProcessOpenETCS-BeM.png}
+%   \caption{openETCS Process (rough view)}
+%   \label{fig:openETCSProcess}
+% \end{figure}
+% %
+% As a basis for planning the V\&V activities, the process sketch
+% permits to name the main phases. Planning will need a
+% better definition of the stages (scope of the design artifacts,
+% level of detail, respective system boundaries), detailed planning a
+% specification of the artifacts to be produced. Version V01 of this
+% document will in these respects be of an accordingly preliminary
+% nature. 
+ 
+
+\part{\VV for a Full Development }
+
+
+
+\nthng{
+W.r.t.\ \vv, openETCS shall achieve two goals:
+\begin{enumerate}
+\item Design a tool-supported method with which the EVC software can
+  be developed and maintained so that it is suitable for integration
+  in (SIL-4) certified products. This will be described in
+  Sec.~\ref{sec:vv-strategy-full}, ``\VV Strategy for a Full Development''.
+\item Perform part of the development (including tool and method
+  evaluation and the study of tool qualification questions) on
+  representative parts of the design. The plans for that will be
+  detailed in Sec.~\ref{sec:vv-strategy-project}, ``\VV Strategy for openETCS''.
+\end{enumerate}}
+
+\nthng{
+In more detail, the verification and validation have to consider the
+following aspects throughout the development process.
+%
+\begin{itemize}
+\item functionalities of the system and the sub-system,
+\item system and sub-system architecture,
+\item external and internal interfaces of the sub-system,
+\item software components,
+\item performance and Safety objectives and constraints,
+\item functional properties,
+\item safety properties.
+\end{itemize}}
+
+\chapter{\VV in the openETCS Process}
+\label{sec:vv-openETCS-process}
+
+%\input{WP41-V03-Full-Process.tex}
+
+\chapter{\VV Strategy for a Full Development }
+\label{sec:vv-strategy-full}
+
+%\input{WP41-V02-Full-Strategy.tex}
+
+
+\chapter{Verification Plan for a Full Development}
+\label{sec:verification-plan-full}
+
+%\input{WP41-V02-Full-Verification-Plan.tex}
+
+Verification has to be done in each of the phases of the
+development. This chapter is structured according to the verification
+reports to be produced.
+
+\setcounter{section}{-1}
+\section{Template for Describing a Verification or Validation Activity}
+\label{sec:VnV-template}
+
+\input{WP41-V03-VnV-Template.tex}
+
+\section{Verification of Planning}
+\label{sec:verification-full-0}
+
+These verifications are done by reviewing the documents. The results
+are collected in the Planning Verification Report (0-05).
+
+\subsection{Verification of the Project Plan}
+\label{sec:verification-full-00}
+
+% \paragraph{General description of the activity}
+% \begin{description}
+% \item[Object of verification:] Project Plan (0-00)
+% \item[Responsible:] VER
+% \item[Reference material:] EN~50126, EN~50128, FPP, openETCS Process (D2.3a)
+%   \item[Objective:] Establish that the project plan defines a viable
+%     management structure, where all activities are assigned properly
+%     and adequately.
+%   \item[Evidential material:] --
+%   \item[Method:] Review
+%   \item[Documentation:] \textit{tbd}
+% \end{description}
+
+\begin{tabular}{|p{3.2cm}|p{11cm}|}
+  \hline
+  \multicolumn{2}{|c|}{\textbf{General description of the activity}} \\\hline
+  \textbf{Verification object} & Project Plan (0-00)
+  \\\hline
+  \textbf{Responsible role} & VER
+  \\\hline
+  \textbf{Reference material} & EN~50126, EN~50128, FPP, openETCS
+  Process (D2.3a)
+  \\\hline
+  \textbf{Objective} & Establish that the project plan defines a viable
+  management structure, where all activities are assigned properly
+  and adequately.
+  \\\hline
+  \textbf{Evidential material} & --
+  \\\hline
+  \textbf{Method} & Review
+  \\\hline
+  \textbf{Documentation} & Text document
+  \\\hline
+\end{tabular}
+
+\begin{tabular}{|p{3.2cm}|p{11cm}|}
+  \hline
+  \multicolumn{2}{|c|}{\textbf{Detailed description of the objective}} \\\hline
+  \textbf{Formalities} & \textit{tbd}
+  % List the formalities to be checked here.
+  % Formalities in general concern the unambiguity of references,
+  % consistency in terms, formal completeness of requirement capture
+  \\\hline
+  \textbf{Traceability} & --
+  % nothing to check, here
+  \\\hline
+  \textbf{Completeness} & \textit{tbd}
+  % Define the completeness to be checked here.
+  % Completeness check that the content completely covers the
+  % requirements, so these requirements are to be described and
+  % referenced here
+  \\\hline
+  \textbf{Correctness} & \textit{tbd}
+  % Define the correctness checks
+  % e.g. correct refinement of requirement items 
+  \\\hline
+  \textbf{Consistency} & \textit{tbd}
+  % Define the consistency to be checked
+  % e.g. interfaces match, no contradictions in result properties 
+  \\\hline
+\end{tabular}
+
+%
+\begin{tabular}{|p{3.2cm}|p{11cm}|}
+  \hline
+  \multicolumn{2}{|c|}{\textbf{Detailed description of the
+      documentation}} \\\hline
+  \textbf{Managerial items} & \textbf{Input:} [Project plan version],
+  \textbf{Output:} [Project plan verification report version],
+  \textbf{Responsible person:} [person of role VER],
+  \textbf{Contributors:} [list], \textbf{Date:} [date]
+  \\\hline
+  \textbf{[Output item/section \textit{nn}]} & 
+  % Iterate for the different output parts
+  % Include tool qualifications if applicable
+  \\\hline
+\end{tabular}
+
+
+
+\begin{tabular}{|p{3.2cm}|p{11cm}|}
+  \hline
+  \multicolumn{2}{|c|}{\textbf{Detailed description of the activity}} \\\hline
+  \textbf{Activity steps} & \textit{tbd}
+  % Describe the steps and their contributions (how they fit together) 
+  \\\hline
+  \textbf{Step \textit{nn}} & \textit{tbd}
+  % Describe each step: Goal, Input, Output, Means
+  \\\hline
+\end{tabular}
+
+
+\subsection{Verification of the Quality Assurance Plan}
+\label{sec:verification-full-01}
+
+%\input{WP41-V03-Full-01}
+
+\subsection{Verification of the Configuration Management Plan}
+\label{sec:verification-full-02}
+
+%\input{WP41-V03-Full-02}
+
+\subsection{Verification of the Verification Plan}
+\label{sec:verification-full-03}
+
+%\input{WP41-V03-Full-03}
+
+\subsection{Verification of the Validation Plan}
+\label{sec:verification-full-04}
+
+%\input{WP41-V03-Full-04}
+
+\subsection{Planning Verification Report}
+\label{sec:verification-full-05}
+
+Sec.~\ref{sec:verification-full-05} gives an overview of the components of the Planning
+Verification Report. Its main parts are described in the 
+subsections of Sec.~\ref{sec:verification-full-0} preceding this
+subsection (Sec.~\ref{sec:verification-full-05}).
+%\input{WP41-V03-Full-05}
+
+
+\section{Verification of the System Design}
+\label{sec:verification-full-1}
+
+
+\section{Verification of the Sub-System Architecture Design}
+\label{sec:verification-full-2}
+
+
+\subsection{Verification of the Sub-System Architecture Design}
+\label{sec:verification-full-13}
+
+%\input{WP41-V03-Full-13}
+
+\subsection{Verification of the Acceptance Plan}
+\label{sec:verification-full-14}
+
+%\input{WP41-V03-Full-14}
+
+\subsection{Sub-System Architecture Design Verification Report}
+\label{sec:verification-full-15}
+
+%\input{WP41-V03-Full-05}
+
+\section{Verification of the SW Specification}
+\label{sec:verification-full-3}
+
+
+\section{Verification of the SW Design}
+\label{sec:verification-full-4}
+
+\section{Verification of the SW Component Implementation and Test}
+\label{sec:verification-full-5}
+
+\section{Verification of the SW Integration}
+\label{sec:verification-full-6}
+
+\section{Verification of the SW Validation}
+\label{sec:verification-full-7}
+
+
+
+
+\chapter{Validation Plan for a Full Development}
+\label{sec:validation-plan-full}
+
+%\input{WP41-V02-Full-Validation-Plan.tex}
+
+
+
+\part{\VV Plan for the Project openETCS}
+
+\chapter{\VV Strategy for the Project openETCS}
+\label{sec:vv-strategy-project}
+
+%\input{WP41-V02-Project-Strategy.tex}
+
+
+\chapter{Verification Plan for the Project openETCS}
+ \label{sec:verification-plan-project}
+
+% \input{WP41-V02-Project-Verification-Plan.tex}
+
+ This chapter (Sec.~\ref{sec:verification-plan-project}) should have
+ been based on a tailoring of the process for the full development
+ \cite{openETCS:D2.3a-V02} to the project activities. In absence of
+ such a tailoring, which would relate the project activities and their
+ outcome appropriately the full development, this is done here for
+ each planned verification activity. I.e., the artifacts of the
+ project which are subjected to verification are related to the
+ artifacts defined in \cite{openETCS:D2.3a-V02}. And for each
+ verification activity of the project, the corresponding verification
+ activity (or activities) from the Verification Plan for the full
+ development (Sec.~\ref{sec:verification-plan-full}) is adapted here
+ to the scope and form of the respective project result.
+
+\setcounter{section}{-1}
+\section{Template for Describing a Verification Activity of the Project}
+\label{sec:VnV-template-project}
+
+The template from Sec.~\ref{sec:VnV-template} is to be extended by a
+description of the verification object in relation to the
+corresponding artifact(s) in the full development. 
+
+
+
+\chapter{Validation Plan for the Project openETCS}
+ \label{sec:validation-plan-project}
+
+% \input{WP41-V02-Project-Validation-Plan}
+
+
+
+\part{Methods and Tools for Verification and Validation}
+\label{sec:methods-and-tools}
+
+% \input{WP41-V02-Methods-Tools.tex}
+
+\bibliographystyle{unsrt}
+\bibliography{bibliography}
+%\bibliography{Lbrr_VnV03}
+
+
+%\appendix
+
+% \chapter{Requirements on \VV}
+% \label{sec:appendix}
+
+%\input{WP41-V02-Appendix.tex}
+
+
+
+\nocite{*}
+%===================================================
+%Do NOT change anything below this line
+
+\end{document}

@@ -1,0 +1,132 @@
+
+\documentclass{template/openetcs_report}
+% Use the option "nocc" if the document is not licensed under Creative Commons
+%\documentclass[nocc]{template/openetcs_article} 
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage[draft,nomargin,inline]{fixme}
+\usepackage{lscape} 
+\usepackage{listings}
+\usepackage{placeins}
+\usepackage{framed}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage[pdftex]{hyperref}
+
+\numberwithin{figure}{chapter}
+\numberwithin{table}{chapter}
+\usepackage{float}
+\floatstyle{plain}
+\newfloat{listing}{thp}{lop1}[chapter]
+\floatname{listing}{Listing}
+
+\renewcommand\floatpagefraction{.90}
+\renewcommand\topfraction{.90}
+\renewcommand\bottomfraction{.90}
+\renewcommand\textfraction{.1}
+\setlength{\unitlength}{1mm}
+
+
+%user specified macros
+\input{macros.tex}
+\input{./listing.tex}
+
+\graphicspath{{./template/}{.}{./images/}}
+\begin{document}
+\frontmatter
+\project{openETCS}
+
+%Please do not change anything above this line
+%============================
+% The document metadata is defined below
+
+%assign a report number here
+\reportnum{OETCS/WP4/D4.3.2}
+
+%define your workpackage here
+\wp{Work Package 4: ``Validation \& Verification Strategy''}
+
+%set a title here
+\title{Final Report on Validation and Verification Report of Implementation/Code}
+
+%set a subtitle here
+%\subtitle{Description of Work}
+
+%set the date of the report here
+\date{March 2015}
+
+%define a list of authors and their affiliation here
+
+\creatorname{Jens Gerlach}
+\creatoraffil{Fraunhofer FOKUS}
+
+\techassessorname{Virgile Prevosto}
+\techassessoraffil{CEA LIST}
+
+\qualityassessorname{Abdelnasir Mohamed}
+\qualityassessoraffil{AEbt}
+
+\approvalname{Klaus-R\"udiger Hase}
+\approvalaffil{DB Netz}
+
+\author{Jens Gerlach}
+\affiliation{Fraunhofer FOKUS\\
+  Kaiserin-Augusta-Allee 31 \\
+  10589 Berlin, Germany\\
+  jens.gerlach@fokus.fraunhofer.de \\
+  www.fokus.fraunhofer.de}
+
+\author{Izaskun de la Torre}
+\affiliation{Software Quality Systems S.A.}
+
+% define the coverart
+\coverart[width=350pt]{openETCS_EUPL}
+
+%define the type of report
+\reporttype{Intermediate report}
+
+
+\begin{abstract}
+  This work package will comprise the activities concerned with
+  verification and validation within openETCS. This includes \vv of
+  development artifacts, that is, showing that models and code
+  produced correctly express or implement what they are supposed
+  to. And also, methods and tools to perform such tasks will be
+  evaluated with the goal of assembling a suitable method and tool
+  chain to support a full development.
+\end{abstract}
+
+%=============================
+%Do not change the next three lines
+\maketitle
+\tableofcontents
+\listoffiguresandtables
+\clearpage
+\listof{listing}{List of code examples}
+\listoffixmes
+\cleardoublepage
+%=============================
+
+% The actual document starts below this line
+%=============================
+
+\mainmatter
+%Start here
+
+\include{introduction}\cleardoublepage
+\include{frama-c}\cleardoublepage
+%\include{formal-verification}\cleardoublepage
+%\include{static-analysis}\cleardoublepage
+%\include{conclusions}\cleardoublepage
+
+
+\bibliographystyle{unsrt}
+\bibliography{bibliography}
+
+\nocite{*}
+%===================================================
+%Do NOT change anything below this line
+
+\end{document}

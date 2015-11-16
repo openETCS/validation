@@ -7,18 +7,31 @@ Declarations:
 bool Condition29;
 bool Equipment_not_isolated;
 bool Mode_NoPower;
+bool No_Power_input;
 
 Definitions:
 
-Equipment_not_isolated :=  ETCS_Isolated.'valid'
-		 & ETCS_Isolated.'isolation_status' =='TIU_Types_Pkg::on_board_equipement_is_not_isolated' 
+Equipment_not_isolated :=  ~Data_From_DMI.'ETCS_Isolated' 
 		 & pre(currentMode, 'Level_And_Mode_Types_Pkg::IS'  ) != 'Level_And_Mode_Types_Pkg::IS' ;
 
 Mode_NoPower:= currentMode == 'Level_And_Mode_Types_Pkg::NP' ;
 
 
+No_Power_input :=  Data_From_TIU.'train_status'.'valid'
+		 & pre(currentMode, 'Level_And_Mode_Types_Pkg::NP'  ) != 'Level_And_Mode_Types_Pkg::NP' ;
+
 Condition29 := 'ManageModes_#1/ComputeModesConditions_##1/>Condition29';
 
 
+// PO: 
+po_condition_1 := if ( Equipment_not_isolated & No_Power_input  ) then
+	       	  currentMode = 'Level_And_Mode_Types_Pkg::NP'
+		  else
+		  True;
+
+
+
 Proof Obligations:
-( Equipment_not_isolated & ~OnBoard_Powered ) -> ( Condition29 & Mode_NoPower );
+( Equipment_not_isolated & No_Power_input  ) -> ( Condition29 & Mode_NoPower );
+
+po_condition_1 ;

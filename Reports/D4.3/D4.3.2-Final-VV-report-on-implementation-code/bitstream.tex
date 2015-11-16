@@ -1,239 +1,317 @@
 
 
+\FloatBarrier
+
 \chapter{The Bit Stream Layer}
 \label{sec:bitstream}
 
-\section{Formalization of bit operations in \framac}
-
-describe \inl{BitTest}
-
-\begin{lstlisting}[style=acsl-block]
-predicate   BitTest(integer v, integer n);
-\end{lstlisting}
-
-
-\begin{lstlisting}[style=acsl-block]
-predicate Bit8{A}(uint8_t v, integer n)  = BitTest(v, 7 - n);
-
-predicate Bit64{A}(uint64_t v, integer n) = BitTest(v, 63 - n);
-
-predicate Bit8Array{A}(uint8_t* a, integer n) = Bit8(a[n / 8],n % 8);
-\end{lstlisting}
-
-
-\begin{lstlisting}[style=acsl-block]
-predicate
-  UpperBitsNotSet{A}(integer value, integer length) =
-    \forall integer i; length <= i ==> !BitTest(value, i);
-\end{lstlisting}
 
 
 
 
-\section{Reading and writing individual bits}
 
-\subsection{64 bits}
 
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-   requires pre: pos < 64;
 
-   assigns \nothing;
 
-   ensures set_bit: \result != 0 <==> Bit64(value, pos);
-*/
-static inline int TestBit64(uint64_t value, uint32_t pos)
-{
-    uint64_t mask = ((uint64_t) 1) << (63u - pos);
-    uint64_t flag = value & mask;
+\section{The \inl{Bitstream} abstraction}
 
-    return flag != 0u;
-}
-\end{lstlisting}
-\end{minipage}
-\caption{\label{lst:TestBit64}Reading a bit of \inl{uint64_t}}
-\end{listing}
+As mentioned in Section~\ref{sec:packets},
+the operation 
+\lstinline{Bitstream_Read(stream,length)}
+reads the next \lstinline{length} bits from the bitstream
+\lstinline{stream}, and returns them as a \lstinline{uint64_t} value.
+%
+Its formal ACSL specification is shown in 
+Listing~\ref{lst:Bitstream_Read spec}.
+%
+It requires \lstinline{stream}
+%
+\begin{itemize}
+\item to point to a valid memory area 
+	(requirement ``\lstinline{valid}''),
+\item to adhere to its data type invariant
+	(``\lstinline{invariant}''), and
+\item not to be exhausted (``\lstinline{normal}'').
+\end{itemize}
+%
+It is allowed to ---~and usually in fact will~--- modify the current bit
+position within \lstinline{stream}, but it has to leave all other memory
+unchanged (expressed by the ``\lstinline{assigns}'' clause).
+%
+After completion of the operation, 
+%
+\begin{itemize}
+\item the current bit position has been increased accordingly
+	(``\lstinline{ensures pos}''),
+\item the return value equals, bit by bit, the stream between the
+	current bit position on entry and that on exit
+	(``\lstinline{changed}''),
+\item in particular, all but the \lstinline{length} least significant
+	bits of the return value are zero
+	(``\lstinline{upper}''),
+\item \lstinline{stream}'s total size remains unaffected
+	(``\lstinline{size}''), and
+\item so do all of its content bits
+	(``\lstinline{unchanged}'').
+\end{itemize}
+
 
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
 /*@
-    requires pre: pos < 64;
+  requires  valid:      Readable(stream);
+  requires  invariant:  Invariant(stream, length);
+  requires  normal:     Normal(stream, length);
 
-    assigns \nothing;
+  assigns   stream->bitpos;
 
-    ensures left:     EqualBits64(\result, value, 0,  pos);
-    ensures set_bit:  flag != 0  <==>  Bit64(\result, pos);
-    ensures right:    EqualBits64(\result, value, pos + 1,  64);
-    ensures upper:    \forall integer i; i >= 64 - pos ==>
-                         (UpperBitsNotSet(value, i) ==> UpperBitsNotSet(\result, i));
+  ensures   pos:        stream->bitpos == \old(stream->bitpos) + length;
+  ensures   changed:    EqualBits(stream, \old(stream->bitpos), stream->bitpos, \result);
+  ensures   upper:      UpperBitsNotSet(\result, length);
+  ensures   size:       stream->size == \old(stream->size);
+  ensures   unchanged:  Unchanged{Here,Old}(stream, 0, 8 * stream->size);
 */
-static inline uint64_t SetBit64(uint64_t value, uint32_t pos, int flag)
-{
-    uint64_t mask = ((uint64_t) 1u) << (63 - pos);
-
-    return (flag == 0) ? (value & ~mask) : (value | mask);
-}
+uint64_t Bitstream_Read(Bitstream* stream, uint32_t length);
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:SetBit64}Writing a bit of \inl{uint64_t}}
+\caption{\label{lst:Bitstream_Read spec}Reading from a bitstream}
 \end{listing}
+
+
+
+
+The formal definitions of the ACSL predicates used
+in \lstinline{Bitstream_Read}'s contract are given in
+Listing~\ref{lst:Bitstream preds}; they build upon the internal
+details of the \lstinline{Bitstream} data structure shown in
+Listing~\ref{lst:Bitstream struct}.
+%
+Predicate \lstinline{Invariant} requires that a 
+\lstinline{struct Bitstream}'s data area
+doesn't overlap with the \lstinline{struct} itself, and that some
+further, lower-level invariant holds (see Section~\ref{sec:bit sequences}
+below).
+%
+In a similar way, predicates \lstinline{Normal} and
+\lstinline{EqualBits} is reduced to a
+lower-level predicate of the same 
+name, respectively.\footnote{Frama-C allows for predicate overloading.}
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+struct Bitstream
+{
+    uint8_t*  addr;     // start address of stream data
+    uint32_t  size;     // length of stream data in bytes
+    uint32_t  bitpos;   // current bit position within stream data
+};
+typedef struct Bitstream Bitstream;
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:Bitstream struct}
+	Details for the bitstream data structure}
+\end{listing}
+
+
+
+
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
 /*@
-    requires pre: length <= 64;
+  predicate 
+    Readable{L}(Bitstream* stream) = \valid(stream) &&
+      \valid_read(stream->addr + (0..stream->size-1));
 
-    assigns \nothing;
+  predicate
+    Writeable{L}(Bitstream* stream) = \valid(stream) &&
+      \valid(stream->addr + (0..stream->size-1));
 
-    ensures  not_set: \result <==> UpperBitsNotSet(value, length);
+  predicate
+    Invariant{L}(Bitstream* stream, integer length) =
+      \separated(stream, stream->addr + (0..stream->size-1)) &&
+      Invariant(stream->size, stream->bitpos, length);
+
+  predicate
+    Normal{L}(Bitstream* stream, integer length) =
+      Normal(stream->size, stream->bitpos, length);
+
+  predicate
+    Unchanged{A,B}(Bitstream* stream, integer first, integer last) =
+      \forall integer i;  first <= i < last ==>
+        (\at(Bit8Array(stream->addr, i),A) <==>
+         \at(Bit8Array(stream->addr, i),B));
+
+  predicate
+    EqualBits{A}(Bitstream* stream, integer first, integer last, uint64_t value) =
+      EqualBits{A}(stream->addr, first, last, value);
+
 */
-static inline int UpperBitsNotSet64(uint64_t value, uint32_t length)
-{
-    if (length == 64)
-    {
-        return 1;
-    }
-    else
-    {
-        const uint64_t MaxValue = ((uint64_t) 1) << length;
-        // assert equiv: UpperBitsNotSet(value, length) <==> value < MaxValue;
-
-        return value < MaxValue;
-    }
-}
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:UpperBitsNotSet64}Test that upper bits are not set}
+\caption{\label{lst:Bitstream preds}
+	ACSL predicates used in bitstream layer contracts}
 \end{listing}
+
+
+
+
+As a kind of constructor for
+\lstinline{Bitstream}, we provide the operation \lstinline{Bitstream_Init},
+shown with its contract in Listing~\ref{lst:Bitstream_Init}.
+%
+Moreover, we provide a test for exhaustion of a \lstinline{Bitstream},
+shown in Listing~\ref{lst:Bitstream_Normal}.
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+  requires valid:     Writeable(stream);
+  requires bit_size:  8 * size <= UINT32_MAX;
+  requires valid_pos: bitpos <= 8 * size;
+  requires separated: \separated(addr + (0..size-1), stream);
+
+  assigns  stream->addr, stream->size, stream->bitpos;
+
+  ensures  addr:      stream->addr == addr;
+  ensures  size:      stream->size == size;
+  ensures  bitpos:    stream->bitpos == bitpos;
+  ensures  invariant: Invariant(stream, 0);
+*/
+void Bitstream_Init(Bitstream* stream, uint8_t* addr, uint32_t size, uint32_t bitpos);
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:Bitstream_Init}Setting-up a bitstream}
+\end{listing}
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+  requires valid:     Readable(stream);
+  requires invariant: Invariant(stream, length);
+
+  assigns \nothing;
+
+  ensures  result:    \result <==> Normal(stream, length);
+*/
+int Bitstream_Normal(const Bitstream* stream, uint32_t length);
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:Bitstream_Normal}Testint a bitstream for exhaustion}
+\end{listing}
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+  requires valid:      Writeable(stream);
+  requires invariant:  Invariant(stream, length);
+  requires normal:     Normal(stream, length);
+  requires upper:      UpperBitsNotSet(value, length);
+
+  assigns stream->addr[0..stream->size - 1];
+  assigns stream->bitpos;
+
+  ensures  pos:        stream->bitpos == \old(stream->bitpos) + length;
+  ensures  changed:    EqualBits(stream, \old(stream->bitpos), stream->bitpos, value);
+  ensures  unchanged:  Unchanged{Here,Old}(stream, 0, \old(stream->bitpos));
+  ensures  unchanged:  Unchanged{Here,Old}(stream, stream->bitpos, 8 * stream->size);
+  ensures  size:       stream->size == \old(stream->size);
+*/
+void Bitstream_Write(Bitstream* stream, uint32_t length, uint64_t value)
+{
+    Bitwalker_Write(stream->addr, stream->size, stream->bitpos, length, value);
+    //@ assert EqualBits(stream, stream->bitpos, stream->bitpos + length, value);
+
+    stream->bitpos += length;
+    //@ assert EqualBits(stream, \at(stream->bitpos,Pre), stream->bitpos, value);
+}
+
+\end{lstlisting}
+\end{minipage}
+\caption{Writing to a bitstream}
+\end{listing}
+
+
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+
+\end{lstlisting}
+\end{minipage}
+\caption{caption}
+\end{listing}
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+
+\end{lstlisting}
+\end{minipage}
+\caption{caption}
+\end{listing}
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+
+\end{lstlisting}
+\end{minipage}
+\caption{caption}
+\end{listing}
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+
+\end{lstlisting}
+\end{minipage}
+\caption{caption}
+\end{listing}
+
+
+
+
+
+
+
+
+
 
 
 \FloatBarrier
-
-\subsection{8 bits}
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-    requires pre:  pos < 8;
-
-    assigns \nothing;
-
-    ensures pos:  \result != 0 <==> Bit8(value, pos);
-*/
-static inline int TestBit8(uint8_t value, uint32_t pos)
-{
-    uint8_t mask = ((uint8_t) 1) << (7u - pos);
-    uint8_t flag = value & mask;
-
-    return flag != 0;
-}
-\end{lstlisting}
-\end{minipage}
-\caption{caption}
-\end{listing}
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-    requires pre: pos < 8;
-
-    assigns \nothing;
-
-    ensures left:   EqualBits8(\result, value, 0,  pos);
-    ensures pos:    Bit8(\result, pos) <==> (flag != 0);
-    ensures right:  EqualBits8(\result, value, pos + 1,  8);
-*/
-static inline uint8_t SetBit8(uint8_t value, uint32_t pos, int flag)
-{
-    uint8_t mask = ((uint8_t) 1) << (7u - pos);
-
-    return (flag == 0) ? (value & ~mask) : (value | mask);
-}
-\end{lstlisting}
-\end{minipage}
-\caption{caption}
-\end{listing}
-
-\FloatBarrier
-
-\subsection{8 bit arrays}
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-    requires valid:  \valid_read(addr + (0..size-1));
-    requires size:   8 * size <= UINT32_MAX;
-    requires pos:    pos < 8 * size;
-
-    assigns \nothing;
-
-    ensures result:  \result != 0 <==> Bit8Array(addr, pos);
-*/
-static inline int TestBit8Array(uint8_t*  addr, uint32_t size, uint32_t pos)
-{
-    return TestBit8(addr[pos / 8], pos % 8);
-}
-\end{lstlisting}
-\end{minipage}
-\caption{caption}
-\end{listing}
-
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-    requires valid:  \valid(addr + (0..size-1));
-    requires size:   8 * size <= UINT32_MAX;
-    requires pos:    pos < 8 * size;
-
-    assigns addr[0..size-1];
-
-    ensures left:   Unchanged{Here,Old}(addr, 0, pos);
-    ensures middle: Bit8Array(addr, pos) <==> (flag != 0);
-    ensures right:  Unchanged{Here,Old}(addr, pos + 1, 8 * size);
-*/
-static inline void SetBit8Array(uint8_t* addr, uint32_t size, uint32_t pos, int flag)
-{
-    uint32_t i = pos / 8u;
-    uint32_t k = pos % 8u;
-
-    addr[i] = SetBit8(addr[i], k, flag);
-
-    // The following assertion claims that in byte with index "pos/8"
-    // the bits with indices different from "k" do not change
-    /*@
-      assert bits_in_byte:
-        \forall integer j; (0 <= j < 8  && j != k) ==>
-        (Bit8(addr[pos/8], j) <==> \at(Bit8(addr[pos/8], j), Pre));
-    */
-
-    // The following assertion claims that in every byte
-    // with an index that is different from "pos/8" no bit is changed.
-
-    /*@
-        assert other_bytes:
-        \forall integer l, j; (0 <= l < size  &&  l != pos/8  &&  0 <= j < 8) ==>
-          (Bit8(addr[l], j) <==> \at(Bit8(addr[l], j), Pre));
-    */
-
-}
-\end{lstlisting}
-\end{minipage}
-\caption{caption}
-\end{listing}
-
-\FloatBarrier
-
 
 \section{Reading and writing bit sequences}
+\label{sec:bit sequences}
+
 
 
 \begin{listing}[hbt]
@@ -278,6 +356,8 @@ uint64_t Bitwalker_Read(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t 
 \caption{caption}
 \end{listing}
 
+
+
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
@@ -294,26 +374,44 @@ uint64_t Bitwalker_Read(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t 
   ensures  right:      Unchanged{Here,Old}(addr, bitpos + length, 8 * size);
 */
 void Bitwalker_Write(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t length, uint64_t value);
+{
+    /*@
+      loop invariant bound:   bitpos <= i <= bitpos + length;
+      loop invariant left:    Unchanged{Here,Pre}(addr, 0, bitpos);
+      loop invariant middle:  EqualBits(addr, bitpos, i, value, length);
+      loop invariant right:   Unchanged{Here,Pre}(addr, i, 8 * size);
+
+      loop assigns  i, addr[0..size-1];
+      loop variant  bitpos + length - i;
+    */
+    for (uint32_t i = bitpos; i < bitpos + length; ++i)
+    {
+        int flag = TestBit64(value, (64 - length) + (i - bitpos));
+        SetBit8Array(addr, size, i, flag);
+    }   
+}
+
 \end{lstlisting}
 \end{minipage}
 \caption{caption}
 \end{listing}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 \FloatBarrier
 
-\section{The \inl{Bitstream} abstraction}
-
 \section{Formal verification}
-
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-
-\end{lstlisting}
-\end{minipage}
-\caption{caption}
-\end{listing}
 

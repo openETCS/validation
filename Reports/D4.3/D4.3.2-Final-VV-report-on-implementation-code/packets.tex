@@ -71,6 +71,8 @@ logic predicates allows for a more generic \acsl contract for the \inl{EncodeBit
 
 \FloatBarrier
 
+\label{sec:adhesionfactor-predicates-invariant}
+
 Listing~\ref{lst:adhesionfactor-predicates-invariant} shows the definition of the \inl{Invariant} predicate
 for \adhesion. The predicate consists of the conjunction of the \inl{Invariant} predicates,
 for all variables of \adhesion.
@@ -95,6 +97,8 @@ for all variables of \adhesion.
 \end{listing}
 
 \FloatBarrier
+
+\label{sec:adhesionfactor-predicates-upperbitsnotset}
 
 \fxfatal{Make sure that there is an explanation of UpperBitsNotSet in sec:bitstream}
 
@@ -121,6 +125,8 @@ within the defined number of bits as explained in Section~\ref{sec:bitstream}.
 
 \FloatBarrier
 
+\label{sec:adhesionfactor-predicates-separated}
+
 Listing~\ref{lst:adhesionfactor-predicates-separated} shows the definition of the \inl{Separated}
 predicate for \adhesion. The predicate ensures that the pointers to \inl{Bitstream} and \adhesion
 do not reference to the same address. This characteristic is necessary if one wants to ensure
@@ -140,6 +146,8 @@ a statement on the value pointed to, after a write operation to an address took 
 \end{listing}
 
 \FloatBarrier
+
+\label{sec:adhesionfactor-predicates-equalbits}
 
 \fxfatal{Make sure that there is an explanation of EqualBits in sec:bitstream}
 
@@ -173,7 +181,7 @@ match the bits at a certain position of the \inl{Bitstream}.
 
 Listing~\ref{lst:adhesionfactor-upperbitsnotset} shows the contract for the \inl{UpperBitsNotSet}
 function of \adhesion. The contract ensures that the function's result matches the evaluation
-of the \inl{UpperBitsNotSet} predicate from Section~\ref{sec:adhesionfactor-predicates}.
+of the \inl{UpperBitsNotSet} predicate from Section~\ref{sec:adhesionfactor-predicates-upperbitsnotset}.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -193,6 +201,16 @@ int AdhesionFactor_UpperBitsNotSet(const AdhesionFactor* p);
 \end{listing}
 
 \FloatBarrier
+
+Listing~\ref{lst:adhesionfactor-decodebit} shows the contract for the \inl{DecodeBit} function
+of \adhesion. The contract contains two behaviors which cover all cases.
+The \inl{normal_case} behavior occurs if the \inl{Bitstream} contains enough bits
+to fill an \adhesion instance. The \inl{error_case} behavior occurs if the \inl{Bitstream}
+becomes exhausted, before a complete \adhesion instance can be read.
+The distinctive for the two behavior is the outcome  of the \inl{Normal} predicate call
+for the \inl{Bitstream}, which is explained in Section~\ref{sec:bitstream}. 
+
+\fxfatal{Refer to a more accurate label instead of sec:bitstream}
 
 \subsection{Formal specification of \inl{AdhesionFactor_DecodeBit}}
 \label{sec:adhesionfactor-decodebit}

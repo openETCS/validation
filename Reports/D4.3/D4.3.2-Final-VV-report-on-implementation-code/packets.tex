@@ -2,3 +2,59 @@
 
 \chapter{ETCS data packets}
 \label{sec:packets}
+
+\section{Formal specification of \inl{AdhesionFactor}}
+\label{sec:adhesionfactor}
+
+\subsection{\inl{AdhesionFactor} in ETCS}
+\label{sec:adhesionfactor-etcs}
+
+\fxfatal{add table from chapter 7}
+
+\subsection{The type \inl{AdhesionFactor}}
+\label{sec:adhesionfactor-type}
+
+Listing~\ref{lst:adhesionfactor-type} shows the definition of type
+\adhesion as it is generated from the ETCS specification shown in Section~\ref{sec:adhesionfactor-etcs}.
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+struct AdhesionFactor
+{
+    PacketHeader header;
+
+    // TransmissionMedia=Any
+    // This packet is used when the trackside requests a change of
+    // the adhesion factor to be used in the brake model.
+    // Packet Number = 71
+
+    uint64_t   Q_DIR;            // # 2
+    uint64_t  L_PACKET;         // # 13
+    uint64_t   Q_SCALE;          // # 2
+    uint64_t  D_ADHESION;       // # 15
+    uint64_t  L_ADHESION;       // # 15
+    uint64_t   M_ADHESION;       // # 1
+};
+
+typedef struct AdhesionFactor AdhesionFactor;
+
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:adhesionfactor-type}Defintion of the type \adhesion}
+\end{listing}
+
+\FloatBarrier  % forces the output of listings/tables
+
+\subsection{\acsl predicates \inl{AdhesionFactor}}
+
+\subsection{Formal specification of \inl{AdhesionFactor_UpperBitsNotSet}}
+
+\subsection{Formal specification of \inl{AdhesionFactor_DecodeBit}}
+
+\subsection{Formal specification of \inl{AdhesionFactor_EncodeBit}}
+
+\subsection{Formal verification of \inl{AdhesionFactor}}
+
+\section{Formal specification of other packets}
+

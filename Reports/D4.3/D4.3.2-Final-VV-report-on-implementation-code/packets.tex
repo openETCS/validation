@@ -73,9 +73,10 @@ logic predicates allows for a more generic \acsl contract for the \inl{EncodeBit
 
 \label{sec:adhesionfactor-predicates-invariant}
 
-Listing~\ref{lst:adhesionfactor-predicates-invariant} shows the definition of the \inl{Invariant} predicate
-for \adhesion. The predicate consists of the conjunction of the \inl{Invariant} predicates,
-for all variables of \adhesion.
+Listing~\ref{lst:adhesionfactor-predicates-invariant} shows the definition of the
+\inl{Invariant} predicate for \adhesion.
+The predicate is the conjunction of the (trivial) \inl{Invariant(uint64_t)} predicates
+of all members of on object of type \adhesion.
 
 \fxfatal{Understand the use of Invariant better}
 
@@ -100,7 +101,7 @@ for all variables of \adhesion.
 
 \label{sec:adhesionfactor-predicates-upperbitsnotset}
 
-\fxfatal{Make sure that there is an explanation of UpperBitsNotSet in sec:bitstream}
+\fxfatal{Make sure that there is an explanation of UpperBitsNotSet in Chapter~\ref{sec:bitstream}}
 
 Listing~\ref{lst:adhesionfactor-predicates-upperbitsnotset} shows the definition of the \inl{UpperBitsNotSet}
 predicate for \adhesion. The predicate ensures, that the values of all variables of \adhesion fit
@@ -127,10 +128,11 @@ within the defined number of bits as explained in Section~\ref{sec:bitstream}.
 
 \label{sec:adhesionfactor-predicates-separated}
 
-Listing~\ref{lst:adhesionfactor-predicates-separated} shows the definition of the \inl{Separated}
-predicate for \adhesion. The predicate ensures that the pointers to \inl{Bitstream} and \adhesion
-do not reference to the same address. This characteristic is necessary if one wants to ensure
-a statement on the value pointed to, after a write operation to an address took place.
+Listing~\ref{lst:adhesionfactor-predicates-separated} shows the definition of 
+predicate  \inl{Separated} for \adhesion.
+The predicate \inl{Separated(stream, p)} is true if and only if 
+the two objects \inl{*stream} and \inl{*p} do not overlap in memeory.
+Thus, writing into the stream will not change \inl{*p} and vice versa.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -149,13 +151,18 @@ a statement on the value pointed to, after a write operation to an address took 
 
 \label{sec:adhesionfactor-predicates-equalbits}
 
-\fxfatal{Make sure that there is an explanation of EqualBits in sec:bitstream}
+\fxfatal{Make sure that there is an explanation of EqualBits in Chapter~\ref{sec:bitstream}}
 
-Listing~\ref{lst:adhesionfactor-predicates-equalbits} shows the definition of the \inl{EqualBits}
-predicate for \adhesion. For each variable of \adhesion the predicate contains a call of the
-\inl{EqualBits} predicate for \inl{uint64_t} values, explained in detail in Section~\ref{sec:bitstream}.
-The predicate ensures that the bits of the values stored in each variable
-match the bits at a certain position of the \inl{Bitstream}.
+Listing~\ref{lst:adhesionfactor-predicates-equalbits} shows the definition of the
+\inl{EqualBits} predicate for \adhesion.
+Based on the ETCS specification, this predicate describes a
+relationship between the bits of the individual members
+of an object of type \adhesion with those of a bit stream.
+This predicate will be used to formally describe the transfer of bits
+from a bit stream to an object of type \adhesion and vice versa.
+The definition of the predicate \inl{EqualBits(AdhesionFactor*)} uses
+the predicate \inl{EqualBits(uint64_t)}, which is explained
+in Section~\ref{sec:bitstream}.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}

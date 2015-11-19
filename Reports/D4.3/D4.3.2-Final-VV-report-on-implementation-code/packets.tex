@@ -50,7 +50,7 @@ typedef struct AdhesionFactor AdhesionFactor;
 
 Listing~\ref{lst:adhesionfactor-predicates-bitsize} shows the definition of
 the logic functions \inl{BitSize} and \inl{MaxBitSize} for \adhesion.
-The functions access a makro which contains the size of \adhesion in bits.
+The former function uses a macro that contains the size of \adhesion in bits.
 The functions are used in Listing~\ref{lst:adhesionfactor-decodebit} and
 Listing~\ref{lst:adhesionfactor-encodebit} where the overloading of the
 logic predicates allows for a more generic \acsl contract for the \inl{EncodeBit} and
@@ -101,11 +101,11 @@ of all members of on object of type \adhesion.
 
 \label{sec:adhesionfactor-predicates-upperbitsnotset}
 
-\fxfatal{Make sure that there is an explanation of UpperBitsNotSet in Chapter~\ref{sec:bitstream}}
+\fxfatal{Make sure that there is an explanation of UpperBitsNotSet in Chapter~\ref{cha:bitstream}}
 
 Listing~\ref{lst:adhesionfactor-predicates-upperbitsnotset} shows the definition of the \inl{UpperBitsNotSet}
-predicate for \adhesion. The predicate ensures, that the values of all variables of \adhesion fit
-within the defined number of bits as explained in Section~\ref{sec:bitstream}.
+predicate for \adhesion. The predicate ensures that the values of all variables of \adhesion fit
+within the defined number of bits as explained in Chapter~\ref{cha:bitstream}.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -131,7 +131,7 @@ within the defined number of bits as explained in Section~\ref{sec:bitstream}.
 Listing~\ref{lst:adhesionfactor-predicates-separated} shows the definition of 
 predicate  \inl{Separated} for \adhesion.
 The predicate \inl{Separated(stream, p)} is true if and only if 
-the two objects \inl{*stream} and \inl{*p} do not overlap in memeory.
+the two objects \inl{*stream} and \inl{*p} do not overlap in memory.
 Thus, writing into the stream will not change \inl{*p} and vice versa.
 
 \begin{listing}[hbt]
@@ -151,7 +151,7 @@ Thus, writing into the stream will not change \inl{*p} and vice versa.
 
 \label{sec:adhesionfactor-predicates-equalbits}
 
-\fxfatal{Make sure that there is an explanation of EqualBits in Chapter~\ref{sec:bitstream}}
+\fxfatal{Make sure that there is an explanation of EqualBits in Chapter~\ref{cha:bitstream}}
 
 Listing~\ref{lst:adhesionfactor-predicates-equalbits} shows the definition of the
 \inl{EqualBits} predicate for \adhesion.
@@ -162,7 +162,7 @@ This predicate will be used to formally describe the transfer of bits
 from a bit stream to an object of type \adhesion and vice versa.
 The definition of the predicate \inl{EqualBits(AdhesionFactor*)} uses
 the predicate \inl{EqualBits(uint64_t)}, which is explained
-in Section~\ref{sec:bitstream}.
+in Chapter~\ref{cha:bitstream}.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -209,7 +209,7 @@ int AdhesionFactor_UpperBitsNotSet(const AdhesionFactor* p);
 
 \FloatBarrier
 
-\fxfatal{Refer to a more accurate label instead of sec:bitstream}
+\fxfatal{Refer to a more accurate label instead of cha:bitstream}
 
 \subsection{Formal specification of \inl{AdhesionFactor_DecodeBit}}
 \label{sec:adhesionfactor-decodebit}
@@ -220,7 +220,7 @@ The \inl{normal_case} behavior occurs if the \inl{Bitstream} contains enough bit
 to fill an \adhesion instance. The \inl{error_case} behavior occurs if the \inl{Bitstream}
 becomes exhausted, before a complete \adhesion instance can be read.
 The distinctive for the two behavior is the outcome  of the \inl{Normal} predicate call
-for the \inl{Bitstream}, which is explained in Section~\ref{sec:bitstream}. 
+for the \inl{Bitstream}, which is explained in Chapter~\ref{cha:bitstream}. 
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}

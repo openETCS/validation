@@ -3,7 +3,7 @@
 \FloatBarrier
 
 \chapter{The Bit Stream Layer}
-\label{sec:bitstream}
+\label{cha:bitstream}
 
 
 
@@ -14,9 +14,15 @@
 
 
 \section{The \inl{Bitstream} abstraction}
+\label{sec:bitstream}
 
 As mentioned in Section~\ref{sec:packets},
-the operation 
+the operations on packet data structures were implmented by 
+operations that on a \lstinline{struct bitstream*} argument.
+%
+The latter are described in this section.
+
+The operation 
 \lstinline{Bitstream_Read(stream,length)}
 reads the next \lstinline{length} bits from the bitstream
 \lstinline{stream}, and returns them as a \lstinline{uint64_t} value.
@@ -315,51 +321,6 @@ void Bitstream_Write(Bitstream* stream, uint32_t length, uint64_t value)
 
 
 
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-
-\end{lstlisting}
-\end{minipage}
-\caption{caption}
-\end{listing}
-
-
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-
-\end{lstlisting}
-\end{minipage}
-\caption{caption}
-\end{listing}
-
-
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-
-\end{lstlisting}
-\end{minipage}
-\caption{caption}
-\end{listing}
-
-
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-
-\end{lstlisting}
-\end{minipage}
-\caption{caption}
-\end{listing}
-
-
-
-
 
 
 
@@ -371,6 +332,92 @@ void Bitstream_Write(Bitstream* stream, uint32_t length, uint64_t value)
 
 \section{Reading and writing bit sequences}
 \label{sec:bit sequences}
+
+In this section, we describe the operations that handle plain bit sequences.
+%
+They are used to implement the \lstinline{struct bitstream*} operations for
+Section~\ref{sec:bitstream}.
+
+The operation \lstinline{Bitwalker_Read(addr,size,bitpos,length)} reads
+\lstinline{length} bits starting at \lstinline{bitpos} from the array
+\lstinline{addr} of byte-size \lstinline{size}, and returns them as a
+\lstinline{uint64_t} value.
+%
+Its ACSL contract is shown in Listing~\ref{lst:Bitwalker_Read spec}.
+%
+It requires
+%
+\begin{itemize}
+\item all bytes of the \lstinline{addr} array to be accessible for read
+	(requirement ``\lstinline{valid}''),
+\item some data type invariants to hold
+	(``\lstinline{invariant}''), viz.\
+	%
+	\begin{itemize}
+	\item the total number of array bits to fit into a \lstinline{uint32_t},
+	\item the result value to fit into a \lstinline{uint64_t},
+	\item the end bit position ---~and hence also the start bit position
+		\lstinline{bitpos} and \lstinline{length}~---
+		to fit into a \lstinline{uint32_t}, 
+	\end{itemize}
+	and
+\item the bit range [\lstinline{bitpos}\ldots\lstinline{bitpos}+\lstinline{length})
+	to fit into the array at \lstinline{addr}
+	(``\lstinline{normal}'').
+\end{itemize}
+%
+The operation is not allowed to modify any (non-local) memory (expressed by the
+``\lstinline{assigns}'' clause).
+%
+After completion of the operation,
+%
+\begin{itemize}
+\item the return value shall coincide bit by bit with the specified range of the
+	\lstinline{addr} array (``\lstinline{ensures equal}''), and
+\item in particular, all but the least significant \lstinline{length} bits of the return
+	value shall be zero (``\lstinline{upper}'').
+\end{itemize}
+
+
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+  requires  valid:      Readable(addr, size);
+  requires  invariant:  Invariant(size, bitpos, length);
+  requires  normal:     Normal(size, bitpos, length);
+
+  assigns   \nothing;
+
+  ensures   equal:      EqualBits(addr, bitpos, bitpos + length, \result);
+  ensures   upper:      UpperBitsNotSet(\result, length);
+*/
+uint64_t Bitwalker_Read(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t length);
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:Bitwalker_Read spec}Reading a bit sequence}
+\end{listing}
+
+
+
+
+
+The formal definitions of the used ACSL predicates are given in
+Listing~\ref{lst:Bitsequence preds}.
+%
+Again, the tacit assumption that the array contains sensible data upto its very last bit
+is used in predicate \lstinline{Normal}.
+
+
+
+
+
+
 
 
 
@@ -392,29 +439,67 @@ void Bitstream_Write(Bitstream* stream, uint32_t length, uint64_t value)
 */
 \end{lstlisting}
 \end{minipage}
-\caption{caption}
+\caption{\label{lst:Bitsequence preds} ACSL predicates used in bitsequence layer contracts}
 \end{listing}
 
 
 
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-  requires  valid:      Readable(addr, size);
-  requires  invariant:  Invariant(size, bitpos, length);
-  requires  normal:     Normal(size, bitpos, length);
 
-  assigns   \nothing;
 
-  ensures   equal:      EqualBits(addr, bitpos, bitpos + length, \result);
-  ensures   upper:      UpperBitsNotSet(\result, length);
-*/
-uint64_t Bitwalker_Read(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t length);
-\end{lstlisting}
-\end{minipage}
-\caption{caption}
-\end{listing}
+Listing~\ref{Bitwalker_Write spec} shows the contract, and the implementation, of
+\lstinline{Bitwalker_Write}.
+%
+The following peculiarities are observed when the former is
+compared to \lstinline{Bitwalker_Read}'s contract:
+%
+\begin{itemize}
+\item We require that the \lstinline{value} to be written fits into the specifiec
+	\lstinline{length}, i.e.\ all but its \lstinline{length} least significant bits are
+	zero (requirement ``\lstinline{upper}'').
+\item The operation may modify the data array at \lstinline{addr}, but nothing else.
+\item Again, we give the details of which data bits exactly
+	are allowed to be changed in two
+	\lstinline{ensures} clauses, named ``\lstinline{left}'' and
+	``\lstinline{right}'', and requiring all bits before \lstinline{bitpos} and after
+	\lstinline{bitpos+length} to remain unchanged, respectively.
+\end{itemize}
+
+In the implementation, which is shown here as an example, we used the straight-forward
+algorithm that takes a bit from \lstinline{value} and places it into the \lstinline{addr}
+array, bit by bit.
+%
+In order for the provers to establish that algorithm's correctness, we had to provide a
+total of six ACSL clauses about the loop:
+%
+\begin{itemize}
+\item The loop variable, \lstinline{i}, always ranges in the interval
+	[\lstinline{bitpos}\ldots\lstinline{bitpos+length}] 
+	--- loop invariant ``\lstinline{bound}''.
+	%
+	Note that the highest value is actually taken,
+	viz.\ on exit of the loop body in the last iteration,
+	subsequently causing the loop to terminate.
+\item The bits before \lstinline{bitpos}, and after \lstinline{bitpos+length}
+	remain as they were on operation entry --- invariant
+	``\lstinline{left}'' and ``\lstinline{right}'', respectively.
+\item In the \lstinline{i}th iteration, the bits
+	[\lstinline{bitpos}\ldots\lstinline{bitpos+i}) agree with the least significant
+	\lstinline{i} bits of \lstinline{value} --- invariant ``\lstinline{middle}''.
+\item The loop code is allowed to modify the variable \lstinline{i}, and the whole array
+	at \lstinline{addr}, but nothing else --- \lstinline{loop assigns} clause.
+\item The value of the integer
+	expression \lstinline{bitpos+length-i} is non-negative thoughout
+	the whole loop execution, but is decreased in every iteration 
+	--- \lstinline{loop variant} clause.
+	%
+	Therefore, the loop is guaranteed to terminate eventually.
+\end{itemize}
+
+
+
+
+
+
 
 
 
@@ -453,13 +538,18 @@ void Bitwalker_Write(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t len
 
 \end{lstlisting}
 \end{minipage}
-\caption{caption}
+\caption{\label{Bitwalker_Write spec}Writing a bit sequence}
 \end{listing}
 
 
 
 
 
+The implementation of the bit sequence operations is based
+on operations to write and to read a single bit.
+%
+The details of the latter, as well as of the predicates used in their contracts,
+are given in Appendix~\ref{cha:low-level bitstream}.
 
 
 
@@ -471,7 +561,9 @@ void Bitwalker_Write(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t len
 
 
 
-\FloatBarrier
 
-\section{Formal verification}
+
+
+% deleted here, sonce an own chapter is devoted to it (jb)
+%\section{Formal verification}
 

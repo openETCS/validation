@@ -4,6 +4,20 @@
 
 In this appendix, we describe the implementation of the
 low-level bitstream operations.
+%
+They were used to implement the bit sequence abstraction level, cf.\
+Section~\ref{sec:bit sequences}.
+%
+Since a write operation moves bits from a \lstinline{uint64_t} value into an array of
+\lstinline{uint8_t} values, and a read operations moved them the other way round,
+we need bit operations on both data types.
+%
+They are given in
+Subsection~\ref{subsec:low-level 8 array} (array of \lstinline{uint8_t}), 
+\ref{subsec:low-level 8} (single \lstinline{uint8_t}), and
+\ref{subsec:low-level 64} (single \lstinline{uint64_t}) below.
+
+
 
 \section{Reading and writing individual bits}
 
@@ -13,156 +27,14 @@ low-level bitstream operations.
 
 
 
-\subsection{64 bits}
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-   requires pre: pos < 64;
-
-   assigns \nothing;
-
-   ensures set_bit: \result != 0 <==> Bit64(value, pos);
-*/
-static inline int TestBit64(uint64_t value, uint32_t pos)
-{
-    uint64_t mask = ((uint64_t) 1) << (63u - pos);
-    uint64_t flag = value & mask;
-
-    return flag != 0u;
-}
-\end{lstlisting}
-\end{minipage}
-\caption{\label{lst:TestBit64}Reading a bit of \inl{uint64_t}}
-\end{listing}
-
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-    requires pre: pos < 64;
-
-    assigns \nothing;
-
-    ensures left:     EqualBits64(\result, value, 0,  pos);
-    ensures set_bit:  flag != 0  <==>  Bit64(\result, pos);
-    ensures right:    EqualBits64(\result, value, pos + 1,  64);
-    ensures upper:    \forall integer i; i >= 64 - pos ==>
-                         (UpperBitsNotSet(value, i) ==> UpperBitsNotSet(\result, i));
-*/
-static inline uint64_t SetBit64(uint64_t value, uint32_t pos, int flag)
-{
-    uint64_t mask = ((uint64_t) 1u) << (63 - pos);
-
-    return (flag == 0) ? (value & ~mask) : (value | mask);
-}
-\end{lstlisting}
-\end{minipage}
-\caption{\label{lst:SetBit64}Writing a bit of \inl{uint64_t}}
-\end{listing}
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-    requires pre: length <= 64;
-
-    assigns \nothing;
-
-    ensures  not_set: \result <==> UpperBitsNotSet(value, length);
-*/
-static inline int UpperBitsNotSet64(uint64_t value, uint32_t length)
-{
-    if (length == 64)
-    {
-        return 1;
-    }
-    else
-    {
-        const uint64_t MaxValue = ((uint64_t) 1) << length;
-        // assert equiv: UpperBitsNotSet(value, length) <==> value < MaxValue;
-
-        return value < MaxValue;
-    }
-}
-\end{lstlisting}
-\end{minipage}
-\caption{\label{lst:UpperBitsNotSet64}Test that upper bits are not set}
-\end{listing}
-
-
-
-
-
-
-
-
-
-
-
-\FloatBarrier
-
-\subsection{8 bits}
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-    requires pre:  pos < 8;
-
-    assigns \nothing;
-
-    ensures pos:  \result != 0 <==> Bit8(value, pos);
-*/
-static inline int TestBit8(uint8_t value, uint32_t pos)
-{
-    uint8_t mask = ((uint8_t) 1) << (7u - pos);
-    uint8_t flag = value & mask;
-
-    return flag != 0;
-}
-\end{lstlisting}
-\end{minipage}
-\caption{caption}
-\end{listing}
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-    requires pre: pos < 8;
-
-    assigns \nothing;
-
-    ensures left:   EqualBits8(\result, value, 0,  pos);
-    ensures pos:    Bit8(\result, pos) <==> (flag != 0);
-    ensures right:  EqualBits8(\result, value, pos + 1,  8);
-*/
-static inline uint8_t SetBit8(uint8_t value, uint32_t pos, int flag)
-{
-    uint8_t mask = ((uint8_t) 1) << (7u - pos);
-
-    return (flag == 0) ? (value & ~mask) : (value | mask);
-}
-\end{lstlisting}
-\end{minipage}
-\caption{caption}
-\end{listing}
-
-
-
-
-
-
-
-
-
-
-\FloatBarrier
 
 \subsection{8 bit arrays}
+\label{subsec:low-level 8 array}
+
+
+
+
+\fxfatal{TODO}
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -184,6 +56,10 @@ static inline int TestBit8Array(uint8_t*  addr, uint32_t size, uint32_t pos)
 \end{minipage}
 \caption{caption}
 \end{listing}
+
+
+
+
 
 
 \begin{listing}[hbt]
@@ -237,16 +113,335 @@ static inline void SetBit8Array(uint8_t* addr, uint32_t size, uint32_t pos, int 
 
 
 
+\FloatBarrier
+
+\subsection{8 bits}
+\label{subsec:low-level 8}
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires pre:  pos < 8;
+
+    assigns \nothing;
+
+    ensures pos:  \result != 0 <==> Bit8(value, pos);
+*/
+static inline int TestBit8(uint8_t value, uint32_t pos)
+{
+    uint8_t mask = ((uint8_t) 1) << (7u - pos);
+    uint8_t flag = value & mask;
+
+    return flag != 0;
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:TestBit8}Reading a bit of \inl{uint8_t}}
+\end{listing}
+
+
+
+
+
+The operation \lstinline{TestBit8(value,pos)} returns the
+\lstinline{pos}$^{\mbox{\scriptsize th}}$
+bit of \lstinline{value}.
+%
+Its contract is shown in Listing~\ref{lst:TestBit8}.
+%
+\lstinline{pos} must not exceed 7 (requirement ''\lstinline{pre}''),
+no memory may be modified (\lstinline{assigns}), and the result is non-zero if, and only
+if, the specified bit is set.
+%
+The shown implementation additionally guarantees that the result is zero or one, which
+is not specified in the contract since this property isn't needed.
+%
+Returning just \lstinline{flag} rather than \lstinline{flag!=0u} would satisfy the
+contract also, and would be slightly faster.
+
+The definition of predicate \lstinline{Bit8} is shown in 
+Listing~\ref{lst:bit predicate defs}.
+%
+It relies on the Frama-C library predicate \lstinline{BitTest}, performing a coordinate
+transformation to fits Frama-C's notion of bit positions with the OpenETCS project's
+notion, cf.\ Figure~\ref{fig:bit coords}.
+%
+In this report, we preferably use the terms ``least'' and ``most significant bit(s)'' to
+designate a (range of) bit position(s) indenpendent of the coordinate system.
+
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+   predicate Bit8{A}(uint8_t v, integer n)  = BitTest(v, 7 - n);
+
+   predicate Bit64{A}(uint64_t v, integer n) = BitTest(v, 63 - n);
+
+   predicate Bit8Array{A}(uint8_t* a, integer n) = Bit8(a[n / 8],n % 8);
+*/
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:bit predicate defs}Definition of bit test predicates}
+\end{listing}
+
+
+
+
+
+
+
+
+\begin{figure}
+\begin{center}
+\vspace*{2cm}
+--- Insert drawing --- 
+\vspace*{2cm}
+\caption{\label{fig:bit coords}
+        Bit coordinates in Frama-C and in the OpenETCS project}
+\end{center}
+\end{figure}
+
+
+
+
+
+
+Dual to \lstinline{TestBit8}, the operation \lstinline{SetBit8(value,pos,flag)}
+returns \lstinline{value}, with the \lstinline{pos}$^{\mbox{\scriptsize th}}$ bit
+set to \lstinline{flag}.
+%
+Its contract is shown in Listing~\ref{lst:SetBit8}.
+%
+Again, \lstinline{pos} mustn't exceed 7 (requirement ``\lstinline{pre}''),
+no memory may be modified (\lstinline{assigns} clause),
+the return value coincides with \lstinline{value}, except possibly at \lstinline{pos}
+(ensures ``\lstinline{left}'' and ``\lstinline{right}''),
+and \lstinline{flag} is written to the approriate bit of \lstinline{value}
+(``\lstinline{pos}'').
+%
+The implementation branches on the value of \lstinline{flag}, and clears or sets the
+appropriate bit in the usual way.
+%
+Note that both our contract and our implementation enable us to set a bit by supplying a
+\lstinline{flag} value of e.g.\ 2, whereas the code 
+\lstinline{mask=flag<<(7-pos); return (value&~mask)|mask;} does not.
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires pre: pos < 8;
+
+    assigns \nothing;
+
+    ensures left:   EqualBits8(\result, value, 0,  pos);
+    ensures pos:    Bit8(\result, pos) <==> (flag != 0);
+    ensures right:  EqualBits8(\result, value, pos + 1,  8);
+*/
+static inline uint8_t SetBit8(uint8_t value, uint32_t pos, int flag)
+{
+    uint8_t mask = ((uint8_t) 1) << (7u - pos);
+
+    return (flag == 0) ? (value & ~mask) : (value | mask);
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:SetBit8}Writing a bit of \inl{uint8_t}}
+\end{listing}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\FloatBarrier
+
+\subsection{64 bits}
+\label{subsec:low-level 64}
+
+
+
+The operations to read and write a bit of a \lstinline{uint64_t} are closely similar to
+those working on a \lstinline{uint8_t}.
+%
+They are shown in Listing~\ref{lst:TestBit64}
+and \ref{lst:SetBit64} without repeating the comments given
+in Appendix~\ref{subsec:low-level 8} for the 8 bit version; see in particular
+Listing~\ref{lst:bit predicate defs} for the employed ACSL predicates.
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+   requires pre: pos < 64;
+
+   assigns \nothing;
+
+   ensures set_bit: \result != 0 <==> Bit64(value, pos);
+*/
+int TestBit64(uint64_t value, uint32_t pos)
+{
+    uint64_t mask = ((uint64_t) 1) << (63u - pos);
+    uint64_t flag = value & mask;
+
+    return flag != 0u;
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:TestBit64}Reading a bit of \inl{uint64_t}}
+\end{listing}
+
+
+
+
+
+
+
+
+
+As a redundant postcondition of the \lstinline{SetBit64} operation in
+Listing~\ref{lst:SetBit64},
+``\lstinline{upper}'' guarantees that the leading zeros in
+\lstinline{value} are kept in the result, up to, but excluding position \lstinline{pos}.
+%
+It was needed to enable the provers to verify code that uses \lstinline{SetBit64}.
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires pre: pos < 64;
+
+    assigns \nothing;
+
+    ensures left:     EqualBits64(\result, value, 0,  pos);
+    ensures set_bit:  flag != 0  <==>  Bit64(\result, pos);
+    ensures right:    EqualBits64(\result, value, pos + 1,  64);
+    ensures upper:    \forall integer i; i >= 64 - pos ==>
+                         (UpperBitsNotSet(value, i) ==> UpperBitsNotSet(\result, i));
+*/
+uint64_t SetBit64(uint64_t value, uint32_t pos, int flag)
+{
+    uint64_t mask = ((uint64_t) 1u) << (63 - pos);
+
+    return (flag == 0) ? (value & ~mask) : (value | mask);
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:SetBit64}Writing a bit of \inl{uint64_t}}
+\end{listing}
+
+
+
+
+The operation \lstinline{UpperBitsNotSet64(value,length)} succeeds, i.e.\ returns a
+non-zero value, if, and only if, all bits of \lstinline{value} except the least significant
+\lstinline{length} ones are zero.
+%
+It is used for \fxfatal{ja, wofuer denn eigentlich?}
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires pre: length <= 64;
+
+    assigns \nothing;
+
+    ensures  not_set: \result <==> UpperBitsNotSet(value, length);
+*/
+int UpperBitsNotSet64(uint64_t value, uint32_t length);
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:UpperBitsNotSet64}Test that upper bits are not set}
+\end{listing}
+% BODY OMITTED:
+%{
+%    if (length == 64)
+%    {
+%        return 1;
+%    }
+%    else
+%    {
+%        const uint64_t MaxValue = ((uint64_t) 1) << length;
+%        // assert equiv: UpperBitsNotSet(value, length) <==> value < MaxValue;
+%
+%        return value < MaxValue;
+%    }
+%}
+
+
+
+
+
+
+
+
+
 
 \FloatBarrier
 
 \section{Formalization of bit operations in \framac}
 
+
+
+
+\fxfatal{TODO}
+
 describe \inl{BitTest}
+
+
+
+
 
 \begin{lstlisting}[style=acsl-block]
 predicate   BitTest(integer v, integer n);
 \end{lstlisting}
+
+
+
+
 
 
 \begin{lstlisting}[style=acsl-block]
@@ -258,10 +453,36 @@ predicate Bit8Array{A}(uint8_t* a, integer n) = Bit8(a[n / 8],n % 8);
 \end{lstlisting}
 
 
+
+
+
+
+
+
+
+
 \begin{lstlisting}[style=acsl-block]
 predicate
   UpperBitsNotSet{A}(integer value, integer length) =
     \forall integer i; length <= i ==> !BitTest(value, i);
 \end{lstlisting}
 
+
+
+
+
+
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+
+\end{lstlisting}
+\end{minipage}
+\caption{caption}
+\end{listing}
 

@@ -42,11 +42,13 @@ This worksplit for architecture verification [ADD document D3_5_3](https://githu
 - [x]  4.6.3.2 Mode_Management (p79-p80: 2 pages)  @marcbehrens (architecture ver)
 - [ ]  4.6.3.3 Check_and_Provide_Mode_and_Level (p80-p81)
 
-### 4.7 Manage_Radio_Communication
-- 4.7 Manage_Radio_Communication (will change - architecture verificaiton foreseen for next iteration) (p81-p85)
+### 5.10 Manage_Radio_Communication
+- [ ] F2.9: Manage_Radio_Communication and RBC_Handover @MichaelMoensters
 
 
-### 5.4 F2.3: trainData @michaelmoensters
+### 5.4 F2.3: trainData 
+- [x] @michaelmoensters
+
 ### 5.7 Calculate Train Position @FrancoisRevest 
 
 ### 5.11 F2.10 manageDMI_input

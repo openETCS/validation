@@ -49,6 +49,7 @@ After completion of the operation,
 \item in particular, all but the \lstinline{length} least significant
 	bits of the return value are zero
 	(``\lstinline{upper}''),
+%\fxfatal{explain UpperBitsNotSet}
 \item \lstinline{stream}'s total size remains unaffected
 	(``\lstinline{size}''), and
 \item so do all of its content bits
@@ -82,6 +83,7 @@ uint64_t Bitstream_Read(Bitstream* stream, uint32_t length);
 
 
 
+
 The formal definitions of the ACSL predicates used
 in \lstinline{Bitstream_Read}'s contract are given in
 Listing~\ref{lst:Bitstream preds}; they build upon the internal
@@ -98,6 +100,31 @@ In a similar way, predicates \lstinline{Normal} and
 \lstinline{EqualBits} is reduced to a
 lower-level predicate of the same 
 name, respectively.\footnote{Frama-C allows for predicate overloading.}
+%
+A clause \lstinline{Normal(size,bitpos,length)} requires \lstinline{bitpos} to be such
+that at least \lstinline{length} more bits are available beyond it in a stream of byte-size
+\lstinline{size}.\footnote{
+	We tacitly assume that each stream has a multiple of 8 bits available.
+	\fxfatal{unrealistic!?}
+}
+%
+%\fxfatal{explain EqualBits}
+A clause \lstinline{EqualBits(addr,first,last,value)} requires 
+bits [\lstinline{first}\ldots\lstinline{last}) in
+the byte array at \lstinline{addr} to coincide with the corresponding
+least significant bits of \lstinline{value}, 
+cf.~Figure~\ref{fig:EqualBits correspondance}.
+
+
+\begin{figure}
+\begin{center}
+\vspace*{2cm}
+--- Insert drawing ---
+\vspace*{2cm}
+\caption{\label{fig:EqualBits correspondance}
+	Bit coincidences required by \lstinline{EqualBits}}
+\end{center}
+\end{figure}
 
 
 
@@ -211,8 +238,41 @@ void Bitstream_Init(Bitstream* stream, uint8_t* addr, uint32_t size, uint32_t bi
 int Bitstream_Normal(const Bitstream* stream, uint32_t length);
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:Bitstream_Normal}Testint a bitstream for exhaustion}
+\caption{\label{lst:Bitstream_Normal}Testing a bitstream for exhaustion}
 \end{listing}
+
+
+
+
+
+Listing~\ref{lst:Bitstream_Write impl} shows contract of
+\lstinline{Bitstream_Write}, and moreover exemplfies its implementation.
+
+Most parts of the contract are quite similar to that of \lstinline{Bitstream_Read} in
+Listing~\ref{lst:Bitstream_Read spec}.
+%
+Differences are the following:
+\begin{itemize}
+\item We require that the \lstinline{value} to be written fits into the specified
+	\lstinline{length}, i.e.\ its unused most significant bits are zero (requirement
+	``\lstinline{upper}'').
+\item The operation is allowed to change the contents of the bitstream 
+	(first \lstinline{assigns} clause) in addition to the streams current bit
+	position (second \lstinline{assigns} clause), but no other memory locations.
+\item Since we couldn't specify in the \lstinline{assigns} clauses 
+	which bits exactly are allowed to be modified, we give the details in two
+	\lstinline{ensures} clauses named ``\lstinline{unchanged}'':
+	All bits before the stream's \lstinline{bitpos} on operation entry, and after
+	its \lstinline{bitpos} on exit, must remain unchanged.
+\end{itemize}
+
+The implementation just employs the lower-level operation \lstinline{Bitwalker_Write} to
+write the bits, and appropriately updates the \lstinline{stream}'s \lstinline{bitpos}.
+%
+Two assertions were needed to help the provers establishing that \lstinline{value}'s
+bits are actually written to \lstinline{stream}'s data array by
+\lstinline{Bitwalker_Write}, and that they aren't destoyed during \lstinline{bitpos}
+update.
 
 
 
@@ -246,7 +306,7 @@ void Bitstream_Write(Bitstream* stream, uint32_t length, uint64_t value)
 
 \end{lstlisting}
 \end{minipage}
-\caption{Writing to a bitstream}
+\caption{\label{lst:Bitstream_Write impl}Writing to a bitstream}
 \end{listing}
 
 

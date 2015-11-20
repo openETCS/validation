@@ -106,7 +106,7 @@ of the \inl{UpperBitsNotSet} predicate for \inl{AdhesionFactor}.
 The predicate \inl{UpperBitsNotSet(AdhesionFactor*)} evaluates to true
 if and only if the values of all members of \inl{AdhesionFactor}
 fit into their assigned numbers of bits.
-This functionality is ensured by the conjunction of the \inl{UpperBitsNotSet(uint64_t, uint8_t)} predicate,
+This functionality is ensured by the conjunction of the \inl{UpperBitsNotSet(uint64_t, uint32_t)} predicate,
 which is explained in Chapter~\ref{cha:bitstream}, for all members of \inl{AdhesionFactor}.
 
 \begin{listing}[hbt]
@@ -188,9 +188,21 @@ in Chapter~\ref{cha:bitstream}.
 \subsection{Formal specification of \inl{AdhesionFactor_UpperBitsNotSet}}
 \label{sec:adhesionfactor-upperbitsnotset}
 
-Listing~\ref{lst:adhesionfactor-upperbitsnotset} shows the contract for the \inl{UpperBitsNotSet}
-function of \inl{AdhesionFactor}. The contract ensures that the function's result matches the evaluation
-of the \inl{UpperBitsNotSet} predicate from Section~\ref{sec:adhesionfactor-predicates-upperbitsnotset}.
+Listing~\ref{lst:adhesionfactor-upperbitsnotset} shows the contract of the \inl{UpperBitsNotSet}
+function for \inl{AdhesionFactor}.
+The function contract includes the \inl{requires} clauses, labeled \inl{valid} and \inl{invariant}.
+These limit the significance of the \inl{ensures} and \inl{assigns} clauses to
+the \inl{AdhesionFactor} objects that also satisfy the \inl{requires} clauses.
+The \inl{valid} clause only evaluates to true if the \inl{*p} is a valid pointer.
+The \inl{invariant} clause requires \inl{Invariant(p)} to evaluate to true.
+The \inl{Invariant(AdhesionFactor*)} predicate is explained
+in Section~\ref{sec:adhesionfactor-predicates-invariant}.
+The contract also inlcudes a statement on the return value of the function, labeled \inl{result}.
+This clause ensures that the function's return value for \inl{AdhesionFactor* p}
+matches the evaluation of the predicate \inl{UpperBitsNotSet(p)}
+from Section~\ref{sec:adhesionfactor-predicates-upperbitsnotset}.
+With the \inl{assigns \\nothing} clause the contract furthermore
+specifies that this function has no side effects.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}

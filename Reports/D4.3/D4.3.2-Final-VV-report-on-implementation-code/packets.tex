@@ -229,12 +229,61 @@ int AdhesionFactor_UpperBitsNotSet(const AdhesionFactor* p);
 \label{sec:adhesionfactor-decodebit}
 
 Listing~\ref{lst:adhesionfactor-decodebit} shows the contract for the \inl{DecodeBit} function
-of \inl{AdhesionFactor}. The contract contains two behaviors which cover all cases.
-The \inl{normal_case} behavior occurs if the \inl{Bitstream} contains enough bits
-to fill an \inl{AdhesionFactor} instance. The \inl{error_case} behavior occurs if the \inl{Bitstream}
-becomes exhausted, before a complete \inl{AdhesionFactor} instance can be read.
-The distinctive for the two behavior is the outcome  of the \inl{Normal} predicate call
-for the \inl{Bitstream}, which is explained in Chapter~\ref{cha:bitstream}. 
+for \inl{AdhesionFactor}.
+The behavior of the function is specified using the two disjoint behaviors
+\inl{normal_case} and \inl{error_case}.
+The requirements \inl{valid_stream}, \inl{stream_invariant},
+\inl{valid_package} and \inl{separation} apply to both behaviors
+and limit the set of combinations of input arguments for which the
+\inl{ensures} and \inl{assigns} clauses describe the behavior of the function.
+
+The \inl{assigns} clauses in the contract's body describe the side effects
+of the function. If the function contract is split into multiple
+behaviors, like here, common \inl{assigns} clauses, which contain the union
+of the behavior's \inl{assigns} clauses, are needed outside of the behaviors.
+Their meaning will become clear when discussing the individual  behaviors.
+
+For both behaviors the \inl{unchanged} clause states that
+none of the bits in the bit stream are written by the function.
+
+\begin{itemize}
+\item
+\inl{valid_stream} is only met if \inl{Readable(stream)} applies.
+The \inl{Readable(Bitstream*)} predicate is described in Chapter~\ref{cha:bitstream}.
+\item
+\inl{stream_invariant} is only met if \inl{*stream}
+is long enough to read an object of the length of \inl{AdhesionFactor} from.
+The \inl{Invariant(Bitstream*, integer)} predicate is introduced in Chapter~\ref{cha:bitstream}.
+\item
+\inl{valid_package} is only met if \inl{p} is a valid pointer for read and write operations.
+\item
+\inl{separation} requires that \inl{*stream} and \inl{*p} do not overlap in the memory.
+The \inl{Separated(Bitstream*, AdhesionFactor*)} predicate is introduced in
+Section~\ref{sec:adhesionfactor-predicates-separated}.
+\end{itemize}
+
+\inl{normal_case} describes the function's behavior if
+\inl{*stream} contains enough unread bits to fill all members of \inl{*p}. 
+In this case an object of type \inl{AdhesionFactor} is decoded from the stream
+and thus \inl{*p} is written.
+The latter is stated by the first \inl{assigns} clause.
+In this context the \inl{ensures} clauses \inl{equal} and \inl{upper}
+describe the relationship of the bits in the bit stream and
+the bits of the members of \inl{*p}.
+Furthermore \inl{stream->bitpos} will be updated.
+The effects of this operation are described by the second
+\inl{assigns} and the \inl{increment} clauses.
+
+\inl{error_case} describes the function's behavior in the opposite case
+i.e. if \inl{*stream} is exhausted before all members of \inl{*p} are read.
+In this case the function has no side effects and especially does not write
+\inl{*p} or \inl{stream->bitpos}.
+The \inl{ensures} clause \inl{result} states, that the return value
+of the function equals \inl{0}. In \inl{normal_case} this value is specified to equal \inl{1}.
+
+The distinguishing predicate for the two behaviors is \inl{Normal(Bitstream*, integer)},
+which appears in the \inl{assumes} clauses within both behaviors and
+is explained in Chapter~\ref{cha:bitstream}. 
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}

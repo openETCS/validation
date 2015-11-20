@@ -3,19 +3,19 @@
 \chapter{ETCS data packets}
 \label{sec:packets}
 
-\section{Formal specification of \adhesion}
+\section{Formal specification of \inl{AdhesionFactor}}
 \label{sec:adhesionfactor}
 
-\subsection{\adhesion in ETCS}
+\subsection{\inl{AdhesionFactor} in ETCS}
 \label{sec:adhesionfactor-etcs}
 
 \fxfatal{add table from chapter 7}
 
-\subsection{The type \adhesion}
+\subsection{The type \inl{AdhesionFactor}}
 \label{sec:adhesionfactor-type}
 
 Listing~\ref{lst:adhesionfactor-type} shows the definition of type
-\adhesion as it is generated from the ETCS specification shown in Section~\ref{sec:adhesionfactor-etcs}.
+\inl{AdhesionFactor} as it is generated from the ETCS specification shown in Section~\ref{sec:adhesionfactor-etcs}.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -40,17 +40,17 @@ struct AdhesionFactor
 typedef struct AdhesionFactor AdhesionFactor;
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:adhesionfactor-type}Defintion of the type \adhesion}
+\caption{\label{lst:adhesionfactor-type}Defintion of the type \inl{AdhesionFactor}}
 \end{listing}
 
 \FloatBarrier  % forces the output of listings/tables
 
-\subsection{\acsl predicates \adhesion}
+\subsection{\acsl predicates \inl{AdhesionFactor}}
 \label{sec:adhesionfactor-predicates-bitsize}
 
 Listing~\ref{lst:adhesionfactor-predicates-bitsize} shows the definition of
-the logic functions \inl{BitSize} and \inl{MaxBitSize} for \adhesion.
-The former function uses a macro that contains the size of \adhesion in bits.
+the logic functions \inl{BitSize} and \inl{MaxBitSize} for \inl{AdhesionFactor}.
+The former function uses a macro that contains the size of \inl{AdhesionFactor} in bits.
 The functions are used in Listing~\ref{lst:adhesionfactor-decodebit} and
 Listing~\ref{lst:adhesionfactor-encodebit} where the overloading of the
 logic predicates allows for a more generic \acsl contract for the \inl{EncodeBit} and
@@ -66,7 +66,7 @@ logic predicates allows for a more generic \acsl contract for the \inl{EncodeBit
 */
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:adhesionfactor-predicates-bitsize}Definition of the \inl{BitSize} predicates for \adhesion}
+\caption{\label{lst:adhesionfactor-predicates-bitsize}Definition of the \inl{BitSize} predicates for \inl{AdhesionFactor}}
 \end{listing}
 
 \FloatBarrier
@@ -74,11 +74,9 @@ logic predicates allows for a more generic \acsl contract for the \inl{EncodeBit
 \label{sec:adhesionfactor-predicates-invariant}
 
 Listing~\ref{lst:adhesionfactor-predicates-invariant} shows the definition of the
-\inl{Invariant} predicate for \adhesion.
+\inl{Invariant} predicate for \inl{AdhesionFactor}.
 The predicate is the conjunction of the (trivial) \inl{Invariant(uint64_t)} predicates
-of all members of on object of type \adhesion.
-
-\fxfatal{Understand the use of Invariant better}
+of all members of on object of type \inl{AdhesionFactor}.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -94,7 +92,7 @@ of all members of on object of type \adhesion.
 */
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:adhesionfactor-predicates-invariant}Definition of the \inl{Invariant} predicate for \adhesion}
+\caption{\label{lst:adhesionfactor-predicates-invariant}Definition of the \inl{Invariant} predicate for \inl{AdhesionFactor}}
 \end{listing}
 
 \FloatBarrier
@@ -103,9 +101,13 @@ of all members of on object of type \adhesion.
 
 \fxfatal{Make sure that there is an explanation of UpperBitsNotSet in Chapter~\ref{cha:bitstream}}
 
-Listing~\ref{lst:adhesionfactor-predicates-upperbitsnotset} shows the definition of the \inl{UpperBitsNotSet}
-predicate for \adhesion. The predicate ensures that the values of all variables of \adhesion fit
-within the defined number of bits as explained in Chapter~\ref{cha:bitstream}.
+Listing~\ref{lst:adhesionfactor-predicates-upperbitsnotset} shows the definition
+of the \inl{UpperBitsNotSet} predicate for \inl{AdhesionFactor}.
+The predicate \inl{UpperBitsNotSet(AdhesionFactor*)} evaluates to true
+if and only if the values of all members of \inl{AdhesionFactor}
+fit into their assigned numbers of bits.
+This functionality is ensured by the conjunction of the \inl{UpperBitsNotSet(uint64_t, uint8_t)} predicate,
+which is explained in Chapter~\ref{cha:bitstream}, for all members of \inl{AdhesionFactor}.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -121,7 +123,7 @@ within the defined number of bits as explained in Chapter~\ref{cha:bitstream}.
 */
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:adhesionfactor-predicates-upperbitsnotset}Definition of the \inl{UpperBitsNotSet} predicate for \adhesion}
+\caption{\label{lst:adhesionfactor-predicates-upperbitsnotset}Definition of the \inl{UpperBitsNotSet} predicate for \inl{AdhesionFactor}}
 \end{listing}
 
 \FloatBarrier
@@ -129,7 +131,7 @@ within the defined number of bits as explained in Chapter~\ref{cha:bitstream}.
 \label{sec:adhesionfactor-predicates-separated}
 
 Listing~\ref{lst:adhesionfactor-predicates-separated} shows the definition of 
-predicate  \inl{Separated} for \adhesion.
+predicate  \inl{Separated} for \inl{AdhesionFactor}.
 The predicate \inl{Separated(stream, p)} is true if and only if 
 the two objects \inl{*stream} and \inl{*p} do not overlap in memory.
 Thus, writing into the stream will not change \inl{*p} and vice versa.
@@ -144,7 +146,7 @@ Thus, writing into the stream will not change \inl{*p} and vice versa.
 */
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:adhesionfactor-predicates-separated}Definition of the \inl{Separated} predicate for \adhesion}
+\caption{\label{lst:adhesionfactor-predicates-separated}Definition of the \inl{Separated} predicate for \inl{AdhesionFactor}}
 \end{listing}
 
 \FloatBarrier
@@ -154,12 +156,12 @@ Thus, writing into the stream will not change \inl{*p} and vice versa.
 \fxfatal{Make sure that there is an explanation of EqualBits in Chapter~\ref{cha:bitstream}}
 
 Listing~\ref{lst:adhesionfactor-predicates-equalbits} shows the definition of the
-\inl{EqualBits} predicate for \adhesion.
+\inl{EqualBits} predicate for \inl{AdhesionFactor}.
 Based on the ETCS specification, this predicate describes a
 relationship between the bits of the individual members
-of an object of type \adhesion with those of a bit stream.
+of an object of type \inl{AdhesionFactor} and those of a bit stream.
 This predicate will be used to formally describe the transfer of bits
-from a bit stream to an object of type \adhesion and vice versa.
+from a bit stream to an object of type \inl{AdhesionFactor} and vice versa.
 The definition of the predicate \inl{EqualBits(AdhesionFactor*)} uses
 the predicate \inl{EqualBits(uint64_t)}, which is explained
 in Chapter~\ref{cha:bitstream}.
@@ -178,7 +180,7 @@ in Chapter~\ref{cha:bitstream}.
 */
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:adhesionfactor-predicates-equalbits}Definition of the \inl{EqualBits} predicate for \adhesion}
+\caption{\label{lst:adhesionfactor-predicates-equalbits}Definition of the \inl{EqualBits} predicate for \inl{AdhesionFactor}}
 \end{listing}
 
 \FloatBarrier
@@ -187,7 +189,7 @@ in Chapter~\ref{cha:bitstream}.
 \label{sec:adhesionfactor-upperbitsnotset}
 
 Listing~\ref{lst:adhesionfactor-upperbitsnotset} shows the contract for the \inl{UpperBitsNotSet}
-function of \adhesion. The contract ensures that the function's result matches the evaluation
+function of \inl{AdhesionFactor}. The contract ensures that the function's result matches the evaluation
 of the \inl{UpperBitsNotSet} predicate from Section~\ref{sec:adhesionfactor-predicates-upperbitsnotset}.
 
 \begin{listing}[hbt]
@@ -204,7 +206,7 @@ of the \inl{UpperBitsNotSet} predicate from Section~\ref{sec:adhesionfactor-pred
 int AdhesionFactor_UpperBitsNotSet(const AdhesionFactor* p);
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:adhesionfactor-upperbitsnotset}Contract for \inl{UpperBitsNotSet} function of \adhesion}
+\caption{\label{lst:adhesionfactor-upperbitsnotset}Contract for \inl{UpperBitsNotSet} function of \inl{AdhesionFactor}}
 \end{listing}
 
 \FloatBarrier
@@ -215,10 +217,10 @@ int AdhesionFactor_UpperBitsNotSet(const AdhesionFactor* p);
 \label{sec:adhesionfactor-decodebit}
 
 Listing~\ref{lst:adhesionfactor-decodebit} shows the contract for the \inl{DecodeBit} function
-of \adhesion. The contract contains two behaviors which cover all cases.
+of \inl{AdhesionFactor}. The contract contains two behaviors which cover all cases.
 The \inl{normal_case} behavior occurs if the \inl{Bitstream} contains enough bits
-to fill an \adhesion instance. The \inl{error_case} behavior occurs if the \inl{Bitstream}
-becomes exhausted, before a complete \adhesion instance can be read.
+to fill an \inl{AdhesionFactor} instance. The \inl{error_case} behavior occurs if the \inl{Bitstream}
+becomes exhausted, before a complete \inl{AdhesionFactor} instance can be read.
 The distinctive for the two behavior is the outcome  of the \inl{Normal} predicate call
 for the \inl{Bitstream}, which is explained in Chapter~\ref{cha:bitstream}. 
 
@@ -261,7 +263,7 @@ for the \inl{Bitstream}, which is explained in Chapter~\ref{cha:bitstream}.
 int AdhesionFactor_EncodeBit(const AdhesionFactor* p, Bitstream* stream);
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:adhesionfactor-decodebit}Contract for \inl{DecodeBit} function of \adhesion}
+\caption{\label{lst:adhesionfactor-decodebit}Contract for \inl{DecodeBit} function of \inl{AdhesionFactor}}
 \end{listing}
 
 \FloatBarrier
@@ -314,12 +316,12 @@ int AdhesionFactor_EncodeBit(const AdhesionFactor* p, Bitstream* stream);
 int AdhesionFactor_DecodeBit(AdhesionFactor* p, Bitstream* stream);
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:adhesionfactor-encodebit}Contract for \inl{EncodeBit} function of \adhesion}
+\caption{\label{lst:adhesionfactor-encodebit}Contract for \inl{EncodeBit} function of \inl{AdhesionFactor}}
 \end{listing}
 
 \FloatBarrier
 
-\subsection{Formal verification of \adhesion}
+\subsection{Formal verification of \inl{AdhesionFactor}}
 
 \section{Formal specification of other packets}
 

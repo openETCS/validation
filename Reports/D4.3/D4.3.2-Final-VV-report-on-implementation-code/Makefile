@@ -2,6 +2,8 @@
 
 export ASPELL=aspell check --lang=en --encoding=utf-8
 
+quick:
+	latexmk -pdf D4.3.2
 
 all: FORCE
 	pdflatex D4.3.2

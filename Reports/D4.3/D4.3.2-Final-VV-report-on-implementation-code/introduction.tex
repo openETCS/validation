@@ -6,12 +6,11 @@ the correctness of parts of the software developed in the OpenETCS project.
 
 While major parts of the functionality of {Subset 026} are modelled in 
 higher-level languages, there is also a substantial part of \emph{supporting} software
-that is developed in the programming language~C.
+that is developed in the~C programming language.
 
-In this document we report about \emph{preliminary} results on the verification
-of that C-code.
+In this document we report about results on the verification of that C~code.
 In particular, we report on the use of static analysis methods (including formal methods)
-on C code that has been developed by the project partner Siemens.
+on C~code that has been developed by the project partner Siemens.
 
 \begin{figure}[hbt]
 \begin{center}
@@ -22,7 +21,8 @@ on C code that has been developed by the project partner Siemens.
 
 Figure~\ref{fig:scope-of-formalization} outlines the roles of formal methods
 within the OpenETCS project.
-Even a subsystem such as described by \emph{Subset 026} of the ETCS specification
+What this figure shall convey is that even a subsystem such as described by
+\emph{Subset 026} of the ETCS specification
 is usually too complex to be completely formally specified.
 Therefore, \emph{semi-formal modelling techniques} and \emph{tests} and 
 \emph{simulations} play a crucial role to verify that the implementation
@@ -30,15 +30,30 @@ satisfies its specification.
 However, for clearly defined modules and select system properties, formal methods
 can well be applied to establish the correctness of an implementation.
 
-\clearpage
+Figure~\ref{fig:scope-of-code-verification} shows slightly more detailed
+the OpenETCS software.
+The report at hand is limited to the parts encapsulated by C software encapsulated 
+in a \fbox{dashed box}.
 
-Figure~\ref{fig:Bitwalker-Overview} gives an overview on the software that
-is in the focus of this report.
+\clearpage
 
 \begin{figure}[hbt]
 \begin{center}
-\includegraphics[width=0.85\textwidth]{figures/Bitwalker-Overview.pdf}
-\caption{\label{fig:Bitwalker-Overview} The place of \bitwalker with the OpenETCS software}
+\includegraphics[width=0.95\textheight,angle=90]{figures/OpenETCS-Stack.pdf}
+\caption{\label{fig:scope-of-code-verification} Scope of code verification}
+\end{center}
+\end{figure}
+
+\FloatBarrier
+
+\section{Software layers}
+
+Figure~\ref{fig:software-layers} shows the layer structure of the OpenETCS C~code.
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{figures/software-layers.pdf}
+\caption{\label{fig:software-layers} Software layers of the OpenETCS C~code}
 \end{center}
 \end{figure}
 
@@ -81,7 +96,7 @@ we provide partial answers to the first four topics.
 In order to achieve the last goal, more development and verification
 work is currently conducted by Fraunhofer ESK and Fraunhofer FOKUS. 
 
-\section*{Structure of this document}
+\section{Structure of this document}
 
 Chapter~\ref{sec:frama-c} gives a short overview on the \framacwp tool
 that plays a central role in the verification of the Bitwalker functions.

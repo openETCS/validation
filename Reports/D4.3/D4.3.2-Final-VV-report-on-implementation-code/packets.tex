@@ -3,6 +3,24 @@
 \chapter{ETCS data packets}
 \label{sec:packets}
 
+In the following, we give a top-down presentation of the OpenETCS
+Decoder software.
+We discuss the highest, i.e.\ the data packet level, in this chapter;
+Chapter~\ref{cha:bitstream} elaborates on some intermediate, and
+Appendix~\ref{cha:low-level bitstream} on the lowest level.
+
+On the data packet level, a total of \fxfatal{ANZAHL} different packets
+are defined, each by a \lstinline{struct} declaraion in \lstinline{C}.
+We examplify our discussion on the alphabetically first packet,
+\inl{AdhesionFactor} (Section~\ref{sec:adhesionfactor}), and give some
+comments on considerations with respect to other packets
+(Section~\ref{sec:other packets}).
+
+In order to cope with the similarity of specification, implemetation,
+and verification tasks for all packets, we have chosen to automatically 
+generate \fxfatal{Was genau? struct declaraion, contract, ...} from the
+ETCS Subset 026 requirements description.\fxfatal{Name improvisiert}
+
 \section{Formal specification of \inl{AdhesionFactor}}
 \label{sec:adhesionfactor}
 
@@ -285,11 +303,14 @@ The \inl{Invariant(Bitstream*, integer)} predicate is introduced in Chapter~\ref
 \inl{valid_package} is only met if \inl{p} is a valid pointer for read and write operations.
 \item
 \inl{separation} requires that \inl{*stream} and \inl{*p} do not overlap in the memory.
-The \inl{Separated(Bitstream*, AdhesionFactor*)} predicate is introduced in
+The 
+%\inl{Separated(Bitstream*, AdhesionFactor*)}
+\inl{Separated}
+predicate is introduced in
 Section~\ref{sec:adhesionfactor-predicates-separated}.
 \end{itemize}
 
-\fxfatal{fix linebreak in itemize}
+%\fxfatal{fix linebreak in itemize}
 
 %\fxfatal{make sure that \inl{Invariant(Bitstream*, integer)} is described in Chapter~\ref{cha:bitstream}}
 
@@ -420,4 +441,5 @@ int AdhesionFactor_DecodeBit(AdhesionFactor* p, Bitstream* stream);
 \subsection{Formal verification of \inl{AdhesionFactor}}
 
 \section{Formal specification of other packets}
+\label{sec:other packets}
 

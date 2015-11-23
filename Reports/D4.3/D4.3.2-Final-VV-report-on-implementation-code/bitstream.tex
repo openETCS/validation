@@ -5,6 +5,21 @@
 \chapter{The Bit Stream Layer}
 \label{cha:bitstream}
 
+In this section, we describe the intermediate abstractions levels the
+packet level (section~\ref{sec:packets}) relies on.
+%
+First, we discuss in Section~\ref{sec:bitstream}
+a level where operation arguments typically are include a
+\lstinline{C} structure \lstinline{struct bitstream*}, which
+encapsulates bitstream data and all related administration information.
+%
+In Section~\ref{sec:bit sequences}, we present a level still working on
+bit sequences, but with an operation typically
+having one argument for every bitstream data or administration input.
+%
+Appendix~\ref{cha:low-level bitstream} finally presents even lower levels.
+
+
 
 
 
@@ -16,9 +31,11 @@
 \section{The \inl{Bitstream} abstraction}
 \label{sec:bitstream}
 
-As mentioned in Section~\ref{sec:packets},
-the operations on packet data structures were implmented by 
+%As mentioned in Section~\ref{sec:packets},
+The operations on packet data structures were implemented by 
 operations that on a \lstinline{struct bitstream*} argument.
+\fxfatal{Hier heisst es "struct bitstream*", in ch.3 heisst es
+"Bitstream*". Stimmt die Gross-/Kleinschreibung?}
 %
 The latter are described in this section.
 

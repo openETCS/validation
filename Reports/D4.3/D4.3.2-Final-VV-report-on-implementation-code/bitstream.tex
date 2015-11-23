@@ -53,9 +53,19 @@ After completion of the operation,
 	current bit position on entry and that on exit
 	(``\lstinline{changed}''),
 \item in particular, all but the \lstinline{length} least significant
-	bits of the return value are zero
+	bits\footnote{
+		Bit positions are counted differently in Frama-C and in
+		the openETCS project, cf.\
+		Figure~\ref{fig:bit coords} 
+		in Appendix~\ref{sec:bit operations in framac}.
+		%
+		In this report, we preferably used the terms ``least''
+		and ``most significant bit(s)'' to
+		designate a (range of) bit position(s) indenpendent of
+		the coordinate system.
+	}
+	of the return value are zero
 	(``\lstinline{upper}''),
-%\fxfatal{explain UpperBitsNotSet}
 \item \lstinline{stream}'s total size remains unaffected
 	(``\lstinline{size}''), and
 \item so do all of its content bits
@@ -96,30 +106,54 @@ Listing~\ref{lst:Bitstream preds}; they build upon the internal
 details of the \lstinline{Bitstream} data structure shown in
 Listing~\ref{lst:Bitstream struct}.
 %
-Predicate \lstinline{Invariant} requires that a 
-\lstinline{struct Bitstream}'s data area
-doesn't overlap with the \lstinline{struct} itself, and that some
-further, lower-level invariant holds (see Section~\ref{sec:bit sequences}
-below).
-%
-In a similar way, predicates \lstinline{Normal} and
-\lstinline{EqualBits} is reduced to a
-lower-level predicate of the same 
-name, respectively.\footnote{Frama-C allows for predicate overloading.}
-%
-A clause \lstinline{Normal(size,bitpos,length)} requires \lstinline{bitpos} to be such
-that at least \lstinline{length} more bits are available beyond it in a stream of byte-size
-\lstinline{size}.\footnote{
-	We tacitly assume that each stream has a multiple of 8 bits available.
-	\fxfatal{unrealistic!?}
-}
-%
-%\fxfatal{explain EqualBits}
-A clause \lstinline{EqualBits(addr,first,last,value)} requires 
-bits [\lstinline{first}\ldots\lstinline{last}) in
-the byte array at \lstinline{addr} to coincide with the corresponding
-least significant bits of \lstinline{value}, 
-cf.~Figure~\ref{fig:EqualBits correspondance}.
+\begin{itemize}
+\item Predicate \lstinline{Readable} requires that a stream's data area is
+	complete accessible for read.
+\item Similarly, \lstinline{Writeable} requires that it is accessible for
+	update.
+
+\item Predicate \lstinline{Invariant} requires that a 
+	\lstinline{struct Bitstream}'s data area
+	doesn't overlap with the \lstinline{struct} itself, and that some
+	further, lower-level invariant holds (see 
+	Section~\ref{sec:bit sequences} below).
+
+	In a similar way, predicates \lstinline{Normal} and
+	\lstinline{EqualBits} is reduced to a
+	lower-level predicate of the same 
+	name, 
+	respectively.\footnote{Frama-C allows for predicate overloading.}
+
+\item
+	A clause \lstinline{Normal(size,bitpos,length)} requires
+	\lstinline{bitpos} to be such that at least \lstinline{length}
+	more bits are available beyond it in a stream of byte-size
+	\lstinline{size}.\footnote{
+		We tacitly assume that each stream has a multiple of 8 bits
+		available.  \fxfatal{unrealistic!?}
+	}
+
+\item
+	A predicate call
+	\inl{Unchanged\{A,B\}(stream,first,last)} succeeds if,
+	and only if, 
+	all data bits [\lstinline{first}\ldots\lstinline{last})
+	of \lstinline{stream} agree in memory state \lstinline{A} and
+	\lstinline{B}.
+	%
+	For example, it is used with \lstinline{A} and \lstinline{B}
+	instantiated to Frama-C's reserved keyword ``\lstinline{Here}'' and
+	``\lstinline{Old}'', denoting the memory state after and before
+	operation completion and entry, respectively; cf.\
+	Listing~\ref{lst:Bitstream_Write impl}.
+
+\item
+	A clause \lstinline{EqualBits(addr,first,last,value)} requires 
+	bits [\lstinline{first}\ldots\lstinline{last}) in
+	the byte array at \lstinline{addr} to coincide with the
+	corresponding least significant bits of \lstinline{value},
+	cf.~Figure~\ref{fig:EqualBits correspondance}.
+\end{itemize}
 
 
 \begin{figure}
@@ -254,31 +288,41 @@ int Bitstream_Normal(const Bitstream* stream, uint32_t length);
 Listing~\ref{lst:Bitstream_Write impl} shows contract of
 \lstinline{Bitstream_Write}, and moreover exemplfies its implementation.
 
-Most parts of the contract are quite similar to that of \lstinline{Bitstream_Read} in
+Most parts of the contract are quite similar to that of
+\lstinline{Bitstream_Read} in
 Listing~\ref{lst:Bitstream_Read spec}.
 %
 Differences are the following:
 \begin{itemize}
-\item We require that the \lstinline{value} to be written fits into the specified
-	\lstinline{length}, i.e.\ its unused most significant bits are zero (requirement
+\item We require that the \lstinline{value} to be written fits into
+	the specified
+	\lstinline{length}, i.e.\ its unused most significant bits
+	are zero (requirement
 	``\lstinline{upper}'').
-\item The operation is allowed to change the contents of the bitstream 
-	(first \lstinline{assigns} clause) in addition to the streams current bit
-	position (second \lstinline{assigns} clause), but no other memory locations.
+\item The operation is allowed to change the contents of the bitstream
+	(first \lstinline{assigns} clause) in addition to the streams
+	current bit
+	position (second \lstinline{assigns} clause), but no other
+	memory locations.
 \item Since we couldn't specify in the \lstinline{assigns} clauses 
-	which bits exactly are allowed to be modified, we give the details in two
+	which bits exactly are allowed to be modified, we give the
+	details in two
 	\lstinline{ensures} clauses named ``\lstinline{unchanged}'':
-	All bits before the stream's \lstinline{bitpos} on operation entry, and after
+	All bits before the stream's \lstinline{bitpos} on operation
+	entry, and after
 	its \lstinline{bitpos} on exit, must remain unchanged.
 \end{itemize}
 
-The implementation just employs the lower-level operation \lstinline{Bitwalker_Write} to
-write the bits, and appropriately updates the \lstinline{stream}'s \lstinline{bitpos}.
+The implementation just employs the lower-level operation
+\lstinline{Bitwalker_Write} to
+write the bits, and appropriately updates the \lstinline{stream}'s
+\lstinline{bitpos}.
 %
-Two assertions were needed to help the provers establishing that \lstinline{value}'s
+Two assertions were needed to help the provers establishing that
+\lstinline{value}'s
 bits are actually written to \lstinline{stream}'s data array by
-\lstinline{Bitwalker_Write}, and that they aren't destoyed during \lstinline{bitpos}
-update.
+\lstinline{Bitwalker_Write}, and that they aren't destoyed during
+\lstinline{bitpos} update.
 
 
 
@@ -354,28 +398,31 @@ It requires
 	(``\lstinline{invariant}''), viz.\
 	%
 	\begin{itemize}
-	\item the total number of array bits to fit into a \lstinline{uint32_t},
+	\item the total number of array bits to fit into a
+		\lstinline{uint32_t},
 	\item the result value to fit into a \lstinline{uint64_t},
 	\item the end bit position ---~and hence also the start bit position
 		\lstinline{bitpos} and \lstinline{length}~---
 		to fit into a \lstinline{uint32_t}, 
 	\end{itemize}
 	and
-\item the bit range [\lstinline{bitpos}\ldots\lstinline{bitpos}+\lstinline{length})
+\item the bit range
+	[\lstinline{bitpos}\ldots\lstinline{bitpos}+\lstinline{length})
 	to fit into the array at \lstinline{addr}
 	(``\lstinline{normal}'').
 \end{itemize}
 %
-The operation is not allowed to modify any (non-local) memory (expressed by the
-``\lstinline{assigns}'' clause).
+The operation is not allowed to modify any (non-local) memory
+(expressed by the ``\lstinline{assigns}'' clause).
 %
 After completion of the operation,
 %
 \begin{itemize}
-\item the return value shall coincide bit by bit with the specified range of the
+\item the return value shall coincide bit by bit with the specified
+	range of the
 	\lstinline{addr} array (``\lstinline{ensures equal}''), and
-\item in particular, all but the least significant \lstinline{length} bits of the return
-	value shall be zero (``\lstinline{upper}'').
+\item in particular, all but the least significant \lstinline{length}
+	bits of the return value shall be zero (``\lstinline{upper}'').
 \end{itemize}
 
 
@@ -410,8 +457,8 @@ uint64_t Bitwalker_Read(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t 
 The formal definitions of the used ACSL predicates are given in
 Listing~\ref{lst:Bitsequence preds}.
 %
-Again, the tacit assumption that the array contains sensible data upto its very last bit
-is used in predicate \lstinline{Normal}.
+Again, the tacit assumption that the array contains sensible data
+upto its very last bit is used in predicate \lstinline{Normal}.
 
 
 
@@ -446,30 +493,36 @@ is used in predicate \lstinline{Normal}.
 
 
 
-Listing~\ref{Bitwalker_Write spec} shows the contract, and the implementation, of
+Listing~\ref{Bitwalker_Write spec} shows the contract, and the
+implementation, of
 \lstinline{Bitwalker_Write}.
 %
 The following peculiarities are observed when the former is
 compared to \lstinline{Bitwalker_Read}'s contract:
 %
 \begin{itemize}
-\item We require that the \lstinline{value} to be written fits into the specifiec
-	\lstinline{length}, i.e.\ all but its \lstinline{length} least significant bits are
+\item We require that the \lstinline{value} to be written fits into
+the specifiec
+	\lstinline{length}, i.e.\ all but its \lstinline{length}
+	least significant bits are
 	zero (requirement ``\lstinline{upper}'').
-\item The operation may modify the data array at \lstinline{addr}, but nothing else.
+\item The operation may modify the data array at \lstinline{addr},
+but nothing else.
 \item Again, we give the details of which data bits exactly
 	are allowed to be changed in two
 	\lstinline{ensures} clauses, named ``\lstinline{left}'' and
-	``\lstinline{right}'', and requiring all bits before \lstinline{bitpos} and after
+	``\lstinline{right}'', and requiring all bits before
+	\lstinline{bitpos} and after
 	\lstinline{bitpos+length} to remain unchanged, respectively.
 \end{itemize}
 
-In the implementation, which is shown here as an example, we used the straight-forward
-algorithm that takes a bit from \lstinline{value} and places it into the \lstinline{addr}
-array, bit by bit.
+In the implementation, which is shown here as an example, we used
+the straight-forward
+algorithm that takes a bit from \lstinline{value} and places it into
+the \lstinline{addr} array, bit by bit.
 %
-In order for the provers to establish that algorithm's correctness, we had to provide a
-total of six ACSL clauses about the loop:
+In order for the provers to establish that algorithm's correctness,
+we had to provide a total of six ACSL clauses about the loop:
 %
 \begin{itemize}
 \item The loop variable, \lstinline{i}, always ranges in the interval
@@ -479,14 +532,19 @@ total of six ACSL clauses about the loop:
 	Note that the highest value is actually taken,
 	viz.\ on exit of the loop body in the last iteration,
 	subsequently causing the loop to terminate.
-\item The bits before \lstinline{bitpos}, and after \lstinline{bitpos+length}
+\item The bits before \lstinline{bitpos}, and after
+	\lstinline{bitpos+length}
 	remain as they were on operation entry --- invariant
 	``\lstinline{left}'' and ``\lstinline{right}'', respectively.
 \item In the \lstinline{i}th iteration, the bits
-	[\lstinline{bitpos}\ldots\lstinline{bitpos+i}) agree with the least significant
-	\lstinline{i} bits of \lstinline{value} --- invariant ``\lstinline{middle}''.
-\item The loop code is allowed to modify the variable \lstinline{i}, and the whole array
-	at \lstinline{addr}, but nothing else --- \lstinline{loop assigns} clause.
+	[\lstinline{bitpos}\ldots\lstinline{bitpos+i}) agree with
+	the least significant
+	\lstinline{i} bits of \lstinline{value} --- invariant
+	``\lstinline{middle}''.
+\item The loop code is allowed to modify the variable \lstinline{i},
+	and the whole array
+	at \lstinline{addr}, but nothing else --- 
+	\lstinline{loop assigns} clause.
 \item The value of the integer
 	expression \lstinline{bitpos+length-i} is non-negative thoughout
 	the whole loop execution, but is decreased in every iteration 
@@ -548,8 +606,8 @@ void Bitwalker_Write(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t len
 The implementation of the bit sequence operations is based
 on operations to write and to read a single bit.
 %
-The details of the latter, as well as of the predicates used in their contracts,
-are given in Appendix~\ref{cha:low-level bitstream}.
+The details of the latter, as well as of the predicates used in their
+contracts, are given in Appendix~\ref{cha:low-level bitstream}.
 
 
 

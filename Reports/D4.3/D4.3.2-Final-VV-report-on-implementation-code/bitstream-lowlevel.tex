@@ -8,8 +8,9 @@ low-level bitstream operations.
 They were used to implement the bit sequence abstraction level, cf.\
 Section~\ref{sec:bit sequences}.
 %
-Since a write operation moves bits from a \lstinline{uint64_t} value into an array of
-\lstinline{uint8_t} values, and a read operations moved them the other way round,
+Since a write operation moves bits from a \lstinline{uint64_t} value
+into an array of \lstinline{uint8_t} values, and a read operations
+moved them the other way round,
 we need bit operations on both data types.
 %
 They are given in
@@ -19,13 +20,17 @@ Subsection~\ref{subsec:low-level 8 array} (array of \lstinline{uint8_t}),
 
 
 
+
+
+
+
+
+
+
+
+
+
 \section{Reading and writing individual bits}
-
-
-
-
-
-
 
 
 \subsection{8 bit arrays}
@@ -34,7 +39,39 @@ Subsection~\ref{subsec:low-level 8 array} (array of \lstinline{uint8_t}),
 
 
 
-\fxfatal{TODO}
+
+
+
+
+
+The operation \lstinline{TestBit8Array(addr,size,pos)} returns the
+\lstinline{pos}$^{\mbox{\scriptsize th}}$ bit
+within the array at \lstinline{addr}
+of byte-size \lstinline{size}.\footnote{
+	This parameter isn't actually used in the code, but merely
+	in the contract.
+}
+Its contract and its implementation is shown in
+Listing~\ref{lst:TestBit8Array}.
+%
+See Listing~\ref{lst:bit predicate defs} for the definition of the predicate
+\lstinline{Bit8Array}.
+%
+The array bits are counted starting with the most significant one of
+the first byte,
+cf.\ Figure~\ref{fig:bit coords} below.
+%
+\lstinline{TestBit8(bytevalue,bitadr)} returns the 
+\lstinline{bitadr}$^{\mbox{\scriptsize th}}$ bit
+within \lstinline{bytevalue}, its is discussed in
+Appendix~\ref{subsec:low-level 8} below.
+
+
+
+
+
+
+
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -54,8 +91,60 @@ static inline int TestBit8Array(uint8_t*  addr, uint32_t size, uint32_t pos)
 }
 \end{lstlisting}
 \end{minipage}
-\caption{caption}
+\caption{\label{lst:TestBit8Array}Reading a bit of an \inl{uint8_t} array}
 \end{listing}
+
+
+
+
+
+
+
+
+
+
+Similarly, the operation \lstinline{SetBit8Array(addr,size,pos,flag)}
+sets the
+\lstinline{pos}$^{\mbox{\scriptsize th}}$ bit within the array at
+\lstinline{addr} of
+byte-size \lstinline{size} to \lstinline{flag}.
+%
+Its contract is shown in Listing~\ref{lst:SetBit8Array}.
+%
+It requires
+%
+\begin{itemize}
+\item the whole array to be accessible for update (requirement
+	``\lstinline{valid}''),
+\item each possible bit position in the array to fit into a
+	\lstinline{uint32_t} (``\lstinline{size}''), and
+\item the given \lstinline{pos} to be a valid bit position in the array
+	(``\lstinline{pos}'').
+\end{itemize}
+%
+The \lstinline{assigns} clause allows the operation to change the
+contents of the array,
+but no other memory locations.
+%
+On completion, the operation shall guarantee
+\begin{itemize}
+\item that the value of \lstinline{flag}\footnote{
+		Any non-zero \lstinline{flag} value is treated like 1.
+		This is ensured by the contract of the called operation
+		\lstinline{SetBit8}, cf. Appendix{subsec:low-level 8}.
+	}
+	is actually stored at the designated bit
+	position (``\lstinline{ensures middle}''), and
+\item that all other bits remain unchanged 
+	(``\lstinline{left}'', ``\lstinline{right}'').
+\end{itemize}
+%
+Two fairly sophisicated hints had to be provided as assertions in
+the body in order for
+the provers to establish the contract's post-conditions.
+
+
+
 
 
 
@@ -103,7 +192,7 @@ static inline void SetBit8Array(uint8_t* addr, uint32_t size, uint32_t pos, int 
 }
 \end{lstlisting}
 \end{minipage}
-\caption{caption}
+\caption{\label{lst:SetBit8Array}Writing a bit of an \inl{uint8_t} array}
 \end{listing}
 
 
@@ -117,6 +206,11 @@ static inline void SetBit8Array(uint8_t* addr, uint32_t size, uint32_t pos, int 
 
 \subsection{8 bits}
 \label{subsec:low-level 8}
+
+
+
+
+
 
 
 
@@ -147,6 +241,11 @@ static inline int TestBit8(uint8_t value, uint32_t pos)
 
 
 
+
+
+
+
+
 The operation \lstinline{TestBit8(value,pos)} returns the
 \lstinline{pos}$^{\mbox{\scriptsize th}}$
 bit of \lstinline{value}.
@@ -154,84 +253,45 @@ bit of \lstinline{value}.
 Its contract is shown in Listing~\ref{lst:TestBit8}.
 %
 \lstinline{pos} must not exceed 7 (requirement ''\lstinline{pre}''),
-no memory may be modified (\lstinline{assigns}), and the result is non-zero if, and only
+no memory may be modified (\lstinline{assigns}), and the result is
+non-zero if, and only
 if, the specified bit is set.
 %
-The shown implementation additionally guarantees that the result is zero or one, which
+The shown implementation additionally guarantees that the result is
+zero or one, which
 is not specified in the contract since this property isn't needed.
 %
-Returning just \lstinline{flag} rather than \lstinline{flag!=0u} would satisfy the
+Returning just \lstinline{flag} rather than \lstinline{flag!=0u}
+would satisfy the
 contract also, and would be slightly faster.
 
-The definition of predicate \lstinline{Bit8} is shown in 
-Listing~\ref{lst:bit predicate defs}.
-%
-It relies on the Frama-C library predicate \lstinline{BitTest}, performing a coordinate
-transformation to fits Frama-C's notion of bit positions with the OpenETCS project's
-notion, cf.\ Figure~\ref{fig:bit coords}.
-%
-In this report, we preferably use the terms ``least'' and ``most significant bit(s)'' to
-designate a (range of) bit position(s) indenpendent of the coordinate system.
 
 
 
 
 
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-   predicate Bit8{A}(uint8_t v, integer n)  = BitTest(v, 7 - n);
-
-   predicate Bit64{A}(uint64_t v, integer n) = BitTest(v, 63 - n);
-
-   predicate Bit8Array{A}(uint8_t* a, integer n) = Bit8(a[n / 8],n % 8);
-*/
-\end{lstlisting}
-\end{minipage}
-\caption{\label{lst:bit predicate defs}Definition of bit test predicates}
-\end{listing}
-
-
-
-
-
-
-
-
-\begin{figure}
-\begin{center}
-\vspace*{2cm}
---- Insert drawing --- 
-\vspace*{2cm}
-\caption{\label{fig:bit coords}
-        Bit coordinates in Frama-C and in the OpenETCS project}
-\end{center}
-\end{figure}
-
-
-
-
-
-
-Dual to \lstinline{TestBit8}, the operation \lstinline{SetBit8(value,pos,flag)}
-returns \lstinline{value}, with the \lstinline{pos}$^{\mbox{\scriptsize th}}$ bit
+Dual to \lstinline{TestBit8}, the operation
+\lstinline{SetBit8(value,pos,flag)}
+returns \lstinline{value}, 
+with the \lstinline{pos}$^{\mbox{\scriptsize th}}$ bit
 set to \lstinline{flag}.
 %
 Its contract is shown in Listing~\ref{lst:SetBit8}.
 %
 Again, \lstinline{pos} mustn't exceed 7 (requirement ``\lstinline{pre}''),
 no memory may be modified (\lstinline{assigns} clause),
-the return value coincides with \lstinline{value}, except possibly at \lstinline{pos}
+the return value coincides with \lstinline{value}, except possibly
+at \lstinline{pos}
 (ensures ``\lstinline{left}'' and ``\lstinline{right}''),
 and \lstinline{flag} is written to the approriate bit of \lstinline{value}
 (``\lstinline{pos}'').
 %
-The implementation branches on the value of \lstinline{flag}, and clears or sets the
+The implementation branches on the value of \lstinline{flag}, and
+clears or sets the
 appropriate bit in the usual way.
 %
-Note that both our contract and our implementation enable us to set a bit by supplying a
+Note that both our contract and our implementation enable us to set
+a bit by supplying a
 \lstinline{flag} value of e.g.\ 2, whereas the code 
 \lstinline{mask=flag<<(7-pos); return (value&~mask)|mask;} does not.
 
@@ -291,12 +351,14 @@ static inline uint8_t SetBit8(uint8_t value, uint32_t pos, int flag)
 
 
 
-The operations to read and write a bit of a \lstinline{uint64_t} are closely similar to
+The operations to read and write a bit of a \lstinline{uint64_t}
+are closely similar to
 those working on a \lstinline{uint8_t}.
 %
 They are shown in Listing~\ref{lst:TestBit64}
 and \ref{lst:SetBit64} without repeating the comments given
-in Appendix~\ref{subsec:low-level 8} for the 8 bit version; see in particular
+in Appendix~\ref{subsec:low-level 8} for the 8 bit version; see
+in particular
 Listing~\ref{lst:bit predicate defs} for the employed ACSL predicates.
 
 
@@ -336,9 +398,11 @@ int TestBit64(uint64_t value, uint32_t pos)
 As a redundant postcondition of the \lstinline{SetBit64} operation in
 Listing~\ref{lst:SetBit64},
 ``\lstinline{upper}'' guarantees that the leading zeros in
-\lstinline{value} are kept in the result, up to, but excluding position \lstinline{pos}.
+\lstinline{value} are kept in the result, up to, but excluding
+position \lstinline{pos}.
 %
-It was needed to enable the provers to verify code that uses \lstinline{SetBit64}.
+It was needed to enable the provers to verify code that uses
+\lstinline{SetBit64}.
 
 
 
@@ -371,8 +435,10 @@ uint64_t SetBit64(uint64_t value, uint32_t pos, int flag)
 
 
 
-The operation \lstinline{UpperBitsNotSet64(value,length)} succeeds, i.e.\ returns a
-non-zero value, if, and only if, all bits of \lstinline{value} except the least significant
+The operation \lstinline{UpperBitsNotSet64(value,length)} succeeds,
+i.e.\ returns a
+non-zero value, if, and only if, all bits of \lstinline{value} except
+the least significant
 \lstinline{length} ones are zero.
 %
 It is used for \fxfatal{ja, wofuer denn eigentlich?}
@@ -423,34 +489,40 @@ int UpperBitsNotSet64(uint64_t value, uint32_t length);
 \FloatBarrier
 
 \section{Formalization of bit operations in \framac}
-
-
-
-
-\fxfatal{TODO}
-
-describe \inl{BitTest}
+\label{sec:bit operations in framac}
 
 
 
 
 
+
+The definition of predicate \lstinline{Bit8} is shown in 
+Listing~\ref{lst:bit predicate defs}.
+%
+It relies on the Frama-C library predicate \lstinline{BitTest},
+performing a coordinate
+transformation to fit Frama-C's notion of bit positions with the
+OpenETCS project's
+notion, cf.\ Figure~\ref{fig:bit coords}.
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-predicate   BitTest(integer v, integer n);
+/*@
+   predicate Bit8{A}(uint8_t v, integer n)  = BitTest(v, 7 - n);
+
+   predicate Bit64{A}(uint64_t v, integer n) = BitTest(v, 63 - n);
+
+   predicate Bit8Array{A}(uint8_t* a, integer n) = Bit8(a[n / 8],n % 8);
+*/
 \end{lstlisting}
-
-
-
-
-
-
-\begin{lstlisting}[style=acsl-block]
-predicate Bit8{A}(uint8_t v, integer n)  = BitTest(v, 7 - n);
-
-predicate Bit64{A}(uint64_t v, integer n) = BitTest(v, 63 - n);
-
-predicate Bit8Array{A}(uint8_t* a, integer n) = Bit8(a[n / 8],n % 8);
-\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:bit predicate defs}Definition of bit test predicates}
+\end{listing}
 
 
 
@@ -461,15 +533,30 @@ predicate Bit8Array{A}(uint8_t* a, integer n) = Bit8(a[n / 8],n % 8);
 
 
 
-\begin{lstlisting}[style=acsl-block]
-predicate
-  UpperBitsNotSet{A}(integer value, integer length) =
-    \forall integer i; length <= i ==> !BitTest(value, i);
-\end{lstlisting}
+
+
+
+\begin{figure}
+\begin{center}
+\vspace*{2cm}
+--- Insert drawing --- 
+\vspace*{2cm}
+\caption{\label{fig:bit coords}
+        Bit coordinates in Frama-C and in the OpenETCS project}
+\end{center}
+\end{figure}
 
 
 
 
+
+
+The predicate \lstinline{UpperBitsNotSet(value,length)} succeeds if,
+and only if,
+all but possibly 
+the least significant \lstinline{length} bits of \lstinline{value} are zero.
+%
+Its definition is shown in Listing~\ref{lst:UpperBitsNotSet integer}.
 
 
 
@@ -480,9 +567,59 @@ predicate
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-
+predicate
+  UpperBitsNotSet{A}(integer value, integer length) =
+    \forall integer i; length <= i ==> !BitTest(value, i);
 \end{lstlisting}
 \end{minipage}
-\caption{caption}
+\caption{\label{lst:UpperBitsNotSet integer}
+	Definition of the low-level predicate \lstinline{UpperBitsNotSet}}
 \end{listing}
+
+
+
+
+
+
+The predicate \lstinline{BitTest(v,n)} succeeds if, and only if, the
+\lstinline{n}$^{\mbox{\scriptsize th}}$ bit is set in the binary
+representation of
+\lstinline{v}, i.e.\ iff the truncating integer division of \lstinline{v} by
+$2^{\mbox{\scriptsize\lstinline{n}}}$ yields an odd number.
+\fxfatal{Is there any documentation available? What about negative numbers?}
+%
+This predicate comes with the standard library of the Frama-C system.
+%
+Its declaration is shown in Listing~\ref{lst:BitTest}.
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+   predicate   BitTest(integer v, integer n);
+*/
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:BitTest}The Frama-C library predicate \lstinline{BitTest}}
+\end{listing}
+
+
+
+
+
+
+
+
+
+
+
+%	\begin{listing}[hbt]
+%	\begin{minipage}{0.99\textwidth}
+%	\begin{lstlisting}[style=acsl-block]
+%	
+%	\end{lstlisting}
+%	\end{minipage}
+%	\caption{caption}
+%	\end{listing}
 

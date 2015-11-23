@@ -3,13 +3,58 @@
 \chapter{ETCS data packets}
 \label{sec:packets}
 
+In the following, we give a top-down presentation of the OpenETCS
+Decoder software.
+We discuss the highest, i.e.\ the data packet level, in this chapter;
+Chapter~\ref{cha:bitstream} elaborates on some intermediate, and
+Appendix~\ref{cha:low-level bitstream} on the lowest level.
+
+On the data packet level, a total of \fxfatal{ANZAHL} different packets
+are defined, each by a \lstinline{struct} declaraion in \lstinline{C}.
+We examplify our discussion on the alphabetically first packet,
+\inl{AdhesionFactor} (Section~\ref{sec:adhesionfactor}), and give some
+comments on considerations with respect to other packets
+(Section~\ref{sec:other packets}).
+
+In order to cope with the similarity of specification, implemetation,
+and verification tasks for all packets, we have chosen to automatically 
+generate \fxfatal{Was genau? struct declaraion, contract, ...} from the
+ETCS Subset 026 requirements description.\fxfatal{Name improvisiert}
+
 \section{Formal specification of \inl{AdhesionFactor}}
 \label{sec:adhesionfactor}
 
 \subsection{\inl{AdhesionFactor} in ETCS}
 \label{sec:adhesionfactor-etcs}
 
-\fxfatal{add table from chapter 7}
+Subset~026 defines package \emph{adhesion factor} (packet 71) as shown in 
+Table~\ref{tbl:adhesion-factor}.
+
+\begin{table}[hbt]
+\begin{center}
+\begin{tabular}{|l|r|}
+\hline
+\textbf{variable name} & \textbf{number of bits}\\
+\hline
+\inl{NID_PACKET} & 8 \\
+\hline
+\inl{Q_DIR} & 2 \\
+\hline
+\inl{L_PACKET} & 13 \\
+\hline
+\inl{Q_SCALE} & 2 \\
+\hline
+\inl{D_ADHESION} & 15 \\
+\hline
+\inl{L_ADHESION} & 15 \\
+\hline
+\inl{M_ADHESION} & 1 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:adhesion-factor} Packet \adhesion as defined by ETCS}
+\end{table}
+
 
 \subsection{The type \inl{AdhesionFactor}}
 \label{sec:adhesionfactor-type}
@@ -99,7 +144,7 @@ of all members of on object of type \inl{AdhesionFactor}.
 
 \label{sec:adhesionfactor-predicates-upperbitsnotset}
 
-\fxfatal{Make sure that there is an explanation of UpperBitsNotSet in Chapter~\ref{cha:bitstream}}
+%\fxfatal{Make sure that there is an explanation of UpperBitsNotSet in Chapter~\ref{cha:bitstream}}
 
 Listing~\ref{lst:adhesionfactor-predicates-upperbitsnotset} shows the definition
 of the \inl{UpperBitsNotSet} predicate for \inl{AdhesionFactor}.
@@ -107,7 +152,7 @@ The predicate \inl{UpperBitsNotSet(AdhesionFactor*)} evaluates to true
 if and only if the values of all members of \inl{AdhesionFactor}
 fit into their assigned numbers of bits.
 This functionality is ensured by the conjunction of the \inl{UpperBitsNotSet(uint64_t, uint32_t)} predicate,
-which is explained in Chapter~\ref{cha:bitstream}, for all members of \inl{AdhesionFactor}.
+which is explained in Appendix~\ref{sec:bit operations in framac}, for all members of \inl{AdhesionFactor}.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -153,7 +198,7 @@ Thus, writing into the stream will not change \inl{*p} and vice versa.
 
 \label{sec:adhesionfactor-predicates-equalbits}
 
-\fxfatal{Make sure that there is an explanation of EqualBits in Chapter~\ref{cha:bitstream}}
+%\fxfatal{Make sure that there is an explanation of EqualBits in Chapter~\ref{cha:bitstream}}
 
 Listing~\ref{lst:adhesionfactor-predicates-equalbits} shows the definition of the
 \inl{EqualBits} predicate for \inl{AdhesionFactor}.
@@ -164,7 +209,7 @@ This predicate will be used to formally describe the transfer of bits
 from a bit stream to an object of type \inl{AdhesionFactor} and vice versa.
 The definition of the predicate \inl{EqualBits(AdhesionFactor*)} uses
 the predicate \inl{EqualBits(uint64_t)}, which is explained
-in Chapter~\ref{cha:bitstream}.
+in Section~\ref{sec:bitstream}.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -223,7 +268,7 @@ int AdhesionFactor_UpperBitsNotSet(const AdhesionFactor* p);
 
 \FloatBarrier
 
-\fxfatal{Refer to a more accurate label instead of cha:bitstream}
+%\fxfatal{Refer to a more accurate label instead of cha:bitstream}
 
 \subsection{Formal specification of \inl{AdhesionFactor_DecodeBit}}
 \label{sec:adhesionfactor-decodebit}
@@ -249,24 +294,27 @@ none of the bits in the bit stream are written by the function.
 \begin{itemize}
 \item
 \inl{valid_stream} is only met if \inl{Readable(stream)} applies.
-The \inl{Readable(Bitstream*)} predicate is described in Chapter~\ref{cha:bitstream}.
+The \inl{Readable(Bitstream*)} predicate is described in Chapter~\ref{sec:bitstream}.
 \item
 \inl{stream_invariant} is only met if \inl{*stream}
 is long enough to read an object of the length of \inl{AdhesionFactor} from.
-The \inl{Invariant(Bitstream*, integer)} predicate is introduced in Chapter~\ref{cha:bitstream}.
+The \inl{Invariant(Bitstream*, integer)} predicate is introduced in Chapter~\ref{sec:bitstream}.
 \item
 \inl{valid_package} is only met if \inl{p} is a valid pointer for read and write operations.
 \item
 \inl{separation} requires that \inl{*stream} and \inl{*p} do not overlap in the memory.
-The \inl{Separated(Bitstream*, AdhesionFactor*)} predicate is introduced in
+The 
+%\inl{Separated(Bitstream*, AdhesionFactor*)}
+\inl{Separated}
+predicate is introduced in
 Section~\ref{sec:adhesionfactor-predicates-separated}.
 \end{itemize}
 
-\fxfatal{fix linebreak in itemize}
+%\fxfatal{fix linebreak in itemize}
 
-\fxfatal{make sure that \inl{Invariant(Bitstream*, integer)} is described in Chapter~\ref{cha:bitstream}}
+%\fxfatal{make sure that \inl{Invariant(Bitstream*, integer)} is described in Chapter~\ref{cha:bitstream}}
 
-\fxfatal{make sure that \inl{Readable(Bitstream*)} is described in Chapter~\ref{cha:bitstream}}
+%\fxfatal{make sure that \inl{Readable(Bitstream*)} is described in Chapter~\ref{cha:bitstream}}
 
 \inl{normal_case} describes the function's behavior if
 \inl{*stream} contains enough unread bits to fill all members of \inl{*p}. 
@@ -289,9 +337,9 @@ of the function equals \inl{0}. In \inl{normal_case} this value is specified to 
 
 The distinguishing predicate for the two behaviors is \inl{Normal(Bitstream*, integer)},
 which appears in the \inl{assumes} clauses within both behaviors and
-is explained in Chapter~\ref{cha:bitstream}. 
+is explained in Chapter~\ref{sec:bitstream}. 
 
-\fxfatal{make sure that \inl{Normal(Bitstream*, integer)} is described in Chapter~\ref{cha:bitstream}}
+%\fxfatal{make sure that \inl{Normal(Bitstream*, integer)} is described in Chapter~\ref{cha:bitstream}}
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -393,4 +441,5 @@ int AdhesionFactor_DecodeBit(AdhesionFactor* p, Bitstream* stream);
 \subsection{Formal verification of \inl{AdhesionFactor}}
 
 \section{Formal specification of other packets}
+\label{sec:other packets}
 

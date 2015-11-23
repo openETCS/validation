@@ -19,13 +19,17 @@ Subsection~\ref{subsec:low-level 8 array} (array of \lstinline{uint8_t}),
 
 
 
+
+
+
+
+
+
+
+
+
+
 \section{Reading and writing individual bits}
-
-
-
-
-
-
 
 
 \subsection{8 bit arrays}
@@ -34,7 +38,35 @@ Subsection~\ref{subsec:low-level 8 array} (array of \lstinline{uint8_t}),
 
 
 
-\fxfatal{TODO}
+
+
+
+
+
+The operation \lstinline{TestBit8Array(addr,size,pos)} returns the
+\lstinline{pos}$^{\mbox{\scriptsize th}}$ bit
+within the array at \lstinline{addr}
+of byte-size \lstinline{size}.\footnote{
+	This parameter isn't actually used in the code, but merely in the contract.
+}
+Its contract and its implementation is shown in Listing~\ref{lst:TestBit8Array}.
+%
+See Listing~\ref{lst:bit predicate defs} for the definition of the predicate
+\lstinline{Bit8Array}.
+%
+The array bits are counted starting with the most significant one of the first byte,
+cf.\ Figure~\ref{fig:bit coords} below.
+%
+\lstinline{TestBit8(bytevalue,bitadr)} returns the 
+\lstinline{bitadr}$^{\mbox{\scriptsize th}}$ bit
+within \lstinline{bytevalue}, its is discussed in Appendix~\ref{subsec:low-level 8} below.
+
+
+
+
+
+
+
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -54,8 +86,55 @@ static inline int TestBit8Array(uint8_t*  addr, uint32_t size, uint32_t pos)
 }
 \end{lstlisting}
 \end{minipage}
-\caption{caption}
+\caption{\label{lst:TestBit8Array}Reading a bit of an \inl{uint8_t} array}
 \end{listing}
+
+
+
+
+
+
+
+
+
+
+Similarly, the operation \lstinline{SetBit8Array(addr,size,pos,flag)} sets the
+\lstinline{pos}$^{\mbox{\scriptsize th}}$ bit within the array at \lstinline{addr} of
+byte-size \lstinline{size} to \lstinline{flag}.
+%
+Its contract is shown in Listing~\ref{lst:SetBit8Array}.
+%
+It requires
+%
+\begin{itemize}
+\item the whole array to be accessible for update (requirement ``\lstinline{valid}''),
+\item each possible bit position in the array to fit into a \lstinline{uint32_t}
+	(``\lstinline{size}''), and
+\item the given \lstinline{pos} to be a valid bit position in the array
+	(``\lstinline{pos}'').
+\end{itemize}
+%
+The \lstinline{assigns} clause allows the operation to change the contents of the array,
+but no other memory locations.
+%
+On completion, the operation shall guarantee
+\begin{itemize}
+\item that the value of \lstinline{flag}\footnote{
+	Any non-zero \lstinline{flag} value is treated like 1.
+	This is ensured by teh contract of the called operation \lstinline{SetBit8},
+	cf. Appendix{subsec:low-level 8}.
+	}
+	is actually stored at the designated bit
+	position (``\lstinline{ensures middle}''), and
+\item that all other bits remain unchanged 
+	(``\lstinline{left}'', ``\lstinline{right}'').
+\end{itemize}
+%
+Two fairly sophisicated hints had to be provided as assertions in the body in order for
+the provers to establish the contract's post-conditions.
+
+
+
 
 
 
@@ -103,7 +182,7 @@ static inline void SetBit8Array(uint8_t* addr, uint32_t size, uint32_t pos, int 
 }
 \end{lstlisting}
 \end{minipage}
-\caption{caption}
+\caption{\label{lst:SetBit8Array}Writing a bit of an \inl{uint8_t} array}
 \end{listing}
 
 
@@ -117,6 +196,11 @@ static inline void SetBit8Array(uint8_t* addr, uint32_t size, uint32_t pos, int 
 
 \subsection{8 bits}
 \label{subsec:low-level 8}
+
+
+
+
+
 
 
 
@@ -142,6 +226,11 @@ static inline int TestBit8(uint8_t value, uint32_t pos)
 \end{minipage}
 \caption{\label{lst:TestBit8}Reading a bit of \inl{uint8_t}}
 \end{listing}
+
+
+
+
+
 
 
 

@@ -49,16 +49,19 @@ in a \fbox{dashed box}.
 \section{Software layers}
 
 Figure~\ref{fig:software-layers} shows the layer structure of the OpenETCS C~code.
+The OpenETCS decoder\slash enocder is a collection of data structures and associated functions
+for reading and writing ETCS packets from\slash to a bit stream.
 
 \begin{figure}[hbt]
 \begin{center}
-\includegraphics[width=0.99\textwidth]{figures/software-layers.pdf}
+\includegraphics[width=1.0\textwidth]{figures/software-layers.pdf}
 \caption{\label{fig:software-layers} Software layers of the OpenETCS C~code}
 \end{center}
 \end{figure}
 
 \FloatBarrier
 
+<<<<<<< HEAD
 The OpenETCS decoder is a large collection of functions dedicated to
 the reading of ETCS messages.
 In order to fulfill their task these function rely on the relatively
@@ -70,6 +73,13 @@ the methods are implemented as functions.
 The core functionality  of this class consists in converting bit sequences to integers
 and vice versa. It depends on two more basic functions, namely~\peek and~\poke.
 \fxfatal{\peek kommt sonst nirgends mehr vor --- Name veraltet?}
+=======
+In order to fulfill their task the decoder and encoder function rely on an
+implementation of bit streams in C.
+The \inl{Bitstream} package in turn is built on top of the so-called \emph{bitwalker} layer.
+In order to accomplish the task of formal verification of these layers 
+we also provided several functions that read and write individual bits for basic C~types.
+>>>>>>> 5cb3a3313f742970185169b21b76cc0e7591c58b
 
 This software has been analyzed by the OpenETCS project partners SQS (Spain)
 and Fraunhofer FOKUS (Germany).
@@ -77,7 +87,6 @@ SQS used several static analysis tools to identify defects and to derive useful 
 Fraunhofer FOKUS, on the other hand, used the \framac tool set,
 which is developed by the French project partner \cealist,
 in order to \emph{formally verify} various properties of the \bitwalker.
-
 
 These analyses contribute to the ultimate verification goals, which are the following:
 

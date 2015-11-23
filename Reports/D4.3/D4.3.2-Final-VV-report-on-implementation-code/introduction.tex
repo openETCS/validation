@@ -67,35 +67,34 @@ The \inl{Bitstream} package in turn is built on top of the so-called \emph{bitwa
 In order to accomplish the task of formal verification of these layers 
 we also provided several functions that read and write individual bits for basic C~types.
 
-This software has been analyzed by the OpenETCS project partners SQS (Spain)
-and Fraunhofer FOKUS (Germany).
-SQS used several static analysis tools to identify defects and to derive useful metrics.
-Fraunhofer FOKUS, on the other hand, used the \framac tool set,
-which is developed by the French project partner \cealist,
-in order to \emph{formally verify} various properties of the \bitwalker.
+The main achievement that we present in this report are the results
+on the formal specification and formal specification of the various software layers 
+in Figure~\ref{fig:software-layers}.
 
-These analyses contribute to the ultimate verification goals, which are the following:
+This report is result of the joint work of many OpenETCS partners, notably:
+
+\begin{itemize}
+\item CEA LIST
+\item DLR
+\item Fraunhofer FOKUS
+\item Siemens
+\item SQS
+\end{itemize}
+
+The formal analyses contribute to the ultimate verification goals, which are the following:
 
 \begin{enumerate}
-\item provide evidence that the Bitwalker software satisfies 
+\item provide evidence that both the generated and a handwritten C~code satisfies 
       accepted quality standards
-\item develop a formal specification for the Bitwalker software
-\item verify that the Bitwalker software satisfies its formal specification
-\item show that the Bitwalker software does not raise runtime errors
-\item verify that OpenETCS decoder calls the Bitwalker software only
-      according to its specification
+\item develop a formal specification for Subset~026 functionality
+\item verify with \framacwp that the software satisfies its formal specification
+\item show that the software does not raise runtime errors
 \end{enumerate}
-
-We are confident that all these verification goals can be reached.
-For this preliminary verification report,
-we provide partial answers to the first four topics.
-In order to achieve the last goal, more development and verification
-work is currently conducted by Fraunhofer ESK and Fraunhofer FOKUS. 
 
 \section{Structure of this document}
 
 Chapter~\ref{sec:frama-c} gives a short overview on the \framacwp tool
-that plays a central role in the verification of the Bitwalker functions.
+that plays a central role in the verification of OpenETCS C~code.
 Here we also try to rectify some misunderstandings about formal verification
 that we have encountered in our work.
 

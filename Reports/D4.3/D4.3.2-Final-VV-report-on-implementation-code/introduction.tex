@@ -49,7 +49,7 @@ in a \dbox{dashed box}.
 \section{Software layers}
 
 Figure~\ref{fig:software-layers} shows the layer structure of the OpenETCS C~code.
-The OpenETCS decoder\slash enocder is a collection of data structures and associated functions
+The OpenETCS decoder\slash encoder is a collection of data structures and associated functions
 for reading and writing ETCS packets from\slash to a bit stream.
 
 \begin{figure}[hbt]
@@ -81,7 +81,8 @@ This report is result of the joint work of many OpenETCS partners, notably:
 \item SQS
 \end{itemize}
 
-The formal analyses contribute to the ultimate verification goals, which are the following:
+The formal analyses contribute to the ultimate verification goals,
+which are the following:
 
 \begin{enumerate}
 \item provide evidence that both the generated and a handwritten C~code satisfies 
@@ -93,35 +94,35 @@ The formal analyses contribute to the ultimate verification goals, which are the
 
 \section{Structure of this document}
 
+We represent the C~code and related specifications in a top-down approach.
+Thus, we start on the level of OpenETCS data packets and explain from there
+the lower software levels.
+
+\begin{itemize}
+\item
 Chapter~\ref{sec:frama-c} gives a short overview on the \framacwp tool
 that plays a central role in the verification of OpenETCS C~code.
 Here we also try to rectify some misunderstandings about formal verification
 that we have encountered in our work.
 
-In Chapter~\ref{sec:formal-verification} we analyze
-the functions \peek and \poke from the Bitwalker core and
-\begin{enumerate}
-\item formally specify the
-      expected functional behavior in the \acsl specification language of {Frama-C}
-      and
-\item report on the formal proof 
-	that these
-      C~functions do not raise runtime errors when called according to their
-      formal specification, established using 
-      the {Frama-C} verification platform.
-\end{enumerate}
+\item
+Chapter~\ref{sec:packets} presents the formal specification of OpenETCS
+packets in \acsl (the specification language of Frama-C).
+For the sake of an easier understanding we start with the specification of
+a concrete packet (\adhesion in Section~\ref{sec:adhesionfactor})
+and explain from there how the other specifications look like.
 
-So far only a part of Siemens' \bitwalker has been formalized and verified.
-In the process of this work several enhancements for the \framac verification platform
-have been identified and reported to the developers at {CEA LIST}.
+\item
+The OpenETCS packets are written to and read from bit streams which is represented
+by the type \inl{Bitstream} and its associated functions.
+Chapter~\ref{cha:bitstream} provides the definition and formal specification
+of \inl{Bitstream} operations.
 
-In Chapter~\ref{sec:static-analysis}, we report about the results of
-SQS' application of a broad range of static analysis tools on the \bitwalker. 
-In contrast to \framac, these tools cannot exhaustively
-detect all potential defects of a given kind.
-Nevertheless, these they are very useful at finding well-known quality deficiencies that
-might occur in C or \CC\ software.
+The implementation of \inl{Bitstream} itself relies on lower level bit operations.
+The formal specification of these operations are presented in Appendix~\ref{cha:low-level bitstream}.
 
+\item
 In Chapter~\ref{sec:conclusions}, we draw conclusions from this preliminary work
 and outline the next steps in our verification efforts.
+\end{itemize}
 

@@ -10,15 +10,15 @@ Chapter~\ref{cha:bitstream} elaborates on some intermediate, and
 Appendix~\ref{cha:low-level bitstream} on the lowest level.
 
 On the data packet level, a total of \fxfatal{ANZAHL} different packets
-are defined, each by a \lstinline{struct} declaraion in \lstinline{C}.
-We examplify our discussion on the alphabetically first packet,
+are defined, each by a \lstinline{struct} declaration in \lstinline{C}.
+We exemplify our discussion on the alphabetically first packet,
 \inl{AdhesionFactor} (Section~\ref{sec:adhesionfactor}), and give some
 comments on considerations with respect to other packets
 (Section~\ref{sec:other packets}).
 
-In order to cope with the similarity of specification, implemetation,
+In order to cope with the similarity of specification, implementation,
 and verification tasks for all packets, we have chosen to automatically 
-generate \fxfatal{Was genau? struct declaraion, contract, ...} from the
+generate \fxfatal{Was genau? struct declaration, contract, ...} from the
 ETCS Subset 026 requirements description.\fxfatal{Name improvisiert}
 
 \section{Formal specification of \inl{AdhesionFactor}}
@@ -85,7 +85,7 @@ struct AdhesionFactor
 typedef struct AdhesionFactor AdhesionFactor;
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:adhesionfactor-type}Defintion of the type \inl{AdhesionFactor}}
+\caption{\label{lst:adhesionfactor-type}Definition of the type \inl{AdhesionFactor}}
 \end{listing}
 
 \FloatBarrier  % forces the output of listings/tables
@@ -242,7 +242,7 @@ The \inl{valid} clause only evaluates to true if the \inl{*p} is a valid pointer
 The \inl{invariant} clause requires \inl{Invariant(p)} to evaluate to true.
 The \inl{Invariant(AdhesionFactor*)} predicate is explained
 in Section~\ref{sec:adhesionfactor-predicates-invariant}.
-The contract also inlcudes a statement on the return value of the function, labeled \inl{result}.
+The contract also includes a statement on the return value of the function, labeled \inl{result}.
 This clause ensures that the function's return value for \inl{AdhesionFactor* p}
 matches the evaluation of the predicate \inl{UpperBitsNotSet(p)}
 from Section~\ref{sec:adhesionfactor-predicates-upperbitsnotset}.
@@ -405,7 +405,7 @@ The requirements \inl{valid_stream}, \inl{stream_invariant},
 are similar to those of the \inl{DecodeBit} function's
 contract for \inl{AdhesionFactor}.
 The ones not examined in detail here do not differ from
-the ones in Secion~\ref{sec:adhesionfactor-decodebit}.
+the ones in Section~\ref{sec:adhesionfactor-decodebit}.
 
 Like for the \inl{DecodeBit} function for \inl{AdhesionFactor}
 in Section~\ref{sec:adhesionfactor-decodebit} the \inl{assigns}
@@ -414,8 +414,8 @@ clauses in the contract body are the conjunction of the
 
 \begin{itemize}
 \item
-\inl{valid_stream} is only met if \inl{Writeable(stream)} applies.
-The predicate \inl{Writeable(Bitstream*)} requires that the
+\inl{valid_stream} is only met if \inl{Writable(stream)} applies.
+The predicate \inl{Writable(Bitstream*)} requires that the
 stream is accessible for updates.
 \item
 \inl{valid_package} requires \inl{*p} to be valid pointer.
@@ -426,34 +426,35 @@ for p is true.
 \end{itemize}
 
 The behaviors of the \inl{EncodeBit} contract describe
-one successfull case and two error cases.
+one successful case and two error cases.
 
-\inl{normal_case} describes the behavior of a successfull
+\inl{normal_case} describes the behavior of a successful
 encoding of the object \inl{*p} into the bit stream.
 The \inl{assigns} clauses specify, that in this case both
 the \inl{bitpos} of the \inl{stream} and the fields
-of the bit stream will be written.
+of the bit stream are written.
 The \inl{increment} clause describes the new value for
 \inl{bitpos}.
 The \inl{ensures} clauses \inl{left}, \inl{middle}
 and \inl{right} state, that only some bits of the
-bit stream will be written.
+bit stream are written.
 The updated bits and their relationship to the
 bits of the members of the object \inl{*p}
 are described with the \inl{EqualBits} predicate,
 which is described in
 Section~\ref{sec:adhesionfactor-predicates-equalbits}.
 The \inl{Unchanged} predicate specifies, that the
-bits before the old \inl{stream->bitpos} and the
-bits after the new \inl{stream->bitpos}
+bits in the bit stream before the old \inl{stream->bitpos}
+and the after the new \inl{stream->bitpos}
 remain unchanged.
-The definition of \inl{Unchanged(Bitstream*, integer, integer)}
-is shown in Section~\ref{sec:bitstream}.
+\inl{Unchanged(Bitstream*, integer, integer)}
+is defined in Section~\ref{sec:bitstream}.
 
-\inl{values_too_big} describes the scenario in which
-the value of at least one member of \inl{*p} is bigger
-than the specified bitsize for that member
-of \inl{AdhesionFactor} allows.
+\inl{values_too_big} describes the behavior in
+the scenario in which the value of at least one
+member of \inl{*p} is bigger than the specified
+bit size for that member of
+\inl{AdhesionFactor} allows.
 The numbers of bits for the members of
 \inl{AdhesionFactor} are specified in
 Section~\ref{sec:adhesionfactor-etcs}.
@@ -464,22 +465,22 @@ function will return the value \inl{-2}.
 In contrast to \inl{normal_case},
 for this behavior it is assumed, that the
 \inl{UpperBitsNotSet(p)} predicate evaluates
-to false and the \inl{Normal(stream, MaxBitSize(p))}
-predicate returns true.
+to false.
+The \inl{Normal(stream, MaxBitSize(p))}
+predicate returns true for both behaviors.
 
 \inl{invalid_bit_sequence} describes the function's
 behavior if the bit stream is not long enough to
 write a complete \inl{AdhesionFactor} object
 into. 
 This behavior is distinguished from the other
-behaviors by the evaulation of the predicate
+behaviors by the evaluation of the predicate
 \inl{Normal(stream, MaxBitSize(p))}.
 Notice that the evaluation of \inl{UpperBitsNotSet(p)}
 might be false too.
 Like in the \inl{value_too_big} behavior the function
 ends without encoding any bits into the stream.
-Therefore the \inl{assigns} clause is \inl{\\nothing}
-again.
+Therefore the \inl{assigns} clause is \inl{\\nothing}.
 The \inl{result} clause states that the function's
 return value equals \inl{-1}.
 
@@ -487,7 +488,7 @@ return value equals \inl{-1}.
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
 /*@
-    requires valid_stream:      Writeable(stream);
+    requires valid_stream:      Writable(stream);
     requires stream_invariant:  Invariant(stream, MaxBitSize(p));
     requires valid_package:     \valid_read(p);
     requires invariant:         Invariant(p);

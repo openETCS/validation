@@ -1,0 +1,119 @@
+\begin{figure}[t!]
+\hrule
+\sspace
+
+\begin{minipage}{0.3\hsize}
+\centering
+\textbf{Step 1}\\
+
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm,scale=0.7, every node/.style={scale=0.7}]
+	  \node[state, fill=hblue, text=white] (A)      {$0$};
+	  \node[state]         (B) [below of=A]  {};
+	 
+	 
+	  \path[->] 
+		(A) edge  node [hblue] {control} (B)
+	;
+	\end{tikzpicture}
+
+\end{minipage}
+\begin{minipage}{0.7\hsize}
+
+\textbf{Step 2}\\
+
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm,scale=0.7, every node/.style={scale=0.7}]
+	  \node[state] (A)      {$0$};
+	  \node[state, fill=hblue]         (B) [below of=A]  {};
+	  \node[state]         (C) [below left of=B,xshift=-1cm]  {};
+	  \node[state]         (D) [below of=B]  {};
+	  \node[state]         (E) [below right of=B,xshift=1cm]  {};
+	 
+	 
+	  \path[->] 
+		(A) edge  node {control} (B)
+		(B) edge  node [hblue,align=left, above left] {rep(p,a,v,\\\textbf{Moving})} (C)
+		(B) edge  node [hblue, align=right, left ] {rep(p,\\ a,v,\textbf{Neg})} (D)
+		(B) edge  node [hblue, align=right] {rep(p,a,v,\\\textbf{Stop})} (E)
+	;
+	\end{tikzpicture}
+
+\end{minipage}
+
+%\begin{minipage}{1\hsize}
+
+
+\centering
+	\textbf{Step 3}\\
+
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm,scale=0.7, every node/.style={scale=0.7}]
+	  \node[state] (A)      {$0$};
+	  \node[state]         (B) [below of=A]  {};
+	  \node[state, fill=hblue, text=white]         (C) [below left of=B,xshift=-1cm,align=center]  {\TAB + \TBC};
+	  \node[state, fill=hblue, text=white]         (D) [below of=B]  {\TBC};
+	  \node[state]         (E) [below right of=B,xshift=1cm]  {};
+	 
+	 
+	  \path[->] 
+		(A) edge  node {control} (B)
+		(B) edge  node [align=left, above left] {rep(p,a,v,\\Moving)} (C)
+		(B) edge  node [align=right, left ] {rep(p,\\ a,v,Neg)} (D)
+		(B) edge  node [align=right] {rep(p,a,v,\\Stop)} (E)
+	;
+	\end{tikzpicture}
+
+\textbf{Step 4}\\
+
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm,scale=0.7, every node/.style={scale=0.7}]
+	  \node[state] (A)      {$0$};
+	  \node[state]         (B) [below of=A]  {};
+	  \node[state]         (C) [below left of=B,xshift=-1cm,align=center]  {\TAB + \TBC};
+	  \node[state]         (D) [below of=B]  {\TBC};
+	  \node[state]         (E) [below right of=B,xshift=1cm]  {};
+	  \node[state, fill=hblue]		   (F) [below left of=D] {};
+	 
+	 
+	  \path[->] 
+		(A) edge  node {control} (B)
+		(B) edge  node [align=left, above left] {rep(p,a,v,\\Moving)} (C)
+		(B) edge  node [align=right, left ] {rep(p,\\ a,v,Neg)} (D)
+		(B) edge  node [align=right] {rep(p,a,v,\\Stop)} (E)
+		(C) edge  node [hblue, left] {control} (F)
+		(D) edge  node [hblue, right] {control} (F)
+	;
+	\end{tikzpicture}
+
+
+%\end{minipage} 
+%\begin{minipage}{0.3\hsize}
+
+\centering
+		\textbf{Step 5}
+
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm,scale=0.7, every node/.style={scale=0.7}]
+	  \node[state] (A)      {$0$};
+	  \node[state]         (B) [below of=A]  {};
+	  \node[state]         (C) [below left of=B,xshift=-1cm,align=center]  {\TAB + \TBC};
+	  \node[state]         (D) [below of=B]  {\TBC};
+	  \node[state]         (E) [below right of=B,xshift=1cm]  {};
+	  \node[state, fill=hblue]		   (F) [below left of=D] {};
+	 \node[state]		   (G) [below left of=F, white, text=green] {Pass};
+	 \node[state]		   (H) [below right of=F, white, text=red] {Fail};
+	 
+	  \path[->] 
+		(A) edge  node {control} (B)
+		(B) edge  node [align=left, above left] {rep(p,a,v,\\Moving)} (C)
+		(B) edge  node [align=right, left ] {rep(p,\\ a,v,Neg)} (D)
+		(B) edge  node [align=right] {rep(p,a,v,\\Stop)} (E)
+		(C) edge  node [hblue, left] {control} (F)
+		(D) edge  node [hblue, right] {control} (F)
+		(F) edge  node [hblue, left, align=left] {rep(p,a,v,\\Stop} (G)
+		(F) edge  node [hblue, right] {Other case} (H)
+	;
+	\end{tikzpicture}
+
+%\end{minipage}
+
+\caption{Testing scenario.\label{testing:scenario}}
+\sspace
+\hrule
+\end{figure}

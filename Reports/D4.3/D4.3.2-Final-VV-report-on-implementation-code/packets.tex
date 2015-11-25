@@ -1,7 +1,7 @@
 
 
 \chapter{ETCS data packets}
-\label{sec:packets}
+\label{cha:packets}
 
 In the following, we give a top-down presentation of the OpenETCS
 Decoder software.
@@ -10,15 +10,15 @@ Chapter~\ref{cha:bitstream} elaborates on some intermediate, and
 Appendix~\ref{cha:low-level bitstream} on the lowest level.
 
 On the data packet level, a total of \fxfatal{ANZAHL} different packets
-are defined, each by a \lstinline{struct} declaraion in \lstinline{C}.
-We examplify our discussion on the alphabetically first packet,
+are defined, each by a \lstinline{struct} declaration in \lstinline{C}.
+We exemplify our discussion on the alphabetically first packet,
 \inl{AdhesionFactor} (Section~\ref{sec:adhesionfactor}), and give some
 comments on considerations with respect to other packets
 (Section~\ref{sec:other packets}).
 
-In order to cope with the similarity of specification, implemetation,
+In order to cope with the similarity of specification, implementation,
 and verification tasks for all packets, we have chosen to automatically 
-generate \fxfatal{Was genau? struct declaraion, contract, ...} from the
+generate \fxfatal{Was genau? struct declaration, contract, ...} from the
 ETCS Subset 026 requirements description.\fxfatal{Name improvisiert}
 
 \section{Formal specification of \inl{AdhesionFactor}}
@@ -85,7 +85,7 @@ struct AdhesionFactor
 typedef struct AdhesionFactor AdhesionFactor;
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:adhesionfactor-type}Defintion of the type \inl{AdhesionFactor}}
+\caption{\label{lst:adhesionfactor-type}Definition of the type \inl{AdhesionFactor}}
 \end{listing}
 
 \FloatBarrier  % forces the output of listings/tables
@@ -242,7 +242,7 @@ The \inl{valid} clause only evaluates to true if the \inl{*p} is a valid pointer
 The \inl{invariant} clause requires \inl{Invariant(p)} to evaluate to true.
 The \inl{Invariant(AdhesionFactor*)} predicate is explained
 in Section~\ref{sec:adhesionfactor-predicates-invariant}.
-The contract also inlcudes a statement on the return value of the function, labeled \inl{result}.
+The contract also includes a statement on the return value of the function, labeled \inl{result}.
 This clause ensures that the function's return value for \inl{AdhesionFactor* p}
 matches the evaluation of the predicate \inl{UpperBitsNotSet(p)}
 from Section~\ref{sec:adhesionfactor-predicates-upperbitsnotset}.
@@ -273,38 +273,44 @@ int AdhesionFactor_UpperBitsNotSet(const AdhesionFactor* p);
 \subsection{Formal specification of \inl{AdhesionFactor_DecodeBit}}
 \label{sec:adhesionfactor-decodebit}
 
-Listing~\ref{lst:adhesionfactor-decodebit} shows the contract for the \inl{DecodeBit} function
-for \inl{AdhesionFactor}.
-The behavior of the function is specified using the two disjoint behaviors
-\inl{normal_case} and \inl{error_case}.
+Listing~\ref{lst:adhesionfactor-decodebit} shows the contract
+for the \inl{DecodeBit} function for \inl{AdhesionFactor}.
+The behavior of the function is specified using the
+two disjoint behaviors \inl{normal_case} and \inl{error_case}.
 The requirements \inl{valid_stream}, \inl{stream_invariant},
 \inl{valid_package} and \inl{separation} apply to both behaviors
 and limit the set of combinations of input arguments for which the
-\inl{ensures} and \inl{assigns} clauses describe the behavior of the function.
+\inl{ensures} and \inl{assigns} clauses describe the behavior
+of the function.
 
-The \inl{assigns} clauses in the contract's body describe the side effects
-of the function. If the function contract is split into multiple
-behaviors, like here, common \inl{assigns} clauses, which contain the union
-of the behavior's \inl{assigns} clauses, are needed outside of the behaviors.
-Their meaning will become clear when discussing the individual  behaviors.
+The \inl{assigns} clauses in the contract's body describe the
+side effects of the function.
+If the function contract is split into multiple behaviors,
+like here, common \inl{assigns} clauses, which contain the union
+of the behavior's \inl{assigns} clauses, are needed outside
+of the behaviors.
+Their meaning will become clear when discussing the
+individual  behaviors.
 
 For both behaviors the \inl{unchanged} clause states that
 none of the bits in the bit stream are written by the function.
 
 \begin{itemize}
 \item
-\inl{valid_stream} is only met if \inl{Readable(stream)} applies.
-The \inl{Readable(Bitstream*)} predicate is described in Chapter~\ref{sec:bitstream}.
+The property \inl{valid_stream} requires that the predicate \inl{Readable(stream)}
+is satisfied (see Section~\ref{sec:bitstream}).
+
 \item
-\inl{stream_invariant} is only met if \inl{*stream}
-is long enough to read an object of the length of \inl{AdhesionFactor} from.
-The \inl{Invariant(Bitstream*, integer)} predicate is introduced in Chapter~\ref{sec:bitstream}.
+The property \inl{stream_invariant} is only met if the \inl{Invariant} predicate is true.
+The predicate \inl{Invariant(Bitstream*, integer)} is described in
+Section~\ref{sec:bitstream}.
+
 \item
-\inl{valid_package} is only met if \inl{p} is a valid pointer for read and write operations.
+The property \inl{valid_package} requires that \inl{p} is a valid pointer for read and write operations.
+
 \item
-\inl{separation} requires that \inl{*stream} and \inl{*p} do not overlap in the memory.
+The property \inl{separation} requires that \inl{*stream} and \inl{*p} do not overlap in the memory.
 The 
-%\inl{Separated(Bitstream*, AdhesionFactor*)}
 \inl{Separated}
 predicate is introduced in
 Section~\ref{sec:adhesionfactor-predicates-separated}.
@@ -312,13 +318,13 @@ Section~\ref{sec:adhesionfactor-predicates-separated}.
 
 %\fxfatal{fix linebreak in itemize}
 
-%\fxfatal{make sure that \inl{Invariant(Bitstream*, integer)} is described in Chapter~\ref{cha:bitstream}}
+%\fxfatal{make sure that \inl{Invariant(Bitstream*, integer)} is described in Section~\ref{cha:bitstream}}
 
-%\fxfatal{make sure that \inl{Readable(Bitstream*)} is described in Chapter~\ref{cha:bitstream}}
-
-\inl{normal_case} describes the function's behavior if
-\inl{*stream} contains enough unread bits to fill all members of \inl{*p}. 
-In this case an object of type \inl{AdhesionFactor} is decoded from the stream
+The behavior \inl{normal_case} describes the function's behavior if
+\inl{*stream} contains enough unread bits to fill
+all members of \inl{*p}. 
+In this case an object of type \inl{AdhesionFactor}
+is decoded from the stream
 and thus \inl{*p} is written.
 The latter is stated by the first \inl{assigns} clause.
 In this context the \inl{ensures} clauses \inl{equal} and \inl{upper}
@@ -328,7 +334,7 @@ Furthermore \inl{stream->bitpos} will be updated.
 The effects of this operation are described by the second
 \inl{assigns} and the \inl{increment} clauses.
 
-\inl{error_case} describes the function's behavior in the opposite case
+The behavior \inl{error_case} describes the function's behavior in the opposite case
 i.e. if \inl{*stream} is exhausted before all members of \inl{*p} are read.
 In this case the function has no side effects and especially does not write
 \inl{*p} or \inl{stream->bitpos}.
@@ -337,9 +343,11 @@ of the function equals \inl{0}. In \inl{normal_case} this value is specified to 
 
 The distinguishing predicate for the two behaviors is \inl{Normal(Bitstream*, integer)},
 which appears in the \inl{assumes} clauses within both behaviors and
-is explained in Chapter~\ref{sec:bitstream}. 
+is explained in Section~\ref{sec:bitstream}. 
 
 %\fxfatal{make sure that \inl{Normal(Bitstream*, integer)} is described in Chapter~\ref{cha:bitstream}}
+
+
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -377,7 +385,7 @@ is explained in Chapter~\ref{sec:bitstream}.
     complete behaviors;
     disjoint behaviors;
 */
-int AdhesionFactor_EncodeBit(const AdhesionFactor* p, Bitstream* stream);
+int AdhesionFactor_DecodeBit(const AdhesionFactor* p, Bitstream* stream);
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:adhesionfactor-decodebit}Contract for \inl{DecodeBit} function of \inl{AdhesionFactor}}
@@ -388,11 +396,100 @@ int AdhesionFactor_EncodeBit(const AdhesionFactor* p, Bitstream* stream);
 \subsection{Formal specification of \inl{AdhesionFactor_EncodeBit}}
 \label{sec:adhesionfactor-encodebit}
 
+Listing~\ref{lst:adhesionfactor-encodebit} shows the contract
+for the \inl{EncodeBit} function for \inl{AdhesionFactor}.
+The behavior of the function is described using the three
+disjoint behaviors \inl{normal_case}, \inl{values_too_big}
+and \inl{invalid_bit_sequence}.
+The requirements \inl{valid_stream}, \inl{stream_invariant},
+\inl{valid_package}, \inl{invariant} and \inl{separation}
+are similar to those of the \inl{DecodeBit} function's
+contract for \inl{AdhesionFactor}.
+The ones not examined in detail here do not differ from
+the ones in Section~\ref{sec:adhesionfactor-decodebit}.
+
+Like for the \inl{DecodeBit} function for \inl{AdhesionFactor}
+in Section~\ref{sec:adhesionfactor-decodebit} the \inl{assigns}
+clauses in the contract body are the conjunction of the
+\inl{assigns} clauses of the individual behaviors.
+
+\begin{itemize}
+\item
+\inl{valid_stream} is only met if \inl{Writable(stream)} applies.
+The predicate \inl{Writable(Bitstream*)} requires that the
+stream is accessible for updates.
+\item
+\inl{valid_package} requires \inl{*p} to be valid pointer.
+\item
+\inl{invariant} is only met if the \inl{Invariant} predicate,
+which is described in Section~\ref{sec:adhesionfactor-predicates-invariant},
+for p is true.
+\end{itemize}
+
+The behaviors of the \inl{EncodeBit} contract describe
+one successful case and two error cases.
+
+\inl{normal_case} describes the behavior of a successful
+encoding of the object \inl{*p} into the bit stream.
+The \inl{assigns} clauses specify, that in this case both
+the \inl{bitpos} of the \inl{stream} and the fields
+of the bit stream are written.
+The \inl{increment} clause describes the new value for
+\inl{bitpos}.
+The \inl{ensures} clauses \inl{left}, \inl{middle}
+and \inl{right} state, that only some bits of the
+bit stream are written.
+The updated bits and their relationship to the
+bits of the members of the object \inl{*p}
+are described with the \inl{EqualBits} predicate,
+which is described in
+Section~\ref{sec:adhesionfactor-predicates-equalbits}.
+The \inl{Unchanged} predicate specifies, that the
+bits in the bit stream before the old \inl{stream->bitpos}
+and the after the new \inl{stream->bitpos}
+remain unchanged.
+\inl{Unchanged(Bitstream*, integer, integer)}
+is defined in Section~\ref{sec:bitstream}.
+
+\inl{values_too_big} describes the behavior in
+the scenario in which the value of at least one
+member of \inl{*p} is bigger than the specified
+bit size for that member of
+\inl{AdhesionFactor} allows.
+The numbers of bits for the members of
+\inl{AdhesionFactor} are specified in
+Section~\ref{sec:adhesionfactor-etcs}.
+The \inl{assigns} clause states that this behavior
+of the function causes no side effects and
+the \inl{result} clause ensures, that the
+function will return the value \inl{-2}.
+In contrast to \inl{normal_case},
+for this behavior it is assumed, that the
+\inl{UpperBitsNotSet(p)} predicate evaluates
+to false.
+The \inl{Normal(stream, MaxBitSize(p))}
+predicate returns true for both behaviors.
+
+\inl{invalid_bit_sequence} describes the function's
+behavior if the bit stream is not long enough to
+write a complete \inl{AdhesionFactor} object
+into. 
+This behavior is distinguished from the other
+behaviors by the evaluation of the predicate
+\inl{Normal(stream, MaxBitSize(p))}.
+Notice that the evaluation of \inl{UpperBitsNotSet(p)}
+might be false too.
+Like in the \inl{value_too_big} behavior the function
+ends without encoding any bits into the stream.
+Therefore the \inl{assigns} clause is \inl{\\nothing}.
+The \inl{result} clause states that the function's
+return value equals \inl{-1}.
+
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
 /*@
-    requires valid_stream:      Writeable(stream);
+    requires valid_stream:      Writable(stream);
     requires stream_invariant:  Invariant(stream, MaxBitSize(p));
     requires valid_package:     \valid_read(p);
     requires invariant:         Invariant(p);
@@ -430,7 +527,7 @@ int AdhesionFactor_EncodeBit(const AdhesionFactor* p, Bitstream* stream);
     complete behaviors;
     disjoint behaviors;
 */
-int AdhesionFactor_DecodeBit(AdhesionFactor* p, Bitstream* stream);
+int AdhesionFactor_EncodeBit(AdhesionFactor* p, Bitstream* stream);
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:adhesionfactor-encodebit}Contract for \inl{EncodeBit} function of \inl{AdhesionFactor}}

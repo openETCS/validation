@@ -297,19 +297,20 @@ none of the bits in the bit stream are written by the function.
 
 \begin{itemize}
 \item
-\inl{valid_stream} is only met if \inl{Readable(stream)} applies.
-The predicate \inl{Readable(Bitstream*)} requires that a stream's
-data area is complete accessible for read.
+The property \inl{valid_stream} requires that the predicate \inl{Readable(stream)}
+is satisfied (see Section~\ref{sec:bitstream}).
+
 \item
-\inl{stream_invariant} is only met if the \inl{Invariant} predicate is true.
+The property \inl{stream_invariant} is only met if the \inl{Invariant} predicate is true.
 The predicate \inl{Invariant(Bitstream*, integer)} is described in
 Section~\ref{sec:bitstream}.
+
 \item
-\inl{valid_package} is only met if \inl{p} is a valid pointer for read and write operations.
+The property \inl{valid_package} reqieres that \inl{p} is a valid pointer for read and write operations.
+
 \item
-\inl{separation} requires that \inl{*stream} and \inl{*p} do not overlap in the memory.
+The property \inl{separation} requires that \inl{*stream} and \inl{*p} do not overlap in the memory.
 The 
-%\inl{Separated(Bitstream*, AdhesionFactor*)}
 \inl{Separated}
 predicate is introduced in
 Section~\ref{sec:adhesionfactor-predicates-separated}.
@@ -319,7 +320,7 @@ Section~\ref{sec:adhesionfactor-predicates-separated}.
 
 %\fxfatal{make sure that \inl{Invariant(Bitstream*, integer)} is described in Section~\ref{cha:bitstream}}
 
-\inl{normal_case} describes the function's behavior if
+The behavior \inl{normal_case} describes the function's behavior if
 \inl{*stream} contains enough unread bits to fill
 all members of \inl{*p}. 
 In this case an object of type \inl{AdhesionFactor}
@@ -333,7 +334,7 @@ Furthermore \inl{stream->bitpos} will be updated.
 The effects of this operation are described by the second
 \inl{assigns} and the \inl{increment} clauses.
 
-\inl{error_case} describes the function's behavior in the opposite case
+The behavior \inl{error_case} describes the function's behavior in the opposite case
 i.e. if \inl{*stream} is exhausted before all members of \inl{*p} are read.
 In this case the function has no side effects and especially does not write
 \inl{*p} or \inl{stream->bitpos}.
@@ -342,7 +343,7 @@ of the function equals \inl{0}. In \inl{normal_case} this value is specified to 
 
 The distinguishing predicate for the two behaviors is \inl{Normal(Bitstream*, integer)},
 which appears in the \inl{assumes} clauses within both behaviors and
-is explained in Chapter~\ref{sec:bitstream}. 
+is explained in Section~\ref{sec:bitstream}. 
 
 %\fxfatal{make sure that \inl{Normal(Bitstream*, integer)} is described in Chapter~\ref{cha:bitstream}}
 

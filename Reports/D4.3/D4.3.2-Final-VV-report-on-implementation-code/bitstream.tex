@@ -129,7 +129,8 @@ Listing~\ref{lst:Bitstream struct}.
 	\lstinline{struct Bitstream}'s data area
 	doesn't overlap with the \lstinline{struct} itself, and that some
 	further, lower-level invariant holds (see 
-	Section~\ref{sec:bit sequences} below).
+	Section~\ref{sec:bit sequences} below, in particular
+	Listing~\ref{lst:Bitsequence preds}).
 
 	In a similar way, predicate \lstinline{Normal} and
 	\lstinline{EqualBits} is reduced to a
@@ -624,4 +625,207 @@ contracts, are given in Appendix~\ref{cha:low-level bitstream}.
 
 
 
+
+
+
+
+
+
+
+
+
+
+\section{Verification of the Bitstream abstraction}
+\label{sec:bitstream verif}
+
+
+
+Critics of the formal software verification approach often 
+argue that verifying an operation against its formal specification
+results in little or no increase of trustworthiness when
+%
+\begin{itemize}
+\item the specification, including all auxiliary definitions etc., is
+	as complex as the operation's implementation, or/and
+\item the specification essentially duplicates the implemented
+	algorithm in a different (such as functional rather than
+	imperative) language.
+\end{itemize}
+%
+Both criteria may be seen to be met by our Bitwalker case study.
+
+
+
+
+However, since the operations we dealt with essentially implement a
+communication protocol, there is a very simple ``high-level'' property
+that should be satistifed, viz.\ that a ``send'' operation is inverse
+to a ``receive'' operation.
+%
+This property can be stated formally in a very brief and understandable
+way.
+%
+It ensures, in a mathematical context, that both operations implement
+bijective mappings, that is, in an engineering sense, that the
+communication channel neither looses, nor subjoins information.
+%
+In fact, we have achieved to formally prove this property.
+
+
+
+
+More particularly, in our setting, we could show that the operations
+\lstinline{Bitstream_Read} and \lstinline{Bitstream_Write} are
+inverse to each other.
+%
+To this end, we set up two fictitious \lstinline{C} procedures realizing
+the composition of both operations in the two possible orders.
+
+
+
+
+Listing~\ref{lst:Bitstream_WriteThenRead}
+shows the procedure for the scenario ``use \lstinline{Bitstream_Write}
+to write a value to a stream, then immediately read it back using
+\lstinline{Bitstream_Read}''.
+%
+The procedure's body code is straightforward; after
+\lstinline{Bitstream_Write}, we have to seek back to the original bit
+position, before calling \lstinline{Bitstream_Read}''.
+%
+We could show that the read value always equals the written one,
+provided
+\begin{itemize}
+\item the stream is accessible for both read and update
+	(requirement property ``\lstinline{valid}''),
+\item it satisfies its type invariant (property
+	``\lstinline{invariant}''; cf.\ Listing~\ref{lst:Bitstream preds}
+	and~\ref{lst:Bitsequence preds}),
+\item the stream's current bit position is sufficiently small such that
+	all value bits still fit into the stream
+	(property``\lstinline{normal}''), and
+\item the most significant value bits that are not written are all zero
+	(property``\lstinline{upper}'').
+\end{itemize}
+%
+This ensures that the bistream communication channel doesn't loose
+information --- every value we write into it can completely be
+restored.
+
+
+
+
+
+Vice versa, we could also show that the channel doesn't transmit more
+information than is needed to fulfil its task.
+%
+Listing~\ref{lst:Bitstream_ReadThenWrite}
+shows the procedure for the scenario ``use \lstinline{Bitstream_Read}
+to read a value from a stream, then immediately write it back using
+\lstinline{Bitstream_Write}''.
+%
+We could show that this leaves the
+whole stream unchanged, provided the first three requirement properties
+from \lstinline{Bitstream_WriteThenRead} are met.
+%
+As an example for a channel transmitting redundant information,
+condider
+a bitstream implementation
+with \lstinline{Bitstream_Write}
+storing each byte twice in succession and \lstinline{Bitstream_Read}
+ignoring every second byte.
+%
+Such a stream doesn't meet our property, since, 
+starting from a stream with non-agreeing adjacent bytes, there is no
+way to reproduce it by a ``read, then write'' scenario.
+
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires valid:      Writeable(stream);
+    requires invariant:  Invariant(stream, length);
+    requires normal:     Normal(stream, length);
+    requires upper:      UpperBitsNotSet(value, length);
+
+    assigns stream->addr[0..stream->size-1];
+    assigns stream->bitpos;
+
+    ensures equality:     \result == value;
+*/
+uint64_t Bitstream_WriteThenRead(Bitstream* stream, uint32_t length, uint64_t v>
+{
+    //@ ghost uint32_t old_pos = stream->bitpos;
+
+    Bitstream_Write(stream, length, value);
+    //@ assert equal:  EqualBits(stream, old_pos, old_pos+length, value);
+
+    /*@ 
+        assigns stream->bitpos;
+        ensures reset: stream->bitpos == \at(stream->bitpos,Pre);
+    */
+    stream->bitpos -= length;
+
+    uint64_t result = Bitstream_Read(stream, length);
+    //@ ghost uint32_t new_pos = stream->bitpos;
+    //@ assert equal_result: EqualBits(stream, old_pos, new_pos, result);
+    //@ assert equal_value:  EqualBits(stream, old_pos, new_pos, value);
+    /*@ assert aux:          \forall integer k; old_pos <= k < new_pos ==>
+                               \let j = new_pos - 1 - k;
+                               (BitTest(value,  j) <==> BitTest(result, j));
+    */
+    //@ assert left:         EqualBits64(result, value, 64-length, 64);
+    //@ assert compare:      EqualBits64(result, value, 0, 64);
+
+    return result;
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:Bitstream_WriteThenRead}
+	Verifying the scenario ``write, then read'' }
+\end{listing}
+
+
+
+
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires valid:      Writeable(stream);
+    requires invariant:  Invariant(stream, length);
+    requires normal:     Normal(stream, length);
+
+    assigns stream->addr[0..stream->size-1];
+    assigns stream->bitpos;
+
+    ensures  unchanged:  Unchanged{Here,Old}(stream, 0, 8 * stream->size);
+*/
+void Bitstream_ReadThenWrite(Bitstream* stream, uint32_t length)
+{
+    //@ ghost uint32_t old_pos = stream->bitpos;
+    uint64_t value = Bitstream_Read(stream, length);
+    //@ assert equal:  EqualBits(stream, old_pos, old_pos+length, value);
+
+    stream->bitpos -= length;
+    //@ assert stream->bitpos == old_pos;
+
+    Bitstream_Write(stream, length, value);
+    //@ assert unchanged:  Unchanged{Here,Pre}(stream, old_pos, stream->bitpos);
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:Bitstream_ReadThenWrite}
+	Verifying the scenario ``read, then write'' }
+\end{listing}
 

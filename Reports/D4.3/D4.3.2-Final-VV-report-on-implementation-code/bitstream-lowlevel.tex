@@ -14,9 +14,11 @@ moved them the other way round,
 we need bit operations on both data types.
 %
 They are given in
-Subsection~\ref{subsec:low-level 8 array} (array of \lstinline{uint8_t}), 
-\ref{subsec:low-level 8} (single \lstinline{uint8_t}), and
-\ref{subsec:low-level 64} (single \lstinline{uint64_t}) below.
+Subsection~\ref{subsec:low-level 8 array} 
+for an array of \lstinline{uint8_t}, 
+in Subsection~\ref{subsec:low-level 8} for a single \lstinline{uint8_t},
+and
+in Subsection~\ref{subsec:low-level 64} for single \lstinline{uint64_t}.
 
 
 
@@ -37,12 +39,8 @@ Subsection~\ref{subsec:low-level 8 array} (array of \lstinline{uint8_t}),
 \label{subsec:low-level 8 array}
 
 
-
-
-
-
-
-
+In this section, we discuss the operations for read and write of a
+single bit from/into a byte array.
 
 The operation \lstinline{TestBit8Array(addr,size,pos)} returns the
 \lstinline{pos}$^{\mbox{\scriptsize th}}$ bit
@@ -61,9 +59,9 @@ The array bits are counted starting with the most significant one of
 the first byte,
 cf.\ Figure~\ref{fig:bit coords} below.
 %
-\lstinline{TestBit8(bytevalue,bitadr)} returns the 
+A call to \lstinline{TestBit8(bytevalue,bitadr)} returns the 
 \lstinline{bitadr}$^{\mbox{\scriptsize th}}$ bit
-within \lstinline{bytevalue}, its is discussed in
+within \lstinline{bytevalue}, this operation is discussed in
 Appendix~\ref{subsec:low-level 8} below.
 
 
@@ -115,11 +113,11 @@ It requires
 %
 \begin{itemize}
 \item the whole array to be accessible for update (requirement
-	``\lstinline{valid}''),
+	property ``\lstinline{valid}''),
 \item each possible bit position in the array to fit into a
-	\lstinline{uint32_t} (``\lstinline{size}''), and
+	\lstinline{uint32_t} (property ``\lstinline{size}''), and
 \item the given \lstinline{pos} to be a valid bit position in the array
-	(``\lstinline{pos}'').
+	(property ``\lstinline{pos}'').
 \end{itemize}
 %
 The \lstinline{assigns} clause allows the operation to change the
@@ -131,12 +129,17 @@ On completion, the operation shall guarantee
 \item that the value of \lstinline{flag}\footnote{
 		Any non-zero \lstinline{flag} value is treated like 1.
 		This is ensured by the contract of the called operation
-		\lstinline{SetBit8}, cf. Appendix{subsec:low-level 8}.
+		\lstinline{SetBit8}, cf.\ Appendix~\ref{subsec:low-level 8}.
 	}
 	is actually stored at the designated bit
-	position (``\lstinline{ensures middle}''), and
+	position (postcondition property ``\lstinline{middle}'';
+	the call \lstinline{Bit8Array()} succeeds if, and inly if, the
+	\lstinline{pos}$^{\mbox{\scriptsize th}}$ bit within the byte
+	array at \lstinline{addr} is set, 
+	cf.\ Listing~\ref{lst:bit predicate defs} in
+	Appendix~\ref{sec:bit operations in framac}), and
 \item that all other bits remain unchanged 
-	(``\lstinline{left}'', ``\lstinline{right}'').
+	(properties ``\lstinline{left}'', ``\lstinline{right}'').
 \end{itemize}
 %
 Two fairly sophisicated hints had to be provided as assertions in
@@ -252,10 +255,18 @@ bit of \lstinline{value}.
 %
 Its contract is shown in Listing~\ref{lst:TestBit8}.
 %
-\lstinline{pos} must not exceed 7 (requirement ''\lstinline{pre}''),
-no memory may be modified (\lstinline{assigns}), and the result is
-non-zero if, and only
-if, the specified bit is set.
+\begin{itemize}
+\item The value of \lstinline{pos} must not exceed 7 
+	(requirement property ''\lstinline{pre}''),
+\item no memory may be modified (\lstinline{assigns}), and 
+\item the result is non-zero if, and only
+	if, the specified bit is set (postcondition property
+	``\lstinline{pos}''; the call \lstinline{Bit8(value,pos)} succeeds 
+	if, and only if, the \lstinline{pos}$^{\mbox{\scriptsize th}}$ of
+	the byte \lstinline{value} is set, 
+	cf.\ Listing~\ref{lst:bit predicate defs} in
+	Appendix~\ref{sec:bit operations in framac}).
+\end{itemize}
 %
 The shown implementation additionally guarantees that the result is
 zero or one, which
@@ -278,13 +289,22 @@ set to \lstinline{flag}.
 %
 Its contract is shown in Listing~\ref{lst:SetBit8}.
 %
-Again, \lstinline{pos} mustn't exceed 7 (requirement ``\lstinline{pre}''),
-no memory may be modified (\lstinline{assigns} clause),
-the return value coincides with \lstinline{value}, except possibly
-at \lstinline{pos}
-(ensures ``\lstinline{left}'' and ``\lstinline{right}''),
-and \lstinline{flag} is written to the approriate bit of \lstinline{value}
-(``\lstinline{pos}'').
+\begin{itemize}
+\item Again, the value of \lstinline{pos} mustn't exceed 7 
+	(requirement property ``\lstinline{pre}''),
+\item no memory may be modified (\lstinline{assigns} clause),
+\item the return value coincides with \lstinline{value}, except possibly
+	at \lstinline{pos} (postcondition properties ``\lstinline{left}'' 
+	and ``\lstinline{right}''; a call
+	\lstinline{EqualBits8(x,y,first,last)} succeeds if, and
+	only if, the \lstinline{uint8_t} values \lstinline{x} and
+	\lstinline{y} agree on all bits in range
+	[\lstinline{first}\ldots\lstinline{last}), cf.\ also
+	Listing~\ref{lst:EqualBits64} in 
+	Appendix~\ref{sec:bit operations in framac}), and 
+\item \lstinline{flag} is written to the approriate bit of 
+	\lstinline{value} (property ``\lstinline{pos}'').
+\end{itemize}
 %
 The implementation branches on the value of \lstinline{flag}, and
 clears or sets the
@@ -293,7 +313,7 @@ appropriate bit in the usual way.
 Note that both our contract and our implementation enable us to set
 a bit by supplying a
 \lstinline{flag} value of e.g.\ 2, whereas the code 
-\lstinline{mask=flag<<(7-pos); return (value&~mask)|mask;} does not.
+``\lstinline{mask=flag<<(7-pos);return(value&~mask)|mask}'' does not.
 
 
 
@@ -342,8 +362,6 @@ static inline uint8_t SetBit8(uint8_t value, uint32_t pos, int flag)
 
 
 
-
-
 \FloatBarrier
 
 \subsection{64 bits}
@@ -357,9 +375,9 @@ those working on a \lstinline{uint8_t}.
 %
 They are shown in Listing~\ref{lst:TestBit64}
 and \ref{lst:SetBit64} without repeating the comments given
-in Appendix~\ref{subsec:low-level 8} for the 8 bit version; see
-in particular
-Listing~\ref{lst:bit predicate defs} for the employed ACSL predicates.
+in Appendix~\ref{subsec:low-level 8} for the 8 bit version.
+%
+See Listing~\ref{lst:bit predicate defs} for the employed ACSL predicates.
 
 
 
@@ -394,14 +412,14 @@ int TestBit64(uint64_t value, uint32_t pos)
 
 
 
-
-As a redundant postcondition of the \lstinline{SetBit64} operation in
-Listing~\ref{lst:SetBit64},
-``\lstinline{upper}'' guarantees that the leading zeros in
+Listing~\ref{lst:SetBit64} shows the operation \lstinline{SetBit64}.
+%
+Note that it has a redundant postcondition, viz.\ property
+``\lstinline{upper}'', which guarantees that the leading zeros in
 \lstinline{value} are kept in the result, up to, but excluding
 position \lstinline{pos}.
 %
-It was needed to enable the provers to verify code that uses
+This property was needed to enable the provers to verify code that uses
 \lstinline{SetBit64}.
 
 
@@ -476,6 +494,7 @@ int UpperBitsNotSet64(uint64_t value, uint32_t length);
 %        return value < MaxValue;
 %    }
 %}
+
 
 
 
@@ -577,6 +596,108 @@ predicate
 \end{listing}
 
 
+Listing~\ref{lst:EqualBits64} shows the predicate
+\lstinline{EqualBits64} that was used in the 64-bit
+operations' contracts.
+%
+The call \lstinline{EqualBits64(x,y,first,last)} succeeds if, and inly
+if, the \lstinline{uint64_t} values  \lstinline{x} and  \lstinline{y}
+agree on all bits in range [\lstinline{first}\ldots\lstinline{{last}).
+%
+The predicate \lstinline{EqualBits8}, used in
+Appendix~\ref{subsec:low-level 8}, is defined in similar way; its
+definition need not be shown here.
+
+
+
+
+
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+   predicate
+     EqualBits64{A}(uint64_t x, uint64_t y, integer first, integer last) =
+        \forall integer i; 64 - last <= i < 64 - first 
+          ==> (BitTest(x, i) <==> BitTest(y, i));
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:EqualBits64}
+        Definition of the low-level predicate \lstinline{EqualBits64}}
+\end{listing}
+
+
+
+
+
+
+
+
+In order for the provers to find all low-level validation proofs, we
+needed to supply three redundand properties about
+\lstinline{EqualBits64} and \lstinline{UpperBitsNotSet}; they are shown
+in Listing~\ref{lst:axioms64}.
+%
+Axiom \lstinline{equal_bits64_0} states that two \lstinline{uint64_t}
+values must be equal, if they agree on all 64 bit positions.
+%
+Axiom \lstinline{upper_bits_less_than} states that in a nonnegative number
+less than $2^n$ all bits are zero, except for possibly
+the least significant \lstinline{n} ones.
+%
+The neccessity of these extra axioms might indicate an
+incompleteness in Frama-C's actual bit-operator theory; this is currently
+investigated.
+%
+Axiom \lstinline{equal_bits64_1} is just a (relaxed)
+rephrasing of the definition
+in Listing~\ref{lst:EqualBits64}, using a different index scheme.
+%
+It is necessary due to the provers' weakness in applying index
+transformations.
+
+
+
+
+
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+   axiomatic BitProperties
+   {
+     axiom equal_bits64_0:
+       \forall uint64_t x, y;
+         EqualBits64(x, y, 0, 64) ==> x == y;
+
+     axiom equal_bits64_1:
+       \forall uint64_t x, y, integer p, q;
+         (\forall integer k; p <= k < q 
+           ==> \let j = q-1-k; (BitTest(x, j) <==> BitTest(y, j)))
+         ==> EqualBits64(x, y, 64-(q-p), 64);
+
+      axiom upper_bits_less_than:
+        \forall integer x, n; x >= 0 ==> n >= 0 ==>
+           (UpperBitsNotSet(x, n) <==> x < (1 << n));
+   }
+*/
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:axioms64}ACSL axioms used in 64-bit contracts}
+\end{listing}
+
+
+
+
 
 
 
@@ -601,7 +722,8 @@ Its declaration is shown in Listing~\ref{lst:BitTest}.
 */
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:BitTest}The Frama-C library predicate \lstinline{BitTest}}
+\caption{\label{lst:BitTest}
+	The Frama-C library predicate \lstinline{BitTest}}
 \end{listing}
 
 

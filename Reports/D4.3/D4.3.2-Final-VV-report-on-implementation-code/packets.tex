@@ -27,7 +27,7 @@ ETCS Subset 026 requirements description.\fxfatal{Name improvisiert}
 \subsection{\inl{AdhesionFactor} in ETCS}
 \label{sec:adhesionfactor-etcs}
 
-Subset~026 defines package \emph{adhesion factor} (packet 71) as shown in 
+ETCS Subset~026 defines the package \emph{adhesion factor} (packet 71) as shown in 
 Table~\ref{tbl:adhesion-factor}.
 
 \begin{table}[hbt]
@@ -287,7 +287,7 @@ The \inl{assigns} clauses in the contract's body describe the
 side effects of the function.
 If the function contract is split into multiple behaviors,
 like here, common \inl{assigns} clauses, which contain the union
-of the behavior's \inl{assigns} clauses, are needed outside
+of the behaviors' \inl{assigns} clauses, are needed outside
 of the behaviors.
 Their meaning will become clear when discussing the
 individual  behaviors.
@@ -312,7 +312,7 @@ The property \inl{valid_package} requires that \inl{p} is a valid pointer for re
 The property \inl{separation} requires that \inl{*stream} and \inl{*p} do not overlap in the memory.
 The 
 \inl{Separated}
-predicate is introduced in
+predicate wwas introduced in
 Section~\ref{sec:adhesionfactor-predicates-separated}.
 \end{itemize}
 
@@ -336,10 +336,10 @@ The effects of this operation are described by the second
 
 The behavior \inl{error_case} describes the function's behavior in the opposite case
 i.e. if \inl{*stream} is exhausted before all members of \inl{*p} are read.
-In this case the function has no side effects and especially does not write
+In this case the function has no side effects and in particular does not write
 \inl{*p} or \inl{stream->bitpos}.
-The \inl{ensures} clause \inl{result} states, that the return value
-of the function equals \inl{0}. In \inl{normal_case} this value is specified to equal \inl{1}.
+The \inl{ensures} clause \inl{result} states that the return value
+of the function equals \inl{0}. In \inl{normal_case} this value was specified to equal \inl{1}.
 
 The distinguishing predicate for the two behaviors is \inl{Normal(Bitstream*, integer)},
 which appears in the \inl{assumes} clauses within both behaviors and
@@ -415,43 +415,43 @@ clauses in the contract body are the conjunction of the
 
 \begin{itemize}
 \item
-\inl{valid_stream} is only met if \inl{Writable(stream)} applies.
+Property \inl{valid_stream} is only met if \inl{Writable(stream)} applies.
 The predicate \inl{Writable(Bitstream*)} requires that the
 stream is accessible for updates.
 \item
-\inl{valid_package} requires \inl{*p} to be valid pointer.
+Property \inl{valid_package} requires \inl{*p} to be valid pointer.
 \item
-\inl{invariant} is only met if the \inl{Invariant} predicate,
-which is described in Section~\ref{sec:adhesionfactor-predicates-invariant},
-for p is true.
+Property \inl{invariant} is only met if the \inl{Invariant} predicate,
+which was described in Section~\ref{sec:adhesionfactor-predicates-invariant},
+holds for \inl{p}.
 \end{itemize}
 
 The behaviors of the \inl{EncodeBit} contract describe
 one successful case and two error cases.
 
-\inl{normal_case} describes the behavior of a successful
+Behavior \inl{normal_case} describes a successful
 encoding of the object \inl{*p} into the bit stream.
-The \inl{assigns} clauses specify, that in this case both
+The \inl{assigns} clauses specify that in this case both
 the \inl{bitpos} of the \inl{stream} and the fields
 of the bit stream are written.
 The \inl{increment} clause describes the new value for
 \inl{bitpos}.
 The \inl{ensures} clauses \inl{left}, \inl{middle}
-and \inl{right} state, that only some bits of the
+and \inl{right} state that only some bits of the
 bit stream are written.
 The updated bits and their relationship to the
 bits of the members of the object \inl{*p}
 are described with the \inl{EqualBits} predicate,
 which is described in
 Section~\ref{sec:adhesionfactor-predicates-equalbits}.
-The \inl{Unchanged} predicate specifies, that the
+The \inl{Unchanged} predicate specifies that the
 bits in the bit stream before the old \inl{stream->bitpos}
 and the after the new \inl{stream->bitpos}
 remain unchanged.
 \inl{Unchanged(Bitstream*, integer, integer)}
 is defined in Section~\ref{sec:bitstream}.
 
-\inl{values_too_big} describes the behavior in
+Behavior \inl{values_too_big} describes
 the scenario in which the value of at least one
 member of \inl{*p} is bigger than the specified
 bit size for that member of
@@ -461,16 +461,16 @@ The numbers of bits for the members of
 Section~\ref{sec:adhesionfactor-etcs}.
 The \inl{assigns} clause states that this behavior
 of the function causes no side effects and
-the \inl{result} clause ensures, that the
+the \inl{result} clause ensures that the
 function will return the value \inl{-2}.
 In contrast to \inl{normal_case},
-for this behavior it is assumed, that the
+for this behavior it is assumed that the
 \inl{UpperBitsNotSet(p)} predicate evaluates
 to false.
 The \inl{Normal(stream, MaxBitSize(p))}
 predicate returns true for both behaviors.
 
-\inl{invalid_bit_sequence} describes the function's
+Finally, \inl{invalid_bit_sequence} describes the function's
 behavior if the bit stream is not long enough to
 write a complete \inl{AdhesionFactor} object
 into. 
@@ -478,7 +478,7 @@ This behavior is distinguished from the other
 behaviors by the evaluation of the predicate
 \inl{Normal(stream, MaxBitSize(p))}.
 Notice that the evaluation of \inl{UpperBitsNotSet(p)}
-might be false too.
+might be false, too.
 Like in the \inl{value_too_big} behavior the function
 ends without encoding any bits into the stream.
 Therefore the \inl{assigns} clause is \inl{\\nothing}.

@@ -31,7 +31,7 @@ Appendix~\ref{cha:low-level bitstream} finally presents even lower levels.
 \label{sec:bitstream}
 
 The operations on packet data structures were implemented by 
-operations that on a \lstinline{struct bitstream*} argument.
+operations on a \lstinline{struct bitstream*} argument.
 \fxfatal{Hier heisst es "struct bitstream*", in ch.3 heisst es
 "Bitstream*". Stimmt die Gross-/Kleinschreibung?}
 %
@@ -49,10 +49,10 @@ It requires \lstinline{stream}
 %
 \begin{itemize}
 \item to point to a valid memory area 
-	(requirement ``\lstinline{valid}''),
+	(requirement property ``\lstinline{valid}''),
 \item to adhere to its data type invariant
-	(``\lstinline{invariant}''), and
-\item not to be exhausted (``\lstinline{normal}'').
+	(property ``\lstinline{invariant}''), and
+\item not to be exhausted (property ``\lstinline{normal}'').
 \end{itemize}
 %
 It is allowed to ---~and usually in fact will~--- modify the current bit
@@ -63,10 +63,10 @@ After completion of the operation,
 %
 \begin{itemize}
 \item the current bit position has been increased accordingly
-	(``\lstinline{ensures pos}''),
+	(postcondition property ``\lstinline{pos}''),
 \item the return value equals, bit by bit, the stream between the
 	current bit position on entry and that on exit
-	(``\lstinline{changed}''),
+	(property ``\lstinline{changed}''),
 \item in particular, all but the \lstinline{length} least significant
 	bits\footnote{
 		Bit positions are counted differently in Frama-C and in
@@ -80,11 +80,11 @@ After completion of the operation,
 		the coordinate system.
 	}
 	of the return value are zero
-	(``\lstinline{upper}''),
+	(property ``\lstinline{upper}''),
 \item \lstinline{stream}'s total size remains unaffected
-	(``\lstinline{size}''), and
+	(property ``\lstinline{size}''), and
 \item so do all of its content bits
-	(``\lstinline{unchanged}'').
+	(property ``\lstinline{unchanged}'').
 \end{itemize}
 
 
@@ -124,8 +124,8 @@ Listing~\ref{lst:Bitstream struct}.
 \begin{itemize}
 \item Predicate \lstinline{Readable} requires that a stream's data area is
 	complete accessible for read.
-\item Similarly, \lstinline{Writeable} requires that it is accessible for
-	update.
+\item Similarly, predicate \lstinline{Writeable} requires that it is
+	accessible for update.
 
 \item Predicate \lstinline{Invariant} requires that a 
 	\lstinline{struct Bitstream}'s data area
@@ -133,7 +133,7 @@ Listing~\ref{lst:Bitstream struct}.
 	further, lower-level invariant holds (see 
 	Section~\ref{sec:bit sequences} below).
 
-	In a similar way, predicates \lstinline{Normal} and
+	In a similar way, predicate \lstinline{Normal} and
 	\lstinline{EqualBits} is reduced to a
 	lower-level predicate of the same 
 	name, 
@@ -149,7 +149,7 @@ Listing~\ref{lst:Bitstream struct}.
 	}
 
 \item
-	A predicate call
+	A clause
 	\inl{Unchanged\{A,B\}(stream,first,last)} succeeds if,
 	and only if, 
 	all data bits [\lstinline{first}\ldots\lstinline{last})
@@ -245,7 +245,7 @@ typedef struct Bitstream Bitstream;
 
 
 
-As a kind of constructor for
+As a kind of constructor for type
 \lstinline{Bitstream}, we provide the operation \lstinline{Bitstream_Init},
 shown with its contract in Listing~\ref{lst:Bitstream_Init}.
 %
@@ -301,8 +301,9 @@ int Bitstream_Normal(const Bitstream* stream, uint32_t length);
 
 
 Listing~\ref{lst:Bitstream_Write impl} shows contract of
-\lstinline{Bitstream_Write}, and moreover exemplfies its implementation.
-
+the \lstinline{Bitstream_Write} operation,
+and moreover exemplfies its implementation.
+%
 Most parts of the contract are quite similar to that of
 \lstinline{Bitstream_Read} in
 Listing~\ref{lst:Bitstream_Read spec}.
@@ -312,7 +313,7 @@ Differences are the following:
 \item We require that the \lstinline{value} to be written fits into
 	the specified
 	\lstinline{length}, i.e.\ its unused most significant bits
-	are zero (requirement
+	are zero (requirement property
 	``\lstinline{upper}'').
 \item The operation is allowed to change the contents of the bitstream
 	(first \lstinline{assigns} clause) in addition to the streams
@@ -408,9 +409,9 @@ It requires
 %
 \begin{itemize}
 \item all bytes of the \lstinline{addr} array to be accessible for read
-	(requirement ``\lstinline{valid}''),
+	(requirement property ``\lstinline{valid}''),
 \item some data type invariants to hold
-	(``\lstinline{invariant}''), viz.\
+	(property ``\lstinline{invariant}''), viz.\
 	%
 	\begin{itemize}
 	\item the total number of array bits to fit into a
@@ -424,20 +425,21 @@ It requires
 \item the bit range
 	[\lstinline{bitpos}\ldots\lstinline{bitpos}+\lstinline{length})
 	to fit into the array at \lstinline{addr}
-	(``\lstinline{normal}'').
+	(property ``\lstinline{normal}'').
 \end{itemize}
 %
 The operation is not allowed to modify any (non-local) memory
-(expressed by the ``\lstinline{assigns}'' clause).
+--- as expressed by the ``\lstinline{assigns}'' clause.
 %
 After completion of the operation,
 %
 \begin{itemize}
-\item the return value shall coincide bit by bit with the specified
-	range of the
-	\lstinline{addr} array (``\lstinline{ensures equal}''), and
-\item in particular, all but the least significant \lstinline{length}
-	bits of the return value shall be zero (``\lstinline{upper}'').
+\item the returned value shall coincide, bit by bit, with the specified
+	range of the \lstinline{addr} array 
+	(postcondition property ``\lstinline{equal}''), and
+\item all remaining bits (i.e.\ all but the least significant 
+	\lstinline{length} bits) of the return value shall be zero 
+	(property ``\lstinline{upper}'').
 \end{itemize}
 
 
@@ -509,8 +511,8 @@ upto its very last bit is used in predicate \lstinline{Normal}.
 
 
 Listing~\ref{Bitwalker_Write spec} shows the contract, and the
-implementation, of
-\lstinline{Bitwalker_Write}.
+implementation, of the
+\lstinline{Bitwalker_Write} operation.
 %
 The following peculiarities are observed when the former is
 compared to \lstinline{Bitwalker_Read}'s contract:
@@ -520,7 +522,7 @@ compared to \lstinline{Bitwalker_Read}'s contract:
 the specifiec
 	\lstinline{length}, i.e.\ all but its \lstinline{length}
 	least significant bits are
-	zero (requirement ``\lstinline{upper}'').
+	zero (requirement property ``\lstinline{upper}'').
 \item The operation may modify the data array at \lstinline{addr},
 but nothing else.
 \item Again, we give the details of which data bits exactly
@@ -542,19 +544,19 @@ we had to provide a total of six ACSL clauses about the loop:
 \begin{itemize}
 \item The loop variable, \lstinline{i}, always ranges in the interval
 	[\lstinline{bitpos}\ldots\lstinline{bitpos+length}] 
-	--- loop invariant ``\lstinline{bound}''.
+	--- loop invariant property ``\lstinline{bound}''.
 	%
 	Note that the highest value is actually taken,
 	viz.\ on exit of the loop body in the last iteration,
 	subsequently causing the loop to terminate.
 \item The bits before \lstinline{bitpos}, and after
 	\lstinline{bitpos+length}
-	remain as they were on operation entry --- invariant
+	remain as they were on operation entry --- invariant property
 	``\lstinline{left}'' and ``\lstinline{right}'', respectively.
 \item In the \lstinline{i}th iteration, the bits
 	[\lstinline{bitpos}\ldots\lstinline{bitpos+i}) agree with
 	the least significant
-	\lstinline{i} bits of \lstinline{value} --- invariant
+	\lstinline{i} bits of \lstinline{value} --- invariant property
 	``\lstinline{middle}''.
 \item The loop code is allowed to modify the variable \lstinline{i},
 	and the whole array
@@ -614,6 +616,7 @@ void Bitwalker_Write(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t len
 \caption{\label{Bitwalker_Write spec}Writing a bit sequence}
 \end{listing}
 
+The operations we have discussed here are based
 on operations to write and to read a single bit.
 %
 The details of the latter, as well as of the predicates used in their

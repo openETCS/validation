@@ -459,7 +459,13 @@ non-zero value, if, and only if, all bits of \lstinline{value} except
 the least significant
 \lstinline{length} ones are zero.
 %
-It is used for \fxfatal{ja, wofuer denn eigentlich?}
+It is used in the bodies of packet writing functions like
+\lstinline{AdhesionFactor_DecodeBit} 
+\fxfatal{oder doch AdhesionFactor\_EncodeBit ?}
+(see Section~\ref{sec:adhesionfactor-decodebit})
+to check that no non-zero bits from the packet structure (like
+\lstinline{struct AdhesionFactor}) are ignored due to space
+limitations in the bitstream.
 
 
 
@@ -702,14 +708,15 @@ transformations.
 
 
 
-The predicate \lstinline{BitTest(v,n)} succeeds if, and only if, the
+For a nonnegative integer \lstinline{v},
+the predicate \lstinline{BitTest(v,n)} succeeds if, and only if, the
 \lstinline{n}$^{\mbox{\scriptsize th}}$ bit is set in the binary
 representation of
 \lstinline{v}, i.e.\ iff the truncating integer division of \lstinline{v} by
 $2^{\mbox{\scriptsize\lstinline{n}}}$ yields an odd number.
-\fxfatal{Is there any documentation available? What about negative numbers?}
 %
-This predicate comes with the standard library of the Frama-C system.
+This predicate comes with the standard library of the Frama-C system,
+however, without any detailled documentation.
 %
 Its declaration is shown in Listing~\ref{lst:BitTest}.
 

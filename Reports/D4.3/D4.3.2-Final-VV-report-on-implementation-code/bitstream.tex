@@ -9,7 +9,7 @@ packet level (section~\ref{cha:packets}) relies on.
 %
 First, we discuss in Section~\ref{sec:bitstream}
 a level where operation arguments typically are include a
-\lstinline{C} structure \lstinline{struct bitstream*}, which
+\lstinline{C} structure \lstinline{struct Bitstream*}, which
 encapsulates bitstream data and all related administration information.
 %
 In Section~\ref{sec:bit sequences}, we present a level still working on
@@ -31,9 +31,7 @@ Appendix~\ref{cha:low-level bitstream} finally presents even lower levels.
 \label{sec:bitstream}
 
 The operations on packet data structures were implemented by 
-operations on a \lstinline{struct bitstream*} argument.
-\fxfatal{Hier heisst es "struct bitstream*", in ch.3 heisst es
-"Bitstream*". Stimmt die Gross-/Kleinschreibung?}
+operations on a \lstinline{struct Bitstream*} argument.
 %
 The latter are described in this section.
 
@@ -145,7 +143,7 @@ Listing~\ref{lst:Bitstream struct}.
 	more bits are available beyond it in a stream of byte-size
 	\lstinline{size}.\footnote{
 		We tacitly assume that each stream has a multiple of 8 bits
-		available.  \fxfatal{unrealistic!?}
+		available.
 	}
 
 \item
@@ -395,7 +393,7 @@ void Bitstream_Write(Bitstream* stream, uint32_t length, uint64_t value)
 
 In this section, we describe the operations that handle plain bit sequences.
 %
-They are used to implement the \lstinline{struct bitstream*} operations for
+They are used to implement the \lstinline{struct Bitstream*} operations for
 Section~\ref{sec:bitstream}.
 
 The operation \lstinline{Bitwalker_Read(addr,size,bitpos,length)} reads

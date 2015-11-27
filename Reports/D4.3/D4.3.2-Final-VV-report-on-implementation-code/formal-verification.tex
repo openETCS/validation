@@ -7,26 +7,119 @@
 
 \begin{table}[hbt]
 \begin{center}
-    \begin{tabular}{|l|ccc|ccccc|}
+    \begin{tabular}{|l|ccc|cccc|}
 \hline
-\multirow{2}{*}{\textbf{Component}} &
-\multicolumn{3}{c|}{ \textbf{VCs}} &
-\multicolumn{5}{c|}{\textbf{Individual Provers}}\\
-\cline{2-9}
-               &  All & Proven & (\%) & Qed & Alt-Ergo & CVC4 & Z3 & Coq \\
+\multirow{2}{*}{\textbf{component}} &
+\multicolumn{3}{c|}{ \textbf{vcs}} &
+\multicolumn{4}{c|}{\textbf{individual provers}}\\
+\cline{2-8}
+               &  all & proven & (\%) & qed & alt-ergo & cvc4 & z3  \\
 \hline
 \hline
-bit stream     & 58 &  58 & 100 & 19 &  0 & 0 & 39 & 0 \\
+bit stream     & 58 &  58 & 100 & 19 &  0 & 0 & 39  \\
 \hline
-bit stream (inverse)  & 58 & 58 & 100 & 33 &  2 & 1 & 22 & 0 \\
+bit stream (inverse)  & 58 & 58 & 100 & 33 &  2 & 1 & 22  \\
 \hline
-lower-level bit ops & 126 & 126 & 100 & 55 &  0 & 1 & 70 & 0 \\
+lower-level bit ops & 126 & 126 & 100 & 55 &  0 & 1 & 70  \\
 \hline
 \end{tabular}
 \end{center}
-\caption{\label{tbl:bitstream-verification} Verfication result for bit stream and lower-level bit operations}
+\caption{\label{tbl:bitstream-verification} verfication result for bit stream and lower-level bit operations}
 \end{table}
 
+\FloatBarrier  % forces the output of listings/tables
 
-\section{Packets}
+\section{Verification of packets without \inl{N_ITER}}
+\label{sec:packets-without-niter-verification}
+
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|m{5cm}|m{5ex}m{5ex}m{5ex}|m{5ex}m{5ex}m{5ex}m{5ex}|}
+\hline
+\multirow{2}{*}{\textbf{Component}} &
+\multicolumn{3}{c|}{ \textbf{VCs}} &
+\multicolumn{4}{c|}{\textbf{Individual Provers}}\\
+\cline{2-8}
+               &  All & Proven & (\%) & Qed & Alt-Ergo & CVC4 & Z3  \\
+\hline
+\hline
+\inl{AdhesionFactor} & 530 & 530 & 100 & 374 & 0 & 1 & 155\\
+\hline
+\inl{DangerForShunting-} \inl{Information} & 389 & 389 & 100 & 290 & 0 & 1 & 98\\
+\hline
+\inl{DataUsedByApplications-} \inl{OutsideTheERTMSETCSSystem} & 389 & 389 & 100 & 290 & 0 & 1 & 98\\
+\hline
+\inl{DefaultBaliseLoopOrRIU-} \inl{Information} & 342 & 342 & 100 &262 & 0 & 1 & 79\\
+\hline
+\inl{DefaultGradientFor-} \inl{TemporarySpeedRestriction} & 436 & 436 & 100 & 318 & 0 & 1 & 117\\
+\hline
+\inl{EOLMPacket} & 624 & 624 & 100 & 430 & 0 & 1 & 193\\
+\hline
+\inl{EndOfInformation} & 239 & 239 & 100 & 192 & 0 & 1 & 46\\
+\hline
+\inl{ErrorReporting} & 342 & 342 & 100 & 262 & 0 & 1 & 79\\
+\hline
+\inl{InfillLocationReference} & 474 & 465 & 98 & 341 & 0 & 1 & 123\\
+\hline
+\inl{Level23Transition-} \inl{Information} & 342 & 342 & 100 & 262 & 0 & 1 & 79\\
+\hline
+\inl{MovementAuthorityRequest-} \inl{Parameters} & 483 & 483 & 100 & 346 & 0 & 1 & 136\\
+\hline
+\inl{PacketForSendingFixedText-} \inl{Messages} & 958 & 938 & 97 & 644 & 9 & 1 & 284\\
+\hline
+\inl{PacketForSendingPlainText-} \inl{Messages} & 999 & 957 & 95 & 671 & 0 & 1 & 285\\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:packets-without-niter-part1} Verfication result for packets without \inl{N_ITER} part 1}
+\end{table}
+
+\FloatBarrier  % forces the output of listings/tables
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|m{5cm}|m{5ex}m{5ex}m{5ex}|m{5ex}m{5ex}m{5ex}m{5ex}|}
+\hline
+\multirow{2}{*}{\textbf{Component}} &
+\multicolumn{3}{c|}{ \textbf{VCs}} &
+\multicolumn{4}{c|}{\textbf{Individual Provers}}\\
+\cline{2-8}
+               &  All & Proven & (\%) & Qed & Alt-Ergo & CVC4 & Z3  \\
+\hline
+\hline
+\inl{PositionReportBasedOnTwo-} \inl{BaliseGroups} & 973 & 948 & 97 & 649 & 6 & 2 & 291\\
+\hline
+\inl{RBCTransitionOrder} & 624 & 624 & 100 & 430 & 0 & 1 & 193\\
+\hline
+\inl{RadioInfillAreaInformation} & 718 & 718 & 100 & 486 & 0 & 1 & 231\\
+\hline
+\inl{RadioNetworkRegistration} & 389 & 389 & 100 & 290 & 0 & 1 & 98\\
+\hline
+\inl{RepositioningInformation} & 436 & 436 & 100 & 318 & 0 & 1 & 117\\
+\hline
+\inl{ReversingAreaInformation} & 483 & 483 & 100 & 346 & 0 & 1 & 136\\
+\hline
+\inl{ReversingSupervision-} \inl{Information} & 483 & 483 & 100 & 346 & 0 & 1 & 136\\
+\hline
+\inl{SessionManagement} & 559 & 543 & 97 & 399 & 0 & 1 & 143\\
+\hline
+\inl{StopIfInStaffResponsible} & 389 & 389 & 100 & 290 & 0 & 1 & 98\\
+\hline
+\inl{TemporarySpeedRestriction} & 624 & 624 & 100 & 430 & 0 & 1 & 193\\
+\hline
+\inl{TemporarySpeedRestriction-} \inl{Revocation} & 389 & 389 & 100 & 290 & 0 & 1 & 98\\
+\hline
+\inl{TrackAheadFreeUpToLevel23-} \inl{TransitionLocation} & 474 & 465 & 98 & 341 & 0 & 1 & 123\\
+\hline
+\inl{TrackConditionChangeOf-} \inl{TractionPower} & 483 & 483 & 100 & 346 & 0 & 1 & 136\\
+\hline
+\inl{TrainRunningNumberFromRBC} & 389 & 389 & 100 & 290 &  0 &  1 & 98\\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:packets-without-niter-part2} Verfication result for packets without \inl{N_ITER} part 2}
+\end{table}
+
+\FloatBarrier  % forces the output of listings/tables
 

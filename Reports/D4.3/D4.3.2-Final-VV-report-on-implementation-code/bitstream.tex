@@ -9,7 +9,7 @@ packet level (section~\ref{cha:packets}) relies on.
 %
 First, we discuss in Section~\ref{sec:bitstream}
 a level where operation arguments typically are include a
-\lstinline{C} structure \lstinline{struct bitstream*}, which
+\lstinline{C} structure \lstinline{struct Bitstream*}, which
 encapsulates bitstream data and all related administration information.
 %
 In Section~\ref{sec:bit sequences}, we present a level still working on
@@ -31,9 +31,7 @@ Appendix~\ref{cha:low-level bitstream} finally presents even lower levels.
 \label{sec:bitstream}
 
 The operations on packet data structures were implemented by 
-operations that on a \lstinline{struct bitstream*} argument.
-\fxfatal{Hier heisst es "struct bitstream*", in ch.3 heisst es
-"Bitstream*". Stimmt die Gross-/Kleinschreibung?}
+operations on a \lstinline{struct Bitstream*} argument.
 %
 The latter are described in this section.
 
@@ -49,10 +47,10 @@ It requires \lstinline{stream}
 %
 \begin{itemize}
 \item to point to a valid memory area 
-	(requirement ``\lstinline{valid}''),
+	(requirement property ``\lstinline{valid}''),
 \item to adhere to its data type invariant
-	(``\lstinline{invariant}''), and
-\item not to be exhausted (``\lstinline{normal}'').
+	(property ``\lstinline{invariant}''), and
+\item not to be exhausted (property ``\lstinline{normal}'').
 \end{itemize}
 %
 It is allowed to ---~and usually in fact will~--- modify the current bit
@@ -63,10 +61,10 @@ After completion of the operation,
 %
 \begin{itemize}
 \item the current bit position has been increased accordingly
-	(``\lstinline{ensures pos}''),
+	(postcondition property ``\lstinline{pos}''),
 \item the return value equals, bit by bit, the stream between the
 	current bit position on entry and that on exit
-	(``\lstinline{changed}''),
+	(property ``\lstinline{changed}''),
 \item in particular, all but the \lstinline{length} least significant
 	bits\footnote{
 		Bit positions are counted differently in Frama-C and in
@@ -80,11 +78,11 @@ After completion of the operation,
 		the coordinate system.
 	}
 	of the return value are zero
-	(``\lstinline{upper}''),
+	(property ``\lstinline{upper}''),
 \item \lstinline{stream}'s total size remains unaffected
-	(``\lstinline{size}''), and
+	(property ``\lstinline{size}''), and
 \item so do all of its content bits
-	(``\lstinline{unchanged}'').
+	(property ``\lstinline{unchanged}'').
 \end{itemize}
 
 
@@ -124,16 +122,17 @@ Listing~\ref{lst:Bitstream struct}.
 \begin{itemize}
 \item Predicate \lstinline{Readable} requires that a stream's data area is
 	complete accessible for read.
-\item Similarly, \lstinline{Writeable} requires that it is accessible for
-	update.
+\item Similarly, predicate \lstinline{Writeable} requires that it is
+	accessible for update.
 
 \item Predicate \lstinline{Invariant} requires that a 
 	\lstinline{struct Bitstream}'s data area
 	doesn't overlap with the \lstinline{struct} itself, and that some
 	further, lower-level invariant holds (see 
-	Section~\ref{sec:bit sequences} below).
+	Section~\ref{sec:bit sequences} below, in particular
+	Listing~\ref{lst:Bitsequence preds}).
 
-	In a similar way, predicates \lstinline{Normal} and
+	In a similar way, predicate \lstinline{Normal} and
 	\lstinline{EqualBits} is reduced to a
 	lower-level predicate of the same 
 	name, 
@@ -145,11 +144,11 @@ Listing~\ref{lst:Bitstream struct}.
 	more bits are available beyond it in a stream of byte-size
 	\lstinline{size}.\footnote{
 		We tacitly assume that each stream has a multiple of 8 bits
-		available.  \fxfatal{unrealistic!?}
+		available.
 	}
 
 \item
-	A predicate call
+	A clause
 	\inl{Unchanged\{A,B\}(stream,first,last)} succeeds if,
 	and only if, 
 	all data bits [\lstinline{first}\ldots\lstinline{last})
@@ -245,7 +244,7 @@ typedef struct Bitstream Bitstream;
 
 
 
-As a kind of constructor for
+As a kind of constructor for type
 \lstinline{Bitstream}, we provide the operation \lstinline{Bitstream_Init},
 shown with its contract in Listing~\ref{lst:Bitstream_Init}.
 %
@@ -301,8 +300,9 @@ int Bitstream_Normal(const Bitstream* stream, uint32_t length);
 
 
 Listing~\ref{lst:Bitstream_Write impl} shows contract of
-\lstinline{Bitstream_Write}, and moreover exemplfies its implementation.
-
+the \lstinline{Bitstream_Write} operation,
+and moreover exemplfies its implementation.
+%
 Most parts of the contract are quite similar to that of
 \lstinline{Bitstream_Read} in
 Listing~\ref{lst:Bitstream_Read spec}.
@@ -312,7 +312,7 @@ Differences are the following:
 \item We require that the \lstinline{value} to be written fits into
 	the specified
 	\lstinline{length}, i.e.\ its unused most significant bits
-	are zero (requirement
+	are zero (requirement property
 	``\lstinline{upper}'').
 \item The operation is allowed to change the contents of the bitstream
 	(first \lstinline{assigns} clause) in addition to the streams
@@ -394,7 +394,7 @@ void Bitstream_Write(Bitstream* stream, uint32_t length, uint64_t value)
 
 In this section, we describe the operations that handle plain bit sequences.
 %
-They are used to implement the \lstinline{struct bitstream*} operations for
+They are used to implement the \lstinline{struct Bitstream*} operations for
 Section~\ref{sec:bitstream}.
 
 The operation \lstinline{Bitwalker_Read(addr,size,bitpos,length)} reads
@@ -408,9 +408,9 @@ It requires
 %
 \begin{itemize}
 \item all bytes of the \lstinline{addr} array to be accessible for read
-	(requirement ``\lstinline{valid}''),
+	(requirement property ``\lstinline{valid}''),
 \item some data type invariants to hold
-	(``\lstinline{invariant}''), viz.\
+	(property ``\lstinline{invariant}''), viz.\
 	%
 	\begin{itemize}
 	\item the total number of array bits to fit into a
@@ -424,20 +424,21 @@ It requires
 \item the bit range
 	[\lstinline{bitpos}\ldots\lstinline{bitpos}+\lstinline{length})
 	to fit into the array at \lstinline{addr}
-	(``\lstinline{normal}'').
+	(property ``\lstinline{normal}'').
 \end{itemize}
 %
 The operation is not allowed to modify any (non-local) memory
-(expressed by the ``\lstinline{assigns}'' clause).
+--- as expressed by the ``\lstinline{assigns}'' clause.
 %
 After completion of the operation,
 %
 \begin{itemize}
-\item the return value shall coincide bit by bit with the specified
-	range of the
-	\lstinline{addr} array (``\lstinline{ensures equal}''), and
-\item in particular, all but the least significant \lstinline{length}
-	bits of the return value shall be zero (``\lstinline{upper}'').
+\item the returned value shall coincide, bit by bit, with the specified
+	range of the \lstinline{addr} array 
+	(postcondition property ``\lstinline{equal}''), and
+\item all remaining bits (i.e.\ all but the least significant 
+	\lstinline{length} bits) of the return value shall be zero 
+	(property ``\lstinline{upper}'').
 \end{itemize}
 
 
@@ -509,8 +510,8 @@ upto its very last bit is used in predicate \lstinline{Normal}.
 
 
 Listing~\ref{Bitwalker_Write spec} shows the contract, and the
-implementation, of
-\lstinline{Bitwalker_Write}.
+implementation, of the
+\lstinline{Bitwalker_Write} operation.
 %
 The following peculiarities are observed when the former is
 compared to \lstinline{Bitwalker_Read}'s contract:
@@ -520,7 +521,7 @@ compared to \lstinline{Bitwalker_Read}'s contract:
 the specifiec
 	\lstinline{length}, i.e.\ all but its \lstinline{length}
 	least significant bits are
-	zero (requirement ``\lstinline{upper}'').
+	zero (requirement property ``\lstinline{upper}'').
 \item The operation may modify the data array at \lstinline{addr},
 but nothing else.
 \item Again, we give the details of which data bits exactly
@@ -542,19 +543,19 @@ we had to provide a total of six ACSL clauses about the loop:
 \begin{itemize}
 \item The loop variable, \lstinline{i}, always ranges in the interval
 	[\lstinline{bitpos}\ldots\lstinline{bitpos+length}] 
-	--- loop invariant ``\lstinline{bound}''.
+	--- loop invariant property ``\lstinline{bound}''.
 	%
 	Note that the highest value is actually taken,
 	viz.\ on exit of the loop body in the last iteration,
 	subsequently causing the loop to terminate.
 \item The bits before \lstinline{bitpos}, and after
 	\lstinline{bitpos+length}
-	remain as they were on operation entry --- invariant
+	remain as they were on operation entry --- invariant property
 	``\lstinline{left}'' and ``\lstinline{right}'', respectively.
 \item In the \lstinline{i}th iteration, the bits
 	[\lstinline{bitpos}\ldots\lstinline{bitpos+i}) agree with
 	the least significant
-	\lstinline{i} bits of \lstinline{value} --- invariant
+	\lstinline{i} bits of \lstinline{value} --- invariant property
 	``\lstinline{middle}''.
 \item The loop code is allowed to modify the variable \lstinline{i},
 	and the whole array
@@ -614,6 +615,7 @@ void Bitwalker_Write(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t len
 \caption{\label{Bitwalker_Write spec}Writing a bit sequence}
 \end{listing}
 
+The operations we have discussed here are based
 on operations to write and to read a single bit.
 %
 The details of the latter, as well as of the predicates used in their
@@ -623,4 +625,207 @@ contracts, are given in Appendix~\ref{cha:low-level bitstream}.
 
 
 
+
+
+
+
+
+
+
+
+
+
+\section{Verification of the Bitstream abstraction}
+\label{sec:bitstream verif}
+
+
+
+Critics of the formal software verification approach often 
+argue that verifying an operation against its formal specification
+results in little or no increase of trustworthiness when
+%
+\begin{itemize}
+\item the specification, including all auxiliary definitions etc., is
+	as complex as the operation's implementation, or/and
+\item the specification essentially duplicates the implemented
+	algorithm in a different (such as functional rather than
+	imperative) language.
+\end{itemize}
+%
+Both criteria may be seen to be met by our Bitwalker case study.
+
+
+
+
+However, since the operations we dealt with essentially implement a
+communication protocol, there is a very simple ``high-level'' property
+that should be satistifed, viz.\ that a ``send'' operation is inverse
+to a ``receive'' operation.
+%
+This property can be stated formally in a very brief and understandable
+way.
+%
+It ensures, in a mathematical context, that both operations implement
+bijective mappings, that is, in an engineering sense, that the
+communication channel neither looses, nor subjoins information.
+%
+In fact, we have achieved to formally prove this property.
+
+
+
+
+More particularly, in our setting, we could show that the operations
+\lstinline{Bitstream_Read} and \lstinline{Bitstream_Write} are
+inverse to each other.
+%
+To this end, we set up two fictitious \lstinline{C} procedures realizing
+the composition of both operations in the two possible orders.
+
+
+
+
+Listing~\ref{lst:Bitstream_WriteThenRead}
+shows the procedure for the scenario ``use \lstinline{Bitstream_Write}
+to write a value to a stream, then immediately read it back using
+\lstinline{Bitstream_Read}''.
+%
+The procedure's body code is straightforward; after
+\lstinline{Bitstream_Write}, we have to seek back to the original bit
+position, before calling \lstinline{Bitstream_Read}''.
+%
+We could show that the read value always equals the written one,
+provided
+\begin{itemize}
+\item the stream is accessible for both read and update
+	(requirement property ``\lstinline{valid}''),
+\item it satisfies its type invariant (property
+	``\lstinline{invariant}''; cf.\ Listing~\ref{lst:Bitstream preds}
+	and~\ref{lst:Bitsequence preds}),
+\item the stream's current bit position is sufficiently small such that
+	all value bits still fit into the stream
+	(property``\lstinline{normal}''), and
+\item the most significant value bits that are not written are all zero
+	(property``\lstinline{upper}'').
+\end{itemize}
+%
+This ensures that the bistream communication channel doesn't loose
+information --- every value we write into it can completely be
+restored.
+
+
+
+
+
+Vice versa, we could also show that the channel doesn't transmit more
+information than is needed to fulfil its task.
+%
+Listing~\ref{lst:Bitstream_ReadThenWrite}
+shows the procedure for the scenario ``use \lstinline{Bitstream_Read}
+to read a value from a stream, then immediately write it back using
+\lstinline{Bitstream_Write}''.
+%
+We could show that this leaves the
+whole stream unchanged, provided the first three requirement properties
+from \lstinline{Bitstream_WriteThenRead} are met.
+%
+As an example for a channel transmitting redundant information,
+condider
+a bitstream implementation
+with \lstinline{Bitstream_Write}
+storing each byte twice in succession and \lstinline{Bitstream_Read}
+ignoring every second byte.
+%
+Such a stream doesn't meet our property, since, 
+starting from a stream with non-agreeing adjacent bytes, there is no
+way to reproduce it by a ``read, then write'' scenario.
+
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires valid:      Writeable(stream);
+    requires invariant:  Invariant(stream, length);
+    requires normal:     Normal(stream, length);
+    requires upper:      UpperBitsNotSet(value, length);
+
+    assigns stream->addr[0..stream->size-1];
+    assigns stream->bitpos;
+
+    ensures equality:     \result == value;
+*/
+uint64_t Bitstream_WriteThenRead(Bitstream* stream, uint32_t length, uint64_t v>
+{
+    //@ ghost uint32_t old_pos = stream->bitpos;
+
+    Bitstream_Write(stream, length, value);
+    //@ assert equal:  EqualBits(stream, old_pos, old_pos+length, value);
+
+    /*@ 
+        assigns stream->bitpos;
+        ensures reset: stream->bitpos == \at(stream->bitpos,Pre);
+    */
+    stream->bitpos -= length;
+
+    uint64_t result = Bitstream_Read(stream, length);
+    //@ ghost uint32_t new_pos = stream->bitpos;
+    //@ assert equal_result: EqualBits(stream, old_pos, new_pos, result);
+    //@ assert equal_value:  EqualBits(stream, old_pos, new_pos, value);
+    /*@ assert aux:          \forall integer k; old_pos <= k < new_pos ==>
+                               \let j = new_pos - 1 - k;
+                               (BitTest(value,  j) <==> BitTest(result, j));
+    */
+    //@ assert left:         EqualBits64(result, value, 64-length, 64);
+    //@ assert compare:      EqualBits64(result, value, 0, 64);
+
+    return result;
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:Bitstream_WriteThenRead}
+	Verifying the scenario ``write, then read'' }
+\end{listing}
+
+
+
+
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires valid:      Writeable(stream);
+    requires invariant:  Invariant(stream, length);
+    requires normal:     Normal(stream, length);
+
+    assigns stream->addr[0..stream->size-1];
+    assigns stream->bitpos;
+
+    ensures  unchanged:  Unchanged{Here,Old}(stream, 0, 8 * stream->size);
+*/
+void Bitstream_ReadThenWrite(Bitstream* stream, uint32_t length)
+{
+    //@ ghost uint32_t old_pos = stream->bitpos;
+    uint64_t value = Bitstream_Read(stream, length);
+    //@ assert equal:  EqualBits(stream, old_pos, old_pos+length, value);
+
+    stream->bitpos -= length;
+    //@ assert stream->bitpos == old_pos;
+
+    Bitstream_Write(stream, length, value);
+    //@ assert unchanged:  Unchanged{Here,Pre}(stream, old_pos, stream->bitpos);
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:Bitstream_ReadThenWrite}
+	Verifying the scenario ``read, then write'' }
+\end{listing}
 

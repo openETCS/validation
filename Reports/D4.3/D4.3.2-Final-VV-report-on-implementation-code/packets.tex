@@ -324,7 +324,7 @@ Section~\ref{sec:adhesionfactor-predicates-separated}.
 The behavior \inl{normal_case} describes the function's behavior if
 \inl{*stream} contains enough unread bits to fill
 all members of \inl{*p}. 
-\fxfatal{p is declared as const and hence cannot be written --- possibly encode and decode have been confused?}
+%\fxfatal{p is declared as const and hence cannot be written --- possibly encode and decode have been confused?}
 In this case an object of type \inl{AdhesionFactor}
 is decoded from the stream
 and thus \inl{*p} is written.
@@ -387,7 +387,7 @@ is explained in Section~\ref{sec:bitstream}.
     complete behaviors;
     disjoint behaviors;
 */
-int AdhesionFactor_DecodeBit(const AdhesionFactor* p, Bitstream* stream);
+int AdhesionFactor_DecodeBit(AdhesionFactor* p, Bitstream* stream);
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:adhesionfactor-decodebit}Contract for \inl{DecodeBit} function of \inl{AdhesionFactor}}
@@ -529,7 +529,7 @@ return value equals \inl{-1}.
     complete behaviors;
     disjoint behaviors;
 */
-int AdhesionFactor_EncodeBit(AdhesionFactor* p, Bitstream* stream);
+int AdhesionFactor_EncodeBit(const AdhesionFactor* p, Bitstream* stream);
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:adhesionfactor-encodebit}Contract for \inl{EncodeBit} function of \inl{AdhesionFactor}}

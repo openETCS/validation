@@ -472,7 +472,7 @@ to false.
 The \inl{Normal(stream, MaxBitSize(p))}
 predicate returns true for both behaviors.
 
-Finally, \inl{invalid_bit_sequence} describes the function's
+Finally, the behavior \inl{invalid_bit_sequence} describes the function's
 behavior if the bit stream is not long enough to
 write a complete \inl{AdhesionFactor} object
 into. 
@@ -537,8 +537,20 @@ int AdhesionFactor_EncodeBit(const AdhesionFactor* p, Bitstream* stream);
 
 \FloatBarrier
 
-\subsection{Formal verification of \inl{AdhesionFactor}}
-
 \section{Formal specification of other packets}
-\label{sec:other packets}
+\label{sec:other-packets}
+
+After examining the definition of the predicates for \inl{AdhesionFactor}
+and the formal specifications of the functions \inl{AdhesionFactor_EncodeBit}
+and \inl{AdhesionFactor_DecodeBit} from Section~\ref{sec:adhesionfactor},
+the predicates for all other packets and their function's specifications
+look very familiar.
+In fact the only difference of the predicates lies in the different
+sets of subpredicates which are used and depends on the different sets
+of member variables for the different packets.
+The overloading feature of \acsl for predicates and logic functions
+is used to create completely generic formal specifications for the
+\inl{EncodeBit} and \inl{DecodeBit} functions.
+This means, that for any one of the 47 generated packets the
+function contracts look just like the ones for \inl{AdhesionFactor}.
 

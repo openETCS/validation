@@ -27,7 +27,7 @@ typedef struct Bitstream Bitstream;
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:Bitstream struct}
-	Details for the \inl{Bitsream} data structure}
+	Details for the \inl{Bitstream} data structure}
 \end{listing}
 
 \FloatBarrier
@@ -114,7 +114,7 @@ After completion of the operation,
 		%
 		In this report, we preferably used the terms ``least''
 		and ``most significant bit(s)'' to
-		designate a (range of) bit position(s) indenpendent of
+		designate a (range of) bit position(s) independent of
 		the coordinate system.
 	}
 	of the return value are zero
@@ -239,7 +239,7 @@ Listing~\ref{lst:Bitstream struct}.
 
 
 
-\section{Auxillary \inl{Bitstream} functions}
+\section{Auxiliary \inl{Bitstream} functions}
 \label{sec:bitstream-aux}
 
 
@@ -405,7 +405,7 @@ The formal definitions of the used ACSL predicates are given in
 Listing~\ref{lst:Bitsequence preds}.
 %
 Again, the tacit assumption that the array contains sensible data
-upto its very last bit is used in predicate \lstinline{Normal}.
+up to its very last bit is used in predicate \lstinline{Normal}.
 
 
 
@@ -427,7 +427,7 @@ upto its very last bit is used in predicate \lstinline{Normal}.
 */
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:Bitsequence preds} ACSL predicates used in bitsequence layer contracts}
+\caption{\label{lst:Bitsequence preds} ACSL predicates used in bit sequence layer contracts}
 \end{listing}
 
 
@@ -484,7 +484,7 @@ compared to \lstinline{Bitwalker_Read}'s contract:
 %
 \begin{itemize}
 \item We require that the \lstinline{value} to be written fits into
-the specifiec
+the specific
 	\lstinline{length}, i.e.\ all but its \lstinline{length}
 	least significant bits are
 	zero (requirement property ``\lstinline{upper}'').
@@ -527,7 +527,7 @@ we had to provide a total of six ACSL clauses about the loop:
 	at \lstinline{addr}, but nothing else---
 	\lstinline{loop assigns} clause.
 \item The value of the integer
-	expression \lstinline{bitpos+length-i} is non-negative thoughout
+	expression \lstinline{bitpos+length-i} is non-negative throughout
 	the whole loop execution, but is decreased in every iteration 
 	--- \lstinline{loop variant} clause.
 	%
@@ -567,7 +567,7 @@ Both criteria may be seen to be met by our Bitwalker case study.
 
 However, since the operations we dealt with essentially implement a
 communication protocol, there is a very simple ``high-level'' property
-that should be satistifed, viz.\ that a ``send'' operation is inverse
+that should be satisfied, viz.\ that a ``send'' operation is inverse
 to a ``receive'' operation.
 %
 This property can be stated formally in a very brief and understandable
@@ -665,14 +665,14 @@ provided
 	(property``\lstinline{upper}'').
 \end{itemize}
 %
-This ensures that the bistream communication channel doesn't loose
+This ensures that the bitstream communication channel doesn't loose
 information---every value we write into it can completely be
 restored.
 
 
 
 Vice versa, we could also show that the channel doesn't transmit more
-information than is needed to fulfil its task.
+information than is needed to fulfill its task.
 %
 Listing~\ref{lst:Bitstream_ReadThenWrite}
 shows the procedure for the scenario ``use \lstinline{Bitstream_Read}
@@ -684,7 +684,7 @@ whole stream unchanged, provided the first three requirement properties
 from \lstinline{Bitstream_WriteThenRead} are met.
 %
 As an example for a channel transmitting redundant information,
-condider
+consider
 a bitstream implementation
 with \lstinline{Bitstream_Write}
 storing each byte twice in succession and \lstinline{Bitstream_Read}

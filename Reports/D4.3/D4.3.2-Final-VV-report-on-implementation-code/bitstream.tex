@@ -8,19 +8,35 @@ In this section, we describe the intermediate abstractions levels the
 packet level (section~\ref{cha:packets}) relies on.
 %
 First, we discuss in Section~\ref{sec:bitstream}
-a level where operation arguments typically are include a
-\lstinline{C} structure \lstinline{struct Bitstream*}, which
-encapsulates bitstream data and all related administration information.
-%
+a level where operation arguments typically include a pointer to the
+\isoc structure \lstinline{Bitstream}, which
+encapsulates bitstream data and all related administration information 
+(see Listing~\ref{lst:Bitstream struct}).
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+struct Bitstream
+{
+    uint8_t*  addr;     // start address of stream data
+    uint32_t  size;     // length of stream data in bytes
+    uint32_t  bitpos;   // current bit position within stream data
+};
+typedef struct Bitstream Bitstream;
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:Bitstream struct}
+	Details for the \inl{Bitsream} data structure}
+\end{listing}
+
+\FloatBarrier
+
 In Section~\ref{sec:bit sequences}, we present a level still working on
 bit sequences, but with an operation typically
 having one argument for every bitstream data or administration input.
 %
 Appendix~\ref{cha:low-level bitstream} finally presents even lower levels.
-
-
-
-
 
 
 
@@ -52,8 +68,32 @@ It requires \lstinline{stream}
 	(property ``\lstinline{invariant}''), and
 \item not to be exhausted (property ``\lstinline{normal}'').
 \end{itemize}
-%
-It is allowed to ---~and usually in fact will~--- modify the current bit
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+  requires  valid:      Readable(stream);
+  requires  invariant:  Invariant(stream, length);
+  requires  normal:     Normal(stream, length);
+
+  assigns   stream->bitpos;
+
+  ensures   pos:        stream->bitpos == \old(stream->bitpos) + length;
+  ensures   changed:    EqualBits(stream, \old(stream->bitpos), stream->bitpos, \result);
+  ensures   upper:      UpperBitsNotSet(\result, length);
+  ensures   size:       stream->size == \old(stream->size);
+  ensures   unchanged:  Unchanged{Here,Old}(stream, 0, 8 * stream->size);
+*/
+uint64_t Bitstream_Read(Bitstream* stream, uint32_t length);
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:Bitstream_Read spec}Reading from a bitstream}
+\end{listing}
+
+\FloatBarrier
+
+It is allowed to---and usually in fact will---modify the current bit
 position within \lstinline{stream}, but it has to leave all other memory
 unchanged (expressed by the ``\lstinline{assigns}'' clause).
 %
@@ -87,38 +127,55 @@ After completion of the operation,
 
 
 
+
+The formal definitions of the ACSL predicates used
+in \inl{Bitstream_Read}'s contract are given in
+Listing~\ref{lst:Bitstream preds}; they build upon the internal
+details of the \inl{Bitstream} data structure shown in
+Listing~\ref{lst:Bitstream struct}.
+
+
+
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
 /*@
-  requires  valid:      Readable(stream);
-  requires  invariant:  Invariant(stream, length);
-  requires  normal:     Normal(stream, length);
+  predicate 
+    Readable{L}(Bitstream* stream) = \valid(stream) &&
+      \valid_read(stream->addr + (0..stream->size-1));
 
-  assigns   stream->bitpos;
+  predicate
+    Writeable{L}(Bitstream* stream) = \valid(stream) &&
+      \valid(stream->addr + (0..stream->size-1));
 
-  ensures   pos:        stream->bitpos == \old(stream->bitpos) + length;
-  ensures   changed:    EqualBits(stream, \old(stream->bitpos), stream->bitpos, \result);
-  ensures   upper:      UpperBitsNotSet(\result, length);
-  ensures   size:       stream->size == \old(stream->size);
-  ensures   unchanged:  Unchanged{Here,Old}(stream, 0, 8 * stream->size);
+  predicate
+    Invariant{L}(Bitstream* stream, integer length) =
+      \separated(stream, stream->addr + (0..stream->size-1)) &&
+      Invariant(stream->size, stream->bitpos, length);
+
+  predicate
+    Normal{L}(Bitstream* stream, integer length) =
+      Normal(stream->size, stream->bitpos, length);
+
+  predicate
+    Unchanged{A,B}(Bitstream* stream, integer first, integer last) =
+      \forall integer i;  first <= i < last ==>
+        (\at(Bit8Array(stream->addr, i),A) <==>
+         \at(Bit8Array(stream->addr, i),B));
+
+  predicate
+    EqualBits{A}(Bitstream* stream, integer first, integer last, uint64_t value) =
+      EqualBits{A}(stream->addr, first, last, value);
+
 */
-uint64_t Bitstream_Read(Bitstream* stream, uint32_t length);
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:Bitstream_Read spec}Reading from a bitstream}
+\caption{\label{lst:Bitstream preds}
+	ACSL predicates used in bitstream layer contracts}
 \end{listing}
 
+\FloatBarrier
 
-
-
-
-The formal definitions of the ACSL predicates used
-in \lstinline{Bitstream_Read}'s contract are given in
-Listing~\ref{lst:Bitstream preds}; they build upon the internal
-details of the \lstinline{Bitstream} data structure shown in
-Listing~\ref{lst:Bitstream struct}.
-%
 \begin{itemize}
 \item Predicate \lstinline{Readable} requires that a stream's data area is
 	complete accessible for read.
@@ -173,7 +230,7 @@ Listing~\ref{lst:Bitstream struct}.
 \begin{figure}
 \begin{center}
 \vspace*{2cm}
---- Insert drawing ---
+\fxfatal{Insert drawing}
 \vspace*{2cm}
 \caption{\label{fig:EqualBits correspondance}
 	Bit coincidences required by \lstinline{EqualBits}}
@@ -182,74 +239,13 @@ Listing~\ref{lst:Bitstream struct}.
 
 
 
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-struct Bitstream
-{
-    uint8_t*  addr;     // start address of stream data
-    uint32_t  size;     // length of stream data in bytes
-    uint32_t  bitpos;   // current bit position within stream data
-};
-typedef struct Bitstream Bitstream;
-\end{lstlisting}
-\end{minipage}
-\caption{\label{lst:Bitstream struct}
-	Details for the bitstream data structure}
-\end{listing}
-
-
-
-
-
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-  predicate 
-    Readable{L}(Bitstream* stream) = \valid(stream) &&
-      \valid_read(stream->addr + (0..stream->size-1));
-
-  predicate
-    Writeable{L}(Bitstream* stream) = \valid(stream) &&
-      \valid(stream->addr + (0..stream->size-1));
-
-  predicate
-    Invariant{L}(Bitstream* stream, integer length) =
-      \separated(stream, stream->addr + (0..stream->size-1)) &&
-      Invariant(stream->size, stream->bitpos, length);
-
-  predicate
-    Normal{L}(Bitstream* stream, integer length) =
-      Normal(stream->size, stream->bitpos, length);
-
-  predicate
-    Unchanged{A,B}(Bitstream* stream, integer first, integer last) =
-      \forall integer i;  first <= i < last ==>
-        (\at(Bit8Array(stream->addr, i),A) <==>
-         \at(Bit8Array(stream->addr, i),B));
-
-  predicate
-    EqualBits{A}(Bitstream* stream, integer first, integer last, uint64_t value) =
-      EqualBits{A}(stream->addr, first, last, value);
-
-*/
-\end{lstlisting}
-\end{minipage}
-\caption{\label{lst:Bitstream preds}
-	ACSL predicates used in bitstream layer contracts}
-\end{listing}
-
-
+\section{Auxillary \inl{Bitstream} functions}
+\label{sec:bitstream-aux}
 
 
 As a kind of constructor for type
 \lstinline{Bitstream}, we provide the operation \lstinline{Bitstream_Init},
 shown with its contract in Listing~\ref{lst:Bitstream_Init}.
-%
-Moreover, we provide a test for exhaustion of a \lstinline{Bitstream},
-shown in Listing~\ref{lst:Bitstream_Normal}.
 
 
 
@@ -276,6 +272,10 @@ void Bitstream_Init(Bitstream* stream, uint8_t* addr, uint32_t size, uint32_t bi
 \caption{\label{lst:Bitstream_Init}Setting-up a bitstream}
 \end{listing}
 
+\FloatBarrier
+
+Moreover, we provide a test for exhaustion of a \lstinline{Bitstream},
+shown in Listing~\ref{lst:Bitstream_Normal}.
 
 
 \begin{listing}[hbt]
@@ -297,49 +297,20 @@ int Bitstream_Normal(const Bitstream* stream, uint32_t length);
 
 
 
+\FloatBarrier
 
+
+\section{Reading and writing bit sequences}
+\label{sec:bit sequences}
+
+In this section, we describe the operations that handle plain bit sequences.
+%
+They are used to implement the \lstinline{Bitstream} operations for
+Section~\ref{sec:bitstream}.
 
 Listing~\ref{lst:Bitstream_Write impl} shows contract of
 the \lstinline{Bitstream_Write} operation,
-and moreover exemplfies its implementation.
-%
-Most parts of the contract are quite similar to that of
-\lstinline{Bitstream_Read} in
-Listing~\ref{lst:Bitstream_Read spec}.
-%
-Differences are the following:
-\begin{itemize}
-\item We require that the \lstinline{value} to be written fits into
-	the specified
-	\lstinline{length}, i.e.\ its unused most significant bits
-	are zero (requirement property
-	``\lstinline{upper}'').
-\item The operation is allowed to change the contents of the bitstream
-	(first \lstinline{assigns} clause) in addition to the streams
-	current bit
-	position (second \lstinline{assigns} clause), but no other
-	memory locations.
-\item Since we couldn't specify in the \lstinline{assigns} clauses 
-	which bits exactly are allowed to be modified, we give the
-	details in two
-	\lstinline{ensures} clauses named ``\lstinline{unchanged}'':
-	All bits before the stream's \lstinline{bitpos} on operation
-	entry, and after
-	its \lstinline{bitpos} on exit, must remain unchanged.
-\end{itemize}
-
-The implementation just employs the lower-level operation
-\lstinline{Bitwalker_Write} to
-write the bits, and appropriately updates the \lstinline{stream}'s
-\lstinline{bitpos}.
-%
-Two assertions were needed to help the provers establishing that
-\lstinline{value}'s
-bits are actually written to \lstinline{stream}'s data array by
-\lstinline{Bitwalker_Write}, and that they aren't destoyed during
-\lstinline{bitpos} update.
-
-
+and moreover exemplifies its implementation.
 
 
 \begin{listing}[hbt]
@@ -374,79 +345,41 @@ void Bitstream_Write(Bitstream* stream, uint32_t length, uint64_t value)
 \caption{\label{lst:Bitstream_Write impl}Writing to a bitstream}
 \end{listing}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 \FloatBarrier
 
-\section{Reading and writing bit sequences}
-\label{sec:bit sequences}
-
-In this section, we describe the operations that handle plain bit sequences.
+Most parts of the contract are quite similar to that of
+\lstinline{Bitstream_Read} in
+Listing~\ref{lst:Bitstream_Read spec}.
 %
-They are used to implement the \lstinline{struct Bitstream*} operations for
-Section~\ref{sec:bitstream}.
-
-The operation \lstinline{Bitwalker_Read(addr,size,bitpos,length)} reads
-\lstinline{length} bits starting at \lstinline{bitpos} from the array
-\lstinline{addr} of byte-size \lstinline{size}, and returns them as a
-\lstinline{uint64_t} value.
-%
-Its ACSL contract is shown in Listing~\ref{lst:Bitwalker_Read spec}.
-%
-It requires
-%
+Differences are the following:
 \begin{itemize}
-\item all bytes of the \lstinline{addr} array to be accessible for read
-	(requirement property ``\lstinline{valid}''),
-\item some data type invariants to hold
-	(property ``\lstinline{invariant}''), viz.\
-	%
-	\begin{itemize}
-	\item the total number of array bits to fit into a
-		\lstinline{uint32_t},
-	\item the result value to fit into a \lstinline{uint64_t},
-	\item the end bit position ---~and hence also the start bit position
-		\lstinline{bitpos} and \lstinline{length}~---
-		to fit into a \lstinline{uint32_t}, 
-	\end{itemize}
-	and
-\item the bit range
-	[\lstinline{bitpos}\ldots\lstinline{bitpos}+\lstinline{length})
-	to fit into the array at \lstinline{addr}
-	(property ``\lstinline{normal}'').
-\end{itemize}
-%
-The operation is not allowed to modify any (non-local) memory
---- as expressed by the ``\lstinline{assigns}'' clause.
-%
-After completion of the operation,
-%
-\begin{itemize}
-\item the returned value shall coincide, bit by bit, with the specified
-	range of the \lstinline{addr} array 
-	(postcondition property ``\lstinline{equal}''), and
-\item all remaining bits (i.e.\ all but the least significant 
-	\lstinline{length} bits) of the return value shall be zero 
-	(property ``\lstinline{upper}'').
+\item We require that the \lstinline{value} to be written fits into
+	the specified
+	\lstinline{length}, i.e.\ its unused most significant bits
+	are zero (requirement property
+	``\lstinline{upper}'').
+\item The operation is allowed to change the contents of the bitstream
+	(first \lstinline{assigns} clause) in addition to the streams
+	current bit
+	position (second \lstinline{assigns} clause), but no other
+	memory locations.
+\item Since we couldn't specify in the \lstinline{assigns} clauses 
+	which bits exactly are allowed to be modified, we give the
+	details in two
+	\lstinline{ensures} clauses named ``\lstinline{unchanged}'':
+	All bits before the stream's \lstinline{bitpos} on operation
+	entry, and after
+	its \lstinline{bitpos} on exit, must remain unchanged.
 \end{itemize}
 
-
-
-
-
-
-
+The implementation just employs the lower-level operation
+\lstinline{Bitwalker_Write} to
+write the bits, and appropriately updates the \lstinline{stream}'s
+\lstinline{bitpos}.
+%
+Two assertions were needed to help the provers establishing that
+\lstinline{value}'s
+bits are actually written to \lstinline{stream}'s data array by
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
@@ -468,19 +401,11 @@ uint64_t Bitwalker_Read(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t 
 
 
 
-
-
 The formal definitions of the used ACSL predicates are given in
 Listing~\ref{lst:Bitsequence preds}.
 %
 Again, the tacit assumption that the array contains sensible data
 upto its very last bit is used in predicate \lstinline{Normal}.
-
-
-
-
-
-
 
 
 
@@ -506,76 +431,12 @@ upto its very last bit is used in predicate \lstinline{Normal}.
 \end{listing}
 
 
-
+\FloatBarrier
 
 
 Listing~\ref{Bitwalker_Write spec} shows the contract, and the
 implementation, of the
 \lstinline{Bitwalker_Write} operation.
-%
-The following peculiarities are observed when the former is
-compared to \lstinline{Bitwalker_Read}'s contract:
-%
-\begin{itemize}
-\item We require that the \lstinline{value} to be written fits into
-the specifiec
-	\lstinline{length}, i.e.\ all but its \lstinline{length}
-	least significant bits are
-	zero (requirement property ``\lstinline{upper}'').
-\item The operation may modify the data array at \lstinline{addr},
-but nothing else.
-\item Again, we give the details of which data bits exactly
-	are allowed to be changed in two
-	\lstinline{ensures} clauses, named ``\lstinline{left}'' and
-	``\lstinline{right}'', and requiring all bits before
-	\lstinline{bitpos} and after
-	\lstinline{bitpos+length} to remain unchanged, respectively.
-\end{itemize}
-
-In the implementation, which is shown here as an example, we used
-the straight-forward
-algorithm that takes a bit from \lstinline{value} and places it into
-the \lstinline{addr} array, bit by bit.
-%
-In order for the provers to establish that algorithm's correctness,
-we had to provide a total of six ACSL clauses about the loop:
-%
-\begin{itemize}
-\item The loop variable, \lstinline{i}, always ranges in the interval
-	[\lstinline{bitpos}\ldots\lstinline{bitpos+length}] 
-	--- loop invariant property ``\lstinline{bound}''.
-	%
-	Note that the highest value is actually taken,
-	viz.\ on exit of the loop body in the last iteration,
-	subsequently causing the loop to terminate.
-\item The bits before \lstinline{bitpos}, and after
-	\lstinline{bitpos+length}
-	remain as they were on operation entry --- invariant property
-	``\lstinline{left}'' and ``\lstinline{right}'', respectively.
-\item In the \lstinline{i}th iteration, the bits
-	[\lstinline{bitpos}\ldots\lstinline{bitpos+i}) agree with
-	the least significant
-	\lstinline{i} bits of \lstinline{value} --- invariant property
-	``\lstinline{middle}''.
-\item The loop code is allowed to modify the variable \lstinline{i},
-	and the whole array
-	at \lstinline{addr}, but nothing else --- 
-	\lstinline{loop assigns} clause.
-\item The value of the integer
-	expression \lstinline{bitpos+length-i} is non-negative thoughout
-	the whole loop execution, but is decreased in every iteration 
-	--- \lstinline{loop variant} clause.
-	%
-	Therefore, the loop is guaranteed to terminate eventually.
-\end{itemize}
-
-
-
-
-
-
-
-
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -615,24 +476,72 @@ void Bitwalker_Write(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t len
 \caption{\label{Bitwalker_Write spec}Writing a bit sequence}
 \end{listing}
 
+\FloatBarrier
+
+
+The following peculiarities are observed when the former is
+compared to \lstinline{Bitwalker_Read}'s contract:
+%
+\begin{itemize}
+\item We require that the \lstinline{value} to be written fits into
+the specifiec
+	\lstinline{length}, i.e.\ all but its \lstinline{length}
+	least significant bits are
+	zero (requirement property ``\lstinline{upper}'').
+\item The operation may modify the data array at \lstinline{addr},
+but nothing else.
+\item Again, we give the details of which data bits exactly
+	are allowed to be changed in two
+	\lstinline{ensures} clauses, named ``\lstinline{left}'' and
+	``\lstinline{right}'', and requiring all bits before
+	\lstinline{bitpos} and after
+	\lstinline{bitpos+length} to remain unchanged, respectively.
+\end{itemize}
+
+In the implementation, which is shown here as an example, we used
+the straight-forward
+algorithm that takes a bit from \lstinline{value} and places it into
+the \lstinline{addr} array, bit by bit.
+%
+In order for the provers to establish that algorithm's correctness,
+we had to provide a total of six ACSL clauses about the loop:
+%
+\begin{itemize}
+\item The loop variable, \lstinline{i}, always ranges in the interval
+	[\lstinline{bitpos}\ldots\lstinline{bitpos+length}]---loop invariant property ``\lstinline{bound}''.
+	%
+	Note that the highest value is actually taken,
+	viz.\ on exit of the loop body in the last iteration,
+	subsequently causing the loop to terminate.
+\item The bits before \lstinline{bitpos}, and after
+	\lstinline{bitpos+length}
+	remain as they were on operation entry---invariant property
+	``\lstinline{left}'' and ``\lstinline{right}'', respectively.
+\item In the \lstinline{i}th iteration, the bits
+	[\lstinline{bitpos}\ldots\lstinline{bitpos+i}) agree with
+	the least significant
+	\lstinline{i} bits of \lstinline{value}---invariant property
+	``\lstinline{middle}''.
+\item The loop code is allowed to modify the variable \lstinline{i},
+	and the whole array
+	at \lstinline{addr}, but nothing else---
+	\lstinline{loop assigns} clause.
+\item The value of the integer
+	expression \lstinline{bitpos+length-i} is non-negative thoughout
+	the whole loop execution, but is decreased in every iteration 
+	--- \lstinline{loop variant} clause.
+	%
+	Therefore, the loop is guaranteed to terminate eventually.
+\end{itemize}
+
+
+
+
 The operations we have discussed here are based
 on operations to write and to read a single bit.
 %
 The details of the latter, as well as of the predicates used in their
 contracts, are given in Appendix~\ref{cha:low-level bitstream}.
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 \section{Verification of the Bitstream abstraction}
@@ -653,7 +562,6 @@ results in little or no increase of trustworthiness when
 \end{itemize}
 %
 Both criteria may be seen to be met by our Bitwalker case study.
-
 
 
 
@@ -688,60 +596,6 @@ Listing~\ref{lst:Bitstream_WriteThenRead}
 shows the procedure for the scenario ``use \lstinline{Bitstream_Write}
 to write a value to a stream, then immediately read it back using
 \lstinline{Bitstream_Read}''.
-%
-The procedure's body code is straightforward; after
-\lstinline{Bitstream_Write}, we have to seek back to the original bit
-position, before calling \lstinline{Bitstream_Read}''.
-%
-We could show that the read value always equals the written one,
-provided
-\begin{itemize}
-\item the stream is accessible for both read and update
-	(requirement property ``\lstinline{valid}''),
-\item it satisfies its type invariant (property
-	``\lstinline{invariant}''; cf.\ Listing~\ref{lst:Bitstream preds}
-	and~\ref{lst:Bitsequence preds}),
-\item the stream's current bit position is sufficiently small such that
-	all value bits still fit into the stream
-	(property``\lstinline{normal}''), and
-\item the most significant value bits that are not written are all zero
-	(property``\lstinline{upper}'').
-\end{itemize}
-%
-This ensures that the bistream communication channel doesn't loose
-information --- every value we write into it can completely be
-restored.
-
-
-
-
-
-Vice versa, we could also show that the channel doesn't transmit more
-information than is needed to fulfil its task.
-%
-Listing~\ref{lst:Bitstream_ReadThenWrite}
-shows the procedure for the scenario ``use \lstinline{Bitstream_Read}
-to read a value from a stream, then immediately write it back using
-\lstinline{Bitstream_Write}''.
-%
-We could show that this leaves the
-whole stream unchanged, provided the first three requirement properties
-from \lstinline{Bitstream_WriteThenRead} are met.
-%
-As an example for a channel transmitting redundant information,
-condider
-a bitstream implementation
-with \lstinline{Bitstream_Write}
-storing each byte twice in succession and \lstinline{Bitstream_Read}
-ignoring every second byte.
-%
-Such a stream doesn't meet our property, since, 
-starting from a stream with non-agreeing adjacent bytes, there is no
-way to reproduce it by a ``read, then write'' scenario.
-
-
-
-
 
 
 \begin{listing}[hbt]
@@ -790,10 +644,55 @@ uint64_t Bitstream_WriteThenRead(Bitstream* stream, uint32_t length, uint64_t v>
 	Verifying the scenario ``write, then read'' }
 \end{listing}
 
+\FloatBarrier
+
+The procedure's body code is straightforward; after
+\lstinline{Bitstream_Write}, we have to seek back to the original bit
+position, before calling \lstinline{Bitstream_Read}''.
+%
+We could show that the read value always equals the written one,
+provided
+\begin{itemize}
+\item the stream is accessible for both read and update
+	(requirement property ``\lstinline{valid}''),
+\item it satisfies its type invariant (property
+	``\lstinline{invariant}''; cf.\ Listing~\ref{lst:Bitstream preds}
+	and~\ref{lst:Bitsequence preds}),
+\item the stream's current bit position is sufficiently small such that
+	all value bits still fit into the stream
+	(property``\lstinline{normal}''), and
+\item the most significant value bits that are not written are all zero
+	(property``\lstinline{upper}'').
+\end{itemize}
+%
+This ensures that the bistream communication channel doesn't loose
+information---every value we write into it can completely be
+restored.
 
 
 
-
+Vice versa, we could also show that the channel doesn't transmit more
+information than is needed to fulfil its task.
+%
+Listing~\ref{lst:Bitstream_ReadThenWrite}
+shows the procedure for the scenario ``use \lstinline{Bitstream_Read}
+to read a value from a stream, then immediately write it back using
+\lstinline{Bitstream_Write}''.
+%
+We could show that this leaves the
+whole stream unchanged, provided the first three requirement properties
+from \lstinline{Bitstream_WriteThenRead} are met.
+%
+As an example for a channel transmitting redundant information,
+condider
+a bitstream implementation
+with \lstinline{Bitstream_Write}
+storing each byte twice in succession and \lstinline{Bitstream_Read}
+ignoring every second byte.
+%
+Such a stream doesn't meet our property, since, 
+starting from a stream with non-agreeing adjacent bytes, there is no
+way to reproduce it by a ``read, then write'' scenario.
 
 
 
@@ -828,4 +727,7 @@ void Bitstream_ReadThenWrite(Bitstream* stream, uint32_t length)
 \caption{\label{lst:Bitstream_ReadThenWrite}
 	Verifying the scenario ``read, then write'' }
 \end{listing}
+
+
+\FloatBarrier
 

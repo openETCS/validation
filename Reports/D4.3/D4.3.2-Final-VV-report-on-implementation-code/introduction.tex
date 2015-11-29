@@ -93,24 +93,42 @@ which are the following:
 \item show that the software does not raise runtime errors
 \end{enumerate}
 
-The European standard for railway software~\cite[\S~7.3.4.19]{en50128} mandates that 
+The European standard for railway software~\cite[\S~7.3.4.19]{en50128-2011} mandates that 
 the specification of software interfaces shall address various properties.
-Table~\ref{tbl:software-interfaces-en50128} list these properties and also lists
-whether \framac can be used to formulate them. 
+Table~\ref{tbl:software-interfaces-en50128} list these properties and also indicates
+to what extend \framac can be used to formally express them.
 
 
 \begin{table}[hbt]
 \begin{center}
-\begin{tabular}{|l|l|}
+\begin{tabular}{|p{8cm}|c|}
 \hline
 \textbf{Property} & \textbf{Specification through \framac} \\
 \hline
 pre and post conditions & yes \\
 \hline
+definition and description of all boundary values for all specified data & yes \\
+\hline
+behaviour when the boundary value is exceeded & yes \\
+\hline
+behaviour when the value is at the boundary & yes \\
+\hline
+time-critical input and output data & no \\
+\hline
+allocated memory for the interface buffers and the mechanisms to detect that the memory cannot be allocated or all buffers are full, where applicable & yes \\
+\hline
+existence of synchronization mechanisms between functions & partially \\
+\hline
 \end{tabular}
 \end{center}
 \caption{\label{tbl:software-interfaces-en50128} Properties to be addressed by interface specification according to EN~50128}
 \end{table}
+
+We see from this table that \framac\footnote{%
+	Or to be more precise ``\acsl'' (ANSI\slash ISO-C Specification Language) which
+	is the specification language of \framac.
+}
+is a well-justified choice for the specification of railway software.
 
 \section{Structure of this document}
 

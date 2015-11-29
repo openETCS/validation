@@ -107,3 +107,31 @@
   %includerangemarker=false,
 	numbers=none
 }
+\makeatletter
+\newcommand\applyCurrentFontsize
+{%
+  % we first save the current fontsize, baseline-skip,
+  % and listings' basicstyle
+  \let\f@sizeS@ved\f@size%
+  \let\f@baselineskipS@ved\f@baselineskip%
+  \let\basicstyleS@ved\lst@basicstyle%
+  % we now change the fontsize of listings' basicstyle
+  \renewcommand\lst@basicstyle%
+  {%
+      \basicstyleS@ved%
+      \fontsize{\f@sizeS@ved}{\f@baselineskipS@ved}%
+      \selectfont%
+  }%
+}
+\makeatother
+
+\newcommand\scaledlstinline[2][]
+{%
+  \bgroup%
+    \lstset{#1}%
+    \applyCurrentFontsize%
+    % ... possibly other macros whose effects should remain local ...
+    \lstinline|#2|%
+  \egroup%
+}
+

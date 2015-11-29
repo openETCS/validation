@@ -678,21 +678,6 @@ Listing~\ref{lst:Bitstream_ReadThenWrite}
 shows the procedure for the scenario ``use \lstinline{Bitstream_Read}
 to read a value from a stream, then immediately write it back using
 \lstinline{Bitstream_Write}''.
-%
-We could show that this leaves the
-whole stream unchanged, provided the first three requirement properties
-from \lstinline{Bitstream_WriteThenRead} are met.
-%
-As an example for a channel transmitting redundant information,
-consider
-a bitstream implementation
-with \lstinline{Bitstream_Write}
-storing each byte twice in succession and \lstinline{Bitstream_Read}
-ignoring every second byte.
-%
-Such a stream doesn't meet our property, since, 
-starting from a stream with non-agreeing adjacent bytes, there is no
-way to reproduce it by a ``read, then write'' scenario.
 
 
 
@@ -731,3 +716,18 @@ void Bitstream_ReadThenWrite(Bitstream* stream, uint32_t length)
 
 \FloatBarrier
 
+
+We were able show that this leaves the
+whole stream unchanged, provided the first three requirement properties
+from \lstinline{Bitstream_WriteThenRead} are met.
+%
+As an example for a channel transmitting redundant information,
+consider
+a bitstream implementation
+with \lstinline{Bitstream_Write}
+storing each byte twice in succession and \lstinline{Bitstream_Read}
+ignoring every second byte.
+%
+Such a stream doesn't meet our property, since, 
+starting from a stream with non-agreeing adjacent bytes, there is no
+way to reproduce it by a ``read, then write'' scenario.

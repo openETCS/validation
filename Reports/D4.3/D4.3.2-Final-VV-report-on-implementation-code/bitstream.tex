@@ -1,6 +1,5 @@
 
 
-
 \chapter{The bit stream layer}
 \label{cha:bitstream}
 
@@ -54,7 +53,7 @@ The operation
 reads the next \inl{length} bits from the bitstream
 \inl{stream}, and returns them as a \inl{uint64_t} value.
 %
-Its formal ACSL specification is shown in 
+Its formal \acsl specification is shown in 
 Listing~\ref{lst:Bitstream_Read spec}.
 %
 It requires \inl{stream}
@@ -105,7 +104,7 @@ After completion of the operation,
 	(property ``\inl{changed}''),
 \item in particular, all but the \inl{length} least significant
 	bits\footnote{
-		Bit positions are counted differently in Frama-C and in
+		Bit positions are counted differently in \framac and in
 		the openETCS project, cf.\
 		Figure~\ref{fig:bit coords} 
 		in Appendix~\ref{sec:bit operations in framac}.
@@ -126,7 +125,7 @@ After completion of the operation,
 
 
 
-The formal definitions of the ACSL predicates used
+The formal definitions of the \acsl predicates used
 in \inl{Bitstream_Read}'s contract are given in
 Listing~\ref{lst:Bitstream preds}; they build upon the internal
 details of the \inl{Bitstream} data structure shown in
@@ -169,7 +168,7 @@ Listing~\ref{lst:Bitstream struct}.
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:Bitstream preds}
-	ACSL predicates used in bitstream layer contracts}
+	\acsl predicates used in bitstream layer contracts}
 \end{listing}
 
 \FloatBarrier
@@ -191,7 +190,7 @@ Listing~\ref{lst:Bitstream struct}.
 	\inl{EqualBits} is reduced to a
 	lower-level predicate of the same 
 	name, 
-	respectively.\footnote{Frama-C allows for predicate overloading.}
+	respectively.\footnote{\framac allows for predicate overloading.}
 
 \item
 	A clause \inl{Normal(size,bitpos,length)} requires
@@ -211,7 +210,7 @@ Listing~\ref{lst:Bitstream struct}.
 	\inl{B}.
 	%
 	For example, it is used with \inl{A} and \inl{B}
-	instantiated to Frama-C's reserved keyword ``\inl{Here}'' and
+	instantiated to \framac's reserved keyword ``\inl{Here}'' and
 	``\inl{Old}'', denoting the memory state after and before
 	operation completion and entry, respectively; cf.\
 	Listing~\ref{lst:Bitstream_Write impl}.
@@ -380,7 +379,7 @@ bits are actually written to \inl{stream}'s data array by
 \fxfatal{something is missing here!!}
 
 
-The formal definitions of the used ACSL predicates are given in
+The formal definitions of the used \acsl predicates are given in
 Listing~\ref{lst:Bitsequence preds}.
 %
 Again, the tacit assumption that the array contains sensible data
@@ -406,7 +405,7 @@ up to its very last bit is used in predicate \inl{Normal}.
 */
 \end{lstlisting}
 \end{minipage}
-\caption{\label{lst:Bitsequence preds} ACSL predicates used in bit sequence layer contracts}
+\caption{\label{lst:Bitsequence preds} \acsl predicates used in bit sequence layer contracts}
 \end{listing}
 
 
@@ -506,7 +505,7 @@ algorithm that takes a bit from \inl{value} and places it into
 the \inl{addr} array, bit by bit.
 %
 In order for the provers to establish that algorithm's correctness,
-we had to provide a total of six ACSL clauses about the loop:
+we had to provide a total of six \acsl clauses about the loop:
 %
 \begin{itemize}
 \item The loop variable, \inl{i}, always ranges in the interval
@@ -588,7 +587,7 @@ More particularly, in our setting, we could show that the operations
 \inl{Bitstream_Read} and \inl{Bitstream_Write} are
 inverse to each other.
 %
-To this end, we set up two fictitious \inl{C} procedures realizing
+To this end, we set up two fictitious \isoc procedures realizing
 the composition of both operations in the two possible orders.
 
 

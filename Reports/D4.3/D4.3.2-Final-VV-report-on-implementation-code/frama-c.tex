@@ -2,17 +2,17 @@
 \chapter{An introduction to formal verification with \framacwp}
 \label{cha:frama-c}
 
-Frama-C is a platform dedicated to source-code analysis of C software.
+\framac is a platform dedicated to source-code analysis of \isoc software.
 It has a plug-in architecture and can thus be easily extended to 
 different kinds of analyses.
-The WP plugin of Frama-C allows one to formally verify that a piece of
-C code satisfies its specification.
+The WP plugin of \framac allows one to formally verify that a piece of
+\isoc satisfies its specification.
 This implies, of course, that the user provides a \emph{formal specification}
 of what the implementation is supposed to do.
-Frama-C comes with its own specification language ACSL which stands for
+\framac comes with its own specification language \acsl which stands for
 \emph{ANSI\slash ISO C Specification Language}.
-In order to help potential users to master ACSL we discuss in this chapter 
-a very simple C function \inl{abs_int} that implements the computation of
+In order to help potential users to master \acsl we discuss in this chapter 
+a very simple \isoc \inl{abs_int} that implements the computation of
 the absolute value for objects of type~\inl{int}.
 
 \begin{itemize}
@@ -43,7 +43,7 @@ formal treatment of \emph{side effects}.
 
 We will consider the function that computes the absolute value $|x|$
 of an integer $x$.
-In order to avoid name clashes with the function \inl{abs} in C standard library
+In order to avoid name clashes with the function \inl{abs} in \isoc library
 we use the name \inl{abs_int}.
 
 The mathematical definition of absolute value is very simple
@@ -68,7 +68,7 @@ A straightforward implementation of \inl{abs_int} is shown in Listing~\ref{lst:a
 
 In order to demonstrate that this implementation is correct we have to provide
 a formal specification.
-Listing~\ref{lst:abs1} shows our first attempt for an ACSL specification of \inl{abs_int} that
+Listing~\ref{lst:abs1} shows our first attempt for an \acsl specification of \inl{abs_int} that
 is based on the mathematical definition of the function $x \mapsto |x|$ in Equation~\ref{eq:abs}.
 
 \begin{listing}[hbt]
@@ -80,14 +80,14 @@ is based on the mathematical definition of the function $x \mapsto |x|$ in Equat
 
 \FloatBarrier
 
-The first thing to note is that ACSL specifications---or \emph{contracts}---are placed in special C comments
+The first thing to note is that \acsl specifications---or \emph{contracts}---are placed in special \isoc
 (they start with \inl{/*@}).
 Thus, they do not interfere with the executable code.
 The \inl{ensures} clause in the specification expresses \emph{postconditions},
 that is, properties that should be guaranteed \emph{after} the execution
 of \inl{abs_int}.
-The ACSL reserved word \inl{\\result} is used to refer to the return value of a C function.
-Note that we use the usual C operators \inl{==} and \inl{<=} to express equalities and inequalities
+The \acsl reserved word \inl{\\result} is used to refer to the return value of a \isoc.
+Note that we use the usual \isoc \inl{==} and \inl{<=} to express equalities and inequalities
 in the specification.
 There is also an additional operator \inl{==>} which expresses logical implication.
 
@@ -156,7 +156,7 @@ It is of course well known that the operation \inl{-x} can overflow
 and it is the fact that \framacwp can detect such overflows that 
 helps to prevent incorrect verification results.
 
-The GNU Standard C Library clearly states that the absolute value of
+The GNU Standard \isoc clearly states that the absolute value of
 \inl{INT_MIN} is undefined.\footnote{%
   See \url{http://www.gnu.org/software/libc/manual/html_node/Absolute-Value.html}
 }
@@ -170,7 +170,7 @@ Under \textsf{OSX}, the manual page of \inl{abs} mentions under the field of ``B
 
 Thus, our formal specification should exclude the value \inl{INT_MIN}
 from the set of admissible value to which \inl{abs_int} can be applied.
-In ACSL, we can use the \inl{requires} clause to express \emph{preconditions}
+In \acsl, we can use the \inl{requires} clause to express \emph{preconditions}
 of a function.
 Listing~\ref{lst:abs1a} shows an extended contract of \inl{abs_int}
 that takes the limitations of the type \inl{int} into account.
@@ -192,7 +192,7 @@ There is an important lesson that can be learned here:
 \label{lesson}
 Sometimes developers provide source code and imagine that a tool
 like \framacwp can verify the correctness of their implementation.
-In order to fulfill its task, however, \framacwp needs an ACSL specification. 
+In order to fulfill its task, however, \framacwp needs an \acsl specification. 
 Such a specification---which must be based on a reasonably precise description of the
 admissible inputs and expected behavior---has to come from the \emph{requirements}
 of the software and is not magically discovered from the source code by \framacwp.
@@ -230,7 +230,7 @@ It is common practice to put function prototypes into ``\inl{.h}'' files and
 keep the implementation in files ending in~``\inl{.c}''.
 \framacwp supports this separation of specification and implementation.
 Listing~\ref{lst:abs2-h} shows the file \inl{abs2.h} which contains
-a declaration of \inl{abs_int} together with an attached ACSL specification.
+a declaration of \inl{abs_int} together with an attached \acsl specification.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -264,7 +264,7 @@ at the call site.
 
 We now look at a simple example in which our function \inl{abs_int} is used.
 More precisely, we include in Listing~\ref{lst:use_abs2-1} the
-header file from Listing~\ref{lst:abs2-h} which contains an ACSL specification of \inl{abs_int}.
+header file from Listing~\ref{lst:abs2-h} which contains an \acsl specification of \inl{abs_int}.
 
 \begin{listing}[hbt]
 \begin{minipage}{\textwidth}
@@ -318,9 +318,9 @@ the call of \inl{abs_int} is correct.
 \end{listing}
 
 Note that this assertion is a \emph{static} one, that is, it is
-an ACSL annotation that resides inside a comment and does not affect
+an \acsl annotation that resides inside a comment and does not affect
 the execution of the code in Listing~\ref{lst:use_abs2-3}.
-Also note that unlike in C~code, \emph{relation chains} with their usual mathematical meaning can be used both in function contracts and assertions.
+Also note that unlike in \isoc~code, \emph{relation chains} with their usual mathematical meaning can be used both in function contracts and assertions.
 
 %\clearpage
 

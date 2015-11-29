@@ -4,8 +4,8 @@
 \chapter{The bit stream layer}
 \label{cha:bitstream}
 
-In this section, we describe the intermediate abstractions levels the
-packet level (section~\ref{cha:packets}) relies on.
+In this chapter, we describe the intermediate abstractions levels the
+packet level (Chapter~\ref{cha:packets}) relies on.
 %
 First, we discuss in Section~\ref{sec:bitstream}
 a level where operation arguments typically include a pointer to the
@@ -32,16 +32,14 @@ typedef struct Bitstream Bitstream;
 
 \FloatBarrier
 
-In Section~\ref{sec:bit sequences}, we present a level still working on
+In this chapter, we present a level still working on
 bit sequences, but with an operation typically
 having one argument for every bitstream data or administration input.
 %
-Appendix~\ref{cha:low-level bitstream} finally presents even lower levels.
+Appendix~\ref{cha:low-level bitstream} finally presents lower level implementation details.
 
 
-
-
-
+\clearpage
 
 \section{The \inl{Bitstream} abstraction}
 \label{sec:bitstream}
@@ -186,7 +184,7 @@ Listing~\ref{lst:Bitstream struct}.
 	\inl{struct Bitstream}'s data area
 	doesn't overlap with the \inl{struct} itself, and that some
 	further, lower-level invariant holds (see 
-	Section~\ref{sec:bit sequences} below, in particular
+	Section~\ref{sec:writing bit sequences} below, in particular
 	Listing~\ref{lst:Bitsequence preds}).
 
 	In a similar way, predicate \inl{Normal} and
@@ -300,8 +298,8 @@ int Bitstream_Normal(const Bitstream* stream, uint32_t length);
 \FloatBarrier
 
 
-\section{Reading and writing bit sequences}
-\label{sec:bit sequences}
+\section{Writing bit sequences}
+\label{sec:writing bit sequences}
 
 In this section, we describe the operations that handle plain bit sequences.
 %
@@ -460,6 +458,9 @@ void Bitwalker_Write(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t len
 \end{listing}
 
 \FloatBarrier
+
+\section{Reading bit sequences}
+\label{sec:reading bit sequences}
 
 The following peculiarities are observed when the former is
 compared to \inl{Bitwalker_Read}'s contract in Listing~\ref{lst:Bitwalker_Read spec}.

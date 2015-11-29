@@ -8,17 +8,17 @@ low-level bitstream operations.
 They were used to implement the bit sequence abstraction level, cf.\
 Chapter~\ref{cha:bitstream}.
 %
-Since a write operation moves bits from a \lstinline{uint64_t} value
-into an array of \lstinline{uint8_t} values, and a read operations
+Since a write operation moves bits from a \inl{uint64_t} value
+into an array of \inl{uint8_t} values, and a read operations
 moved them the other way round,
 we need bit operations on both data types.
 %
 They are given in
 Subsection~\ref{subsec:low-level 8 array} 
-for an array of \lstinline{uint8_t}, 
-in Subsection~\ref{subsec:low-level 8} for a single \lstinline{uint8_t},
+for an array of \inl{uint8_t}, 
+in Subsection~\ref{subsec:low-level 8} for a single \inl{uint8_t},
 and
-in Subsection~\ref{subsec:low-level 64} for single \lstinline{uint64_t}.
+in Subsection~\ref{subsec:low-level 64} for single \inl{uint64_t}.
 
 
 
@@ -42,10 +42,10 @@ in Subsection~\ref{subsec:low-level 64} for single \lstinline{uint64_t}.
 In this section, we discuss the operations for read and write of a
 single bit from/into a byte array.
 
-The operation \lstinline{TestBit8Array(addr,size,pos)} returns the
-\lstinline{pos}$^{\mbox{\scriptsize th}}$ bit
-within the array at \lstinline{addr}
-of byte-size \lstinline{size}.\footnote{
+The operation \inl{TestBit8Array(addr,size,pos)} returns the
+\inl{pos}$^{\mbox{\scriptsize th}}$ bit
+within the array at \inl{addr}
+of byte-size \inl{size}.\footnote{
 	This parameter isn't actually used in the code, but merely
 	in the contract.
 }
@@ -53,15 +53,15 @@ Its contract and its implementation is shown in
 Listing~\ref{lst:TestBit8Array}.
 %
 See Listing~\ref{lst:bit predicate defs} for the definition of the predicate
-\lstinline{Bit8Array}.
+\inl{Bit8Array}.
 %
 The array bits are counted starting with the most significant one of
 the first byte,
 cf.\ Figure~\ref{fig:bit coords} below.
 %
-A call to \lstinline{TestBit8(bytevalue,bitadr)} returns the 
-\lstinline{bitadr}$^{\mbox{\scriptsize th}}$ bit
-within \lstinline{bytevalue}, this operation is discussed in
+A call to \inl{TestBit8(bytevalue,bitadr)} returns the 
+\inl{bitadr}$^{\mbox{\scriptsize th}}$ bit
+within \inl{bytevalue}, this operation is discussed in
 Appendix~\ref{subsec:low-level 8} below.
 
 
@@ -101,11 +101,11 @@ static inline int TestBit8Array(uint8_t*  addr, uint32_t size, uint32_t pos)
 
 
 
-Similarly, the operation \lstinline{SetBit8Array(addr,size,pos,flag)}
+Similarly, the operation \inl{SetBit8Array(addr,size,pos,flag)}
 sets the
-\lstinline{pos}$^{\mbox{\scriptsize th}}$ bit within the array at
-\lstinline{addr} of
-byte-size \lstinline{size} to \lstinline{flag}.
+\inl{pos}$^{\mbox{\scriptsize th}}$ bit within the array at
+\inl{addr} of
+byte-size \inl{size} to \inl{flag}.
 %
 Its contract is shown in Listing~\ref{lst:SetBit8Array}.
 %
@@ -113,9 +113,9 @@ It requires
 %
 \begin{itemize}
 \item the whole array to be accessible for update (requirement
-	property ``\lstinline{valid}''),
+	property ``\inl{valid}''),
 \item each possible bit position in the array to fit into a
-	\lstinline{uint32_t} (property ``\lstinline{size}''), and
+	\inl{uint32_t} (property ``\inl{size}''), and
 \item the given \lstinline{pos} to be a valid bit position in the array
 	(property ``\lstinline{pos}'').
 \end{itemize}

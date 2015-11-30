@@ -9,17 +9,18 @@ We discuss the highest, i.e.\ the data packet level, in this chapter;
 Chapter~\ref{cha:bitstream} elaborates on some intermediate, and
 Appendix~\ref{cha:low-level bitstream} on the lowest level.
 
-On the data packet level, a total of \fxfatal{ANZAHL} different packets
-are defined, each by a \lstinline{struct} declaration in \lstinline{C}.
+On the data packet level, a total of 47 different packets
+are defined as \isoc~\inl{struct}.
 We exemplify our discussion on the alphabetically first packet,
 \inl{AdhesionFactor} (Section~\ref{sec:adhesionfactor}), and give some
 comments on considerations with respect to other packets
-(Section~\ref{sec:other packets}).
+(Section~\ref{sec:other-packets}).
 
 In order to cope with the similarity of specification, implementation,
 and verification tasks for all packets, we have chosen to automatically 
-generate \fxfatal{Was genau? struct declaration, contract, ...} from the
-ETCS Subset 026 requirements description.\fxfatal{Name improvisiert}
+generate formal specifications and implementations for encoding
+and decoding data packets from chapter 7 of the
+ETCS Subset 026 system requirements description.
 
 \section{Formal specification of \inl{AdhesionFactor}}
 \label{sec:adhesionfactor}
@@ -312,7 +313,7 @@ The property \inl{valid_package} requires that \inl{p} is a valid pointer for re
 The property \inl{separation} requires that \inl{*stream} and \inl{*p} do not overlap in the memory.
 The 
 \inl{Separated}
-predicate wwas introduced in
+predicate was introduced in
 Section~\ref{sec:adhesionfactor-predicates-separated}.
 \end{itemize}
 
@@ -323,7 +324,7 @@ Section~\ref{sec:adhesionfactor-predicates-separated}.
 The behavior \inl{normal_case} describes the function's behavior if
 \inl{*stream} contains enough unread bits to fill
 all members of \inl{*p}. 
-\fxfatal{p is declared as const and hence cannot be written --- possibly encode and decode have been confused?}
+%\fxfatal{p is declared as const and hence cannot be written --- possibly encode and decode have been confused?}
 In this case an object of type \inl{AdhesionFactor}
 is decoded from the stream
 and thus \inl{*p} is written.
@@ -386,7 +387,7 @@ is explained in Section~\ref{sec:bitstream}.
     complete behaviors;
     disjoint behaviors;
 */
-int AdhesionFactor_DecodeBit(const AdhesionFactor* p, Bitstream* stream);
+int AdhesionFactor_DecodeBit(AdhesionFactor* p, Bitstream* stream);
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:adhesionfactor-decodebit}Contract for \inl{DecodeBit} function of \inl{AdhesionFactor}}
@@ -471,7 +472,7 @@ to false.
 The \inl{Normal(stream, MaxBitSize(p))}
 predicate returns true for both behaviors.
 
-Finally, \inl{invalid_bit_sequence} describes the function's
+Finally, the behavior \inl{invalid_bit_sequence} describes the function's
 behavior if the bit stream is not long enough to
 write a complete \inl{AdhesionFactor} object
 into. 
@@ -528,7 +529,7 @@ return value equals \inl{-1}.
     complete behaviors;
     disjoint behaviors;
 */
-int AdhesionFactor_EncodeBit(AdhesionFactor* p, Bitstream* stream);
+int AdhesionFactor_EncodeBit(const AdhesionFactor* p, Bitstream* stream);
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:adhesionfactor-encodebit}Contract for \inl{EncodeBit} function of \inl{AdhesionFactor}}
@@ -536,8 +537,20 @@ int AdhesionFactor_EncodeBit(AdhesionFactor* p, Bitstream* stream);
 
 \FloatBarrier
 
-\subsection{Formal verification of \inl{AdhesionFactor}}
-
 \section{Formal specification of other packets}
-\label{sec:other packets}
+\label{sec:other-packets}
+
+After examining the definition of the predicates for \inl{AdhesionFactor}
+and the formal specifications of the functions \inl{AdhesionFactor_EncodeBit}
+and \inl{AdhesionFactor_DecodeBit} from Section~\ref{sec:adhesionfactor},
+the predicates for all other packets and their function's specifications
+look very familiar.
+In fact the only difference of the predicates lies in the different
+sets of sub predicates which are used and depends on the different sets
+of member variables for the different packets.
+The overloading feature of \acsl for predicates and logic functions
+is used to create completely generic formal specifications for the
+\inl{EncodeBit} and \inl{DecodeBit} functions.
+This means, that for any one of the 47 generated packets the
+function contracts look just like the ones for \inl{AdhesionFactor}.
 

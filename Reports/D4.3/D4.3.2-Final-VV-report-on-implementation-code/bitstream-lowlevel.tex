@@ -2,7 +2,7 @@
 \chapter{Low-level bitstream operations}
 \label{cha:low-level bitstream}
 
-In this appendix, we describe the implementation of the
+In this chapter, we describe the implementation of the
 low-level bitstream operations.
 %
 They were used to implement the bit sequence abstraction level, cf.\
@@ -62,7 +62,7 @@ cf.\ Figure~\ref{fig:bit coords} below.
 A call to \lstinline{TestBit8(bytevalue,bitadr)} returns the 
 \lstinline{bitadr}$^{\mbox{\scriptsize th}}$ bit
 within \lstinline{bytevalue}, this operation is discussed in
-Appendix~\ref{subsec:low-level 8} below.
+subsection~\ref{subsec:low-level 8} below.
 
 
 
@@ -129,7 +129,7 @@ On completion, the operation shall guarantee
 \item that the value of \lstinline{flag}\footnote{
 		Any non-zero \lstinline{flag} value is treated like 1.
 		This is ensured by the contract of the called operation
-		\lstinline{SetBit8}, cf.\ Appendix~\ref{subsec:low-level 8}.
+		\lstinline{SetBit8}, cf.\ Subsection~\ref{subsec:low-level 8}.
 	}
 	is actually stored at the designated bit
 	position (postcondition property ``\lstinline{middle}'';
@@ -137,7 +137,7 @@ On completion, the operation shall guarantee
 	\lstinline{pos}$^{\mbox{\scriptsize th}}$ bit within the byte
 	array at \lstinline{addr} is set, 
 	cf.\ Listing~\ref{lst:bit predicate defs} in
-	Appendix~\ref{sec:bit operations in framac}), and
+	Section~\ref{sec:bit operations in framac}), and
 \item that all other bits remain unchanged 
 	(properties ``\lstinline{left}'', ``\lstinline{right}'').
 \end{itemize}
@@ -265,7 +265,7 @@ Its contract is shown in Listing~\ref{lst:TestBit8}.
 	if, and only if, the \lstinline{pos}$^{\mbox{\scriptsize th}}$ of
 	the byte \lstinline{value} is set, 
 	cf.\ Listing~\ref{lst:bit predicate defs} in
-	Appendix~\ref{sec:bit operations in framac}).
+	Section~\ref{sec:bit operations in framac}).
 \end{itemize}
 %
 The shown implementation additionally guarantees that the result is
@@ -301,7 +301,7 @@ Its contract is shown in Listing~\ref{lst:SetBit8}.
 	\lstinline{y} agree on all bits in range
 	[\lstinline{first}\ldots\lstinline{last}), cf.\ also
 	Listing~\ref{lst:EqualBits64} in 
-	Appendix~\ref{sec:bit operations in framac}), and 
+	Section~\ref{sec:bit operations in framac}), and 
 \item \lstinline{flag} is written to the approriate bit of 
 	\lstinline{value} (property ``\lstinline{pos}'').
 \end{itemize}
@@ -375,7 +375,7 @@ those working on a \lstinline{uint8_t}.
 %
 They are shown in Listing~\ref{lst:TestBit64}
 and \ref{lst:SetBit64} without repeating the comments given
-in Appendix~\ref{subsec:low-level 8} for the 8 bit version.
+in Subsection~\ref{subsec:low-level 8} for the 8 bit version.
 %
 See Listing~\ref{lst:bit predicate defs} for the employed ACSL predicates.
 
@@ -611,7 +611,7 @@ if, the \lstinline{uint64_t} values  \lstinline{x} and  \lstinline{y}
 agree on all bits in range [\lstinline{first}\ldots\lstinline{{last}).
 %
 The predicate \lstinline{EqualBits8}, used in
-Appendix~\ref{subsec:low-level 8}, is defined in similar way; its
+Subsection~\ref{subsec:low-level 8}, is defined in similar way; its
 definition need not be shown here.
 
 

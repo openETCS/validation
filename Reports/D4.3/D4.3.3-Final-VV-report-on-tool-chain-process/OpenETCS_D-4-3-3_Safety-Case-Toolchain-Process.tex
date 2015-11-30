@@ -276,9 +276,37 @@ by Mohamed Abdelnasir
 
 by @janwelte @raphaelfaudou
 
-- addressing specific position of traceabilty for safety argumentation
+- addressing specific position of traceability for safety argumentation
 - introducing basic concept
 - main findings (limitations)
+
+Requirement traceability activity consists in ensuring that all product engineering artifacts (including verification means) can be traced to an originating stakeholder requirement either directly (direct link) or through other requirements derived from stakeholder requirements. It means creating links but also manage their status (created, confirmed...) and potentially their deletion.
+
+Concerning OpenETCS, there are several needs for traceability but main ones concern definition of links between SRS-Subset 26 requirements and two models:
+\begin{itemize}
+\item OpenETCS architecture SysML model (System, subsystem, SW functions), edited with SCADE System tool
+\item OpenETCS OBU formal executable software model (SW architecture, SW functions, detailed design), edited with SCADE Suite tool
+\end{itemize}
+
+Figure \ref{fig:openETCSTraceabilityMainPriority} illustrates all required traceability links needed to achieve current design verification and highlights main priority (arrows with largest size).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.9\linewidth]
+{./images/openETCSTraceabilityMainPriority.png}
+\caption{\label{fig:openETCSTraceabilityMainPriority}OpenETCS traceability chains for current design with highlight on main priorities}
+\end{figure}
+
+OpenETCS tool chain currently supports ability to create links between:
+\begin{itemize}
+\item SRS Subset 026 .ReqIF requirements and additional requirements => through ProR integrated tool,
+\item SysML architecture model and SRS Subset 026 .ReqIF requirements through ReqCycle integrated tool
+\end{itemize}
+ 
+\textbf{Note:} it is also possible to create links between SCADE Model and SRS Subset 026 .ReqIF requirements through SCADE Suite RM Gateway and ReqTify traceability product but it is not an open solution and it requires additional licenses. Therefore that approach was used only by a few partners and was not considered as conclusive. There are pending investigations to provide alternate open solutions to support edition of those traceability links.
+
+
+
 
 \chapter{Generic OpenETCS Safety Case}
 \label{sec:hazardandrisk}

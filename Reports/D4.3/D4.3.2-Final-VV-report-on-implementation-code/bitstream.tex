@@ -1,4 +1,5 @@
 
+\FloatBarrier
 
 \chapter{The bit stream layer}
 \label{cha:bitstream}
@@ -35,7 +36,13 @@ In this chapter, we present a level still working on
 bit sequences, but with an operation typically
 having one argument for every bitstream data or administration input.
 %
-Appendix~\ref{cha:low-level bitstream} finally presents lower level implementation details.
+Chapter~\ref{cha:low-level bitstream} finally presents lower level 
+implementation details.
+
+
+
+
+
 
 
 \clearpage
@@ -107,7 +114,7 @@ After completion of the operation,
 		Bit positions are counted differently in \framac and in
 		the openETCS project, cf.\
 		Figure~\ref{fig:bit coords} 
-		in Appendix~\ref{sec:bit operations in framac}.
+		in Section~\ref{sec:bit operations in framac}.
 		%
 		In this report, we preferably used the terms ``least''
 		and ``most significant bit(s)'' to
@@ -233,6 +240,8 @@ Listing~\ref{lst:Bitstream struct}.
 \end{figure}
 
 
+
+\FloatBarrier
 
 \section{Auxiliary \inl{Bitstream} functions}
 \label{sec:bitstream-aux}
@@ -375,8 +384,9 @@ write the bits, and appropriately updates the \inl{stream}'s
 Two assertions were needed to help the provers establishing that
 \inl{value}'s
 bits are actually written to \inl{stream}'s data array by
+\inl{Bitwalker_Write}, and that they aren't subsequently destroyed by
+the increment of \inl{bitpos}.
 
-\fxfatal{something is missing here!!}
 
 
 The formal definitions of the used \acsl predicates are given in
@@ -542,7 +552,9 @@ The operations we have discussed here are based
 on operations to write and to read a single bit.
 %
 The details of the latter, as well as of the predicates used in their
-contracts, are given in Appendix~\ref{cha:low-level bitstream}.
+contracts, are given in Chapter~\ref{cha:low-level bitstream}.
+
+\FloatBarrier
 
 
 \section{Verification of the Bitstream abstraction}
@@ -732,3 +744,4 @@ ignoring every second byte.
 Such a stream doesn't meet our property, since, 
 starting from a stream with non-agreeing adjacent bytes, there is no
 way to reproduce it by a ``read, then write'' scenario.
+

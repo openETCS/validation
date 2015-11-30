@@ -3,11 +3,11 @@
 \newcommand{\tpn}{TPN\xspace}
 \newcommand{\sysml}{SysML\xspace}
 
-\section{LAAS and INPT: Verification of the  Ceiling Speed Monitoring}
+\mychapter{6}{LAAS and INPT: Verification of the  Ceiling Speed Monitoring}
 \label{sec:laas}
 This section reports the verification activity of the Ceiling Speed Monitoring (CSM) function provided by the University of Bremen using the Tina model-checking toolbox {http://projects.laas.fr/tina/}. The goal of this activity is to use an automatic transformation from SysML to Time Petri Net (TPN) to this model and check several temporal logic formulas on the resulting system.  
 
-\subsection{Object of verification}
+\section{Object of verification}
 
 We study the SysML model of CSM function using the Tina model-checking toolbox. 
 We base our analysis on a model provided by the University of Bremen that was slightly
@@ -19,7 +19,7 @@ The cornerstone of our approach is an automatic transformation from
 SysML models to TPN models. We can then use the resulting formal
 model to check several temporal logic formulas.
 
-\subsection{Available specification}
+\section{Available specification}
 
 The CSM function supervises the observance of the maximal speed allowed according to the current most restrictive speed profile (MRSP). The model was edited, and later extended, using Papyrus. 
 The specification of the system under test is described in \cite{csmwp4} and available here: \url{https://github.com/openETCS/validation/tree/master/VnVUserStories/VnVUserStoryUniBremen}.  
@@ -30,7 +30,7 @@ acceleration or deceleration orders.
 The combination of a test environment model and an optional test driver
 model provides a deterministic model. 
 
-\subsubsection{Description of the Environment Model}
+\subsection{Description of the Environment Model}
 The environment model is defined in the TestEnvironment block. It is
 described using a state machine diagram as shown in
 Figure \ref{fig:env}.
@@ -148,7 +148,7 @@ per 200 t.u.. The deceleration of service brake is set at 5 km/h per
   \label{tab:envdo}
 \end{table} 
 
-\subsubsection{Description of the Driver Model}
+\subsection{Description of the Driver Model}
 
 In addition to the model of the train behavior we have added a model
 of the driver (and of the track description) that can be used to force
@@ -166,13 +166,13 @@ situation where the driver accelerates for a time T1 (DriveCommand =
   \label{fig:driver}
 \end{figure}
 
-\subsection{Detailed verification plan}
+\section{Detailed verification plan}
 
-\subsubsection{Goals}
+\subsection{Goals}
 
 Our main goal is to reuse the existing CSM model and extend the environment model with the driver model. These SysML models are then transformed to TPN models to validate the specification by model-checking. 
 
-\subsubsection{Method/Approach}
+\subsection{Method/Approach}
 
 We first provide some background information on the transformation from
 SysML to TPN used in our study. This transformation
@@ -240,7 +240,7 @@ transformation conforms to the following principles:
 \end{itemize}
 
 
-\subsubsection{Means}
+\subsection{Means}
 Instead of the thirteen diagrams available in \uml 2, the \sysml
 includes only nine diagrams, including:
 %%
@@ -279,7 +279,7 @@ System. The data handling ability of TTS is used to model the guards
 and actions on integer and float variables found in a SysML diagram.
 
 
-\subsection{Results}
+\section{Results}
 
 We provide two verification scenarios for testing the formal system
 obtained from the transformation of the CSM model. Each scenario is
@@ -410,7 +410,7 @@ should be used when model-checking the actual systems in Tina.
 \end{table} 
 
 
-\subsection{Summary}
+\section{Summary}
 
 What we have done:
 \begin{enumerate}
@@ -419,14 +419,14 @@ What we have done:
 \item Verified LTL properties using Tina model-checking toolset on the TPN models.
 \end{enumerate}
 
-\subsection{Conclusions/Lessons learned}
+\section{Conclusions/Lessons learned}
 
 To provide deterministic verification scenarios, we have extended the CSM models defined by Uni Bermen with an environment model and a driver model. 
 The transformation from semi-formal SysML model (including block, activity and state machine diagrams) to the TPN model is automatic. The resulting TPN models are then used to validate system specification written by LTL. 
 
 For now, there is still no state space explosion problem in this case study. We intend to verify the Speed and Distance Monitoring function model to further evaluate our method. 
 
-\subsection{Future Activities}
+\section{Future Activities}
  \begin{enumerate}
  \item Refine the environment model by describing desired test scenarios using the test scenarios defined by Uni Bremen. 
  \item Model and verify the calculation of train position either by using the existing SCADE model or by refining the SysML model.

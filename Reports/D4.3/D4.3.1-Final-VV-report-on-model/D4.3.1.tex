@@ -21,10 +21,21 @@
 \graphicspath{{schema/}}
 \usepackage{amsfonts}
 \definecolor{hblue}{RGB}{79,129,189}
+\usepackage{relsize}
+
 
 % user specified macros
 \input{macros.tex}
 
+\newcommand{\smartsolver}{\mbox{S\textsmaller[1]{3}}\xspace}
+\newcommand{\SAT}{{SAT}}
+\newcommand{\HLL}{{HLL}}
+\newcommand{\LLL}{{LLL}}
+\newcommand{\openETCS}{\textsf{openETCS}}
+\newcommand{\ETCS}{\textsf{ETCS}}
+\newcommand{\SCADE}{\textsc{Scade}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\ie}{\textit{i.e.}}
 
 \graphicspath{{./template/}{.}{./images/}}
 \begin{document}
@@ -117,7 +128,7 @@ Specifically, the following sections present the contributions of partners of WP
   \item Section~\ref{sec:ubremen} -- University of Bremen: Verification of the Management of the Radio
   Comumunication (Subset-026 chapter 3.5) 
   \item Section~\ref{sec:urostock} -- University of Rostock: Verification of the Speed and distance  Monitoring  (Subset-026 chapter 3.13)
-  \item Section~\ref{sec:systerel} -- Systerel: Verification of Procedure on-Sight (Subset-026 chapter 5) and the Management of Radio Communication (Subset-026 chapter 3.5)
+  \item Section~\ref{sec:systerel} -- Systerel: Verification of Procedure on-Sight (Subset-026 chapter 5), the Management of Radio Communication (Subset-026 chapter 3.5) and the management of modes and levels function (Subset-26 chapter 4.6 and several sections of chapter 5)
   \item Section~\ref{sec:laas} --LAAS and INPT: Verification of the Speed and Distance Monitoring (Subset-026 chapter 3.13)
 \end{itemize}
  
@@ -155,17 +166,17 @@ feedback to it.
 \renewcommand{\paragraph}[1]{\subsection{#1}}
 \renewcommand{\subparagraph}[1]{\subsubsection{#1}}
 
-\input{twt-D4-3-1}
+\input{twt-D4-2-1}
 
-\newpage
+%\newpage
 
-\input{UniBremen-D4-3-1}
+\input{UniBremen-D4-2-1}
 
-\newpage
+%\newpage
 
-\input{URO-D4-3-1}
+\input{URO-D4-2-1}
 
-\newpage
+%\newpage
 
 
 \let\paragraph\oldparagraph
@@ -174,18 +185,20 @@ feedback to it.
 
 \section{Systerel}
 \label{sec:systerel}
-Three approaches of VnV  on formal models have been experimented and are
-presented in this section:
+
+Railway and aerospace critical software require rigorous design, verification and validation processes. These can be achieved by the use of formal  methods as recommended by  the standards in these domains~\cite{standard_railway_2011,standard_aerospace_2011}.
+
+One possibility is to apply formal methods from the early stage of the design to produce ``correct-by-construction'' software. Numbers of success stories have already been described, for example in the railway industry with the B method~\cite{behm1999meteor,DBLP:conf/zum/BadeauA05,essame2006b}. Another approach is to introduce formal  methods later, during an independent verification and validation phase: starting from an informal specification, the properties to verify are identified and formally  specified in parallel to the software design activities. Then, they are automatically checked on an executable model or the code.
+
+In the following we will describe the two approaches applied on three models:
 
 \begin{enumerate}
-\item VnV on classical B  model that cover software design level, in the objective to provide an open-source approach;
-\item VnV on Event-B model that cover system level and support safety analysis;
-\item VnV on Scade model that cover software design level.
+\item VnV on classical B  model that cover software design level, in the objective to provide an open-source approach; this model specifies the procedure "On-Sight" (Subset-026 chapter 5.9).
+\item VnV on Event-B model that cover system level and support safety analysis; this model specifies the "Management of radio communication function" (Subset-26 chapter 3.5).
+\item VnV on Scade model that cover software design level; this model specifies the "modes and level management" function (Subset-26 chapter 4.6 and several sections of chapter 5).
 \end{enumerate}
 
-Classical B and Scade model specify the same example of Subset-026 chapter 5.9
- ``Procedure on-Sight'', Event-B model specifies the ``Mangement of Radio
-communication'' function.
+
 
 \input{BmodelVnV}
 
@@ -193,6 +206,7 @@ communication'' function.
 
 \input{ScadeModelVnV}
 
+\input{ScadeModelVnVS3}
 
 \newpage
 

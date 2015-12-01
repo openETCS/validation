@@ -161,94 +161,150 @@ lower-level bit ops & 126 & 126 & 100 & 55 &  0 & 1 & 70  \\
 
 \begin{table}[hbt]
 \begin{center}
-    \begin{tabular}{|m{8ex}|m{11cm}|m{9ex}|}
+    \begin{tabular}{|m{8ex}|m{11cm}|m{9ex}|m{11ex}|}
 \hline
-               PacketID & Packetname & Packettype \\
+               PacketID & Packetname & \inl{N_ITER} & Conditionals\\
 \hline
 \hline
-16 & \inl{RepositioningInformation} & static \\
+3 & \inl{NationalValues} & dynamic & conditional\\
 \hline
-39 & \inl{TrackConditionChangeOfTractionPower} & static \\
+5 & \inl{Linking} & dynamic & conditional\\
 \hline
-42 & \inl{SessionManagement} & optional values \\
+12 & \inl{Level1MovementAuthority} & dynamic & -\\
 \hline
-45 & \inl{RadioNetworkRegistration} & static \\
+15 & \inl{Level23MovementAuthority} & dynamic & -\\
 \hline
-57 & \inl{MovementAuthorityRequestParameters} & static \\
+16 & \inl{RepositioningInformation} & static & -\\
 \hline
-65 & \inl{TemporarySpeedRestriction} & static \\
+21 & \inl{GradientProfile} & dynamic & -\\
 \hline
-66 & \inl{TemporarySpeedRestrictionRevocation} & static \\
+27 & \inl{InternationalStaticSpeedProfile} & dynamic & -\\
 \hline
-71 & \inl{AdhesionFactor} & static \\
+39 & \inl{TrackConditionChangeOfTractionPower} & static & -\\
 \hline
-72 & \inl{PacketForSendingPlainTextMessages} & optional values \\
+41 & \inl{LevelTransitionOrder} & dynamic & conditional\\
 \hline
-76 & \inl{PacketForSendingFixedTextMessages} & optional values \\
+42 & \inl{SessionManagement} & static & conditional\\
 \hline
-90 & \inl{TrackAheadFreeUpToLevel23TransitionLocation} & optional values \\
+45 & \inl{RadioNetworkRegistration} & static & -\\
 \hline
-131 & \inl{RBCTransitionOrder} & static \\
+46 & \inl{ConditionalLevelTransitionOrder} & dynamic & conditional\\
 \hline
-132 & \inl{DangerForShuntingInformation} & static \\
+49 & \inl{ListOfBalisesForSHArea} & dynamic & conditional\\
 \hline
-133 & \inl{RadioInfillAreaInformation} & static \\
+51 & \inl{AxleLoadSpeedProfile} & dynamic & -\\
 \hline
-134 & \inl{EOLMPacket} & static \\
+57 & \inl{MovementAuthorityRequestParameters} & static & -\\
 \hline
-136 & \inl{InfillLocationReference} & optional values \\
+58 & \inl{PositionReportParameters} & dynamic & -\\
 \hline
-137 & \inl{StopIfInStaffResponsible} & static \\
+63 & \inl{ListOfBalisesInSRAuthority} & dynamic & conditional\\
 \hline
-138 & \inl{ReversingAreaInformation} & static \\
+65 & \inl{TemporarySpeedRestriction} & static & -\\
 \hline
-139 & \inl{ReversingSupervisionInformation} & static \\
+66 & \inl{TemporarySpeedRestrictionRevocation} & static & -\\
 \hline
-140 & \inl{TrainRunningNumberFromRBC} & static \\
+67 & \inl{TrackConditionBigMetalMasses} & dynamic & -\\
 \hline
-141 & \inl{DefaultGradientForTemporarySpeedRestriction} & static \\
-\hline
-254 & \inl{DefaultBaliseLoopOrRIUInformation} & static \\
+68 & \inl{TrackCondition} & dynamic & conditional\\
 \hline
 \end{tabular}
 \end{center}
-\caption{\label{tbl:packets-without-niter-packetnumbers-tracktotrain} TrackToTrain packets without \inl{N_ITER}}
+\caption{\label{tbl:packets-packetnumbers-tracktotrain-part1} TrackToTrain packets part 1}
+\end{table}
+
+
+\FloatBarrier  % forces the output of listings/tables
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|m{8ex}|m{11cm}|m{9ex}|m{11ex}|}
+\hline
+               PacketID & Packetname & \inl{N_ITER} & Conditionals\\
+\hline
+\hline
+70 & \inl{RouteSuitabilityData} & dynamic & conditional\\
+\hline
+71 & \inl{AdhesionFactor} & static & -\\
+\hline
+72 & \inl{PacketForSendingPlainTextMessages} & static & conditional\\
+\hline
+76 & \inl{PacketForSendingFixedTextMessages} & static & conditional\\
+\hline
+79 & \inl{GeographicalPositionInformation} & dynamic & conditional\\
+\hline
+80 & \inl{ModeProfile} & dynamic & -\\
+\hline
+90 & \inl{TrackAheadFreeUpToLevel23TransitionLocation} & static & conditional \\
+\hline
+131 & \inl{RBCTransitionOrder} & static & -\\
+\hline
+132 & \inl{DangerForShuntingInformation} & static & -\\
+\hline
+133 & \inl{RadioInfillAreaInformation} & static & -\\
+\hline
+134 & \inl{EOLMPacket} & static & -\\
+\hline
+136 & \inl{InfillLocationReference} & static & conditional\\
+\hline
+137 & \inl{StopIfInStaffResponsible} & static & -\\
+\hline
+138 & \inl{ReversingAreaInformation} & static & -\\
+\hline
+139 & \inl{ReversingSupervisionInformation} & static & -\\
+\hline
+140 & \inl{TrainRunningNumberFromRBC} & static & -\\
+\hline
+141 & \inl{DefaultGradientForTemporarySpeedRestriction} & static & -\\
+\hline
+254 & \inl{DefaultBaliseLoopOrRIUInformation} & static & -\\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:packets-packetnumbers-tracktotrain-part2} TrackToTrain packets part 2}
 \end{table}
 
 \FloatBarrier  % forces the output of listings/tables
 
 \begin{table}[hbt]
 \begin{center}
-    \begin{tabular}{|m{8ex}|m{11cm}|m{9ex}|}
+    \begin{tabular}{|m{8ex}|m{11cm}|m{9ex}|m{11ex}|}
 \hline
-               PacketID & Packetname & Packettype \\
+               PacketID & Packetname & \inl{N_ITER} & Conditionals \\
 \hline
 \hline
-1 & \inl{PositionReportBasedOnTwoBaliseGroups} & optional values \\
+1 & \inl{PositionReportBasedOnTwoBaliseGroups} & static & conditional\\
 \hline
-4 & \inl{ErrorReporting} & static \\
+3 & \inl{OnboardTelephoneNumbers} & dynamic & -\\
 \hline
-9 & \inl{Level23TransitionInformation} & static \\
+4 & \inl{ErrorReporting} & static & -\\
 \hline
-44 & \inl{DataUsedByApplicationsOutsideTheERTMSETCSSystem} & static \\
+9 & \inl{Level23TransitionInformation} & static & -\\
+\hline
+11 & \inl{ValidatedTrainData} & dynamic & -\\
+\hline
+44 & \inl{DataUsedByApplicationsOutsideTheERTMSETCSSystem} & static & -\\
 \hline
 \end{tabular}
 \end{center}
-\caption{\label{tbl:packets-without-niter-packetnumbers-traintotrack} TrainToTrack packets without \inl{N_ITER}}
+\caption{\label{tbl:packets-packetnumbers-traintotrack} TrainToTrack packets}
 \end{table}
 
 \FloatBarrier  % forces the output of listings/tables
 
 \begin{table}[hbt]
 \begin{center}
-    \begin{tabular}{|m{8ex}|m{11cm}|m{9ex}|}
+    \begin{tabular}{|m{8ex}|m{11cm}|m{9ex}|m{11ex}|}
 \hline
-               PacketID & Packetname & Packettype \\
+               PacketID & Packetname & \inl{N_ITER} & Conditionals \\
 \hline
 \hline
-255 & \inl{EndOfInformation} & static \\
+255 & \inl{EndOfInformation} & static & -\\
 \hline
 \end{tabular}
 \end{center}
-\caption{\label{tbl:packets-without-niter-packetnumbers-bothways} BothWays packets without \inl{N_ITER}}
+\caption{\label{tbl:packets-packetnumbers-bothways} BothWays packets}
 \end{table}
+
+\FloatBarrier  % forces the output of listings/tables
+

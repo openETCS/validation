@@ -49,7 +49,6 @@
 %define a list of authors and their affiliation here
 
 \author{Jan Welte}
-
 \affiliation{Technische Universität Braunschweig\\
   Institute for Traffic Safety and Automation Engineering\\
   Hermann-Blenk-Str. 42\\
@@ -57,6 +56,9 @@
   eMail: openetcs@iva.ing.tu-bs.de \\
   WebSite: www.iva.ing.tu-bs.de}
   
+\author{Raphaël Faudou}
+\affiliation{Samares Engineering on behalf of ENSEEIHT}
+
   
 %add yourself as author, if you contributed to the document
 
@@ -70,7 +72,7 @@
 
 
 \begin{abstract}
-This document addresses the general quality and safety assurance concept implemented and used by the openETCS development process and its respective toolchain. 
+This document addresses the general quality and safety assurance concept implemented and applied by the openETCS development process and its supporting toolchain. Thereby, the it is shown how the overall openETCS development process principals presented in D2.3 and  additional document can be applied for a CENELEC confirm SIL 4 development, if the interfaces to the system development are complemented accordingly. For the generic safety argumentation it is shown hw the model design addresses the ETCS system hazards for the OBU Kernel.
 
 \end{abstract}
 
@@ -216,11 +218,41 @@ If specific information are needed the can be place here. (D4.2.3 shall not be r
 
 \chapter{Tool Chain}
 
-\section{overview}
+\section{Overview}
 
 by Jan Welte
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\linewidth]{./images/Toolchain-New-Version-V-Model-Nov-2015}
+\caption{Core openETCS Toolchain}
+\label{fig:Toolchain-New}
+\end{figure}
+
+
 \section{Tool Qualification}
+
+\begin{center}
+\tablecaption{OpenETCS toolchain and categorisation}
+\label{tab:ToolCat}
+\tablehead{\hline Tool & Support Activity & Tool Class & Justification \\ }
+\tabletail{ \hline \multicolumn{4}{|r|}{Continues on next page} \\ \hline}
+\tablelasttail{\hline}
+
+\begin{supertabular}[H]{|p{2cm}|p{4cm}|p{4cm}|p{4cm}|}
+\hline Papyrus Editor & Definition of the model architecture & T1 & \\
+\hline Papyrus SysML checker & Check SysML conformity of the model & T2 & \\
+\hline SCADE Editor & Low-level modeling and code generation & T1 & \\
+\hline SCADE Code Generator & Code generation & T3 & \\
+\hline ProR & Requirements management & T1 & \\
+\hline Bitwalker & Generation of data structures for modelling & T3 & \\
+\hline Git & Versioning \& Traceability & T1 & \\
+\hline RT Tester & Model-based testing & T2 & \\ 
+\hline CPN Tools & Model checking and test case generation & T2 & \\
+\end{supertabular} 
+\end{center}
+
+tool are coming from D7.3 table 1
 
 by Michael Jastram (or other expert from WP7)
 
@@ -276,9 +308,37 @@ by Mohamed Abdelnasir
 
 by @janwelte @raphaelfaudou
 
-- addressing specific position of traceabilty for safety argumentation
+- addressing specific position of traceability for safety argumentation
 - introducing basic concept
 - main findings (limitations)
+
+Requirement traceability activity consists in ensuring that all product engineering artifacts (including verification means) can be traced to an originating stakeholder requirement either directly (direct link) or through other requirements derived from stakeholder requirements. It means creating links but also manage their status (created, confirmed...) and potentially their deletion.
+
+Concerning OpenETCS, there are several needs for traceability but main ones concern definition of links between SRS-Subset 26 requirements and two models:
+\begin{itemize}
+\item OpenETCS architecture SysML model (System, subsystem, SW functions), edited with SCADE System tool
+\item OpenETCS OBU formal executable software model (SW architecture, SW functions, detailed design), edited with SCADE Suite tool
+\end{itemize}
+
+Figure \ref{fig:openETCSTraceabilityMainPriority} illustrates all required traceability links needed to achieve current design verification and highlights main priority (arrows with largest size).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.9\linewidth]
+{./images/openETCSTraceabilityMainPriority.png}
+\caption{\label{fig:openETCSTraceabilityMainPriority}OpenETCS traceability chains for current design with highlight on main priorities}
+\end{figure}
+
+OpenETCS tool chain currently supports ability to create links between:
+\begin{itemize}
+\item SRS Subset 026 .ReqIF requirements and additional requirements => through ProR integrated tool,
+\item SysML architecture model and SRS Subset 026 .ReqIF requirements through ReqCycle integrated tool
+\end{itemize}
+ 
+\textbf{Note:} it is also possible to create links between SCADE Model and SRS Subset 026 .ReqIF requirements through SCADE Suite RM Gateway and ReqTify traceability product but it is not an open solution and it requires additional licenses. Therefore that approach was used only by a few partners and was not considered as conclusive. There are pending investigations to provide alternate open solutions to support edition of those traceability links.
+
+
+
 
 \chapter{Generic OpenETCS Safety Case}
 \label{sec:hazardandrisk}
@@ -307,6 +367,68 @@ by Jan Welte
 - main finding to address additional measures to complete safety management
 
 \section{Functional/Technical Safety}
+
+
+\begin{center}
+\tablecaption{List of ETCS Kernel Hazardous Events}
+\label{tab:KernelHaz}
+\tablehead{\hline Event Id. & Event Description & Corresponding performance requirement in Subset-041 & OpenETCS allocation \\ }
+\tabletail{ \hline \multicolumn{4}{|r|}{Continues on next page} \\ \hline}
+\tablelasttail{\hline}
+
+\begin{supertabular}[H]{|p{2cm}|p{4cm}|p{4cm}|p{4cm}|}
+\hline KERNEL-1 & Balise linking consistency checking failure & In case the message is received but the linking is not consistent:
+5.2.1.1: Delay between receiving of a balise message and applying the emergency brake
+KERNEL-2 &  \\ 
+\hline KERNEL-2 & Balise group message consistency check-ing failure  & 5.2.1.1: Delay between receiving of a balise message and applying the emergency brake &  \\ 
+\hline KERNEL-3 & Failure of radio message correctness check &  &  \\ 
+\hline KERNEL-4 & Radio sequencing checking failure &  &  \\ 
+\hline KERNEL-5 & Radio link supervision function failure &  &  \\ 
+\hline KERNEL-6 & Manage communication session failure &  &  \\ 
+\hline KERNEL-7 & Incorrect LRBG &  &  \\ 
+\hline KERNEL-8 & Emergency Message Acknowledgement Failure &  &  \\ 
+\hline KERNEL-9 & Speed calculation underestimates train speed & 5.3.1.2: Accuracy of speed known on-board, in ceiling speed monitoring, release speed monitoring and in target speed monitoring in case the compen-sation of the speed measurement in-accuracy is inhibited  &  \\ 
+\hline KERNEL-10 & Functional failure of standstill detection &  &  \\ 
+\hline KERNEL-11 & Incorrect traction/braking model (e.g. brake use restrictions) &  &  \\ 
+\hline KERNEL-12 & Failure of standstill supervision &  &  \\ 
+\hline KERNEL-13 & Failure of backward distance monitoring &  &  \\ 
+\hline KERNEL-14 & Failure of reverse movement protection &  &  \\ 
+\hline KERNEL-15 & Incorrect cab status (TIU failure) &  &  \\ 
+\hline KERNEL-16 & Incorrect train status TIU sleeping/cab status &  &  \\ 
+\hline KERNEL-17 & Wrong Acceptance of MA &  &  \\ 
+\hline KERNEL-18 & Failure to manage RBC/RBC &  &  \\ 
+\hline KERNEL-19 & Failure of train trip supervision in OS, LS and FS & 
+5.2.1.1: Delay between receiving of a balise message and applying the emergency brake
+5.2.1.13: Delay between passing an EOA/LOA and applying the emergen-cy brake  &  \\
+\hline KERNEL-20 & Failure of train trip supervision, shunting and SR & 
+5.2.1.1: Delay between receiving of a balise message and applying the emergency brake &  \\ 
+\hline KERNEL-21 & Incorrect supervision of stop in SR & 
+5.2.1.1: Delay between receiving of a balise message and applying the emergency brake &  \\ 
+\hline KERNEL-22 & Incorrect current EoA & 
+5.2.1.6: Delay between receiving of an emergency message and applying the reaction on-board &  \\ 
+\hline KERNEL-23 & Incorrect train position / train data sent from on-board to trackside & 
+5.3.1.3: Age of position measurement for position report to trackside
+5.3.2.1: Safe clock drift &  \\ 
+\hline KERNEL-24 & Failure of message acknowledgement &  &  \\ 
+\hline KERNEL-25 & Incorrect traction/braking model (Accelera-tion only) &  &  \\ 
+\hline KERNEL-26 & Deleted &  &  \\ 
+\hline KERNEL-27 & Incorrect System Data (e.g. current level) &  &  \\ 
+\hline KERNEL-28 & Incorrect confidence interval &  &  \\ 
+\hline KERNEL-29 & Failure to shorten MA &  &  \\ 
+\hline KERNEL-30 & Incorrect shortening of MA &  &  \\ 
+\hline KERNEL-31 & Deleted &  &  \\ 
+\hline KERNEL 32 & Failure of loop message consistency check-ing &  &  \\ 
+\hline KERNEL-33 & Wrong processing of MA information  & 5.2.1.3: Delay between receiving of a balise message and reporting the re-sulting change of status on-board
+(5.2.1.4: Delay between receiving of a MA via radio and the update of EOA on-board).
+Note: Whether 5.2.1.4 is safety related must be evaluated in the specific ap-plication’s hazard analysis, see further section 5.3.  &  \\
+\hline KERNEL-34 & Incorrect supervision of MA time-outs (sec-tions and overlaps) & 
+5.2.1.3: Delay between receiving of a balise message and reporting the re-sulting change of status on-board
+(5.2.1.4: Delay between receiving of a MA via radio and the update of EOA on-board).
+Note: Whether 5.2.1.4 is safety related must be evaluated in the specific ap-plication’s hazard analysis, see further section 5.3.  &  \\
+\hline 
+\end{supertabular} 
+\end{center}
+
 by Jan Welte
 
 - addressing general system safety properties and allocation to functional structure

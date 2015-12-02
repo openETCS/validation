@@ -142,21 +142,30 @@ Version &  Date & Author(s) & Justification  \\
 \chapter{Introduction}
 \label{sec:introduction}
 
-..
+During system development the system limits and components have to be established before the necessary steps can be taken to ensure that the system behavior is not unsafe. In this context safety is understood as protecting humans from harm resulting from the system as distinguished from security which covers protecting the system itself from hazards coming from the outside. Respectively, safety and security are comparative terms which have to be specified in context of the system for which they shall be proven. With respect to the definition of safety used in the EN 50128 hazards are only taken in account with respect to direct harm to humans, not to the environment overall, as it is considered in the context of different systems. The standards for railway system development like EN 50126, EN 50128 and EN 50129 provide only guidelines how safety for a system shall be determined and assured by providing certain management principles and methods for the respective system development. As the openETCS project is related to a number of different system definitions like the overall railway system, the on-board unit, the kernel software and the development tool chain different safety aspects have to be taken in consideration. Only a small number of these can actually be determined in the openETCS context alone. Respectively, this document and all considerations concerning safety in openETCS are focusing on the principal functional safety of the openETCS on-board kernel software and it resulting principals which have to be applied if the software model and code shall be used in a specific context.
 
 \section{Purpose}
 \label{sec:purpose}
 
-...
+The hazard and risk analysis activities are part of the overall safety process which is defined in the EN 50129 as "the series of procedures that are followed to enable all safety requirements of a product to be identified and met". To ensure that the safety process is implemented and followed in a proper way during the development the EN 50129 requires a safety management. The management has to present and control all related activities and documentation over the life-cycle taking into account the approval mile-stones and review requirements. As the product life-cycle is an ongoing process and iterative changes are taking place, the management system has to ensure that the respective safety effects of every change is considered. The openETCS project does not cover the full development of an ETCS on-board unit, the safety related activities in WP 4 do not cover all required parts of an EN 50129 compliant safety process and management. Hence, the purpose of this document is to present the basic concepts for hazard and risk analysis and safety case development evaluated and derived during the first iteration of WP 4. As openETCS constitutes a research project planning and responsibilities can not be derived and confined as it would be expected in a pure development project. Respectively, this document is not intended to document all required roles, documents and responsibilities as it would be required for safety documentation according to EN 50126 and EN 50129. This report only intends to present concepts and principals which would fit the needs for openETCS and how these have to be applied up to this point in the project.
+
+As the movement characteristics of a train set specific limits in which a driver alone is able to avoid derailment or any kind of collisions, railway signaling and protection systems have been developed to ensure safe train movements. Respectively, the major parts of a train control system like ETCS includes functionalities which shall guarantee that the overall railway system does not get in a hazardous situation. Correspondingly, this document illustrates the concepts for hazard and risk analysis which has been defined during the first WP 4 iteration to identify hazards or allocate them from the overall system analysis if they are related to the openETCS software. In addition the resulting risk for these hazards has to be evaluated to deduce specific safety requirements which have to be considered during the development process to reduce the risk. The results of the first proof of concept activities performed during this iteration are presented in section \ref{sec:Proofofconcept}.
+
+As the openETCS project does not produce an implemented train borne on-board system, the openETCS documents will not cover all specific software and hardware aspects which the EN 50129 requires for a sufficient safety case. Respectively, the openETCS results cannot be used without further work to demonstrate that a derived product using the openETCS kernel is compliant with all specified safety requirements. On this grounds during the first WP 4 iteration a model-based concept has been derive how the openETCS contributions have to be presented to at least serve as a basis for an on-board unit safety case. Therefore, all documents shall be related to a generic safety case for an EVC using the openETCS software development.
 
 \section{Document Structure}
 \label{sec:document-structure}
 
-...
+As the openETCS software development process and the respective tool chain are used in an iterative process this document only presents the current state of the openETCS safety related activities for the first WP 4 iteration. Chapter \ref{sec:introduction} gives an introduction to the overall document providing the basic document information and listing all reference standards and openETCS deliverables. Additionally, section \ref{sec:Background} provides an introduction concerning the context of quality and safety as it is understood in this document.
+
+As the hazard and risk analysis and all safety case activities are directly related to the overall development process, chapter \ref{sec:development-process} introduces the general steps of the openETCS development process and its interface to safety activities. In the following chapter \ref{sec:hazardandrisk} the concept for hazard and risk analysis during the openETCS development is presented. The fundamental safety principals for ETCS, which are the starting point for all openETCS specific activities, are described in section \ref{sec:ETCS-safety}.
+The derived plan how hazard and risk analysis may be performed for the openETCS software development is specified in section \ref{sec:Proofofconcept} and evaluated in a first proof of concept work performed during the first WP 4 iteration. Chapter \ref{sec:safetycase} describes the plan to collect and establish the safety case related documentation for the openETCS development. While section \ref{sec:safetycase-structure} states the principal requirements for the overall safety case activities, section \ref{sec:safetycase-model} presents the model-based approach planed for openETCS and the supporting tools, which shall be applied.
 
 \section{Document Evolution}
 
-...
+This document is based on the results of the first iteration work of WP 4 and shall present the overall concept for hazard and risk analysis methods applied during the openETCS development. All resulting changes and additional safety activities have to be maintained and documented according to the overall safety process in following iteration and will be documented in the respective following deliverables. 
+
+The openETCS development plan presented in chapter \ref{sec:development-process} is based on the current version of the Quality Assurance Plan and WP 2 deliverables D2.3 and D2.4. As the development methods and processes are still evolving this document has to be adopted accordingly. Concrete methods to verify and validate safety relevant properties derived from the hazard control methods described in this document, will be specified in the Verification and Validation plan. Also the tools used to support those activities will be detailed in this plan.
 
 \section{Reference Documents}
 \label{sec:refdoc}
@@ -352,6 +361,8 @@ by Jan Welte
 
 \section{Quality Management}
 
+Since the openETCS project as a research does not have the objective to conduct all steps needed for a vital on-board unit development, the resulting safety case will be generic in many parts only giving the requirements and basic safety strategies, but lacking the actual evidence. However, the overall safety argumentation has to be set up to meet SIL 4 requirements. Therefore the safety case has to show that the methods chosen in the openETCS development process satisfy the EN~50128 quality requirements and which documents have to be created during the process to obtain the required evidence. Basis for this work will be the Quality Assurance Plan as this document builds the basis for all quality management activities.
+
 by Mohamed Abdelnasir
 
 - basic concept for quality management in openETCS
@@ -359,6 +370,9 @@ by Mohamed Abdelnasir
 - main finding to address additional measures to complete quality management
 
 \section{Safety Management}
+
+As detailed in chapter \ref{sec:hazardandrisk} the overall safety argumentation has to demonstrate that during the development process the higher-level safety requirements have been addressed and that accordingly the on-board software satisfies the safety level. The safety case has to specify traces from high-level hazardous events to all subsystem requirements allocated to the openETCS software architecture and their verification and validation. Therefore, the safety case has to present evidence that the chosen methods are sufficient to demonstrate compliance to the requirements and that these methods are applied in a consistent process to ensure that all safety requirements are respected and validated.
+
 
 by Jan Welte
 
@@ -368,6 +382,22 @@ by Jan Welte
 
 \section{Functional/Technical Safety}
 
+Based on the ETCS reference architecture SUBSET-91 defines the role of ETCS as a train protection system the following way:
+
+\begin{center}
+\textbf{"To provide the Driver with information to allow  him to drive the train safely and to enforce respect of this information, to the extent advised to ETCS."}
+\end{center}
+
+Respectively, the Core Hazard for the ETCS reference architecture is defined as the following in SUBSET-91:
+\begin{center}
+\textbf{"Exceedance of the safe speed or distance as advised to ETCS."}
+\end{center}
+
+Based on the role of ETCS and its respective SIL 4 quantification the maximum allowed rate of occurrence (Tolerable hazard rate) of the ETCS Core Hazard for ETCS on-board is
+\[1.0\times10^{-9} hour^{-1} train^{-1}.\]
+The same value is specified for the corresponding track-side.
+
+Adapted form the ETCS system safety analysis presented in SUBSET-88 the Annex A of SUBSET-91 presents the List of Hazardous Events inside ETCS that might cause the ETCS Core Hazard to occur, either alone or in combination with other failures. These are the events not eliminated by the operational analysis. 34 of these hazardous events are allocated to the Kernel, which make them the basis for the on-board software hazard and risk analysis. 
 
 \begin{center}
 \tablecaption{List of ETCS Kernel Hazardous Events}
@@ -429,6 +459,8 @@ Note: Whether 5.2.1.4 is safety related must be evaluated in the specific ap-pli
 \end{supertabular} 
 \end{center}
 
+The main evidence for this part will be provided during verification steps, tracing identified hazards and risk control measures and in case where it is possible also validation results showing that the system is not behaving in an unsafe way. Mainly, it shall be demonstrated that all required risk control measures are taken into account in the actual model and/or code. Thereby, it has to be stated which artifacts have to be provided by which role during the development process and which content can be reused for overall safety argumentation in an implementation.
+
 by Jan Welte
 
 - addressing general system safety properties and allocation to functional structure
@@ -443,7 +475,11 @@ by Francois Revest
 \chapter{Conclusion}
 \label{sec:conclusion}
 
-This document presents the final results ...
+This document presents the basic concept for the main safety related activities in the openETCS development as they have been determined during the first verification and validation iteration level of WP 4. As these have been done in respect to a still evolving development methodology and tool chain, the overall process as to be detailed and adopted as the project continues. 
+
+In general the verification and validation activities have to ensure that the safety principal apportioned to the on-board functionality are satisfied. Hence, the main objective for the openETCS safety case as presented in chapter \ref{sec:safetycase} is to provide the fundamental quality and safety principles for the openETCS development as these have to be completed by adopters of the openETCS results for their assessment. Therefore, the general safety argumentation and the concrete evidence shall be clear distinguished to ease applicability and support discussions with different legal authorities.
+
+Overall the main methodology for the hazard and risk analysis as well as the safety case work has been defined during the first level iteration but these concepts have to be further refined over the next iterations with the evolving development process.
 
 \bibliographystyle{unsrt}
 \bibliography{./ref/ref-HaRA}

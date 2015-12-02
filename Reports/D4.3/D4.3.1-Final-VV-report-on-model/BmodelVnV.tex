@@ -1,11 +1,11 @@
-\subsection{Verification and Validation on Classical B model}
+\section{Verification and Validation on Classical B model}
 
 The first section \ref{sec:processes} describes usual verification and validation activities applied during the design of industrial critical software using the B method. Second section \ref{sec:tools} gives a description of tools available.
 
 Last section \ref{app:osproc} describes the results on an example.
 
 
-\subsubsection{Verification processes applicable to a B~model}
+\subsection{Verification processes applicable to a B~model}
 \label{sec:processes}
 
 A B~model is a textual and formal specification covering the functional behaviour of a safety critical software. It is usually written based on a high-level specification (informal or formal specification, for example SysML or a natural language). It is gradually refined, starting at the top with an abstract notation and ending at the bottom with sequential instructions --- which are then automatically translated in a target language such as C or Ada.\\
@@ -94,10 +94,10 @@ informal specification! It must be validated that the formalized specification
 specification, in particular that the intended functioning is possible. This is
 the domain of validation, as discussed in the introduction.
 
-\subsubsection{Tools}
+\subsection{Tools}
 \label{sec:tools}
 
-%\subsubsection{Existing tools}
+%\subsection{Existing tools}
 In this section, we present the existing tools suitable for the verification processes defined in Section~\ref{sec:processes}.
 
 \paragraph{Atelier~B}
@@ -116,7 +116,7 @@ For the remaining proof obligations, Atelier~B provides an interactive proof ass
 
 \paragraph{Atelier~B translators}~\\
 Translators are an essential component of the industrial success of B. The translators take the B0 implementations as input and produce a target source code, typically Ada or C/C++, ready to be compiled or integrated in an environment.\\
-ClearSy provides an open source translator, but it does not reach the T3 level of qualification\footnote{For additional information on qualification, see subsection \ref{subsec:qualif} or the CENELEC norm.}.
+ClearSy provides an open source translator, but it does not reach the T3 level of qualification\footnote{For additional information on qualification, see section \ref{subsec:qualif} or the CENELEC norm.}.
 
 \paragraph{ProB}
 \label{subsec:prob}
@@ -182,7 +182,7 @@ Finally the translated source code can be compiled and tested using various
 testing methods, including functional tests and black-box testing.
 
 \paragraph{Conclusion on tools}
-Table \ref{tab:comparison} summarizes the presentation of the tools in subsections \ref{subsec:atelierb} and \ref{subsec:prob}.\\
+Table \ref{tab:comparison} summarizes the presentation of the tools in sections \ref{subsec:atelierb} and \ref{subsec:prob}.\\
 Atelier~B and ProB are both mature tools that have proved their worth. They are the core tools for validation processes of B~models. However, key components of Atelier~B are not open source and this issue is not completely compensated by ProB's model checking and CBC.\\
 An ongoing research project named BWare\footnote{See \url{http://bware.lri.fr/index.php/BWare_project}} and conducted by ClearSy, Inria, LRI and others aims at providing a framework from proof obligation generation to proof discharge by the means of SMT solvers. This promising project started in September 2012 and is funded for a period of four years. It opens perspectives for the near future in terms of open source B~model verification.
 
@@ -204,7 +204,7 @@ ProB & ~ & ~ & \checkmark & \checkmark & ~ \\
 \end{table}
 
 %\appendix
-\subsubsection{Application: Procedure On-Sight}
+\subsection{Application: Procedure On-Sight}
 \label{app:osproc}
 The Procedure On-Sight, as described in {\itshape System Requirements Specification, Chapter 5}, has been modelled in B\footnote{The model is available at \url{github.com/openETCS/validation/tree/master/VnVUserStories/VnVUserStorySysterel/02-DAS2V/c-ClassicalBModel/ProcedureOnSight}.} to show the feasibility of the task and the credibility of the method. This appendix briefly presents the model, then applies the verification processes to this example.
 
@@ -266,7 +266,7 @@ a < 0 \land 0 \leq b \land 0 < c \Rightarrow a \leq \frac{b}{c}
 This theory is automatically verified by Atelier~B and therefore ensures full consistency of the proof.
 
 
-\subsubsection{Conclusion}
+\subsection{Conclusion}
 The B~method, along with its verification processes and tools, meets the goals and activities of the openETCS project in terms of quality, rigor, safety and credibility.\\
 There is yet to develop open-source POG and build a framework for proving, but this is compensated by the fact that work on the subject is ongoing, and ProB is an effective tool for verification.
 

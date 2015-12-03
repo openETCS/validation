@@ -620,8 +620,21 @@ inverse to each other.
 To this end, we set up two fictitious \isoc procedures realizing
 the composition of both operations in the two possible orders.
 
-
 \subsection{The verification function \inl{Bitstream_WriteThenRead}}
+
+Figure~\ref{fig:bitstream-writethenread} outlines the first scenario
+where a 64-bit value is written into a bit stream and read from there
+afterwards (see Figure~\ref{fig:bitstream-writethenread}).
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{figures/bitstream-writethenread.pdf}
+\caption{\label{fig:bitstream-writethenread}
+        Outline of \inl{Bitstream_WriteThenRead}}
+\end{center}
+\end{figure}
+
+\FloatBarrier
 
 Listing~\ref{lst:Bitstream_WriteThenRead}
 shows the procedure for the scenario ``use \inl{Bitstream_Write}
@@ -630,7 +643,6 @@ to write a value to a stream, then immediately read it back using
 
 
 \begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
 /*@
     requires valid:      Writeable(stream);
@@ -643,7 +655,8 @@ to write a value to a stream, then immediately read it back using
 
     ensures equality:     \result == value;
 */
-uint64_t Bitstream_WriteThenRead(Bitstream* stream, uint32_t length, uint64_t v>
+uint64_t
+Bitstream_WriteThenRead(Bitstream* stream, uint32_t length, uint64_t v)
 {
     //@ ghost uint32_t old_pos = stream->bitpos;
 
@@ -660,9 +673,9 @@ uint64_t Bitstream_WriteThenRead(Bitstream* stream, uint32_t length, uint64_t v>
     //@ ghost uint32_t new_pos = stream->bitpos;
     //@ assert equal_result: EqualBits(stream, old_pos, new_pos, result);
     //@ assert equal_value:  EqualBits(stream, old_pos, new_pos, value);
-    /*@ assert aux:          \forall integer k; old_pos <= k < new_pos ==>
-                               \let j = new_pos - 1 - k;
-                               (BitTest(value,  j) <==> BitTest(result, j));
+    /*@ assert aux:   \forall integer k; old_pos <= k < new_pos ==>
+                         \let j = new_pos - 1 - k;
+                         (BitTest(value,  j) <==> BitTest(result, j));
     */
     //@ assert left:         EqualBits64(result, value, 64-length, 64);
     //@ assert compare:      EqualBits64(result, value, 0, 64);
@@ -670,7 +683,6 @@ uint64_t Bitstream_WriteThenRead(Bitstream* stream, uint32_t length, uint64_t v>
     return result;
 }
 \end{lstlisting}
-\end{minipage}
 \caption{\label{lst:Bitstream_WriteThenRead}
 	Verifying the scenario ``write, then read'' }
 \end{listing}
@@ -705,6 +717,20 @@ restored.
 
 Vice versa, we could also show that the channel doesn't transmit more
 information than is needed to fulfill its task.
+Figure~\ref{fig:bitstream-writethenread} outlines this second scenario
+where a 64-bit value is read from a bit stream and written into another bit stream
+afterwards (see Figure~\ref{fig:bitstream-readthenwrite}).
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{figures/bitstream-readthenwrite.pdf}
+\caption{\label{fig:bitstream-readthenwrite}
+        Outline of \inl{Bitstream_ReadThenWrite}}
+\end{center}
+\end{figure}
+
+\FloatBarrier
+
 %
 Listing~\ref{lst:Bitstream_ReadThenWrite}
 shows the procedure for the scenario ``use \inl{Bitstream_Read}

@@ -39,7 +39,7 @@ in Subsection~\ref{subsec:low-level 64} for single \inl{uint64_t}.
 \section{Reading and writing individual bits}
 
 
-\subsection{8 bit arrays}
+\subsection{Reading and writing 8 bit arrays}
 \label{subsec:low-level 8 array}
 
 
@@ -213,7 +213,7 @@ static inline void SetBit8Array(uint8_t* addr, uint32_t size, uint32_t pos, int 
 
 \FloatBarrier
 
-\subsection{8 bits}
+\subsection{Reading and writing 8 bit words}
 \label{subsec:low-level 8}
 
 
@@ -319,7 +319,7 @@ appropriate bit in the usual way.
 Note that both our contract and our implementation enable us to set
 a bit by supplying a
 \inl{flag} value of e.g.\ 2, whereas the code 
-``\inl{mask=flag<<(7-pos);return(value&~mask)|mask}'' does not.
+``\inl{mask=flag<<(7-pos);return(value&~mask)\|mask}'' does not.
 
 
 
@@ -370,7 +370,7 @@ static inline uint8_t SetBit8(uint8_t value, uint32_t pos, int flag)
 
 \FloatBarrier
 
-\subsection{64 bits}
+\subsection{Reading and writing 64 bit words}
 \label{subsec:low-level 64}
 
 
@@ -547,13 +547,11 @@ notion, cf.\ Figure~\ref{fig:bit coords}.
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-/*@
-   predicate Bit8{A}(uint8_t v, integer n)  = BitTest(v, 7 - n);
+  predicate Bit8{A}(uint8_t v, integer n)  = BitTest(v, 7 - n);
 
-   predicate Bit64{A}(uint64_t v, integer n) = BitTest(v, 63 - n);
+  predicate Bit64{A}(uint64_t v, integer n) = BitTest(v, 63 - n);
 
-   predicate Bit8Array{A}(uint8_t* a, integer n) = Bit8(a[n / 8],n % 8);
-*/
+  predicate Bit8Array{A}(uint8_t* a, integer n) = Bit8(a[n / 8],n % 8);
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:bit predicate defs}Definition of bit test predicates}
@@ -640,11 +638,10 @@ definition need not be shown here.
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-/*@
-   predicate
-     EqualBits64{A}(uint64_t x, uint64_t y, integer first, integer last) =
-        \forall integer i; 64 - last <= i < 64 - first 
-          ==> (BitTest(x, i) <==> BitTest(y, i));
+predicate
+  EqualBits64{A}(uint64_t x, uint64_t y, integer first, integer last) =
+    \forall integer i; 64 - last <= i < 64 - first 
+      ==> (BitTest(x, i) <==> BitTest(y, i));
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:EqualBits64}
@@ -695,23 +692,21 @@ transformations.
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-   axiomatic BitProperties
-   {
-     axiom equal_bits64_0:
-       \forall uint64_t x, y;
-         EqualBits64(x, y, 0, 64) ==> x == y;
+axiomatic BitProperties
+{
+  axiom equal_bits64_0:
+    \forall uint64_t x, y; EqualBits64(x, y, 0, 64) ==> x == y;
 
-     axiom equal_bits64_1:
-       \forall uint64_t x, y, integer p, q;
-         (\forall integer k; p <= k < q 
-           ==> \let j = q-1-k; (BitTest(x, j) <==> BitTest(y, j)))
-         ==> EqualBits64(x, y, 64-(q-p), 64);
+  axiom equal_bits64_1:
+    \forall uint64_t x, y, integer p, q;
+      (\forall integer k; p <= k < q 
+         ==> \let j = q-1-k; (BitTest(x, j) <==> BitTest(y, j)))
+      ==> EqualBits64(x, y, 64-(q-p), 64);
 
-      axiom upper_bits_less_than:
-        \forall integer x, n; x >= 0 ==> n >= 0 ==>
-           (UpperBitsNotSet(x, n) <==> x < (1 << n));
-   }
-*/
+  axiom upper_bits_less_than:
+    \forall integer x, n; x >= 0 ==> n >= 0 ==>
+      (UpperBitsNotSet(x, n) <==> x < (1 << n));
+}
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:axioms64}\acsl axioms used in 64-bit contracts}
@@ -726,7 +721,7 @@ transformations.
 
 
 
-For a nonnegative integer \inl{v},
+Finally, for a nonnegative integer \inl{v},
 the predicate \inl{BitTest(v,n)} succeeds if, and only if, the
 \inl{n}$^{\mbox{\scriptsize th}}$ bit is set in the binary
 representation of
@@ -742,9 +737,7 @@ Its declaration is shown in Listing~\ref{lst:BitTest}.
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-/*@
-   predicate   BitTest(integer v, integer n);
-*/
+predicate   BitTest(integer v, integer n);
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:BitTest}

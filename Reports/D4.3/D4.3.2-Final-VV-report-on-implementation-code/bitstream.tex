@@ -143,35 +143,32 @@ Listing~\ref{lst:Bitstream struct}.
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-/*@
-  predicate 
-    Readable{L}(Bitstream* stream) = \valid(stream) &&
-      \valid_read(stream->addr + (0..stream->size-1));
+predicate 
+  Readable{L}(Bitstream* stream) = \valid(stream) &&
+    \valid_read(stream->addr + (0..stream->size-1));
 
-  predicate
-    Writeable{L}(Bitstream* stream) = \valid(stream) &&
-      \valid(stream->addr + (0..stream->size-1));
+predicate
+  Writeable{L}(Bitstream* stream) = \valid(stream) &&
+    \valid(stream->addr + (0..stream->size-1));
 
-  predicate
-    Invariant{L}(Bitstream* stream, integer length) =
-      \separated(stream, stream->addr + (0..stream->size-1)) &&
-      Invariant(stream->size, stream->bitpos, length);
+predicate
+  Invariant{L}(Bitstream* stream, integer length) =
+    \separated(stream, stream->addr + (0..stream->size-1)) &&
+    Invariant(stream->size, stream->bitpos, length);
 
-  predicate
-    Normal{L}(Bitstream* stream, integer length) =
-      Normal(stream->size, stream->bitpos, length);
+predicate
+  Normal{L}(Bitstream* stream, integer length) =
+    Normal(stream->size, stream->bitpos, length);
 
-  predicate
-    Unchanged{A,B}(Bitstream* stream, integer first, integer last) =
-      \forall integer i;  first <= i < last ==>
-        (\at(Bit8Array(stream->addr, i),A) <==>
-         \at(Bit8Array(stream->addr, i),B));
+predicate
+  Unchanged{A,B}(Bitstream* stream, integer first, integer last) =
+    \forall integer i;  first <= i < last ==>
+      (\at(Bit8Array(stream->addr, i),A) <==>
+       \at(Bit8Array(stream->addr, i),B));
 
-  predicate
-    EqualBits{A}(Bitstream* stream, integer first, integer last, uint64_t value) =
-      EqualBits{A}(stream->addr, first, last, value);
-
-*/
+predicate
+  EqualBits{A}(Bitstream* stream, integer first, integer last, uint64_t value) =
+    EqualBits{A}(stream->addr, first, last, value);
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:Bitstream preds}
@@ -400,19 +397,17 @@ up to its very last bit is used in predicate \inl{Normal}.
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-/*@
-   predicate Readable{L}(uint8_t* addr, integer size) = \valid_read(addr + (0..size-1));
+predicate Readable{L}(uint8_t* addr, integer size) = \valid_read(addr + (0..size-1));
 
-   predicate Writeable{L}(uint8_t* addr, integer size) = \valid(addr + (0..size-1));
+predicate Writeable{L}(uint8_t* addr, integer size) = \valid(addr + (0..size-1));
 
-   predicate Invariant{L}(integer size, integer bitpos, integer length) =
-       8 * size <= UINT32_MAX         &&
-       length <= 64                   &&
-       bitpos + length <= UINT32_MAX;
+predicate Invariant{L}(integer size, integer bitpos, integer length) =
+  8 * size <= UINT32_MAX         &&
+  length <= 64                   &&
+  bitpos + length <= UINT32_MAX;
 
-    predicate Normal{L}(integer size, integer bitpos, integer length) =
-       bitpos + length <= 8 * size;
-*/
+predicate Normal{L}(integer size, integer bitpos, integer length) =
+  bitpos + length <= 8 * size;
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:Bitsequence preds} \acsl predicates used in bit sequence layer contracts}

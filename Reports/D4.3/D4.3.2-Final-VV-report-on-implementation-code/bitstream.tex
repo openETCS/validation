@@ -1,4 +1,5 @@
 
+\FloatBarrier
 
 \chapter{The bit stream layer}
 \label{cha:bitstream}
@@ -35,7 +36,13 @@ In this chapter, we present a level still working on
 bit sequences, but with an operation typically
 having one argument for every bitstream data or administration input.
 %
-Appendix~\ref{cha:low-level bitstream} finally presents lower level implementation details.
+Chapter~\ref{cha:low-level bitstream} finally presents lower level 
+implementation details.
+
+
+
+
+
 
 
 \clearpage
@@ -107,7 +114,7 @@ After completion of the operation,
 		Bit positions are counted differently in \framac and in
 		the openETCS project, cf.\
 		Figure~\ref{fig:bit coords} 
-		in Appendix~\ref{sec:bit operations in framac}.
+		in Section~\ref{sec:bit operations in framac}.
 		%
 		In this report, we preferably used the terms ``least''
 		and ``most significant bit(s)'' to
@@ -136,35 +143,32 @@ Listing~\ref{lst:Bitstream struct}.
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-/*@
-  predicate 
-    Readable{L}(Bitstream* stream) = \valid(stream) &&
-      \valid_read(stream->addr + (0..stream->size-1));
+predicate 
+  Readable{L}(Bitstream* stream) = \valid(stream) &&
+    \valid_read(stream->addr + (0..stream->size-1));
 
-  predicate
-    Writeable{L}(Bitstream* stream) = \valid(stream) &&
-      \valid(stream->addr + (0..stream->size-1));
+predicate
+  Writeable{L}(Bitstream* stream) = \valid(stream) &&
+    \valid(stream->addr + (0..stream->size-1));
 
-  predicate
-    Invariant{L}(Bitstream* stream, integer length) =
-      \separated(stream, stream->addr + (0..stream->size-1)) &&
-      Invariant(stream->size, stream->bitpos, length);
+predicate
+  Invariant{L}(Bitstream* stream, integer length) =
+    \separated(stream, stream->addr + (0..stream->size-1)) &&
+    Invariant(stream->size, stream->bitpos, length);
 
-  predicate
-    Normal{L}(Bitstream* stream, integer length) =
-      Normal(stream->size, stream->bitpos, length);
+predicate
+  Normal{L}(Bitstream* stream, integer length) =
+    Normal(stream->size, stream->bitpos, length);
 
-  predicate
-    Unchanged{A,B}(Bitstream* stream, integer first, integer last) =
-      \forall integer i;  first <= i < last ==>
-        (\at(Bit8Array(stream->addr, i),A) <==>
-         \at(Bit8Array(stream->addr, i),B));
+predicate
+  Unchanged{A,B}(Bitstream* stream, integer first, integer last) =
+    \forall integer i;  first <= i < last ==>
+      (\at(Bit8Array(stream->addr, i),A) <==>
+       \at(Bit8Array(stream->addr, i),B));
 
-  predicate
-    EqualBits{A}(Bitstream* stream, integer first, integer last, uint64_t value) =
-      EqualBits{A}(stream->addr, first, last, value);
-
-*/
+predicate
+  EqualBits{A}(Bitstream* stream, integer first, integer last, uint64_t value) =
+    EqualBits{A}(stream->addr, first, last, value);
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:Bitstream preds}
@@ -224,7 +228,7 @@ Listing~\ref{lst:Bitstream struct}.
 \end{itemize}
 
 
-\begin{figure}
+\begin{figure}[hbt]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{figures/equalbits.pdf}
 \caption{\label{fig:EqualBits correspondance}
@@ -298,10 +302,21 @@ int Bitstream_Normal(const Bitstream* stream, uint32_t length);
 \section{Writing bit sequences}
 \label{sec:writing bit sequences}
 
-In this section, we describe the operations that handle plain bit sequences.
-%
-They are used to implement the \inl{Bitstream} operations for
-Section~\ref{sec:bitstream}.
+In this section, we describe the function \inl{Bitstream_Write} that
+transfers the designated bits from a variable of type \inl{uint64_t} into
+a bit stream (see Figure~\ref{fig:bitstream-write}).
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{figures/bitstream-write.pdf}
+\caption{\label{fig:bitstream-write}
+	Sketch of \inl{Bitstream_Write}}
+\end{center}
+\end{figure}
+
+
+\clearpage
 
 Listing~\ref{lst:Bitstream_Write impl} shows contract of
 the \inl{Bitstream_Write} operation,
@@ -367,16 +382,6 @@ Differences are the following:
 	its \inl{bitpos} on exit, must remain unchanged.
 \end{itemize}
 
-The implementation just employs the lower-level operation
-\inl{Bitwalker_Write} to
-write the bits, and appropriately updates the \inl{stream}'s
-\inl{bitpos}.
-%
-Two assertions were needed to help the provers establishing that
-\inl{value}'s
-bits are actually written to \inl{stream}'s data array by
-
-\fxfatal{something is missing here!!}
 
 
 The formal definitions of the used \acsl predicates are given in
@@ -390,19 +395,17 @@ up to its very last bit is used in predicate \inl{Normal}.
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-/*@
-   predicate Readable{L}(uint8_t* addr, integer size) = \valid_read(addr + (0..size-1));
+predicate Readable{L}(uint8_t* addr, integer size) = \valid_read(addr + (0..size-1));
 
-   predicate Writeable{L}(uint8_t* addr, integer size) = \valid(addr + (0..size-1));
+predicate Writeable{L}(uint8_t* addr, integer size) = \valid(addr + (0..size-1));
 
-   predicate Invariant{L}(integer size, integer bitpos, integer length) =
-       8 * size <= UINT32_MAX         &&
-       length <= 64                   &&
-       bitpos + length <= UINT32_MAX;
+predicate Invariant{L}(integer size, integer bitpos, integer length) =
+  8 * size <= UINT32_MAX         &&
+  length <= 64                   &&
+  bitpos + length <= UINT32_MAX;
 
-    predicate Normal{L}(integer size, integer bitpos, integer length) =
-       bitpos + length <= 8 * size;
-*/
+predicate Normal{L}(integer size, integer bitpos, integer length) =
+  bitpos + length <= 8 * size;
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:Bitsequence preds} \acsl predicates used in bit sequence layer contracts}
@@ -412,6 +415,16 @@ up to its very last bit is used in predicate \inl{Normal}.
 \FloatBarrier
 
 
+The implementation just employs the lower-level operation
+\inl{Bitwalker_Write} to
+write the bits, and appropriately updates the \inl{stream}'s
+\inl{bitpos}.
+%
+Two assertions were needed to help the provers establishing that
+\inl{value}'s
+bits are actually written to \inl{stream}'s data array by
+\inl{Bitwalker_Write}, and that they aren't subsequently destroyed by
+the increment of \inl{bitpos}.
 Listing~\ref{Bitwalker_Write spec} shows the contract, and the
 implementation, of the
 \inl{Bitwalker_Write} operation.
@@ -454,10 +467,25 @@ void Bitwalker_Write(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t len
 \caption{\label{Bitwalker_Write spec}Writing a bit sequence}
 \end{listing}
 
-\FloatBarrier
+\clearpage
 
 \section{Reading bit sequences}
 \label{sec:reading bit sequences}
+
+In this section, we describe the function \inl{Bitstream_Read} that
+transfers the designated bits from a bitstream into a variable of type \inl{uint64_t}
+(see Figure~\ref{fig:bitstream-read}).
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{figures/bitstream-read.pdf}
+\caption{\label{fig:bitstream-read}
+        Sketch of \inl{Bitstream_Read}}
+\end{center}
+\end{figure}
+
+
 
 The following peculiarities are observed when the former is
 compared to \inl{Bitwalker_Read}'s contract in Listing~\ref{lst:Bitwalker_Read spec}.
@@ -481,7 +509,7 @@ uint64_t Bitwalker_Read(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t 
 \caption{\label{lst:Bitwalker_Read spec}Reading a bit sequence}
 \end{listing}
 
-\FloatBarrier
+\clearpage
 
 \begin{itemize}
 \item We require that the \inl{value} to be written fits into
@@ -542,7 +570,9 @@ The operations we have discussed here are based
 on operations to write and to read a single bit.
 %
 The details of the latter, as well as of the predicates used in their
-contracts, are given in Appendix~\ref{cha:low-level bitstream}.
+contracts, are given in Chapter~\ref{cha:low-level bitstream}.
+
+\clearpage
 
 
 \section{Verification of the Bitstream abstraction}
@@ -590,8 +620,21 @@ inverse to each other.
 To this end, we set up two fictitious \isoc procedures realizing
 the composition of both operations in the two possible orders.
 
+\subsection{The verification function \inl{Bitstream_WriteThenRead}}
 
+Figure~\ref{fig:bitstream-writethenread} outlines the first scenario
+where a 64-bit value is written into a bit stream and read from there
+afterwards (see Figure~\ref{fig:bitstream-writethenread}).
 
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{figures/bitstream-writethenread.pdf}
+\caption{\label{fig:bitstream-writethenread}
+        Outline of \inl{Bitstream_WriteThenRead}}
+\end{center}
+\end{figure}
+
+\FloatBarrier
 
 Listing~\ref{lst:Bitstream_WriteThenRead}
 shows the procedure for the scenario ``use \inl{Bitstream_Write}
@@ -600,7 +643,6 @@ to write a value to a stream, then immediately read it back using
 
 
 \begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
 /*@
     requires valid:      Writeable(stream);
@@ -613,7 +655,8 @@ to write a value to a stream, then immediately read it back using
 
     ensures equality:     \result == value;
 */
-uint64_t Bitstream_WriteThenRead(Bitstream* stream, uint32_t length, uint64_t v>
+uint64_t
+Bitstream_WriteThenRead(Bitstream* stream, uint32_t length, uint64_t v)
 {
     //@ ghost uint32_t old_pos = stream->bitpos;
 
@@ -630,9 +673,9 @@ uint64_t Bitstream_WriteThenRead(Bitstream* stream, uint32_t length, uint64_t v>
     //@ ghost uint32_t new_pos = stream->bitpos;
     //@ assert equal_result: EqualBits(stream, old_pos, new_pos, result);
     //@ assert equal_value:  EqualBits(stream, old_pos, new_pos, value);
-    /*@ assert aux:          \forall integer k; old_pos <= k < new_pos ==>
-                               \let j = new_pos - 1 - k;
-                               (BitTest(value,  j) <==> BitTest(result, j));
+    /*@ assert aux:   \forall integer k; old_pos <= k < new_pos ==>
+                         \let j = new_pos - 1 - k;
+                         (BitTest(value,  j) <==> BitTest(result, j));
     */
     //@ assert left:         EqualBits64(result, value, 64-length, 64);
     //@ assert compare:      EqualBits64(result, value, 0, 64);
@@ -640,7 +683,6 @@ uint64_t Bitstream_WriteThenRead(Bitstream* stream, uint32_t length, uint64_t v>
     return result;
 }
 \end{lstlisting}
-\end{minipage}
 \caption{\label{lst:Bitstream_WriteThenRead}
 	Verifying the scenario ``write, then read'' }
 \end{listing}
@@ -671,9 +713,24 @@ information---every value we write into it can completely be
 restored.
 
 
+\subsection{The verification function \inl{Bitstream_ReadThenWrite}}
 
 Vice versa, we could also show that the channel doesn't transmit more
 information than is needed to fulfill its task.
+Figure~\ref{fig:bitstream-writethenread} outlines this second scenario
+where a 64-bit value is read from a bit stream and written into another bit stream
+afterwards (see Figure~\ref{fig:bitstream-readthenwrite}).
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{figures/bitstream-readthenwrite.pdf}
+\caption{\label{fig:bitstream-readthenwrite}
+        Outline of \inl{Bitstream_ReadThenWrite}}
+\end{center}
+\end{figure}
+
+\FloatBarrier
+
 %
 Listing~\ref{lst:Bitstream_ReadThenWrite}
 shows the procedure for the scenario ``use \inl{Bitstream_Read}
@@ -732,3 +789,4 @@ ignoring every second byte.
 Such a stream doesn't meet our property, since, 
 starting from a stream with non-agreeing adjacent bytes, there is no
 way to reproduce it by a ``read, then write'' scenario.
+

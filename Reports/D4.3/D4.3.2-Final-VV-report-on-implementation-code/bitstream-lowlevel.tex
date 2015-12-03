@@ -1,8 +1,10 @@
 
+\FloatBarrier
+
 \chapter{Low-level bitstream operations}
 \label{cha:low-level bitstream}
 
-In this appendix, we describe the implementation of the
+In this chapter, we describe the implementation of the
 low-level bitstream operations.
 %
 They were used to implement the bit sequence abstraction level, cf.\
@@ -32,10 +34,12 @@ in Subsection~\ref{subsec:low-level 64} for single \inl{uint64_t}.
 
 
 
+\FloatBarrier
+
 \section{Reading and writing individual bits}
 
 
-\subsection{8 bit arrays}
+\subsection{Reading and writing 8 bit arrays}
 \label{subsec:low-level 8 array}
 
 
@@ -62,7 +66,7 @@ cf.\ Figure~\ref{fig:bit coords} below.
 A call to \inl{TestBit8(bytevalue,bitadr)} returns the 
 \inl{bitadr}$^{\mbox{\scriptsize th}}$ bit
 within \inl{bytevalue}, this operation is discussed in
-Appendix~\ref{subsec:low-level 8} below.
+Subsection~\ref{subsec:low-level 8} below.
 
 
 
@@ -91,6 +95,8 @@ static inline int TestBit8Array(uint8_t*  addr, uint32_t size, uint32_t pos)
 \end{minipage}
 \caption{\label{lst:TestBit8Array}Reading a bit of an \inl{uint8_t} array}
 \end{listing}
+
+\FloatBarrier
 
 
 
@@ -129,7 +135,7 @@ On completion, the operation shall guarantee
 \item that the value of \inl{flag}\footnote{
 		Any non-zero \inl{flag} value is treated like 1.
 		This is ensured by the contract of the called operation
-		\inl{SetBit8}, cf.\ Appendix~\ref{subsec:low-level 8}.
+		\inl{SetBit8}, cf.\ Subsection~\ref{subsec:low-level 8}.
 	}
 	is actually stored at the designated bit
 	position (postcondition property ``\inl{middle}'';
@@ -137,7 +143,7 @@ On completion, the operation shall guarantee
 	\inl{pos}$^{\mbox{\scriptsize th}}$ bit within the byte
 	array at \inl{addr} is set, 
 	cf.\ Listing~\ref{lst:bit predicate defs} in
-	Appendix~\ref{sec:bit operations in framac}), and
+	Section~\ref{sec:bit operations in framac}), and
 \item that all other bits remain unchanged 
 	(properties ``\inl{left}'', ``\inl{right}'').
 \end{itemize}
@@ -207,7 +213,7 @@ static inline void SetBit8Array(uint8_t* addr, uint32_t size, uint32_t pos, int 
 
 \FloatBarrier
 
-\subsection{8 bits}
+\subsection{Reading and writing 8 bit words}
 \label{subsec:low-level 8}
 
 
@@ -265,7 +271,7 @@ Its contract is shown in Listing~\ref{lst:TestBit8}.
 	if, and only if, the \inl{pos}$^{\mbox{\scriptsize th}}$ of
 	the byte \inl{value} is set, 
 	cf.\ Listing~\ref{lst:bit predicate defs} in
-	Appendix~\ref{sec:bit operations in framac}).
+	Section~\ref{sec:bit operations in framac}).
 \end{itemize}
 %
 The shown implementation additionally guarantees that the result is
@@ -301,7 +307,7 @@ Its contract is shown in Listing~\ref{lst:SetBit8}.
 	\inl{y} agree on all bits in range
 	[\inl{first}\ldots\inl{last}), cf.\ also
 	Listing~\ref{lst:EqualBits64} in 
-	Appendix~\ref{sec:bit operations in framac}), and 
+	Section~\ref{sec:bit operations in framac}), and 
 \item \inl{flag} is written to the appropriate bit of 
 	\inl{value} (property ``\inl{pos}'').
 \end{itemize}
@@ -313,7 +319,7 @@ appropriate bit in the usual way.
 Note that both our contract and our implementation enable us to set
 a bit by supplying a
 \inl{flag} value of e.g.\ 2, whereas the code 
-``\inl{mask=flag<<(7-pos);return(value&~mask)|mask}'' does not.
+``\inl{mask=flag<<(7-pos);return(value&~mask)\|mask}'' does not.
 
 
 
@@ -364,7 +370,7 @@ static inline uint8_t SetBit8(uint8_t value, uint32_t pos, int flag)
 
 \FloatBarrier
 
-\subsection{64 bits}
+\subsection{Reading and writing 64 bit words}
 \label{subsec:low-level 64}
 
 
@@ -375,7 +381,7 @@ those working on a \inl{uint8_t}.
 %
 They are shown in Listing~\ref{lst:TestBit64}
 and \ref{lst:SetBit64} without repeating the comments given
-in Appendix~\ref{subsec:low-level 8} for the 8 bit version.
+in Subsection~\ref{subsec:low-level 8} for the 8 bit version.
 %
 See Listing~\ref{lst:bit predicate defs} for the employed \acsl predicates.
 
@@ -404,6 +410,8 @@ int TestBit64(uint64_t value, uint32_t pos)
 \end{minipage}
 \caption{\label{lst:TestBit64}Reading a bit of \inl{uint64_t}}
 \end{listing}
+
+\FloatBarrier
 
 
 
@@ -449,6 +457,8 @@ uint64_t SetBit64(uint64_t value, uint32_t pos, int flag)
 \end{minipage}
 \caption{\label{lst:SetBit64}Writing a bit of \inl{uint64_t}}
 \end{listing}
+
+\FloatBarrier
 
 
 
@@ -537,13 +547,11 @@ notion, cf.\ Figure~\ref{fig:bit coords}.
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-/*@
-   predicate Bit8{A}(uint8_t v, integer n)  = BitTest(v, 7 - n);
+  predicate Bit8{A}(uint8_t v, integer n)  = BitTest(v, 7 - n);
 
-   predicate Bit64{A}(uint64_t v, integer n) = BitTest(v, 63 - n);
+  predicate Bit64{A}(uint64_t v, integer n) = BitTest(v, 63 - n);
 
-   predicate Bit8Array{A}(uint8_t* a, integer n) = Bit8(a[n / 8],n % 8);
-*/
+  predicate Bit8Array{A}(uint8_t* a, integer n) = Bit8(a[n / 8],n % 8);
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:bit predicate defs}Definition of bit test predicates}
@@ -570,6 +578,8 @@ notion, cf.\ Figure~\ref{fig:bit coords}.
         Bit coordinates in \framac and in the OpenETCS project}
 \end{center}
 \end{figure}
+
+\FloatBarrier
 
 
 
@@ -601,6 +611,8 @@ predicate
 	Definition of the low-level predicate \inl{UpperBitsNotSet}}
 \end{listing}
 
+\FloatBarrier
+
 
 Listing~\ref{lst:EqualBits64} shows the predicate
 \inl{EqualBits64} that was used in the 64-bit
@@ -611,7 +623,7 @@ if, the \inl{uint64_t} values  \inl{x} and  \inl{y}
 agree on all bits in the range from \inl{first} to \inl{last}).
 %
 The predicate \inl{EqualBits8}, used in
-Appendix~\ref{subsec:low-level 8}, is defined in similar way; its
+Subsection~\ref{subsec:low-level 8}, is defined in similar way; its
 definition need not be shown here.
 
 
@@ -626,16 +638,17 @@ definition need not be shown here.
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-/*@
-   predicate
-     EqualBits64{A}(uint64_t x, uint64_t y, integer first, integer last) =
-        \forall integer i; 64 - last <= i < 64 - first 
-          ==> (BitTest(x, i) <==> BitTest(y, i));
+predicate
+  EqualBits64{A}(uint64_t x, uint64_t y, integer first, integer last) =
+    \forall integer i; 64 - last <= i < 64 - first 
+      ==> (BitTest(x, i) <==> BitTest(y, i));
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:EqualBits64}
         Definition of the low-level predicate \inl{EqualBits64}}
 \end{listing}
+
+\FloatBarrier
 
 
 
@@ -679,28 +692,27 @@ transformations.
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-   axiomatic BitProperties
-   {
-     axiom equal_bits64_0:
-       \forall uint64_t x, y;
-         EqualBits64(x, y, 0, 64) ==> x == y;
+axiomatic BitProperties
+{
+  axiom equal_bits64_0:
+    \forall uint64_t x, y; EqualBits64(x, y, 0, 64) ==> x == y;
 
-     axiom equal_bits64_1:
-       \forall uint64_t x, y, integer p, q;
-         (\forall integer k; p <= k < q 
-           ==> \let j = q-1-k; (BitTest(x, j) <==> BitTest(y, j)))
-         ==> EqualBits64(x, y, 64-(q-p), 64);
+  axiom equal_bits64_1:
+    \forall uint64_t x, y, integer p, q;
+      (\forall integer k; p <= k < q 
+         ==> \let j = q-1-k; (BitTest(x, j) <==> BitTest(y, j)))
+      ==> EqualBits64(x, y, 64-(q-p), 64);
 
-      axiom upper_bits_less_than:
-        \forall integer x, n; x >= 0 ==> n >= 0 ==>
-           (UpperBitsNotSet(x, n) <==> x < (1 << n));
-   }
-*/
+  axiom upper_bits_less_than:
+    \forall integer x, n; x >= 0 ==> n >= 0 ==>
+      (UpperBitsNotSet(x, n) <==> x < (1 << n));
+}
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:axioms64}\acsl axioms used in 64-bit contracts}
 \end{listing}
 
+\FloatBarrier
 
 
 
@@ -708,7 +720,8 @@ transformations.
 
 
 
-For a nonnegative integer \inl{v},
+
+Finally, for a nonnegative integer \inl{v},
 the predicate \inl{BitTest(v,n)} succeeds if, and only if, the
 \inl{n}$^{\mbox{\scriptsize th}}$ bit is set in the binary
 representation of
@@ -724,9 +737,7 @@ Its declaration is shown in Listing~\ref{lst:BitTest}.
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
-/*@
-   predicate   BitTest(integer v, integer n);
-*/
+predicate   BitTest(integer v, integer n);
 \end{lstlisting}
 \end{minipage}
 \caption{\label{lst:BitTest}

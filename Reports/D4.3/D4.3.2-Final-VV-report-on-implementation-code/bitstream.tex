@@ -228,7 +228,7 @@ predicate
 \end{itemize}
 
 
-\begin{figure}
+\begin{figure}[hbt]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{figures/equalbits.pdf}
 \caption{\label{fig:EqualBits correspondance}
@@ -237,8 +237,6 @@ predicate
 \end{figure}
 
 
-
-\FloatBarrier
 
 \section{Auxiliary \inl{Bitstream} functions}
 \label{sec:bitstream-aux}
@@ -304,10 +302,21 @@ int Bitstream_Normal(const Bitstream* stream, uint32_t length);
 \section{Writing bit sequences}
 \label{sec:writing bit sequences}
 
-In this section, we describe the operations that handle plain bit sequences.
-%
-They are used to implement the \inl{Bitstream} operations for
-Section~\ref{sec:bitstream}.
+In this section, we describe the function \inl{Bitstream_Write} that
+transfers the designated bits from a variable of type \inl{uint64_t} into
+a bit stream (see Figure~\ref{fig:bitstream-write}).
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{figures/bitstream-write.pdf}
+\caption{\label{fig:bitstream-write}
+	Sketch of \inl{Bitstream_Write}}
+\end{center}
+\end{figure}
+
+
+\clearpage
 
 Listing~\ref{lst:Bitstream_Write impl} shows contract of
 the \inl{Bitstream_Write} operation,
@@ -459,10 +468,25 @@ void Bitwalker_Write(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t len
 \caption{\label{Bitwalker_Write spec}Writing a bit sequence}
 \end{listing}
 
-\FloatBarrier
+\clearpage
 
 \section{Reading bit sequences}
 \label{sec:reading bit sequences}
+
+In this section, we describe the function \inl{Bitstream_Read} that
+transfers the designated bits from a bitstream into a variable of type \inl{uint64_t}
+(see Figure~\ref{fig:bitstream-read}).
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{figures/bitstream-read.pdf}
+\caption{\label{fig:bitstream-read}
+        Sketch of \inl{Bitstream_Read}}
+\end{center}
+\end{figure}
+
+
 
 The following peculiarities are observed when the former is
 compared to \inl{Bitwalker_Read}'s contract in Listing~\ref{lst:Bitwalker_Read spec}.
@@ -486,7 +510,7 @@ uint64_t Bitwalker_Read(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t 
 \caption{\label{lst:Bitwalker_Read spec}Reading a bit sequence}
 \end{listing}
 
-\FloatBarrier
+\clearpage
 
 \begin{itemize}
 \item We require that the \inl{value} to be written fits into
@@ -549,7 +573,7 @@ on operations to write and to read a single bit.
 The details of the latter, as well as of the predicates used in their
 contracts, are given in Chapter~\ref{cha:low-level bitstream}.
 
-\FloatBarrier
+\clearpage
 
 
 \section{Verification of the Bitstream abstraction}

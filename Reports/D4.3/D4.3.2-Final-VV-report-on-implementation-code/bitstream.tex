@@ -382,17 +382,6 @@ Differences are the following:
 	its \inl{bitpos} on exit, must remain unchanged.
 \end{itemize}
 
-The implementation just employs the lower-level operation
-\inl{Bitwalker_Write} to
-write the bits, and appropriately updates the \inl{stream}'s
-\inl{bitpos}.
-%
-Two assertions were needed to help the provers establishing that
-\inl{value}'s
-bits are actually written to \inl{stream}'s data array by
-\inl{Bitwalker_Write}, and that they aren't subsequently destroyed by
-the increment of \inl{bitpos}.
-
 
 
 The formal definitions of the used \acsl predicates are given in
@@ -426,6 +415,16 @@ predicate Normal{L}(integer size, integer bitpos, integer length) =
 \FloatBarrier
 
 
+The implementation just employs the lower-level operation
+\inl{Bitwalker_Write} to
+write the bits, and appropriately updates the \inl{stream}'s
+\inl{bitpos}.
+%
+Two assertions were needed to help the provers establishing that
+\inl{value}'s
+bits are actually written to \inl{stream}'s data array by
+\inl{Bitwalker_Write}, and that they aren't subsequently destroyed by
+the increment of \inl{bitpos}.
 Listing~\ref{Bitwalker_Write spec} shows the contract, and the
 implementation, of the
 \inl{Bitwalker_Write} operation.
@@ -622,7 +621,7 @@ To this end, we set up two fictitious \isoc procedures realizing
 the composition of both operations in the two possible orders.
 
 
-
+\subsection{The verification function \inl{Bitstream_WriteThenRead}}
 
 Listing~\ref{lst:Bitstream_WriteThenRead}
 shows the procedure for the scenario ``use \inl{Bitstream_Write}
@@ -702,6 +701,7 @@ information---every value we write into it can completely be
 restored.
 
 
+\subsection{The verification function \inl{Bitstream_ReadThenWrite}}
 
 Vice versa, we could also show that the channel doesn't transmit more
 information than is needed to fulfill its task.

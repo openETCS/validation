@@ -1,158 +1,243 @@
 \documentclass{template/openetcs_article}
 % Use the option "nocc" if the document is not licensed under Creative Commons
-% \documentclass[nocc]{template/openetcs_article}
+%\documentclass[nocc]{template/openetcs_article}
 \usepackage{lipsum,url}
-\usepackage{xspace}
-\usepackage{graphicx}
-\usepackage{fixme}
-\usepackage{lscape} 
-\usepackage{pgfgantt}
-\usepackage{adjustbox}
-\usepackage{datetime}
-\usepackage{url}
-\usepackage{amsmath}
-\usepackage{algorithm}
-\usepackage{hyperref}
-\usepackage{tikz}
-\usetikzlibrary{arrows,automata}
-\usepackage{hyperref}
-\usepackage{booktabs}
-\usepackage{enumerate}
-\graphicspath{{schema/}}
-\usepackage{amsfonts}
-\definecolor{hblue}{RGB}{79,129,189}
-
-% user specified macros
-\input{macros.tex}
-
-
+\usepackage{supertabular}
+\usepackage{multirow}
+\usepackage{color, colortbl}
+\definecolor{gray}{rgb}{0.8,0.8,0.8}
+\usepackage[modulo]{lineno}
 \graphicspath{{./template/}{.}{./images/}}
 \begin{document}
 \frontmatter
 \project{openETCS}
 
-% Please do not change anything above this line ============================ The
-% document metadata is defined below
+%Please do not change anything above this line
+%============================
 
-\reportnum{OETCS/WP4/D4.4}
 
-% define your workpackage or task here
-\wp{openETCS@ITEA Work Package 4.4: ``Verification \& Validation of the Formal Model''}
 
-% set a title here
-\title{D.4.4 Final V\&V Report}
+% The document metadata is defined below
 
-% set a subtitle here
-\subtitle{Version 00}
+%user specified macros
+\input{macros.tex}
+%Background color of boxes in process graphic
+\definecolor{light-gray}{gray}{0.95}
 
-% set the date of the report here
-\date{November 2015 }
+%assign a report number here
+\reportnum{OETCS/WP4/D4.4V0.1}
 
-%document approval                                                                                                                                          %define the name and affiliation of the people involved in the documents approbation here                                                                    
+
+%define your workpackage here
+\wp{Work-Package 4: ``Verification \& Validation Strategy''}
+
+%set a title here
+\title{openETCS Final Report on Verification and Validation}
+
+%set a subtitle here
+\subtitle{}
+
+%set the date of the report here
+\date{December 2015}
+
+%document approval
+%define the name and affiliation of the people involved in the
+%documents approbation here 
 \creatorname{Marc Behrens}                                                                                                                                
-\creatoraffil{ Deutsches Zentrum für Luft und Raumfahrt e.V.}                                                                                                                                                                                                                                                                                   
-%\techassessorname{Silvano Dal Zilio}                                                                                                                       
-%\techassessoraffil{CNRS \/ LAAS - Vertics Group}                                                                                                                                                                                                                                                                        
-\qualityassessorname{Jan Welte}                                                                                                                       
-\qualityassessoraffil{TU Braunschweig}                                                                                                                      
-                                                                                                                                                            
-\approvalname{Klaus-R\"udiger Hase}                                                                                                                         
-\approvalaffil{DB Netz}  
+\creatoraffil{ Deutsches Zentrum für Luft und Raumfahrt e.V.}                    
+\techassessorname{[assessor name]}
+\techassessoraffil{[affiliation]}
+
+\qualityassessorname{Jan Welte}
+\qualityassessoraffil{TU Braunschweig}
+
+\approvalname{Klaus-R\"udiger Hase}
+\approvalaffil{DB Netz}
+
+%define a list of authors and their affiliation here
 
 
-% define a list of authors and their affiliation here
-%\author{Ana Cavalli \and João Santos \and Huu-Nghia Nguyen}
+\author{Marc Behrens \and Hardi Hungar}
 
-%\affiliation{Institut Mines-Télécom}
 
-\author{Marc~Behrens}
+\affiliation{DLR\\
+  Lilienthalplatz 7\\
+  38108 Brunswick, Germany
+%   \\eMail:hardi.hungar@dlr.de 
+}
 
-\affiliation{Deutsches Zentrum für Luft und Raumfahrt e.V.}
 
-  
-%\author{Stefan Rieger}
 
-%\affiliation{TWT GmbH Science \& Inovation}
-
-%\author{Cécile Braunstein}
-%\affiliation{Uni Bremen}
-  
-%\author{Uwe Steinke}
-%\affiliation{Siemens}
-
-%\author{Benoît~Lucet \and Matthias Güdemann \and Brice~Gombault \and Marielle~Petit-Doche} 
-
-%\affiliation{Systerel}
-
-%\author{Alexander Nitsch \& Benjamin Beichler}
-
-%\affiliation{University of Rostock}
- 
-%\author{Silvano Dal Zilio \and Ning Ge}
-
-%\affiliation{LAAS-CNRS}
-
-%\author{Marc Pantel} 
-  
-%\affiliation{INPT}
- 
 % define the coverart
 \coverart[width=350pt]{openETCS_EUPL}
 
-% define the type of report
-\reporttype{}
-
-
+%define the type of report
+\reporttype{Final Report}
 
 \begin{abstract}
-
-This document presents the interim results of the final iteration of
-verification and validation of formal model.
-Since the actual formal model of the ETCS system has not
-yet been initiated, no ``real'' input is currently applied.
-Specifically, the following sections present the contributions of partners of WP 4: 
-\begin{itemize}
-  \item Section~\ref{sec:} --- Affiliation : Verification goal
-
-\end{itemize}
- 
+%define an abstract here
+  This document summarizes the approach, scope and result of the
+  verification and validation activities in the project openETCS.
 \end{abstract}
 
-% ============================= Do not change the next three lines
-\maketitle \tableofcontents \listoffiguresandtables \newpage
-% =============================
+%=============================
+%Do not change the next three lines
+\maketitle
 
-% The actual document starts below this line =============================
+%Modification history
+%if you do not need a modification history table for your document
+%simply comment out the eight lines below 
+%=============================
+\section*{Modification History}
+\tablefirsthead{
+\hline 
+\rowcolor{gray} 
+Version & Section & Modification / Description & Author \\\hline}
+\begin{supertabular}{| m{1.2cm} | m{1.2cm} | m{6.6cm} | m{4cm} |}
+ 0.0 & all & initial & Marc Behrens \\\hline
+ 0.1 & all & revision and addition & Hardi Hungar \\\hline
+\end{supertabular}
 
+\tableofcontents
+\listoffiguresandtables
+\newpage
+%=============================
+%Uncomment the next line if you need line numbers for tracebility when the document is in review
+%\linenumbers
 
-% Start here
+%=============================
+% The actual document starts below this line
+%=============================
+
+%Start here
 
 \section{Introduction}
-This verification evaluated in five different approaches that the design conforms to an excerpt of Subset-026 \cite{unisig_subset-026_2012}  related to the specification \cite{tsi-2012-88-eu} \cite{tsi-2012-696-eu}.  It is the first of three reports. It is performed before a design or development process is available. The design used for verification in this report is created and adapted to improve later results of verification. Due to the applicable restrictions the results of the first report focus on the verification itself rather than to give a verdict about conformity of design. All following reports will focus solely on the design provided by the work package "Modelling – Code Generation".
 
-To ensure the correctness and consistency of a design model and its implementation, the
-validation and verification has to be performed alongside with the modeling process. 
-As the model and code of the EVC are produced by WP3,
-thus this task will be performed repeatedly during WP3 and will provide
-feedback to it.
+According to \cite[3.1.48]{EN50128:2011}, verification is an activity
+to check whether the output of a development phase meets the
+requirements. This concerns formalities, traceability, and, w.r.t.\
+the main content, completeness, correctness and consistency. Within
+openETCS, examples of each kind of verification have been
+performed. Thereby, also new methods and tools have been evaluated and
+adapted. 
 
+Validation concerns the compliance of the end result of the
+development with the user requirements. This has been done employing
+the demonstrator of the EVC software. 
+
+This document summarizes the activities described in more detail in
+separate reports. It explains how these separate activities fit into
+the development process of openETCS as defined in the deliverable
+D2.3a.    
+
+Most verification activities are actually reviews of documents (or
+even programs). For general review activities, a process has been
+defined in \cite{openETCS:D1.3.1}. 
 
 \newpage
 
 
+
+
+
+
+
+%Examples are below
+\section{Verification and Validation in the Development Lifecycle}
+\label{sec:Lifecycle}
+
+\begin{figure}[hbt]
+  \centering
+  \def\svgwidth{.9\textwidth}
+  {\tiny
+  \input{Prcss2_3a-03.pdf_tex}}
+  \caption{openETCS Development Lifecycle}
+  \label{fig:lifecycle2}
+\end{figure}
+
+Fig.~\ref{fig:lifecycle2} is an overview of the openETCS development
+lifecycle, taken from D2.3a. It depicts the process for a complete
+development of the EVC software, of which a part has been performed
+within the project. Verification, resp., validation, has to be done in
+each of the phases of the development.
+
+\section{Overview of Verification and Validation Activities}
+\label{sec:overview}
+
+\bgcmmnt{Some sample notes are included in the subsections. To be
+  checked for correct assignment to the phases, extended to become
+  self-contained summaries of the activities with results and
+  contributions. Note: Also evaluating a new verification method is a
+  contribution to be mentioned, if this is a side or main effect of
+  the activity. Do not forget to add yourself as an author if you contribute.}
+
+\subsection{Verification and Validation in the Planning Phase}
+\label{sec:vnv-0}
+
+There have been reviews of the planning documents \cmmnt{compile a
+  list}. 
+
+\subsection{Verification and Validation in the System Design Phase}
+\label{sec:vnv-1}
+
+TWT analyzed sub-system requirements from \cite[Chapter~5]{subset-026:3.3.0}. The
+requirements have been modeled as colored Petri nets and subjected to
+formal analyses. This activity is part of the System Design
+Verification. 
+
+\subsection{Verification and Validation in the Sub-System Architecture Design Phase}
+\label{sec:vnv-2}
+
+The DLR verified the Sub-System Architecture Design
+\cmmnt{citations}. \cmmnt{\qq{correct phase}}
+
+\subsection{Verification and Validation in the SW Specification Phase}
+\label{sec:vnv-3}
+
+\subsection{Verification and Validation in the SW Design Phase}
+\label{sec:vnv-4}
+
+Model-based testing applied to design models  \cmmnt{\qq{U Bremen}}
+
+\subsection{Verification and Validation in the SW Component Phase}
+\label{sec:vnv-5}
+
+\begin{itemize}
+\item Dedicated tests on single components \cmmnt{\qq{DB}}
+\item Formal code verification (FRAMA C on the bitwalker)
+\end{itemize}
+
+
+\subsection{Verification and Validation in the SW Integration Phase}
+\label{sec:vnv-6}
+
+Automatized integration tests on the SW components. 
+
+\subsection{Verification and Validation in the SW Validation Phase}
+\label{sec:vnv-7}
+
+There have been validations on
+\begin{itemize}
+\item the integrated software within the \qq{SCADE simulation
+    environment}, subjecting the SW with a simulated environment to
+  operational use cases.
+\item an integration of the SW on a reference hardware, applying
+  operational use cases.  
+\end{itemize}
 
 \section{Conclusion}
 \label{sec:conclusion}
 
 
 %\nocite{*}
-%===================================================
-%Do NOT change anything below this line
 
-%\bibliographystyle{IEEEtran}
 \bibliographystyle{unsrt}
 
-\bibliography{biblio}
-%
+\bibliography{bibliography}
+
+
+
+%===================================================
+%Do NOT change anything below this line
 
 \end{document}

@@ -1,0 +1,113 @@
+
+
+\subsubsection{Verification of Modes and Levels Management function (Systerel) }
+\label{sec:}
+
+\paragraph{Contributing project partners}
+% Usually, one main partner, perhaps with contributions from others
+The work has been performed by Systerel
+
+\paragraph{Process step}
+% Classification of the activity according to D2.3a
+% Name what is verified and to which report this would contribute.
+% Use the numbers, e.g. System Design Verification Report (1-12).
+
+
+This activity contributes to:
+\begin{itemize}
+\item the Software Requirement Specification  (3.16)
+\item the Software Specification Verification Report  (3.18)  
+\item the Software Architecture and Design Specification (4.19)
+\item the Software Design Verification Report  (4.23)  
+\item the Software Components (5.24)
+\item the Software Component Verification Report  (5.26)  
+\end{itemize}
+
+
+
+\paragraph{Object of verification}
+% Which openETCS artifact (github link) or other documents/programs
+% etc. (provide references)
+
+The object of verification is the Scade model for the modes and levels management function at {\url{https://github.com/openETCS/modeling/tree/master/model/Scade/System/ObuFunctions/ManageLevelsAndModes}}. 
+
+
+\paragraph{Available specification}
+% The specification against which the object is to be checked. Usually
+% coming form some openETCS artifacts (GitHub reference, process
+% artifact number) or background material (reference, artifact number).
+
+The model implements the requirements of modes and levels management function, as described in {\itshape System Requirements Specification, Chapter 4 and 5}.
+All the chapter are not covered, only the part related to  the definition of current mode and level.
+
+
+\paragraph{Objective}
+%In an ordinary development, the main objective would be to verify or validate
+%something. Here, in openETCS, it would be quite common to demonstrate
+%the applicability of some method/tool, or evaluate its capabilities.
+
+
+The goal is to produce a Scade model, to generate automatically executable C code, and to  verify properties on Scade model by model-checking.
+
+
+
+\paragraph{Method/Approach}
+% Short description of how the verification/validation is performed
+
+At first, a formal model is defined with the Scade suite tool.
+Then functional properties are formally verified on the model by  model-checking.
+
+Finally, C code is automatically translated from the Scade model.
+
+\paragraph{Means/Tools}
+% Could be integrated with the previous paragraph. Assign an
+% approrpiate tool class (T1, T2, T3) according to EN 50128. Try to assign a
+% maturity level 
+%https://github.com/openETCS/validation/blob/master/VerificationAndValidationPlan/V02/VnVUsrStrTmplt-140709-02.pdf
+
+
+The means used are:
+\begin{itemize}
+\item Scade suite to  design, check and simulate the model 
+\item Systerel Smart Solver (S3) to perform model-checking (can be certified as T2 tool)
+\item KCG translator to produce C code (Code translator shall be T3 level to obtain certified code).
+\end{itemize}
+
+
+\paragraph{Results}
+% Results related to the objective.
+% Refer to appropriate document (preferably GitHub) for more complete description.
+
+
+\begin{itemize}
+\item The result is a Scade model of the mode and level management function integrated in the whole EVC scade model.
+\item The C code has been automatically  generated.
+\item Some properties have been checked by model checking.
+\end{itemize}
+
+See {\url{https://github.com/openETCS/validation/blob/master/Reports/D4.3/D4.3.1-Final-VV-report-on-model/D4.3.1.pdf}} and {\url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/04-Results/e-Scade_S3/Scade_S3_VnV.pdf}}.
+
+
+
+\paragraph{Observations/Comments}
+% An optional section where anything can be included which has been
+% observed without direct connection
+
+
+\paragraph{Conclusion}
+%What has been achieved, what is missing, what has been learned
+
+
+
+Benefits of formal  methods in an a posteriori verification process of critical systems has been recognized by our industrial customers:
+
+\begin{itemize}
+\item Contrarily to a human generated test-based verification solution, a formal safety verification is
+intrinsically complete. It is equivalent to search for every possible falsification.
+\item It clearly identifies the complete list of assumptions upon which the safety relies.
+\item A certified solution allows for a reduction of the testing and review efforts (only the generic safety
+specification has to be reviewed).
+\item The use of formal verification in the qualification of critical software sends a strong
+and positive message to the market, and is sometime even a requirement for some customers.
+\end{itemize}
+

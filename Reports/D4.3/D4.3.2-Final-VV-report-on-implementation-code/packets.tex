@@ -22,6 +22,163 @@ generate formal specifications and implementations for encoding
 and decoding data packets from chapter 7 of the
 ETCS Subset 026 system requirements description.
 
+\section{Overview of data packets}
+\label{sec:data-packets}
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|m{8ex}|m{8cm}|m{9ex}|m{11ex}|}
+\hline
+               PacketID & Packetname & \inl{N_ITER} & Conditionals\\
+\hline
+\hline
+3 & National Values & dynamic & conditional\\
+\hline
+5 & Linking & dynamic & conditional\\
+\hline
+12 & Level 1 Movement Authority & dynamic & -\\
+\hline
+15 & Level 2/3 Movement Authority & dynamic & -\\
+\hline
+16 & Repositioning Information & static & -\\
+\hline
+21 & Gradient Profile & dynamic & -\\
+\hline
+27 & International Static Speed Profile & dynamic & -\\
+\hline
+39 & Track Condition Change of traction power & static & -\\
+\hline
+41 & Level Transition Order & dynamic & conditional\\
+\hline
+42 & Session Management & static & conditional\\
+\hline
+44 & Data used by applications outside the ERTMS/ETCS system & static & -\\
+\hline
+45 & Radio Network registration & static & -\\
+\hline
+46 & Conditional Level Transition Order & dynamic & conditional\\
+\hline
+49 & List of balises for SH Area & dynamic & conditional\\
+\hline
+51 & Axle load Speed Profile & dynamic & -\\
+\hline
+57 & Movement Authority Request Parameters & static & -\\
+\hline
+58 & Position Report Parameters & dynamic & -\\
+\hline
+63 & List of Balises in SR Authority & dynamic & conditional\\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:packets-packetnumbers-tracktotrain-part1} TrackToTrain packets part 1}
+\end{table}
+
+
+\FloatBarrier  % forces the output of listings/tables
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|m{8ex}|m{8cm}|m{9ex}|m{11ex}|}
+\hline
+               PacketID & Packetname & \inl{N_ITER} & Conditionals\\
+\hline
+\hline
+65 & Temporary Speed Restriction & static & -\\
+\hline
+66 & Temporary Speed Restriction Revocation & static & -\\
+\hline
+67 & Track Condition Big Metal Masses & dynamic & -\\
+\hline
+68 & Track Condition & dynamic & conditional\\
+\hline
+70 & Route Suitability Data & dynamic & conditional\\
+\hline
+71 & Adhesion Factor & static & -\\
+\hline
+72 & Packet for sending plain text messages & static & conditional\\
+\hline
+76 & Packet for sending fixed text messages & static & conditional\\
+\hline
+79 & Geographical Position Information & dynamic & conditional\\
+\hline
+80 & Mode profile & dynamic & -\\
+\hline
+90 & Track Ahead Free up to level 2/3 transition location & static & conditional \\
+\hline
+131 & RBC transition order & static & -\\
+\hline
+132 & Danger for Shunting information & static & -\\
+\hline
+133 & Radio in-fill area information & static & -\\
+\hline
+134 & EOLM Packet & static & -\\
+\hline
+136 & Infill location reference & static & conditional\\
+\hline
+137 & Stop if in Staff Responsible & static & -\\
+\hline
+138 & Reversing area information & static & -\\
+\hline
+139 & Reversing supervision information & static & -\\
+\hline
+140 & Train running number from RBC & static & -\\
+\hline
+141 & Default Gradient for Temporary Speed Restriction & static & -\\
+\hline
+254 & Default balise, loop or RIU information & static & -\\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:packets-packetnumbers-tracktotrain-part2} TrackToTrain packets part 2}
+\end{table}
+
+\FloatBarrier  % forces the output of listings/tables
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|m{8ex}|m{8cm}|m{9ex}|m{11ex}|}
+\hline
+               PacketID & Packetname & \inl{N_ITER} & Conditionals \\
+\hline
+\hline
+0 & Position Report & static & conditional\\
+\hline
+1 & Position Report based on two balise groups & static & conditional\\
+\hline
+3 & Onboard telephone numbers & dynamic & -\\
+\hline
+4 & Error Reporting & static & -\\
+\hline
+9 & Level 2/3 transition information & static & -\\
+\hline
+11 & Validated train data & dynamic & -\\
+\hline
+44 & Data used by applications outside the ERTMS/ETCS system & static & -\\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:packets-packetnumbers-traintotrack} TrainToTrack packets}
+\end{table}
+
+\FloatBarrier  % forces the output of listings/tables
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|m{8ex}|m{8cm}|m{9ex}|m{11ex}|}
+\hline
+               PacketID & Packetname & \inl{N_ITER} & Conditionals \\
+\hline
+\hline
+255 & End of information & static & -\\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:packets-packetnumbers-bothways} BothWays packets}
+\end{table}
+
+\FloatBarrier  % forces the output of listings/tables
+
+
 \section{Formal specification of \inl{AdhesionFactor}}
 \label{sec:adhesionfactor}
 

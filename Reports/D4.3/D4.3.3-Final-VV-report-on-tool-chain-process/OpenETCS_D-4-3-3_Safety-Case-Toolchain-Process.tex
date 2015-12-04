@@ -229,7 +229,65 @@ If specific information are needed the can be place here. (D4.2.3 shall not be r
 \label{toolchain}
 \section{Overview}
 
-by Jan Welte
+As it has been state in the openETCS FPP one of the goals  is to "Provide a tool chain and process/methodologies for developing an on-board software that can fulfill the CENELEC requirements for SIL4 software" \cite{FPP}. To do so O~7.3.2 Tool chain Design Specification state that the tool chain  provides tool support for a formalized specification of SRS and an executable code of the OBU. In addition cross cutting tools for traceability, version management, integration and documentation as well as specific V\&V activities are needed.
+
+Overall O~7.3.2 distinguishes two kind of tools:
+\begin{itemize}
+\item Development tools: those used along the phases of the software development process including V\&V  (Requirement engineering, modeling ...).
+\item Management tools: those used transversely during the complete development process (version
+management, requirements traceability ...).
+\end{itemize}
+
+The CENELEC EN 50128 standard \cite{standard_railway_2011} defines the tool
+qualification as follows:\\
+{\it ``The objective is to provide evidence that potential
+failures of tools do not adversely affect the integrated tool-set output in a
+safety related manner that is undetected by technical and/or organizational
+measures outside the tool. To this end, software tools are categorized into
+three classes namely, T1, T2 \& T3 respectively.''}
+
+We recall here the different class definitions:
+\begin{itemize}
+\item Tool class T1: No generated output can be used directly or indirectly to the
+  safety critical executable code;
+\item Tool class T2: Verification tools, e.g. that can not introduce
+  errors to the safety critical executable code but those tools may fail to detect errors or
+  defects;
+\item Tool class T3: Generated output directly or indirectly  as part of the
+  safety critical executable code.
+\end{itemize}
+The deliverable D2.2 \cite{pokam_report_2013} summarizes the requirements for the
+tool needed by the different tool classes. The report highlights that the
+effort differs depending on the tool class. Furthermore, for
+the most critical class T3,  the evidence should be provided that the output is
+conform to the specification or that \emph{any failure in the output
+  are detected}. 
+
+The standard defined how to classify each tool individually (see
+\cite{nielsen_efficient_2012,huang_test_2013} as an example).  But dealing with a tool
+chain, integrated within a tool platform, implies extra effort to
+ensure that the tool integration does not introduce new errors. For
+example mechanism such as artifacts versioning, time-stamping
+operations, etc ... should also be considered when qualifying the tool
+chain. This increased the number of tools to consider during the
+qualification process.
+
+The effort of qualification depends on the number of tools under
+consideration, the tool classes and the tool error detection
+capabilities. To reduce the cost of the toolchain qualification and
+regarding the fact that our development imply regular releases, a
+systematic toolchain analysis approach has to be defined.
+
+Table~\ref{tab:oetcs_tool_classification} exemplary lists the tool
+classes for some of the tools employed in the openETCS
+project. Automatic code generator for SCADE model such as KCG or the
+Bitwalker tool have a direct effect on the generated code whereas ProR
+and Git do not. The classification for ProR would be different if it
+would be used for formal requirements that then could be automatically
+translated to a model (this would yield a T3-classification). The
+verification tools RT-Tester and CPN Tools are not in the ``direct''
+chain from requirements to code but they may fail to detect errors in
+the software or model.
 
 \begin{figure}[h]
 \centering
@@ -241,6 +299,9 @@ by Jan Welte
 
 \section{Tool Qualification}
 
+
+
+
 \begin{center}
 \tablecaption{OpenETCS toolchain and categorisation}
 \label{tab:ToolCat}
@@ -249,6 +310,9 @@ by Jan Welte
 \tablelasttail{\hline}
 
 \begin{supertabular}[H]{|p{2cm}|p{4cm}|p{4cm}|p{4cm}|}
+\hline ProR & Requirements management & T1 & \\
+
+
 \hline Papyrus Editor & Definition of the model architecture & T1 & \\
 \hline Papyrus SysML checker & Check SysML conformity of the model & T2 & \\
 \hline SCADE Editor & Low-level modeling and code generation & T1 & \\
@@ -263,6 +327,10 @@ by Jan Welte
 
 tool are coming from D7.3 table 1
 
+
+
+
+
 by Michael Jastram (or other expert from WP7)
 
 
@@ -272,6 +340,53 @@ broad overview of the toolchain and the status of qualification (generall inform
 - how should qualification be address for tools with pending qualification
 
 \section{SCADE}
+
+\section{Overview of Scade}
+
+Scade is a formal modeling language that provides both a graphical
+(diagrammatic) and textual concrete syntax. Formal here means that the
+intended meaning of a model can be defined unambiguously using a
+mathematical framework. It is therefore possible to reason on models
+and to prove properties on them with a very high-level of
+confidence. More precisely, Scade models are synchronously clocked
+state machines, interacting on infinite data streams, that can be
+nested and intermixed with each other without limitations. Actually
+the core of the Scade language is based on
+Lustre~\cite{al91,halbwachs05}, a declarative, synchronous dataflow
+programming language for reactive systems defined in the early 1980s
+at the Verimag laboratory in Grenoble.
+
+Another property of Scade is that it is an executable language with a
+deterministic semantics, meaning that no randomness is involved in the
+``execution'' of a Scade model; A model will thus always produce the
+same outputs from a given set of inputs.  All these characteristics of
+Scade (formal, executable and deterministic) made it possible to
+develop the first certified code generators to C and ADA according to
+the DO-178B and the EN50128. This is a benefit of using Scade with
+respect to competing frameworks.
+
+% We would like to find the same characteristics in the target language
+% of our transformation.
+
+\section{Motivations for the Adoption of Scade in the Project}
+
+The Scade language is supported by a toolbox, the \emph{Scade suite},
+that provides an integrated design and development environment. Scade
+suite offers several services: simulation and debugging at the model
+level; test case execution; model test coverage measurement; code
+verification on models; \dots 
+
+An extension of the tool, called \emph{Scade system}, provides
+additional functionalities that are of interest in the context of the
+openETCS project. Basically, Scade System provides systems modeling
+and model generation based on the SysML standard and the Eclipse
+Papyrus editor. In particular, Scade system offers ``partial'' gateway
+from and to SysML and integration with Eclipse through the use of the
+Eclipse Modeling Framework (EMF). This is relevant for the openETCS
+project since Eclipse was selected as the de facto open source
+platform for integrating the tools developed in the project, while
+SysML was selected for modeling the architecture of the
+system. 
 
 by Jan Welte and Marc Behrens
 
@@ -293,7 +408,121 @@ by FrederiqueVallee (or Francois Revest)
 \chapter{OpenETCS Development}
 \label{sec:development-process}
 
+The openETCS SW development process follows the Illustrative
+Development Lifecycle~2 \cite[Fig.~4]{EN50128:2011} of the EN~50128
+and the detailed description for ``Generic software development'' in
+Sec.~7 of that standard. It deviates mainly in start and end phases
+from that lifecycle. These phases are adapted to the specifics of the
+openETCS goals, as not a full system will be developed (no hardware)
+and a substantial body of background material concerning the EVC and
+its environment is available. Additionally, as s a minor deviation,
+the SW component design phase has been made part of the SW
+architecture and design phase. This deviation reflects the form of the
+development within the openETCS project, but it is of not much
+significance and could easily be undone.
+
+from D2.3a
+
+
+One of the main purpose of the openETCS project is to develop a model
+of the ETCS on-board unit (OBU) using ``Open Standards'' at every
+stages. This includes generating open hardware and software
+specifications, writing interface definition using open languages, and
+developing open source design tools for supporting this effort. One of
+the most important output of the project is a formal specification of
+the ETCS that follows the specification defined by the European
+Railway Agency (ERA) in its Subset-026
+document~\cite{subset-026}. Nonetheless, for reasons that we will
+briefly recall in this chapter, the proprietary language Scade---that
+is a ``closed-source'' solution---was chosen to develop the functional
+model of the OBU.
+
+Scade is a formal modeling language and tool suite targeting
+safety-critical embedded systems. It is developed by Esterel
+Technologies, now a company of the ANSYS group
+(\url{http://www.ansys.com/}). Scade has been used for more than 15
+years to develop a broad range of control applications in the
+avionics, rail, and automotive domains. The current Scade model for
+the OBU is a major output of the project. The architectural model
+(modeled in SysML using the Scade system tool) and the functional
+model (modeled in Scade using the Scade suite tool) have been
+developed from scratch---without the use of prior components---and
+cover all the aspects defined in chapters 3, 4,5, 7 and 8 of the
+\emph{ETCS specification}\footnote{In the remainder of theis text we
+  will sometimes use ``ETCS specification'' instead of the longer form
+  ``SRS subset 26 specification''.}. The models are made available on
+the GitHub of the openETCS project
+(\url{https://github.com/openETCS/modeling/tree/master/model}) and a
+complete description is given in deliverable D3.5.3~\cite{d353}.
+
+from openETCS: Migration from Scade to an Open Alternative
+
+
 \section{overview}
+
+Fig.~\ref{fig:lifecycle2} gives an overview of the openETCS
+development lifecycle. It has been derived from Fig.~1 from
+\cite{EN50128:2011}. The main differences to that standard consist in:
+\begin{itemize}
+\item A system phase has been added which covers the activities preceding
+  the sub-system development (starting from the sub-system requirements)
+\item The ``SW architecture and design phase'' and the ``SW component
+  design phase'' have been combined into one phase. This is purely
+  organizational. All information of the standard approach still have
+  to be generated.
+\item The ``SW component implementation phase'' and ``SW component
+  testing phase'' have been combined into one. This is motivated by
+  changing the responsibility for performing component tests to the
+  Implementer and letting the Tester only check the results. This
+  decision is in accordance with \cite[6.1.4.1 to
+  6.1.4.5]{EN50128:2011} (see below). But nevertheless it might be
+  reconsidered in the process implementation.
+\item According to the standard, SW validation should happen
+  \emph{after} SW/HW integration. Since it would contradict the goals
+  of openETCS to fix the hardware, the SW cannot be deployed to the
+  target HW and thus not be validated on it. To validate the SW within
+  openETCS, the best option seems to be to do validation within
+  simulated hardware.
+\item Phases after SW validation are outside the current scope of
+  openETCS, though a process for SW maintenance should be installed in
+  the long run.
+\end{itemize}
+
+from D2.3a
+
+\section{Process Implementation}
+\label{sec:proc-impl}
+
+The process will not be implemented in a top-down, sequential style,
+where, e.g., specifications are completed and verified before the
+software is designed. Instead, the phases may overlap in time. This
+means, even software components may be designed before the SW
+specification is finalized. However, the final documentation of the
+development shall present a consistent, top-down view of the
+result. To ensure that this goal is achieved, specific considerations
+have to be given to the iterative aspect in the ``Project Plan'',
+``QA-Plan'' and in particular the ``Configuration Management Plan'' .
+
+
+Ideally, a plan should be made which sets the goals to be achieved
+in the openETCS project. This consists in defining  
+\begin{itemize}
+\item the functionality to be realized, and
+\item the completeness and maturity levels of the artifacts. 
+\end{itemize}
+The maturity could, for instance, be defined in classes like
+``Draft'', ``Revised'', ``Final''. Completeness refers to
+functionality and other, artifact specific issues. 
+
+The plan should define a timeline which states which grade shall be
+achieved at which stage, and add corresponding activities.
+
+Besides this general process flow, also the means, i.e., languages and
+tools, and their impact on the process should be addressed in a
+detailed description of the process implementation. In particular, the
+ramifications of the use of the SCADE tool suite deserve specific attention.
+
+from D2.3a
 
 by Jan Welte
 
@@ -353,6 +582,52 @@ OpenETCS tool chain currently supports ability to create links between:
 \label{sec:hazardandrisk}
 
 \section{System/ Sub-System Definition}
+
+The system architecture of the openETCS OBU is adopted from the system structure defined in ERA Subset-026, Chapter 2.5 \cite{subset-026}. Figure \ref{f:architecture_srs} shows which parts of the reference architecture are in the scope of the openETCS OBU model, cf.~dashed red line. Note that also specific parts of the ETCS trackside (e.g.~Eurobalise and RBC blocks) have been modeled to have an integrated test environment, cf.~dashed black line in Figure~\ref{f:architecture_srs}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.8\textwidth]{images/ArchitectureSRS}
+\caption[Scope of openETCS OBU model system according to ERA TSI Chapter 2.5.]{Scope of openETCS OBU model system according to ERA TSI Chapter 2.5. Functional blocks in the scope of openETCS have been marked by the dashed black line. The dashed red line shows the OBU blocks in the scope of openETCS.}
+\label{f:architecture_srs}
+\end{figure}
+
+
+\section{Top Level Architecture and External Interfaces}
+
+Figure~\ref{f:top_level} shows the top level architecture with external interfaces E1, E2,$\ldots$, E10. The external interfaces are used for the communication between the openETCS OBU (dashed red line) and systems out of the scope of the openETCS project and the ETCS Onboard Unit System. In the following we give  brief overview of the interfaces:
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{ETCS_system.pdf}
+\caption{Top level architecture with external interfaces E1 to E10.}
+\label{f:top_level}
+\end{figure}
+
+%\todo[inline]{Descriptions should be improved}
+\begin{description}
+\item[E1] Input and output interface between the Interlocking and the Eurobalise. Only relevant for controlled Eurobalises.
+
+\item[E2] Input and output interface between the Interlocking and Radio Block Center (RBC).
+
+\item[E3] Input interface from the Eurobalise to the ERTMS Track module.
+
+\item[E4] Input interface from the RBC to the ERTMS Track module.
+
+\item[E5]  Input and output interface between the Driver and the ETCS OBU. This interface is used for the interaction between the driver and the display (Driver Machine Interface, DMI).
+
+\item[E6] This input interface from ERTMS Track module to the ETCS OBU is a compound structure and combines the interfaces E3 and E4 to send track side messages from Eurobalises or RBC to the ETCS OBU.
+
+\item[E7] Input and output interface between RBC and ETCS OBU. This interface is used for the management of radio communication, e.g.~session management, and sending radio messages from the ETCS OBU to the RBC. Note that the ETCS OBU receives radio messages via interface E6.
+
+\item[E8] Input interface to the odometry subsystem of the ETCS OBU. Used for sending information to the train if there is any movement outside the ETCS system, e.g.~"cold movement".
+
+\item[E9] Input interface to the ETCS OBU to set configuration data such as fixed values, system values, national values and train configuration.
+
+\item[E10] Input and output interface between the ETCS OBU and the train. This interface is used for the interaction between the train and the ETCS OBU such as brake control, traction control, door control, etc.
+
+\end{description}
+
+from D3.5.4
 
 by Jan Welte
 

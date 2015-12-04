@@ -11,13 +11,14 @@ Last section \ref{app:osproc} describes the results on an example.
 A B~model is a textual and formal specification covering the functional behaviour of a safety critical software. It is usually written based on a high-level specification (informal or formal specification, for example SysML or a natural language). It is gradually refined, starting at the top with an abstract notation and ending at the bottom with sequential instructions --- which are then automatically translated in a target language such as C or Ada.\\
 Thus, we define three objects of verification and validation: the specification, the B~model and the generated source code.\\
 
+Verification will consist to  check the steps to produce these three objects have been correctly performed.
 
 Validation consists of:
 \begin{itemize}
 \item guaranteeing the functional adequacy between the specification and the model (this can be achieved, for example, through review and proofreading),
 \item building a test environment around the generated source code and test it.
 \end{itemize}
-Hence, this section will mainly focus on verification, i.e.\ the methods and tools required to assure that B~method is a consistent way of producing critical software.
+Hence, this section will mainly focus on verification, i.e. the methods and tools required to assure that B~method has been appliede in a consistent way to produce critical software.
 
 In this section, we demonstrate the suitability of the B~method towards the problematics encountered in the openETCS project by introducing the different verification processes applicable to a B~model.\\
 Each of the verification process is presented and its contributions to the system security and consistency are discussed.
@@ -203,10 +204,20 @@ ProB & ~ & ~ & \checkmark & \checkmark & ~ \\
 \label{tab:comparison}
 \end{table}
 
-%\appendix
 \subsection{Application: Procedure On-Sight}
 \label{app:osproc}
-The Procedure On-Sight, as described in {\itshape System Requirements Specification, Chapter 5}, has been modelled in B\footnote{The model is available at \url{github.com/openETCS/validation/tree/master/VnVUserStories/VnVUserStorySysterel/02-DAS2V/c-ClassicalBModel/ProcedureOnSight}.} to show the feasibility of the task and the credibility of the method. This appendix briefly presents the model, then applies the verification processes to this example.
+
+
+\paragraph{Available Specification}
+\label{sec:avail-spec}
+
+The Procedure On-Sight, as described in {\itshape System Requirements Specification, Chapter 5}, has been modelled in B\footnote{The model is available at \url{github.com/openETCS/validation/tree/master/VnVUserStories/VnVUserStorySysterel/02-DAS2V/c-ClassicalBModel/ProcedureOnSight}.} to show the feasibility of the task and the credibility of the method. This section briefly presents the model, then applies the verification processes to this example.
+
+
+\paragraph{Goals}
+The Goal is to produce a B model which implement the On-Sight procedure.
+The B model shall be formally proved (verified) and shall allow to generate an executable C code.
+
 
 \paragraph{Presentation of the B~model}
 As shown in figure \ref{fig:procos}, the model is split into three main processing modules, one of which corresponds to the actual on-sight procedure,
@@ -252,19 +263,28 @@ force 0 and force 1 (on 427 proof obligation generated, only 3 need the
 interactive prover to define cases). Proving the model results in the certainty
 of its correctness wrt.\ the formal specification. In this case, only typing
 invariants and constraints were expressed, because more complex safety
-properties have not been identified to be specified as invariant. However, for each function, its behaviour is specified and the implementation is verified according to this specification.
+properties have not been identified to be specified as invariant. 
+
+Besides, for each function, its functionnal behaviour is formally specified and the implementation is verified according to this specification: a set of proof obligations are automatically generated to check that a B implementation preserves corresponding B specification (indeed to check the refinement relation).
 
 %\subparagraph{User-defined theories}
-When automatic proof fails, the user must provide a manual proof and uses theories for this purpose. Theories are rules that are used to discharge specific goals.\\
-In this example, the only module for which interactive proof was required is \verb+os_consist_i+. Below is presented a very simple theory (among several others) used for the proof of this component:
+When automatic proof fails, the user must provide a manual proof and uses theorems for this purpose. Theorems are rules that are used to discharge specific goals.\\
+In this example, the only module for which interactive proof was required is \verb+os_consist_i+. Below is presented a very simple theorem (among several others) used for the proof of this component:
 
 \begin{equation}
 \tag{User theory 1}
 a < 0 \land 0 \leq b \land 0 < c \Rightarrow a \leq \frac{b}{c}
 \end{equation}
 
-This theory is automatically verified by Atelier~B and therefore ensures full consistency of the proof.
+This theorem is automatically verified by Atelier~B and therefore ensures full consistency of the proof.
 
+\paragraph{Functionnal validation}
+
+The functional validation of the model is achieved by two steps:
+\begin{itemize}
+\item review of the formal specification versus informal specification
+\item functional test campaign on the executable code
+\end{itemize}
 
 \subsection{Conclusion}
 The B~method, along with its verification processes and tools, meets the goals and activities of the openETCS project in terms of quality, rigor, safety and credibility.\\

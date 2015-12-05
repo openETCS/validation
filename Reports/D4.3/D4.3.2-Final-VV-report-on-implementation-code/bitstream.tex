@@ -40,13 +40,6 @@ Chapter~\ref{cha:low-level bitstream} finally presents lower level
 implementation details.
 
 
-
-
-
-
-
-\clearpage
-
 \section{The \inl{Bitstream} abstraction}
 \label{sec:bitstream}
 
@@ -130,15 +123,21 @@ After completion of the operation,
 \end{itemize}
 
 
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=0.69\textwidth]{figures/equalbits.pdf}
+\caption{\label{fig:EqualBits correspondance}
+	Bit coincidences required by \inl{EqualBits}}
+\end{center}
+\end{figure}
 
+\FloatBarrier
 
 The formal definitions of the \acsl predicates used
 in \inl{Bitstream_Read}'s contract are given in
 Listing~\ref{lst:Bitstream preds}; they build upon the internal
 details of the \inl{Bitstream} data structure shown in
 Listing~\ref{lst:Bitstream struct}.
-
-
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -228,15 +227,6 @@ predicate
 \end{itemize}
 
 
-\begin{figure}[hbt]
-\begin{center}
-\includegraphics[width=0.99\textwidth]{figures/equalbits.pdf}
-\caption{\label{fig:EqualBits correspondance}
-	Bit coincidences required by \inl{EqualBits}}
-\end{center}
-\end{figure}
-
-
 
 \section{Auxiliary \inl{Bitstream} functions}
 \label{sec:bitstream-aux}
@@ -296,7 +286,7 @@ int Bitstream_Normal(const Bitstream* stream, uint32_t length);
 
 
 
-\FloatBarrier
+\clearpage
 
 
 \section{Writing bit sequences}
@@ -309,14 +299,14 @@ a bit stream (see Figure~\ref{fig:bitstream-write}).
 
 \begin{figure}[hbt]
 \begin{center}
-\includegraphics[width=0.99\textwidth]{figures/bitstream-write.pdf}
+\includegraphics[width=0.69\textwidth]{figures/bitstream-write.pdf}
 \caption{\label{fig:bitstream-write}
 	Sketch of \inl{Bitstream_Write}}
 \end{center}
 \end{figure}
 
 
-\clearpage
+\FloatBarrier
 
 Listing~\ref{lst:Bitstream_Write impl} shows contract of
 the \inl{Bitstream_Write} operation,
@@ -420,11 +410,6 @@ The implementation just employs the lower-level operation
 write the bits, and appropriately updates the \inl{stream}'s
 \inl{bitpos}.
 %
-Two assertions were needed to help the provers establishing that
-\inl{value}'s
-bits are actually written to \inl{stream}'s data array by
-\inl{Bitwalker_Write}, and that they aren't subsequently destroyed by
-the increment of \inl{bitpos}.
 Listing~\ref{Bitwalker_Write spec} shows the contract, and the
 implementation, of the
 \inl{Bitwalker_Write} operation.
@@ -444,7 +429,9 @@ implementation, of the
   ensures  middle:     EqualBits(addr, bitpos, bitpos + length, value);
   ensures  right:      Unchanged{Here,Old}(addr, bitpos + length, 8 * size);
 */
-void Bitwalker_Write(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t length, uint64_t value);
+void
+Bitwalker_Write(uint8_t* addr, uint32_t size,
+                uint32_t bitpos, uint32_t length, uint64_t value);
 {
     /*@
       loop invariant bound:   bitpos <= i <= bitpos + length;
@@ -466,6 +453,12 @@ void Bitwalker_Write(uint8_t* addr, uint32_t size, uint32_t bitpos, uint32_t len
 \end{minipage}
 \caption{\label{Bitwalker_Write spec}Writing a bit sequence}
 \end{listing}
+
+Two assertions were needed to help the provers establishing that
+\inl{value}'s
+bits are actually written to \inl{stream}'s data array by
+\inl{Bitwalker_Write}, and that they aren't subsequently destroyed by
+the increment of \inl{bitpos}.
 
 \clearpage
 

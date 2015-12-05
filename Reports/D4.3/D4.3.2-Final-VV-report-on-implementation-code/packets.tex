@@ -22,51 +22,98 @@ generate formal specifications and implementations for encoding
 and decoding data packets from chapter 7 of the
 ETCS Subset 026 system requirements description.
 
-\section{Overview of data packets}
+\section{Overview and classification of data packets}
 \label{sec:data-packets}
+
+Tables~\ref{tbl:packets-packetnumbers-tracktotrain-part1},
+\ref{tbl:packets-packetnumbers-tracktotrain-part2},
+\ref{tbl:packets-packetnumbers-traintotrack}, and
+\ref{tbl:packets-packetnumbers-bothways}
+list the packets from ETCS requirements specification ``Subset~026''.
+%
+While many packets only contain a fixed number of elements, there
+are also a few that contain a \emph{dynamic} number of elements
+(indicated by the presence of a field \inl{N_ITER}) and \emph{optional} values.
+We use the following terminology:
+
+\begin{itemize}
+\item
+A packet that does not contain an elment \inl{N_ITER} is
+referred to as \emph{static packet}.
+
+\item 
+All other packets are referred to as \emph{dynamic packets}.
+\end{itemize}
+
+There are 29 static packets and 19 dynamic packets.
+Seven of the 29 static packets contain optinal values.
 
 \begin{table}[hbt]
 \begin{center}
-    \begin{tabular}{|m{8ex}|m{8cm}|m{9ex}|m{11ex}|}
+\begin{tabular}{|m{8ex}|m{8cm}|c|c|c|}
 \hline
-               PacketID & Packetname & \inl{N_ITER} & Conditionals\\
+PacketID & Packetname & \inl{N_ITER} & Optional\\
 \hline
 \hline
-3 & National Values & dynamic & conditional\\
+3 & National Values & + & +\\
 \hline
-5 & Linking & dynamic & conditional\\
+5 & Linking & + & +\\
 \hline
-12 & Level 1 Movement Authority & dynamic & -\\
+12 & Level 1 Movement Authority & + & -\\
 \hline
-15 & Level 2/3 Movement Authority & dynamic & -\\
+15 & Level 2/3 Movement Authority & + & -\\
 \hline
-16 & Repositioning Information & static & -\\
+16 & Repositioning Information & - & -\\
 \hline
-21 & Gradient Profile & dynamic & -\\
+21 & Gradient Profile & + & -\\
 \hline
-27 & International Static Speed Profile & dynamic & -\\
+27 & International Static Speed Profile & + & -\\
 \hline
-39 & Track Condition Change of traction power & static & -\\
+39 & Track Condition Change of traction power & - & -\\
 \hline
-41 & Level Transition Order & dynamic & conditional\\
+41 & Level Transition Order & + & +\\
 \hline
-42 & Session Management & static & conditional\\
+42 & Session Management & - & +\\
 \hline
-44 & Data used by applications outside the ERTMS/ETCS system & static & -\\
+44 & Data used by applications outside the ERTMS/ETCS system & - & -\\
 \hline
-45 & Radio Network registration & static & -\\
+45 & Radio Network registration & - & -\\
 \hline
-46 & Conditional Level Transition Order & dynamic & conditional\\
+46 & Conditional Level Transition Order & + & +\\
 \hline
-49 & List of balises for SH Area & dynamic & conditional\\
+49 & List of balises for SH Area & + & +\\
 \hline
-51 & Axle load Speed Profile & dynamic & -\\
+51 & Axle load Speed Profile & + & -\\
 \hline
-57 & Movement Authority Request Parameters & static & -\\
+57 & Movement Authority Request Parameters & - & -\\
 \hline
-58 & Position Report Parameters & dynamic & -\\
+58 & Position Report Parameters & + & -\\
 \hline
-63 & List of Balises in SR Authority & dynamic & conditional\\
+63 & List of Balises in SR Authority & + & +\\
+\hline
+65 & Temporary Speed Restriction & - & -\\
+\hline
+66 & Temporary Speed Restriction Revocation & - & -\\
+\hline
+67 & Track Condition Big Metal Masses & + & -\\
+\hline
+68 & Track Condition & + & +\\
+\hline
+70 & Route Suitability Data & + & +\\
+\hline
+71 & Adhesion Factor & - & -\\
+\hline
+72 & Packet for sending plain text messages & - & +\\
+\hline
+76 & Packet for sending fixed text messages & - & +\\
+\hline
+79 & Geographical Position Information & + & +\\
+\hline
+80 & Mode profile & + & -\\
+\hline
+90 & Track Ahead Free up to level 2/3 transition location & - & + \\
+\hline
+131 & RBC transition order & - & -\\
 \hline
 \end{tabular}
 \end{center}
@@ -78,54 +125,30 @@ ETCS Subset 026 system requirements description.
 
 \begin{table}[hbt]
 \begin{center}
-    \begin{tabular}{|m{8ex}|m{8cm}|m{9ex}|m{11ex}|}
+\begin{tabular}{|m{8ex}|m{7cm}|c|c|}
 \hline
-               PacketID & Packetname & \inl{N_ITER} & Conditionals\\
+PacketID & Packetname & \inl{N_ITER} & Optional\\
 \hline
 \hline
-65 & Temporary Speed Restriction & static & -\\
+132 & Danger for Shunting information & - & -\\
 \hline
-66 & Temporary Speed Restriction Revocation & static & -\\
+133 & Radio in-fill area information & - & -\\
 \hline
-67 & Track Condition Big Metal Masses & dynamic & -\\
+134 & EOLM Packet & - & -\\
 \hline
-68 & Track Condition & dynamic & conditional\\
+136 & Infill location reference & - & +\\
 \hline
-70 & Route Suitability Data & dynamic & conditional\\
+137 & Stop if in Staff Responsible & - & -\\
 \hline
-71 & Adhesion Factor & static & -\\
+138 & Reversing area information & - & -\\
 \hline
-72 & Packet for sending plain text messages & static & conditional\\
+139 & Reversing supervision information & - & -\\
 \hline
-76 & Packet for sending fixed text messages & static & conditional\\
+140 & Train running number from RBC & - & -\\
 \hline
-79 & Geographical Position Information & dynamic & conditional\\
+141 & Default Gradient for Temporary Speed Restriction & - & -\\
 \hline
-80 & Mode profile & dynamic & -\\
-\hline
-90 & Track Ahead Free up to level 2/3 transition location & static & conditional \\
-\hline
-131 & RBC transition order & static & -\\
-\hline
-132 & Danger for Shunting information & static & -\\
-\hline
-133 & Radio in-fill area information & static & -\\
-\hline
-134 & EOLM Packet & static & -\\
-\hline
-136 & Infill location reference & static & conditional\\
-\hline
-137 & Stop if in Staff Responsible & static & -\\
-\hline
-138 & Reversing area information & static & -\\
-\hline
-139 & Reversing supervision information & static & -\\
-\hline
-140 & Train running number from RBC & static & -\\
-\hline
-141 & Default Gradient for Temporary Speed Restriction & static & -\\
-\hline
-254 & Default balise, loop or RIU information & static & -\\
+254 & Default balise, loop or RIU information & - & -\\
 \hline
 \end{tabular}
 \end{center}
@@ -136,51 +159,55 @@ ETCS Subset 026 system requirements description.
 
 \begin{table}[hbt]
 \begin{center}
-    \begin{tabular}{|m{8ex}|m{8cm}|m{9ex}|m{11ex}|}
+    \begin{tabular}{|m{8ex}|m{8cm}|c|c|}
 \hline
-               PacketID & Packetname & \inl{N_ITER} & Conditionals \\
+               PacketID & Packetname & \inl{N_ITER} & Optional \\
 \hline
 \hline
-0 & Position Report & static & conditional\\
+0 & Position Report & - & +\\
 \hline
-1 & Position Report based on two balise groups & static & conditional\\
+1 & Position Report based on two balise groups & - & +\\
 \hline
-3 & Onboard telephone numbers & dynamic & -\\
+3 & Onboard telephone numbers & + & -\\
 \hline
-4 & Error Reporting & static & -\\
+4 & Error Reporting & - & -\\
 \hline
-9 & Level 2/3 transition information & static & -\\
+9 & Level 2/3 transition information & - & -\\
 \hline
-11 & Validated train data & dynamic & -\\
+11 & Validated train data & + & -\\
 \hline
-44 & Data used by applications outside the ERTMS/ETCS system & static & -\\
+44 & Data used by applications outside the ERTMS/ETCS system & - & -\\
 \hline
 \end{tabular}
 \end{center}
 \caption{\label{tbl:packets-packetnumbers-traintotrack} TrainToTrack packets}
 \end{table}
 
-\FloatBarrier  % forces the output of listings/tables
+%\FloatBarrier  % forces the output of listings/tables
 
 \begin{table}[hbt]
 \begin{center}
-    \begin{tabular}{|m{8ex}|m{8cm}|m{9ex}|m{11ex}|}
+    \begin{tabular}{|m{8ex}|m{8cm}|c|c|}
 \hline
-               PacketID & Packetname & \inl{N_ITER} & Conditionals \\
+               PacketID & Packetname & \inl{N_ITER} & Optional \\
 \hline
 \hline
-255 & End of information & static & -\\
+255 & End of information & - & -\\
 \hline
 \end{tabular}
 \end{center}
 \caption{\label{tbl:packets-packetnumbers-bothways} BothWays packets}
 \end{table}
 
-\FloatBarrier  % forces the output of listings/tables
+\clearpage
 
 
 \section{Formal specification of \inl{AdhesionFactor}}
 \label{sec:adhesionfactor}
+
+In this section we describe in detail the formal specification
+of encoding and decoding operations of the packet \adhesion,
+which is a typical static packet.
 
 \subsection{\inl{AdhesionFactor} in ETCS}
 \label{sec:adhesionfactor-etcs}
@@ -246,9 +273,9 @@ typedef struct AdhesionFactor AdhesionFactor;
 \caption{\label{lst:adhesionfactor-type}Definition of the type \inl{AdhesionFactor}}
 \end{listing}
 
-\FloatBarrier  % forces the output of listings/tables
+\clearpage
 
-Listing~\ref{fig:adhesionfactor-bitstream} outlines the mapping between 
+Figure~\ref{fig:adhesionfactor-bitstream} outlines the mapping between 
 a bit stream and the elements of \adhesion.
 
 \begin{figure}
@@ -319,11 +346,6 @@ of all members of on object of type \inl{AdhesionFactor}.
 
 Listing~\ref{lst:adhesionfactor-predicates-upperbitsnotset} shows the definition
 of the \inl{UpperBitsNotSet} predicate for \inl{AdhesionFactor}.
-The predicate \inl{UpperBitsNotSet(AdhesionFactor*)} evaluates to true
-if and only if the values of all members of \inl{AdhesionFactor}
-fit into their assigned numbers of bits.
-This functionality is ensured by the conjunction of the \inl{UpperBitsNotSet(uint64_t, uint32_t)} predicate,
-which is explained in Section~\ref{sec:bit operations in framac}, for all members of \inl{AdhesionFactor}.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -343,6 +365,12 @@ which is explained in Section~\ref{sec:bit operations in framac}, for all member
 \end{listing}
 
 \FloatBarrier
+
+The predicate \inl{UpperBitsNotSet(AdhesionFactor*)} holds
+if and only if the values of all members of \inl{AdhesionFactor}
+fit into their assigned numbers of bits.
+The predicate is defined as the conjunction of the overloaded \inl{UpperBitsNotSet} predicate
+which is explained in Section~\ref{sec:bit operations in framac}, for all members of \inl{AdhesionFactor}.
 
 \label{sec:adhesionfactor-predicates-separated}
 
@@ -406,19 +434,6 @@ in Section~\ref{sec:bitstream}.
 
 Listing~\ref{lst:adhesionfactor-upperbitsnotset} shows the contract of the \inl{UpperBitsNotSet}
 function for \inl{AdhesionFactor}.
-The function contract includes the \inl{requires} clauses, labeled \inl{valid} and \inl{invariant}.
-These limit the significance of the \inl{ensures} and \inl{assigns} clauses to
-the \inl{AdhesionFactor} objects that also satisfy the \inl{requires} clauses.
-The \inl{valid} clause only evaluates to true if the \inl{*p} is a valid pointer.
-The \inl{invariant} clause requires \inl{Invariant(p)} to evaluate to true.
-The \inl{Invariant(AdhesionFactor*)} predicate is explained
-in Section~\ref{sec:adhesionfactor-predicates-invariant}.
-The contract also includes a statement on the return value of the function, labeled \inl{result}.
-This clause ensures that the function's return value for \inl{AdhesionFactor* p}
-matches the evaluation of the predicate \inl{UpperBitsNotSet(p)}
-from Section~\ref{sec:adhesionfactor-predicates-upperbitsnotset}.
-With the \inl{assigns \\nothing} clause the contract furthermore
-specifies that this function has no side effects.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -439,7 +454,21 @@ int AdhesionFactor_UpperBitsNotSet(const AdhesionFactor* p);
 
 \FloatBarrier
 
-%\fxfatal{Refer to a more accurate label instead of cha:bitstream}
+The function contract includes the \inl{requires} clauses, labeled \inl{valid} and \inl{invariant}.
+These limit the significance of the \inl{ensures} and \inl{assigns} clauses to
+the \inl{AdhesionFactor} objects that also satisfy the \inl{requires} clauses.
+The \inl{valid} clause only evaluates to true if the \inl{*p} is a valid pointer.
+The \inl{invariant} clause requires \inl{Invariant(p)} to evaluate to true.
+The \inl{Invariant(AdhesionFactor*)} predicate is explained
+in Section~\ref{sec:adhesionfactor-predicates-invariant}.
+The contract also includes a statement on the return value of the function, labeled \inl{result}.
+This clause ensures that the function's return value for \inl{AdhesionFactor* p}
+matches the evaluation of the predicate \inl{UpperBitsNotSet(p)}
+from Section~\ref{sec:adhesionfactor-predicates-upperbitsnotset}.
+With the \inl{assigns \\nothing} clause the contract furthermore
+specifies that this function has no side effects.
+
+\clearpage
 
 \subsection{Formal specification of \inl{AdhesionFactor_DecodeBit}}
 \label{sec:adhesionfactor-decodebit}
@@ -453,73 +482,6 @@ The requirements \inl{valid_stream}, \inl{stream_invariant},
 and limit the set of combinations of input arguments for which the
 \inl{ensures} and \inl{assigns} clauses describe the behavior
 of the function.
-
-The \inl{assigns} clauses in the contract's body describe the
-side effects of the function.
-If the function contract is split into multiple behaviors,
-like here, common \inl{assigns} clauses, which contain the union
-of the behaviors' \inl{assigns} clauses, are needed outside
-of the behaviors.
-Their meaning will become clear when discussing the
-individual  behaviors.
-
-For both behaviors the \inl{unchanged} clause states that
-none of the bits in the bit stream are written by the function.
-
-\begin{itemize}
-\item
-The property \inl{valid_stream} requires that the predicate \inl{Readable(stream)}
-is satisfied (see Section~\ref{sec:bitstream}).
-
-\item
-The property \inl{stream_invariant} is only met if the \inl{Invariant} predicate is true.
-The predicate \inl{Invariant(Bitstream*, integer)} is described in
-Section~\ref{sec:bitstream}.
-
-\item
-The property \inl{valid_package} requires that \inl{p} is a valid pointer for read and write operations.
-
-\item
-The property \inl{separation} requires that \inl{*stream} and \inl{*p} do not overlap in the memory.
-The 
-\inl{Separated}
-predicate was introduced in
-Section~\ref{sec:adhesionfactor-predicates-separated}.
-\end{itemize}
-
-%\fxfatal{fix linebreak in itemize}
-
-%\fxfatal{make sure that \inl{Invariant(Bitstream*, integer)} is described in Section~\ref{cha:bitstream}}
-
-The behavior \inl{normal_case} describes the function's behavior if
-\inl{*stream} contains enough unread bits to fill
-all members of \inl{*p}. 
-%\fxfatal{p is declared as const and hence cannot be written --- possibly encode and decode have been confused?}
-In this case an object of type \inl{AdhesionFactor}
-is decoded from the stream
-and thus \inl{*p} is written.
-The latter is stated by the first \inl{assigns} clause.
-In this context the \inl{ensures} clauses \inl{equal} and \inl{upper}
-describe the relationship of the bits in the bit stream and
-the bits of the members of \inl{*p}.
-Furthermore \inl{stream->bitpos} will be updated.
-The effects of this operation are described by the second
-\inl{assigns} and the \inl{increment} clauses.
-
-The behavior \inl{error_case} describes the function's behavior in the opposite case
-i.e. if \inl{*stream} is exhausted before all members of \inl{*p} are read.
-In this case the function has no side effects and in particular does not write
-\inl{*p} or \inl{stream->bitpos}.
-The \inl{ensures} clause \inl{result} states that the return value
-of the function equals \inl{0}. In \inl{normal_case} this value was specified to equal \inl{1}.
-
-The distinguishing predicate for the two behaviors is \inl{Normal(Bitstream*, integer)},
-which appears in the \inl{assumes} clauses within both behaviors and
-is explained in Section~\ref{sec:bitstream}. 
-
-%\fxfatal{make sure that \inl{Normal(Bitstream*, integer)} is described in Chapter~\ref{cha:bitstream}}
-
-
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -565,11 +527,123 @@ int AdhesionFactor_DecodeBit(AdhesionFactor* p, Bitstream* stream);
 
 \FloatBarrier
 
+
+The \inl{assigns} clauses in the contract's body describe the
+side effects of the function.
+If the function contract is split into multiple behaviors,
+like here, common \inl{assigns} clauses, which contain the union
+of the behaviors' \inl{assigns} clauses, are needed outside
+of the behaviors.
+Their meaning will become clear when discussing the
+individual  behaviors.
+
+For both behaviors the \inl{unchanged} clause states that
+none of the bits in the bit stream are written by the function.
+
+\begin{itemize}
+\item
+The property \inl{valid_stream} requires that the predicate \inl{Readable(stream)}
+is satisfied (see Section~\ref{sec:bitstream}).
+
+\item
+The property \inl{stream_invariant} is only met if the \inl{Invariant} predicate is true.
+The predicate \inl{Invariant(Bitstream*, integer)} is described in
+Section~\ref{sec:bitstream}.
+
+\item
+The property \inl{valid_package} requires that \inl{p} is a valid pointer for read and write operations.
+
+\item
+The property \inl{separation} requires that \inl{*stream} and \inl{*p} do not overlap in the memory.
+The 
+\inl{Separated}
+predicate was introduced in
+Section~\ref{sec:adhesionfactor-predicates-separated}.
+\end{itemize}
+
+The behavior \inl{normal_case} describes the function's behavior if
+\inl{*stream} contains enough unread bits to fill
+all members of \inl{*p}. 
+In this case an object of type \inl{AdhesionFactor}
+is decoded from the stream
+and thus \inl{*p} is written.
+The latter is stated by the first \inl{assigns} clause.
+In this context the \inl{ensures} clauses \inl{equal} and \inl{upper}
+describe the relationship of the bits in the bit stream and
+the bits of the members of \inl{*p}.
+Furthermore \inl{stream->bitpos} will be updated.
+The effects of this operation are described by the second
+\inl{assigns} and the \inl{increment} clauses.
+
+The behavior \inl{error_case} describes the function's behavior in the opposite case
+i.e. if \inl{*stream} is exhausted before all members of \inl{*p} are read.
+In this case the function has no side effects and in particular does not write
+\inl{*p} or \inl{stream->bitpos}.
+The \inl{ensures} clause \inl{result} states that the return value
+of the function equals \inl{0}. In \inl{normal_case} this value was specified to equal \inl{1}.
+
+The distinguishing predicate for the two behaviors is \inl{Normal(Bitstream*, integer)},
+which appears in the \inl{assumes} clauses within both behaviors and
+is explained in Section~\ref{sec:bitstream}. 
+
+\clearpage 
+
 \subsection{Formal specification of \inl{AdhesionFactor_EncodeBit}}
 \label{sec:adhesionfactor-encodebit}
 
 Listing~\ref{lst:adhesionfactor-encodebit} shows the contract
 for the \inl{EncodeBit} function for \inl{AdhesionFactor}.
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires valid_stream:      Writable(stream);
+    requires stream_invariant:  Invariant(stream, MaxBitSize(p));
+    requires valid_package:     \valid_read(p);
+    requires invariant:         Invariant(p);
+    requires separation:        Separated(stream, p);
+
+    assigns stream->bitpos;
+    assigns stream->addr[0..(stream->size-1)];
+
+    behavior normal_case:
+      assumes Normal{Pre}(stream, MaxBitSize(p)) && UpperBitsNotSet{Pre}(p);
+
+      assigns stream->bitpos;
+      assigns stream->addr[0..(stream->size-1)];
+
+      ensures result:     \result == 1;
+      ensures increment:  stream->bitpos == \old(stream->bitpos) + BitSize(p);
+      ensures left:       Unchanged{Here,Old}(stream, 0, \old(stream->bitpos));
+      ensures middle:     EqualBits(stream, \old(stream->bitpos), p);
+      ensures right:      Unchanged{Here,Old}(stream, stream->bitpos, 8 * stream->size);
+
+    behavior values_too_big:
+      assumes Normal{Pre}(stream, MaxBitSize(p)) && !UpperBitsNotSet{Pre}(p);
+
+      assigns \nothing;
+
+      ensures result:        \result == -2;
+
+    behavior invalid_bit_sequence:
+      assumes !Normal{Pre}(stream, MaxBitSize(p));
+
+      assigns \nothing;
+
+      ensures result:       \result == -1;
+
+    complete behaviors;
+    disjoint behaviors;
+*/
+int AdhesionFactor_EncodeBit(const AdhesionFactor* p, Bitstream* stream);
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:adhesionfactor-encodebit}Contract for \inl{EncodeBit} function of \inl{AdhesionFactor}}
+\end{listing}
+
+\FloatBarrier
+
 The behavior of the function is described using the three
 disjoint behaviors \inl{normal_case}, \inl{values_too_big}
 and \inl{invalid_bit_sequence}.
@@ -657,55 +731,7 @@ Therefore the \inl{assigns} clause is \inl{\\nothing}.
 The \inl{result} clause states that the function's
 return value equals \inl{-1}.
 
-\begin{listing}[hbt]
-\begin{minipage}{0.99\textwidth}
-\begin{lstlisting}[style=acsl-block]
-/*@
-    requires valid_stream:      Writable(stream);
-    requires stream_invariant:  Invariant(stream, MaxBitSize(p));
-    requires valid_package:     \valid_read(p);
-    requires invariant:         Invariant(p);
-    requires separation:        Separated(stream, p);
-
-    assigns stream->bitpos;
-    assigns stream->addr[0..(stream->size-1)];
-
-    behavior normal_case:
-      assumes Normal{Pre}(stream, MaxBitSize(p)) && UpperBitsNotSet{Pre}(p);
-
-      assigns stream->bitpos;
-      assigns stream->addr[0..(stream->size-1)];
-
-      ensures result:     \result == 1;
-      ensures increment:  stream->bitpos == \old(stream->bitpos) + BitSize(p);
-      ensures left:       Unchanged{Here,Old}(stream, 0, \old(stream->bitpos));
-      ensures middle:     EqualBits(stream, \old(stream->bitpos), p);
-      ensures right:      Unchanged{Here,Old}(stream, stream->bitpos, 8 * stream->size);
-
-    behavior values_too_big:
-      assumes Normal{Pre}(stream, MaxBitSize(p)) && !UpperBitsNotSet{Pre}(p);
-
-      assigns \nothing;
-
-      ensures result:        \result == -2;
-
-    behavior invalid_bit_sequence:
-      assumes !Normal{Pre}(stream, MaxBitSize(p));
-
-      assigns \nothing;
-
-      ensures result:       \result == -1;
-
-    complete behaviors;
-    disjoint behaviors;
-*/
-int AdhesionFactor_EncodeBit(const AdhesionFactor* p, Bitstream* stream);
-\end{lstlisting}
-\end{minipage}
-\caption{\label{lst:adhesionfactor-encodebit}Contract for \inl{EncodeBit} function of \inl{AdhesionFactor}}
-\end{listing}
-
-\FloatBarrier
+\clearpage
 
 \section{Formal specification of other packets}
 \label{sec:other-packets}
@@ -713,14 +739,14 @@ int AdhesionFactor_EncodeBit(const AdhesionFactor* p, Bitstream* stream);
 After examining the definition of the predicates for \inl{AdhesionFactor}
 and the formal specifications of the functions \inl{AdhesionFactor_EncodeBit}
 and \inl{AdhesionFactor_DecodeBit} from Section~\ref{sec:adhesionfactor},
-the predicates for all other packets and their function's specifications
-look very familiar.
+the predicates for other (static) packets and the specifications of the corresponding
+functions look very familiar.
+
 In fact the only difference of the predicates lies in the different
 sets of sub predicates which are used and depends on the different sets
 of member variables for the different packets.
-The overloading feature of \acsl for predicates and logic functions
-is used to create completely generic formal specifications for the
-\inl{EncodeBit} and \inl{DecodeBit} functions.
-This means, that for any one of the 47 generated packets the
-function contracts look just like the ones for \inl{AdhesionFactor}.
+The fact that \acsl predicates and logic functions can be \emph{overloaded}
+for different types enables us to develop \emph{generic}
+formal specifications for the
+\inl{EncodeBit} and \inl{DecodeBit} functions of all packets.
 

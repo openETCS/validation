@@ -24,18 +24,6 @@ in Subsection~\ref{subsec:low-level 64} for single \inl{uint64_t}.
 
 
 
-
-
-
-
-
-
-
-
-
-
-\FloatBarrier
-
 \section{Reading and writing individual bits}
 
 
@@ -60,19 +48,12 @@ See Listing~\ref{lst:bit predicate defs} for the definition of the predicate
 \inl{Bit8Array}.
 %
 The array bits are counted starting with the most significant one of
-the first byte,
-cf.\ Figure~\ref{fig:bit coords} below.
+the first byte.
 %
 A call to \inl{TestBit8(bytevalue,bitadr)} returns the 
 \inl{bitadr}$^{\mbox{\scriptsize th}}$ bit
 within \inl{bytevalue}, this operation is discussed in
 Subsection~\ref{subsec:low-level 8} below.
-
-
-
-
-
-
 
 
 \begin{listing}[hbt]
@@ -205,23 +186,10 @@ static inline void SetBit8Array(uint8_t* addr, uint32_t size, uint32_t pos, int 
 \end{listing}
 
 
-
-
-
-
-
-
-\FloatBarrier
+\clearpage
 
 \subsection{Reading and writing 8 bit words}
 \label{subsec:low-level 8}
-
-
-
-
-
-
-
 
 
 \begin{listing}[hbt]
@@ -245,14 +213,6 @@ static inline int TestBit8(uint8_t value, uint32_t pos)
 \end{minipage}
 \caption{\label{lst:TestBit8}Reading a bit of \inl{uint8_t}}
 \end{listing}
-
-
-
-
-
-
-
-
 
 
 The operation \inl{TestBit8(value,pos)} returns the
@@ -349,25 +309,6 @@ static inline uint8_t SetBit8(uint8_t value, uint32_t pos, int flag)
 \end{listing}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 \FloatBarrier
 
 \subsection{Reading and writing 64 bit words}
@@ -384,10 +325,6 @@ and \ref{lst:SetBit64} without repeating the comments given
 in Subsection~\ref{subsec:low-level 8} for the 8 bit version.
 %
 See Listing~\ref{lst:bit predicate defs} for the employed \acsl predicates.
-
-
-
-
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -412,13 +349,6 @@ int TestBit64(uint64_t value, uint32_t pos)
 \end{listing}
 
 \FloatBarrier
-
-
-
-
-
-
-
 
 Listing~\ref{lst:SetBit64} shows the operation \inl{SetBit64}.
 %
@@ -460,9 +390,6 @@ uint64_t SetBit64(uint64_t value, uint32_t pos, int flag)
 
 \FloatBarrier
 
-
-
-
 The operation \inl{UpperBitsNotSet64(value,length)} succeeds,
 i.e.\ returns a
 non-zero value, if, and only if, all bits of \inl{value} except
@@ -476,10 +403,6 @@ It is used in the implementation of packet writing functions like
 to check that no non-zero bits from the packet structure (like
 \inl{struct AdhesionFactor}) are ignored due to space
 limitations in the bitstream.
-
-
-
-
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -496,40 +419,11 @@ int UpperBitsNotSet64(uint64_t value, uint32_t length);
 \end{minipage}
 \caption{\label{lst:UpperBitsNotSet64}Test that upper bits are not set}
 \end{listing}
-% BODY OMITTED:
-%{
-%    if (length == 64)
-%    {
-%        return 1;
-%    }
-%    else
-%    {
-%        const uint64_t MaxValue = ((uint64_t) 1) << length;
-%        // assert equiv: UpperBitsNotSet(value, length) <==> value < MaxValue;
-%
-%        return value < MaxValue;
-%    }
-%}
 
-
-
-
-
-
-
-
-
-
-
-\FloatBarrier
+\clearpage
 
 \section{Formalization of bit operations in \framac}
 \label{sec:bit operations in framac}
-
-
-
-
-
 
 The definition of predicate \inl{Bit8} is shown in 
 Listing~\ref{lst:bit predicate defs}.
@@ -537,12 +431,7 @@ Listing~\ref{lst:bit predicate defs}.
 It relies on the \framac library predicate \inl{BitTest},
 performing a coordinate
 transformation to fit \framac's notion of bit positions with the
-OpenETCS project's
-notion, cf.\ Figure~\ref{fig:bit coords}.
-
-
-
-
+notion of ETCS.
 
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
@@ -558,32 +447,7 @@ notion, cf.\ Figure~\ref{fig:bit coords}.
 \end{listing}
 
 
-
-
-
-
-
-
-
-
-
-
-
-\begin{figure}
-\begin{center}
-\vspace*{2cm}
-\fxfatal{Insert drawing}
-\vspace*{2cm}
-\caption{\label{fig:bit coords}
-        Bit coordinates in \framac and in the OpenETCS project}
-\end{center}
-\end{figure}
-
 \FloatBarrier
-
-
-
-
 
 
 The predicate \inl{UpperBitsNotSet(value,length)} succeeds if,
@@ -592,11 +456,6 @@ all but possibly
 the least significant \inl{length} bits of \inl{value} are zero.
 %
 Its definition is shown in Listing~\ref{lst:UpperBitsNotSet integer}.
-
-
-
-
-
 
 
 \begin{listing}[hbt]
@@ -627,14 +486,6 @@ Subsection~\ref{subsec:low-level 8}, is defined in similar way; its
 definition need not be shown here.
 
 
-
-
-
-
-
-
-
-
 \begin{listing}[hbt]
 \begin{minipage}{0.99\textwidth}
 \begin{lstlisting}[style=acsl-block]
@@ -649,12 +500,6 @@ predicate
 \end{listing}
 
 \FloatBarrier
-
-
-
-
-
-
 
 
 In order for the provers to find all low-level validation proofs, we
@@ -679,14 +524,6 @@ in Listing~\ref{lst:EqualBits64}, using a different index scheme.
 %
 It is necessary due to the provers' weakness in applying index
 transformations.
-
-
-
-
-
-
-
-
 
 
 \begin{listing}[hbt]
@@ -714,13 +551,6 @@ axiomatic BitProperties
 
 \FloatBarrier
 
-
-
-
-
-
-
-
 Finally, for a nonnegative integer \inl{v},
 the predicate \inl{BitTest(v,n)} succeeds if, and only if, the
 \inl{n}$^{\mbox{\scriptsize th}}$ bit is set in the binary
@@ -743,23 +573,4 @@ predicate   BitTest(integer v, integer n);
 \caption{\label{lst:BitTest}
 	The \framac library predicate \inl{BitTest}}
 \end{listing}
-
-
-
-
-
-
-
-
-
-
-
-%	\begin{listing}[hbt]
-%	\begin{minipage}{0.99\textwidth}
-%	\begin{lstlisting}[style=acsl-block]
-%	
-%	\end{lstlisting}
-%	\end{minipage}
-%	\caption{caption}
-%	\end{listing}
 

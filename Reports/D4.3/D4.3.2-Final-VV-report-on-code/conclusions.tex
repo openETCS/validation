@@ -2,9 +2,28 @@
 \chapter{Conclusion}
 \label{cha:conclusions}
 
-\fxfatal{results}
+The main results of this report are
 
-\fxfatal{lessons learned}
+\begin{itemize}
+\item generation of specifications and contracts, i.e.,
+\begin{itemize}
+\item generation of formal specifications from a formalization of ETCS packets
+\item generation of C code from a formalization ETCS data packets
+\item formal verification of a subset (static packets) of the generated code against the generated specifications
+\end{itemize}
+\item formal verification of underlying bit operations
+\item integration with the underlying communication layer
+\item integration with code generated from \scade model
+\end{itemize}
+
+\section{Lessons learned}
+
+The formal verification provided important feedback
+regarding the applicability of \framac with respect to
+\isoc~code from the railway domain.
+The main technical challenge was to handle the \emph{automatic}
+verification of low-level bit operations with the \framacwp plugin.
+This was achieved by a properly defined layer of elementary bit operation.
 
 \section{\framac issues}
 
@@ -27,7 +46,7 @@ Table~\ref{tbl:framac-issues} lists some of the issues reported by Fraunhofer FO
 \hline
 0001685	& Axiomatic is recompiled when using several processes & assigned \\
 \hline
-0001687 & Frama-C GUI discards candidate coq proof & assigned \\
+0001687 & Frama-C GUI discards candidate Coq proof & assigned \\
 \hline
 0001693 & Generate footprint from reads clauses of logic declarations & assigned \\
 \hline
@@ -37,7 +56,7 @@ Table~\ref{tbl:framac-issues} lists some of the issues reported by Fraunhofer FO
 \hline
 0001761 & Check that all occurrences of *p in assigns are guarded by a \inl{\\valid(p)} in requires & resolved\\
 \hline
-0001771 & quality of pdf files & resolved \\
+0001771 & quality of PDF files & resolved \\
 \hline
 0002041 & unable to use lemma \inl{separated_region} & acknowledged\\
 \hline
@@ -45,7 +64,7 @@ Table~\ref{tbl:framac-issues} lists some of the issues reported by Fraunhofer FO
 \hline
 0002098 & overloading of predicate fails & resolved \\
 \hline
-0002100 & readability of coq(?) names & acknowledged \\
+0002100 & readability of Coq(?) names & acknowledged \\
 \hline
 0002161 & redefinition of \inl{__STDC_VERSION__} & resolved \\
 \hline
@@ -57,11 +76,16 @@ Table~\ref{tbl:framac-issues} lists some of the issues reported by Fraunhofer FO
 \FloatBarrier
 
 We wish to emphasize the importance of identifying, documenting, and fixing of problems
-related to verification tools because these activities helps to document appropriate instructions
-or constraints on the use of the tools~\cite[\S~6.7.4.3]{en50128-2011}.
+related to verification tools because these activities helps to document appropriate 
+instructions or constraints on the use of the tools~\cite[\S~6.7.4.3]{en50128-2011}.
 
 
-\fxfatal{future work}
+\section{Future work}
 
-\fxfatal{ETCS issues}
+With respect to ETCS and \framac, further development is necessary in order to
+
+\begin{itemize}
+\item improve the specification and verification of dynamic packets and
+\item better document verification techniques for bit operations in \framac
+\end{itemize}
 

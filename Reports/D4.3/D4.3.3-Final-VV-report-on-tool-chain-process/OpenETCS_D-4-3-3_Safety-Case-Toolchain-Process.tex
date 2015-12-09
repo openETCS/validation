@@ -62,7 +62,9 @@
 \author{Raphaël Faudou}
 \affiliation{Samares Engineering on behalf of ENSEEIHT}
 
-  
+
+\author{Francois Revest}
+\affiliation{All4Tec}
 %add yourself as author, if you contributed to the document
 
 
@@ -206,15 +208,18 @@ of ETCS in Levels 1 \& 2}
 
 
 \begin{tabular}{rl}
-\textbf{ACedit} & Assurance Case Editor \\ 
-\textbf{ARM} & Argumentation  Metamodel \\ 
-\textbf{ETCS} & European Train Control System \\ \textbf{ERA} & European Railway Agency \\ \textbf{FMEA} & Failure Mode Effect Analysis \\ 
-\textbf{GSN} & Goal Structured Notation \\ 
-\textbf{MoRC} & Management of Radio Communication \\ 
-\textbf{RAMS} & Reliability, Availability, Maintainability and Safety \\
+%\textbf{ACedit} & Assurance Case Editor \\ 
+%\textbf{ARM} & Argumentation  Metamodel \\ 
+\textbf{ESF} & Eclipse Safety Framework \\ 
+\textbf{ETCS} & European Train Control System \\ 
+\textbf{ERA} & European Railway Agency \\ 
+%\textbf{FMEA} & Failure Mode Effect Analysis \\ 
+%\textbf{GSN} & Goal Structured Notation \\ 
+%\textbf{MoRC} & Management of Radio Communication \\ 
+%\textbf{RAMS} & Reliability, Availability, Maintainability and Safety \\
 \textbf{SIL} & Safety Integrity Level \\ 
 \textbf{SRS} & System Requirement Specification \\ 
-\textbf{THR} & Tolerable Hazard Rate \\ 
+%\textbf{THR} & Tolerable Hazard Rate \\ 
 \textbf{V\&V} & Verification \& Validation \\ 
 \end{tabular} 
 
@@ -303,89 +308,16 @@ The SCADE platform containing among others SCADE System Editor, SCADE Editor, SC
 The certification only concerns the actual Code generation based on the SCADE Model. To ensure QA in the design process and to qualify the overall toolchain modeling guidelines and quality measures for version and configuration management are needed. During the openETCS development it had to be ensured that github does not merge different versions of a xscade SCADE model file as this caused consistence problems. The xml format used by SCADE is not compatible with the github merging principals. Therefore, the openETCS project used separated model parts and check out principals to ensure that only one personal at a time is allowed to change a file. Nevertheless, a complete document by WP 3 and WP 7 listing all established measures and coding rules to ensure model consistency has not been provided at this point. This does not directly creates any safety related failures as SCADE clearly identifies consistence problems and the git configuration management provides options to retrieve the stable versions.
 
 
-\section{Safety Architect}
+\section{Eclipse Safety Framework}
 
-by FrederiqueVallee (or Francois Revest)
+ESF is a framework for model based safety analysis. The model of the system or software to analyze must be described in a format compliant with the tool Papyrus. The leaf components of the hierarchical description of the system are called “blocks”. Once the model has been imported, a local dysfunctional analysis is made. The local dysfunctional analysis consists in establishing different Boolean equation for every block (logical links between the failure modes of the block, the failure modes of its inputs and the failure modes of the output of the block). This analysis is local because only the dysfunctional behavior of the block is analyzed. Once all blocks have been analyzed, the feared events are defined on the associated port. The propagation algorithm computes the fault tree from the feared events and shows which block failure modes contribute to which feared event.
 
-- use of Safety Architect in openETCS (maybe addressing relation to Eclipse Safety Framework)
-- function in development process
-- inputs and outputs
-- results (in general, and specific for openETCS)
-
-
-
-
-<<<<<<< 98bb40606c415a456db258dec7efea3e55b1b512
-\section{Overview of Scade}
-
-Scade is a formal modeling language that provides both a graphical
-(diagrammatic) and textual concrete syntax. Formal here means that the
-intended meaning of a model can be defined unambiguously using a
-mathematical framework. It is therefore possible to reason on models
-and to prove properties on them with a very high-level of
-confidence. More precisely, Scade models are synchronously clocked
-state machines, interacting on infinite data streams, that can be
-nested and intermixed with each other without limitations. Actually
-the core of the Scade language is based on
-Lustre~\cite{al91,halbwachs05}, a declarative, synchronous dataflow
-programming language for reactive systems defined in the early 1980s
-at the Verimag laboratory in Grenoble.
-
-Another property of Scade is that it is an executable language with a
-deterministic semantics, meaning that no randomness is involved in the
-``execution'' of a Scade model; A model will thus always produce the
-same outputs from a given set of inputs.  All these characteristics of
-Scade (formal, executable and deterministic) made it possible to
-develop the first certified code generators to C and ADA according to
-the DO-178B and the EN50128. This is a benefit of using Scade with
-respect to competing frameworks.
-
-% We would like to find the same characteristics in the target language
-% of our transformation.
-
-\section{Motivations for the Adoption of Scade in the Project}
-
-The Scade language is supported by a toolbox, the \emph{Scade suite},
-that provides an integrated design and development environment. Scade
-suite offers several services: simulation and debugging at the model
-level; test case execution; model test coverage measurement; code
-verification on models; \dots 
-
-An extension of the tool, called \emph{Scade system}, provides
-additional functionalities that are of interest in the context of the
-openETCS project. Basically, Scade System provides systems modeling
-and model generation based on the SysML standard and the Eclipse
-Papyrus editor. In particular, Scade system offers ``partial'' gateway
-from and to SysML and integration with Eclipse through the use of the
-Eclipse Modeling Framework (EMF). This is relevant for the openETCS
-project since Eclipse was selected as the de facto open source
-platform for integrating the tools developed in the project, while
-SysML was selected for modeling the architecture of the
-system. 
-
-by Jan Welte and Marc Behrens
-
-- use of SCADE for quality assurance
-- limitations of SCADE
-- addressing safety issues and properties in SCADE 
-(potential specific aspects in openETCS deviation from the usual use of SCADE)
-
-
-\section{Safety Architect}
-
-ESF is a framework for model based safety analysis. The model of the system or software to analyze must be described in a format compliant with the tool Papyrus. The leaf components of the hierarchical description of the system are called “blocks”. Once the model has been imported, a local dysfunctional analysis is made. The local dysfunctional analysis consists in establishing different Boolean equation for every block (logical links between the failure modes of the block, the failure modes of its inputs and the failure modes of the output of the block). This analysis is local because only the dysfunctional behavior of the block is analyseds. Once all blocks have been analysed, the feared events are defined on the associated port. The propagation algorithm computes the fault tree from the feared events and shows which block failure modes contribute to which feared event
 For OpenETCS, the SysML model of the ETCS OBU has been imported in ESF. The structure of the model, links and components, are then recognized by ESF. Some problems in the SysML model have been detected during the ESF importation: links deleted in the graphical view and not in the textual view, connector link without destination port or target port.
-The model behavior is described in the document D3\_5\_3 that was our basis for performing the dysfunctional analysis. For proof of the concept, only one feared event has been defined and analysed: erroneous error message in the posRepHeader to the train. Once the local analysis has been done, a propagation of failure modes has been performed and the fault tree has been automatically computed. 
+
+The model behavior is described in the document D3.5.3 that was our basis for performing the dysfunctional analysis. For proof of the concept, only one feared event has been defined and analyzed: erroneous error message in the posRepHeader to the train. Once the local analysis has been done, a propagation of failure modes has been performed and the fault tree has been automatically computed. 
 The analysis of the fault tree has shown that all the components were critical because any error on the equipment affects the output of the system. The SIL4 classification of this equipment is thus correct and cannot be reduced. It could be interesting to make the system safer by performing a checksum on the error message all along the process. Another proposal is to verify whether all input are consistent with the system specification.
 
-by Francois Revest
 
-- use of Safety Architect in openETCS (maybe addressing relation to Eclipse Safety Framework)
-- function in development process
-- inputs and outputs
-- results (in general, and specific for openETCS)
-=======
->>>>>>> 177957cb01e35c0d34d42bdada0bcdccbdbb0228
 
 \chapter{OpenETCS Development}
 \label{sec:development-process}

@@ -21,7 +21,7 @@
 \definecolor{light-gray}{gray}{0.95}
 
 %assign a report number here
-\reportnum{OETCS/WP4/D4.3.3V0.0}
+\reportnum{OETCS/WP4/D4.3.3}
 
 %define your workpackage here
 \wp{Work-Package 4: ``Validation \& Verification Strategy''}
@@ -33,7 +33,7 @@
 \subtitle{Process and Toolchain verification for the openETCS on-board unit software development}
 
 %set the date of the report here
-\date{November 2015} %\\ Revised April 2015}
+\date{December 2015} %\\ Revised April 2015}
 
 %document approval
 %define the name and affiliation of the people involved in the documents approbation here
@@ -99,7 +99,7 @@ Work Package &  WP4  \\
 Deliverable ID & D 4.3.3\\
 \hline
 Document title & Process and Toolchain verification for the openETCS on-board unit software development \\
-Document version & 0.1 \\
+Document version & 1.0 \\
 Document authors (org.)  & Jan Welte (TU-BS)\\
 \hline
 \end{tabular}
@@ -234,7 +234,7 @@ of ETCS in Levels 1 \& 2}
 \label{toolchain}
 \section{Overview}
 
-As it has been state in the openETCS FPP one of the goals  is to "Provide a tool chain and process/methodologies for developing an on-board software that can fulfill the CENELEC requirements for SIL4 software" \cite{FPP}. To do so O~7.3.2 Tool chain Design Specification state that the tool chain  provides tool support for a formalized specification of SRS and an executable code of the OBU. In addition cross cutting tools for traceability, version management, integration and documentation as well as specific V\&V activities are needed.
+As it has been state in the openETCS FPP one of the goals  is to "Provide a tool chain and process/methodologies for developing an on-board software that can fulfill the CENELEC requirements for SIL4 software" [FPP]. To do so O~7.3.2 Tool chain Design Specification state that the tool chain  provides tool support for a formalized specification of SRS and an executable code of the OBU. In addition cross cutting tools for traceability, version management, integration and documentation as well as specific V\&V activities are needed.
 
 Overall O~7.3.2 distinguishes two kind of tools:
 \begin{itemize}
@@ -401,7 +401,7 @@ Overall the various exemplary applications for all phases of the development lif
 
 
 \chapter{Generic OpenETCS Safety Case}
-\label{sec:hazardandrisk}
+\label{sec:safetycase}
 
 The purpose of a safety case is to coherently present all available evidence to the assessing authority that the development has been done according to the required standards and that it has taken a needed safety properties into account. As the openETCS project just provides a n ETCS OBU kernel model without any specific target hardware it is not an independent assessable part. So this chapter provides the basic measures and safety allocations which have to be addressed by any adopter using the openETCS OBU Kernel software. Thereby, it is distinguished between basic assumptions, safety argumentation and evidences for the openETCS development as far as this already exist. To do so the chapter addresses the four main parts of a safety case according to the EN~50129 in the following sections:
 
@@ -533,14 +533,12 @@ Due to the late architecture and model releases no consistent proof concepts has
 \chapter{Conclusion}
 \label{sec:conclusion}
 
-This document presents the basic concept for the main safety related activities in the openETCS development as they have been determined during the first verification and validation iteration level of WP 4. As these have been done in respect to a still evolving development methodology and tool chain, the overall process as to be detailed and adopted as the project continues. 
+Toolchain and development process provided by openETCS are a sufficient basis for SIL 4 software development. But due to process evolution and tool issues the project has not been able to consistently apply the defined process and supporting toolchain in all necessary steps. Still ensures the use of SCADE as the min design platform a consistent and reusable openETCS OBU Kernel software. Furthermore the use of the certified code generated makes it possible for every adopter to change and enhance parts of the overall software model without losing the qualified executable code. This ensures reuse and maintenance for every future application of the openETCS results. This would specifically require the addition of sub-system and software specifications whose documentation needed to enable more significant verification of the current model release.
 
-In general the verification and validation activities have to ensure that the safety principal apportioned to the on-board functionality are satisfied. Hence, the main objective for the openETCS safety case as presented in chapter \ref{sec:safetycase} is to provide the fundamental quality and safety principles for the openETCS development as these have to be completed by adopters of the openETCS results for their assessment. Therefore, the general safety argumentation and the concrete evidence shall be clear distinguished to ease applicability and support discussions with different legal authorities.
+In general the openETCS documentation provides the fundamental documentation to use the OBU Kernel model in a specific system application. However, every adopter has to conduct a specific safety analysis for his software/hardware integration to establish measures for hardware failure protection, to ensure data consistence and prove expected system performance especially concerning safety relevant reaction times. these analysis can not be done in the pure software context of openETCS, but the SCADE model principals and the interface constrains provide adequate starting points. Associated with this analysis every adopter has to establish a safety management by accounting for the resulting safety requirements in the overall QA management. Safety validation has to show that the overall system satisfies all derived safety requirements. In addition, every user of the kernel software in th overall ETCS system has to provide evidence that his used software release takes measures for the ETCS kernel hazardous situation. To do so he can use the ESF error propagation by that certain data errors can not result in a unsafe speed or a missing brake activation.
 
-Overall the main methodology for the hazard and risk analysis as well as the safety case work has been defined during the first level iteration but these concepts have to be further refined over the next iterations with the evolving development process.
-
-\bibliographystyle{unsrt}
-\bibliography{./ref/ref-HaRA}
+%\bibliographystyle{unsrt}
+%\bibliography{./ref/ref-HaRA}
 
 
 %===================================================

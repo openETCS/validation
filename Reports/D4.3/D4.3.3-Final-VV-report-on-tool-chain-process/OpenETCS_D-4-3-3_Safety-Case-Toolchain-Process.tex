@@ -303,7 +303,7 @@ As the WP 3 and WP 7 activities have mainly been focused on establishing tool ch
 
 \section{SCADE}
 
-The SCADE platform containing among others SCADE System Editor, SCADE Editor, SCADE Display and their respective KCGs builds the main productive part of the openETCS toolchain. The main design work by WP 3 has been done with the SCADE Editor and all automatic generated code used has been created based on the SCADE Editor and SCADE Display models. As the SCADE language used as means of description is  an executable language with a deterministic semantics, the automatic code generation has been certified for C and Ada Code. Therefore, the use of SCADE as core of the productive design toolchain satisfies the tool requirements. The automatic checks done during the code generation also check consistence of the initial model.
+SCADE is at once  a formal modeling language and tool suite for the development of safety-critical embedded systems. SCADE has been used for more than 15 years to develop a broad range of control applications in the avionics, rail, and automotive domains. The SCADE platform containing among others SCADE System Editor, SCADE Editor, SCADE Display and their respective KCGs builds the main productive part of the openETCS toolchain. The main design work by WP 3 has been done with the SCADE Editor and all automatic generated code used has been created based on the SCADE Editor and SCADE Display models. As the SCADE language used as means of description is  an executable language with a deterministic semantics, the automatic code generation has been certified for C and Ada Code. Therefore, the use of SCADE as core of the productive design toolchain satisfies the tool requirements. The automatic checks done during the code generation also check consistence of the initial model.
 
 The certification only concerns the actual Code generation based on the SCADE Model. To ensure QA in the design process and to qualify the overall toolchain modeling guidelines and quality measures for version and configuration management are needed. During the openETCS development it had to be ensured that github does not merge different versions of a xscade SCADE model file as this caused consistence problems. The xml format used by SCADE is not compatible with the github merging principals. Therefore, the openETCS project used separated model parts and check out principals to ensure that only one personal at a time is allowed to change a file. Nevertheless, a complete document by WP 3 and WP 7 listing all established measures and coding rules to ensure model consistency has not been provided at this point. This does not directly creates any safety related failures as SCADE clearly identifies consistence problems and the git configuration management provides options to retrieve the stable versions.
 
@@ -317,10 +317,22 @@ For OpenETCS, the SysML model of the ETCS OBU has been imported in ESF. The stru
 The model behavior is described in the document D3.5.3 that was our basis for performing the dysfunctional analysis. For proof of the concept, only one feared event has been defined and analyzed: erroneous error message in the posRepHeader to the train. Once the local analysis has been done, a propagation of failure modes has been performed and the fault tree has been automatically computed. 
 The analysis of the fault tree has shown that all the components were critical because any error on the equipment affects the output of the system. The SIL4 classification of this equipment is thus correct and cannot be reduced. It could be interesting to make the system safer by performing a checksum on the error message all along the process. Another proposal is to verify whether all input are consistent with the system specification.
 
+\section{Summary}
+\label{summary-tool}
+
+Overall the verification of the toolchain has the result that the openETCS toolchain itself is consistent and provides the basic required functionality for the development. In particular the design tools starting at the requirement level with ProR and going via Papyrus to SCADE Suite are stable and mostly already coordinated concerning the artifact interfaces. Specifically the SCADE part is already well proven in use and also provides the needed qualification documents for a SIL 4 development. 
+
+For nearly all other tools a proper qualification according to the tool class used in the development toolchain could be reached but has not been address up to now. Especially, the Cross-Cutting tools have to be checked in an in-depth  analysis to qualify them against potential failures. Any adopter of the openETCS toolchain has to do an analysis based on the specific configurations of artifacts and tools he is using for his development.
 
 
 \chapter{OpenETCS Development}
 \label{sec:development-process}
+
+The main goal of the openETCS project is to develop a model of the ETCS OBU kernel in a CENELEC conform but agil development process. As presented in-depth in D2.3 and its additional deliverables the openETCS Software development process follows the basic EN~50128 lifecycle but has adjusted its artifacts and development phases to accommodate the model-based development based on the openETCS toolchain and the agile development principals. 
+
+The current ETCS OBU SCADE model and the corresponding generated C Code is the resulting product of this development as the demonstrator parts of the project are examples for the multi platform use of the software and only serve as validation tools or the software functionality.
+
+\section{overview}
 
 As presented in-depth in D2.3 and its additional deliverables the openETCS Software development process follows the basic EN~50128 lifecycle but has adjusted its artifacts and development phases to accommodate the model-based development based on the openETCS toolchain and the agile development principals. The resulting openETCS development lifecycle is derived in D2.3a and shown in figure \ref{fig:lifecycle2}.
 
@@ -333,149 +345,22 @@ As presented in-depth in D2.3 and its additional deliverables the openETCS Softw
   \label{fig:lifecycle2}
 \end{figure}
 
+\section{Compatibility to CENELEC standards}
 
+In contrast to the EN~50128 lifecycle, the openETCS lifecycle is not a full system development as hardware is not part of openETCS. The development only aims at the OBU kernel which is part of the  ETCS EVC and the overall ETCS system. Therefore, the substantial superordinated system information have to be considered during the openETCS system design. This is represented in this D2.3a lifecycle.
 
-The openETCS SW development process follows the Illustrative
-Development Lifecycle~2 \cite[Fig.~4]{EN50128:2011} of the EN~50128
-and the detailed description for ``Generic software development'' in
-Sec.~7 of that standard. It deviates mainly in start and end phases
-from that lifecycle. These phases are adapted to the specifics of the
-openETCS goals, as not a full system will be developed (no hardware)
-and a substantial body of background material concerning the EVC and
-its environment is available. Additionally, as s a minor deviation,
-the SW component design phase has been made part of the SW
-architecture and design phase. This deviation reflects the form of the
-development within the openETCS project, but it is of not much
-significance and could easily be undone.
+Furthermore, the openETCS lifecycle includes the software component design in the software architecture and design phase, as this those activities get closely connected in the agile model-based development. The SCADE models with there modular architecture development allow a dynamic design process which combines top-down elements for the system architecture to the single component by refinement as well as bottom-up work from basic components which are integrated step by step in the architecture. Both approaches have been used for different parts of the SRS during the openETCS project. As the high level SCADE integration models and the simulation test ensure consistency between all integrated modules this single phase represents the various agile iterations.
 
-from D2.3a
-
-
-One of the main purpose of the openETCS project is to develop a model
-of the ETCS on-board unit (OBU) using ``Open Standards'' at every
-stages. This includes generating open hardware and software
-specifications, writing interface definition using open languages, and
-developing open source design tools for supporting this effort. One of
-the most important output of the project is a formal specification of
-the ETCS that follows the specification defined by the European
-Railway Agency (ERA) in its Subset-026
-document~\cite{subset-026}. Nonetheless, for reasons that we will
-briefly recall in this chapter, the proprietary language Scade---that
-is a ``closed-source'' solution---was chosen to develop the functional
-model of the OBU.
-
-Scade is a formal modeling language and tool suite targeting
-safety-critical embedded systems. It is developed by Esterel
-Technologies, now a company of the ANSYS group
-(\url{http://www.ansys.com/}). Scade has been used for more than 15
-years to develop a broad range of control applications in the
-avionics, rail, and automotive domains. The current Scade model for
-the OBU is a major output of the project. The architectural model
-(modeled in SysML using the Scade system tool) and the functional
-model (modeled in Scade using the Scade suite tool) have been
-developed from scratch---without the use of prior components---and
-cover all the aspects defined in chapters 3, 4,5, 7 and 8 of the
-\emph{ETCS specification}\footnote{In the remainder of theis text we
-  will sometimes use ``ETCS specification'' instead of the longer form
-  ``SRS subset 26 specification''.}. The models are made available on
-the GitHub of the openETCS project
-(\url{https://github.com/openETCS/modeling/tree/master/model}) and a
-complete description is given in deliverable D3.5.3~\cite{d353}.
-
-from openETCS: Migration from Scade to an Open Alternative
-
-
-\section{overview}
-
-Fig.~\ref{fig:lifecycle2} gives an overview of the openETCS
-development lifecycle. It has been derived from Fig.~1 from
-\cite{EN50128:2011}. The main differences to that standard consist in:
-\begin{itemize}
-\item A system phase has been added which covers the activities preceding
-  the sub-system development (starting from the sub-system requirements)
-\item The ``SW architecture and design phase'' and the ``SW component
-  design phase'' have been combined into one phase. This is purely
-  organizational. All information of the standard approach still have
-  to be generated.
-\item The ``SW component implementation phase'' and ``SW component
-  testing phase'' have been combined into one. This is motivated by
-  changing the responsibility for performing component tests to the
-  Implementer and letting the Tester only check the results. This
-  decision is in accordance with \cite[6.1.4.1 to
-  6.1.4.5]{EN50128:2011} (see below). But nevertheless it might be
-  reconsidered in the process implementation.
-\item According to the standard, SW validation should happen
-  \emph{after} SW/HW integration. Since it would contradict the goals
-  of openETCS to fix the hardware, the SW cannot be deployed to the
-  target HW and thus not be validated on it. To validate the SW within
-  openETCS, the best option seems to be to do validation within
-  simulated hardware.
-\item Phases after SW validation are outside the current scope of
-  openETCS, though a process for SW maintenance should be installed in
-  the long run.
-\end{itemize}
-
-from D2.3a
+As correctly state in D2.3a all EN~50128 phase after validation are not part of the openETCS project and therefore not detailed at the moment. Nevertheless, the openETCS foundation and all adopters have to define a clear maintenance process after the end of the openETCS project. 
 
 \section{Process Implementation}
 \label{sec:proc-impl}
 
-The process will not be implemented in a top-down, sequential style,
-where, e.g., specifications are completed and verified before the
-software is designed. Instead, the phases may overlap in time. This
-means, even software components may be designed before the SW
-specification is finalized. However, the final documentation of the
-development shall present a consistent, top-down view of the
-result. To ensure that this goal is achieved, specific considerations
-have to be given to the iterative aspect in the ``Project Plan'',
-``QA-Plan'' and in particular the ``Configuration Management Plan'' .
+Since the openETCS development process shown in the previous section as just emerged over the duration of the project, the implementation of the process has also been a continuous process. Due to many challenges with supporting tools and coordination between process partners has the work main been concentrated on the actual design and implementation work. This has been performed in several agile iterations and in accordance with open ETCS release principles as presented in D2.3b. Functionality and integration test have been performed on parts of the system by WP~4 as these have been available in the releases.
 
-
-Ideally, a plan should be made which sets the goals to be achieved
-in the openETCS project. This consists in defining  
-\begin{itemize}
-\item the functionality to be realized, and
-\item the completeness and maturity levels of the artifacts. 
-\end{itemize}
-The maturity could, for instance, be defined in classes like
-``Draft'', ``Revised'', ``Final''. Completeness refers to
-functionality and other, artifact specific issues. 
-
-The plan should define a timeline which states which grade shall be
-achieved at which stage, and add corresponding activities.
-
-Besides this general process flow, also the means, i.e., languages and
-tools, and their impact on the process should be addressed in a
-detailed description of the process implementation. In particular, the
-ramifications of the use of the SCADE tool suite deserve specific attention.
-
-from D2.3a
-
-by Jan Welte
-
-Short overview of current work.
-
-- Main principals to ensure consistency 
-
-- Mainly collecting findings
-
-- allocate the tools to the process steps used/ qualified
-
-\section{Compatibility to CENELEC standards}
-
-by Mohamed Abdelnasir
-
-- overview results relation to EN 50126/50128 lifecycle 
-- reasons for deviations
-- additional findings
+Due to the focus on implementing and providing a final openETCS OBU Kernel model and supporting demonstrators the work has been driven by directly designing from the SRS. Accordingly, it has to be stated in this verification report that the actual sub-system specification for the openETCS OBU Kernel and the specific software specification as stated figure \ref{fig:lifecycle2} phase 1 and phase 3 have been very limited. In combination with the raw size of the openETCS model this aspect made it difficult to explicitly allocate specific model functions to the high level SRS requirements. This clear requirements refinement to software level is laking in the implemented openETCS process and has to be supplemented if the openETCS model should be used in a SIL 4 development context. However, the modular model structure and the existing architecture verification provide the basic information to complete the process implementation in a sequential use.
 
 \section{Traceability}
-
-by @janwelte @raphaelfaudou
-
-- addressing specific position of traceability for safety argumentation
-- introducing basic concept
-- main findings (limitations)
 
 Requirement traceability activity consists in ensuring that all product engineering artifacts (including verification means) can be traced to an originating stakeholder requirement either directly (direct link) or through other requirements derived from stakeholder requirements. It means creating links but also manage their status (created, confirmed...) and potentially their deletion.
 
@@ -502,7 +387,17 @@ OpenETCS tool chain currently supports ability to create links between:
  
 \textbf{Note:} it is also possible to create links between SCADE Model and SRS Subset 026 .ReqIF requirements through SCADE Suite RM Gateway and ReqTify traceability product but it is not an open solution and it requires additional licenses. Therefore that approach was used only by a few partners and was not considered as conclusive. There are pending investigations to provide alternate open solutions to support edition of those traceability links.
 
+Similarly to the overall development process traceability as the central crosscutting function and the corresponding tool support have just been established over the project duration. Due to missing tool support and licenses for different project partners trace between SRS requirements and SCADE models have not been set consistently. All overall architecture parts are linked a range of ETCS specifications, but the potential detailed linking of different basic functional blocks in SCADE, which eases the understanding of the model for V\&V and further use has not been established. Nevertheless, the main functions are commented in detail and these comments refer to specific parts of the SRS. Though the versatile use of automated traceability links between requirement, model and test abstractions, which could be provided by the openETCS development process and toolchain, was not been exercised.   
 
+
+\section{Summary}
+\label{summary-process}
+
+Overall the verification of the openETCS process has shown that the general process used in openETCS is based on the EN~50128 lifecycle and also it uses agile development principal provides all required artifacts. The combination of architecture and design and component design phases is due to the used model-based development which combines top-down and bottom-up development. As the consistency for interfaces and functionality allocation is ensured during the regular model integration this process verifies the EN~50128 QA requirements. Also the available methodology and tool support for traceability allows to maintain the connections between iteratively developed requirements, specifications, models and tests as well as all supporting documentation.
+
+However the actual implementation in the openETCS project has been found to lack activities concerning  the sub-system and software specifications documentation. Do to the focus on building a model the design team has derived their software specification base on the SRS and has directly implemented them in executable SCADE models for functional verification. This makes it difficult to follow and verify intermediated analysis and architecture processes between the ETCS system SRS and the actual OBU Kernel model. Especially as the tool challenges have limited a consistent establishment of traces between SRS, SysML architecture and Scade specification models. This has also limited the independent testing by WP 4 to mainly architecture verifcation and functional validation, as to extract concrete requirements for a software verification have been laborious. 
+
+Overall the various exemplary applications for all phases of the development lifecycle have shown that the openETCS development process and the supporting toolchain are suitable in the described way. 
 
 
 \chapter{Generic OpenETCS Safety Case}

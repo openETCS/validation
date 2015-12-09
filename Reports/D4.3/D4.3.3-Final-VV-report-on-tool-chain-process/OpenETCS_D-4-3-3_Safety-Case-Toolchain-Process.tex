@@ -403,98 +403,69 @@ Overall the various exemplary applications for all phases of the development lif
 \chapter{Generic OpenETCS Safety Case}
 \label{sec:hazardandrisk}
 
+The purpose of a safety case is to coherently present all available evidence to the assessing authority that the development has been done according to the required standards and that it has taken a needed safety properties into account. As the openETCS project just provides a n ETCS OBU kernel model without any specific target hardware it is not an independent assessable part. So this chapter provides the basic measures and safety allocations which have to be addressed by any adopter using the openETCS OBU Kernel software. Thereby, it is distinguished between basic assumptions, safety argumentation and evidences for the openETCS development as far as this already exist. To do so the chapter addresses the four main parts of a safety case according to the EN~50129 in the following sections:
+
 \section{System/ Sub-System Definition}
 
-The system architecture of the openETCS OBU is adopted from the system structure defined in ERA Subset-026, Chapter 2.5 \cite{subset-026}. Figure \ref{f:architecture_srs} shows which parts of the reference architecture are in the scope of the openETCS OBU model, cf.~dashed red line. Note that also specific parts of the ETCS trackside (e.g.~Eurobalise and RBC blocks) have been modeled to have an integrated test environment, cf.~dashed black line in Figure~\ref{f:architecture_srs}.
-
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=.8\textwidth]{images/ArchitectureSRS}
-\caption[Scope of openETCS OBU model system according to ERA TSI Chapter 2.5.]{Scope of openETCS OBU model system according to ERA TSI Chapter 2.5. Functional blocks in the scope of openETCS have been marked by the dashed black line. The dashed red line shows the OBU blocks in the scope of openETCS.}
+\includegraphics[width=.75\textwidth]{images/ArchitectureSRS}
+\caption[]{Scope of openETCS OBU model system according to ERA TSI Chapter 2.5.}
 \label{f:architecture_srs}
 \end{figure}
 
+As already stated above the openETCS development addresses the ETCS OBU Kernel, which runs on the EVC. 
+As presented in the final architecture document D3.5.4 this does not include all ETCS components on-board as openETCS has the project decided to to time and effort limitations to not implement the LTM, JRU and STM components of the ETCS system structure defined in ERA SRS. The detailed systema and sub-system limits in ETCS are shown in figure \ref{f:architecture_srs}. In addition to the primary scope of openETCS OBU model, which are marked by the dashed red line, also certain parts of the ETCS trackside (e.g.~Eurobalise and RBC blocks) have been addresses for testing and validation purposes. These have been also been modeled in SCADE to allow the agile simulation and testing processes.  The scope of this integrated test environment is shown by the dashed black line in figure~\ref{f:architecture_srs}. A SysML representation of the overall ETCS architecture and the interfaces is shown in figure~\label{f:top_level}. The external interfaces are used for the communication between the openETCS OBU and systems out of the scope of the openETCS project and the ETCS Onboard Unit System. All interfaces as presented in detail in D3.5.4 as well as in their respective SysML and SCADE model specifications. 
 
-\section{Top Level Architecture and External Interfaces}
-
-Figure~\ref{f:top_level} shows the top level architecture with external interfaces E1, E2,$\ldots$, E10. The external interfaces are used for the communication between the openETCS OBU (dashed red line) and systems out of the scope of the openETCS project and the ETCS Onboard Unit System. In the following we give  brief overview of the interfaces:
-\begin{figure}
+\begin{figure} [htbp]
 \centering
-\includegraphics[width=\textwidth]{ETCS_system.pdf}
-\caption{Top level architecture with external interfaces E1 to E10.}
+\includegraphics[width=0.9\textwidth]{ETCS_system.pdf}
+\caption{ETCS architecture with external interfaces}
 \label{f:top_level}
 \end{figure}
 
-%\todo[inline]{Descriptions should be improved}
-\begin{description}
-\item[E1] Input and output interface between the Interlocking and the Eurobalise. Only relevant for controlled Eurobalises.
+Nevertheless, the extended scope is not part of the sub-system OBU kernel software and respectively not part of the developed product itself. Figure~\ref{f:ETCS_OBU_decomposition} shows the limits of the OBU Kernel and its internal interfaces, as they are implemented during the development process.
 
-\item[E2] Input and output interface between the Interlocking and Radio Block Center (RBC).
+\begin{figure} [htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{images/F2_ETCS_Kernel.pdf}
+\caption{ETCS OBU system architecture view with internal interfaces}
+\label{f:ETCS_OBU_decomposition}
+\end{figure}
 
-\item[E3] Input interface from the Eurobalise to the ERTMS Track module.
-
-\item[E4] Input interface from the RBC to the ERTMS Track module.
-
-\item[E5]  Input and output interface between the Driver and the ETCS OBU. This interface is used for the interaction between the driver and the display (Driver Machine Interface, DMI).
-
-\item[E6] This input interface from ERTMS Track module to the ETCS OBU is a compound structure and combines the interfaces E3 and E4 to send track side messages from Eurobalises or RBC to the ETCS OBU.
-
-\item[E7] Input and output interface between RBC and ETCS OBU. This interface is used for the management of radio communication, e.g.~session management, and sending radio messages from the ETCS OBU to the RBC. Note that the ETCS OBU receives radio messages via interface E6.
-
-\item[E8] Input interface to the odometry subsystem of the ETCS OBU. Used for sending information to the train if there is any movement outside the ETCS system, e.g.~"cold movement".
-
-\item[E9] Input interface to the ETCS OBU to set configuration data such as fixed values, system values, national values and train configuration.
-
-\item[E10] Input and output interface between the ETCS OBU and the train. This interface is used for the interaction between the train and the ETCS OBU such as brake control, traction control, door control, etc.
-
-\end{description}
-
-from D3.5.4
-
-by Jan Welte
-
-- general information concerning openETCs system and sub-system structure
-- potential applications for artifacts
+A detailed definition for the sub-system and the integrated test environment is given in D3.5.4 and all associate outputs. Basis for all system definitions is the standardized ETCS architecture in the SRS and all corresponding ERA documents. The only actual product of the openETCS development process is the OBU Kernel software with all  primary
 
 \section{Quality Management}
 
-Since the openETCS project as a research does not have the objective to conduct all steps needed for a vital on-board unit development, the resulting safety case will be generic in many parts only giving the requirements and basic safety strategies, but lacking the actual evidence. However, the overall safety argumentation has to be set up to meet SIL 4 requirements. Therefore the safety case has to show that the methods chosen in the openETCS development process satisfy the EN~50128 quality requirements and which documents have to be created during the process to obtain the required evidence. Basis for this work will be the Quality Assurance Plan as this document builds the basis for all quality management activities.
-
-by Mohamed Abdelnasir
-
-- basic concept for quality management in openETCS
-- missing aspects in quality management
-- main finding to address additional measures to complete quality management
+The main QA principals used in openETCS are defined by D1.3.1 the QA-Plan. The main principal applied over the whole openETCS process are the open continuous review process and the github based configuration management. I this way it is ensured that only commiter as qualified persons can directly provide content. Other contributions are only accepted as pull request if a commiter checked the content. In this way the as contributions are signed by the github account an could be redone if unwanted effects are found during following tests.
 
 \section{Safety Management}
 
-As detailed in chapter \ref{sec:hazardandrisk} the overall safety argumentation has to demonstrate that during the development process the higher-level safety requirements have been addressed and that accordingly the on-board software satisfies the safety level. The safety case has to specify traces from high-level hazardous events to all subsystem requirements allocated to the openETCS software architecture and their verification and validation. Therefore, the safety case has to present evidence that the chosen methods are sufficient to demonstrate compliance to the requirements and that these methods are applied in a consistent process to ensure that all safety requirements are respected and validated.
+As in detail presented in D4.2.3 the safety case for a system has to demonstrate that during the development process the higher-level safety requirements have been addressed and that accordingly the on-board software satisfies the safety level. This requires traces from high-level hazardous events to all subsystem requirements allocated to the software architecture and their verification and validation. 
+As the openETCS design has only focused on the functional implementation of SRS requirements, degraded modes have not been addresses consistently. Only cases specifically state in the SRS have been implemented.
 
+However, the design and architecture specification presented in D3.5.4 for the OBU Kernel software and it components state constrains taken into account fo each interface. For example the track message interface providing BTM and Radio messages expects to receive only one message every cycle, hence this assumption is carried through the whole input management functionality. Every implementation of the openETCS OBU kernel software has to ensure that these constraints are satisfied by the hardware applied or by an additional software functionality. Further constraints are established by the basic SCADE principal of a cyclic synchronized execution. If longer execution times for specific functions are expected on the hardware, the a the data consistency and reaction time for safety relevant reactions like emergency brakes have to be evaluated. As the SCADE model uniquely defines an execution sequence for every functional block and by its modeling principals ensures consistent data flows in a cycle, safety issues can mainly addresses by evaluating reaction times in critical situation for the overall system. As further safety properties are commonly resulting from hardware behavior and constraints any adopter has to analysis this constraints for his hardware.
 
-by Jan Welte
-
-- basic concept for safety management in openETCS
-- missing aspects in safety management
-- main finding to address additional measures to complete safety management
+For safety management the general openETCS QA Management principals are already in place. Safety requirements are just added as a new source of requirements and are allocated to certain parts of the software architecture. In addition a viable test or prove has to be established to demonstrated that this part of the architecture and respectively the overall systems satisfies this requirement.  
 
 \section{Functional/Technical Safety}
 
-Based on the ETCS reference architecture SUBSET-91 defines the role of ETCS as a train protection system the following way:
+As already in detail presented in D4.2.3 is the following Core Hazard established for the ETCS reference architecture by SUBSET-91, which is the basis for the functional and technical safety evaluation.
 
-\begin{center}
-\textbf{"To provide the Driver with information to allow  him to drive the train safely and to enforce respect of this information, to the extent advised to ETCS."}
-\end{center}
-
-Respectively, the Core Hazard for the ETCS reference architecture is defined as the following in SUBSET-91:
 \begin{center}
 \textbf{"Exceedance of the safe speed or distance as advised to ETCS."}
 \end{center}
 
-Based on the role of ETCS and its respective SIL 4 quantification the maximum allowed rate of occurrence (Tolerable hazard rate) of the ETCS Core Hazard for ETCS on-board is
-\[1.0\times10^{-9} hour^{-1} train^{-1}.\]
-The same value is specified for the corresponding track-side.
+As the ETCS OBU Kernel is pure software derived hazards can only be caused by functional errors in the functional software model and respectively in the generated code. As the SCADE model has a deterministic behavior we have to ensure that no possible data combination exists to create outputs leading to this core hazard. Future adopters also have to take the hardware software interaction into account and can thereby get non deterministic events, which then makes it necessary to take the following specified maximum allowed rate of occurrence (Tolerable hazard rate) of the ETCS Core Hazard for the whole ETCS on-board into account.
 
-Adapted form the ETCS system safety analysis presented in SUBSET-88 the Annex A of SUBSET-91 presents the List of Hazardous Events inside ETCS that might cause the ETCS Core Hazard to occur, either alone or in combination with other failures. These are the events not eliminated by the operational analysis. 34 of these hazardous events are allocated to the Kernel, which make them the basis for the on-board software hazard and risk analysis. 
+\[1.0\times10^{-9} hour^{-1} train^{-1}.\]
+
+As the openETCS project only considers the deterministic software this probability can not be applied for the risk assessment of software bugs.
+
+Adapted form the ETCS system safety analysis presented in SUBSET-88 the Annex A of SUBSET-91 presents the List of Hazardous Events inside ETCS that might cause the ETCS Core Hazard to occur, either alone or in combination with other failures. These are the events not eliminated by the operational analysis and therefore these have to be considered during any ETCS system development. For the openETCS OBU Kernel software the 34 hazardous events  allocated to the Kernel have to be addressed. Several of them have already been used as the basis for SRS requirements, but some are more high level and depend on interfaces and data processing used in the respective function.
+
+The following table list the 34 kernel hazardous events and allocates them to the respective openETCS functionality. 
+
 
 \begin{center}
 \tablecaption{List of ETCS Kernel Hazardous Events}
@@ -503,7 +474,7 @@ Adapted form the ETCS system safety analysis presented in SUBSET-88 the Annex A 
 \tabletail{ \hline \multicolumn{4}{|r|}{Continues on next page} \\ \hline}
 \tablelasttail{\hline}
 
-\begin{supertabular}[H]{|p{2cm}|p{4cm}|p{4cm}|p{4cm}|}
+\begin{supertabular}[t]{|p{2cm}|p{4cm}|p{4cm}|p{4cm}|}
 \hline KERNEL-1 & Balise linking consistency checking failure & In case the message is received but the linking is not consistent:
 5.2.1.1: Delay between receiving of a balise message and applying the emergency brake
 KERNEL-2 &  \\ 
@@ -551,22 +522,12 @@ Note: Whether 5.2.1.4 is safety related must be evaluated in the specific ap-pli
 \hline KERNEL-34 & Incorrect supervision of MA time-outs (sec-tions and overlaps) & 
 5.2.1.3: Delay between receiving of a balise message and reporting the re-sulting change of status on-board
 (5.2.1.4: Delay between receiving of a MA via radio and the update of EOA on-board).
-Note: Whether 5.2.1.4 is safety related must be evaluated in the specific ap-plication’s hazard analysis, see further section 5.3.  &  \\
-\hline 
+Note: Whether 5.2.1.4 is safety related must be evaluated in the specific application’s hazard analysis, see further section 5.3.  &  \\
 \end{supertabular} 
 \end{center}
 
-The main evidence for this part will be provided during verification steps, tracing identified hazards and risk control measures and in case where it is possible also validation results showing that the system is not behaving in an unsafe way. Mainly, it shall be demonstrated that all required risk control measures are taken into account in the actual model and/or code. Thereby, it has to be stated which artifacts have to be provided by which role during the development process and which content can be reused for overall safety argumentation in an implementation.
-
-by Jan Welte
-
-- addressing general system safety properties and allocation to functional structure
-- listing needed integration properties for "safe" use of software model (specifically interface assumptions)
-
-by Francois Revest
-
-- addressing concrete findings from safety propagation analysis
-- additional measures applicable to tackle open points
+By the use of ESF error propagations can be shown on the SysML architecture, which can be used to show that appropriate barriers for several of the input leading the hazardous situations have been established. The final results will be provided in an appendix on a later release of this document.
+Due to the late architecture and model releases no consistent proof concepts has been established for these kernel hazardous situations in the context of the final openETCS release. Therefore, it cannot be ensured that certain situations are with certainty avoided by the current software model release. To ensure safety  every adopter has to derive for his intended use a specific measurement to avoid those kernel hazards. He then has to provide the evidence by these requirements are satisfied by his release of the openETCS software. This can probably be completely done by limiting the outputs for the respective functionality and input consistency checks.
 
 
 \chapter{Conclusion}

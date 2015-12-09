@@ -398,7 +398,12 @@ by Jan Welte and Marc Behrens
 
 \section{Safety Architect}
 
-by FrederiqueVallee (or Francois Revest)
+ESF is a framework for model based safety analysis. The model of the system or software to analyze must be described in a format compliant with the tool Papyrus. The leaf components of the hierarchical description of the system are called “blocks”. Once the model has been imported, a local dysfunctional analysis is made. The local dysfunctional analysis consists in establishing different Boolean equation for every block (logical links between the failure modes of the block, the failure modes of its inputs and the failure modes of the output of the block). This analysis is local because only the dysfunctional behavior of the block is analyseds. Once all blocks have been analysed, the feared events are defined on the associated port. The propagation algorithm computes the fault tree from the feared events and shows which block failure modes contribute to which feared event
+For OpenETCS, the SysML model of the ETCS OBU has been imported in ESF. The structure of the model, links and components, are then recognized by ESF. Some problems in the SysML model have been detected during the ESF importation: links deleted in the graphical view and not in the textual view, connector link without destination port or target port.
+The model behavior is described in the document D3\_5\_3 that was our basis for performing the dysfunctional analysis. For proof of the concept, only one feared event has been defined and analysed: erroneous error message in the posRepHeader to the train. Once the local analysis has been done, a propagation of failure modes has been performed and the fault tree has been automatically computed. 
+The analysis of the fault tree has shown that all the components were critical because any error on the equipment affects the output of the system. The SIL4 classification of this equipment is thus correct and cannot be reduced. It could be interesting to make the system safer by performing a checksum on the error message all along the process. Another proposal is to verify whether all input are consistent with the system specification.
+
+by Francois Revest
 
 - use of Safety Architect in openETCS (maybe addressing relation to Eclipse Safety Framework)
 - function in development process

@@ -25,7 +25,7 @@
 \definecolor{light-gray}{gray}{0.95}
 
 %assign a report number here
-\reportnum{OETCS/WP4/D4.4V0.1}
+\reportnum{OETCS/WP4/D4.4V0.2}
 
 
 %define your workpackage here
@@ -44,7 +44,7 @@
 %define the name and affiliation of the people involved in the
 %documents approbation here 
 \creatorname{Marc Behrens}                                                                                                                                
-\creatoraffil{ Deutsches Zentrum für Luft und Raumfahrt e.V.}                    
+\creatoraffil{ Deutsches Zentrum f\"ur Luft und Raumfahrt e.V.}                    
 \techassessorname{[assessor name]}
 \techassessoraffil{[affiliation]}
 
@@ -57,19 +57,33 @@
 %define a list of authors and their affiliation here
 
 
-\author{Marc Behrens \and Hardi Hungar}
+\author{Hardi Hungar}
+\affiliation{DLR, main editing}
+\author{Marc Behrens, Mirko Caspar, Michael M\"onsters}
 
-
-\affiliation{DLR\\
-  Lilienthalplatz 7\\
-  38108 Brunswick, Germany
+\affiliation{DLR%\\
+%  Lilienthalplatz 7\\
+%  38108 Brunswick, Germany
 %   \\eMail:hardi.hungar@dlr.de 
 }
+
+\author{Jan Peleska, Uwe Schulze}
+\affiliation{University Bremen}
+
+\author{Thorsten Schulz}
+\affiliation{University Rostock}
+
+\author{Stefan Rieger}
+\affiliation{TWT}
+
+
+
 
 
 
 % define the coverart
 \coverart[width=350pt]{openETCS_EUPL}
+
 
 %define the type of report
 \reporttype{Final Report}
@@ -96,6 +110,7 @@ Version & Section & Modification / Description & Author \\\hline}
 \begin{supertabular}{| m{1.2cm} | m{1.2cm} | m{6.6cm} | m{4cm} |}
  0.0 & all & initial & Marc Behrens \\\hline
  0.1 & all & revision and addition & Hardi Hungar \\\hline
+ 0.2 & all & revision and addition & Hardi Hungar, contributions by partners\\\hline
 \end{supertabular}
 
 \tableofcontents
@@ -164,22 +179,32 @@ each of the phases of the development.
 \section{Overview of Verification and Validation Activities}
 \label{sec:overview}
 
-\bgcmmnt{Some sample notes are included in the subsections. To be
-  checked for correct assignment to the phases, extended to become
-  self-contained summaries of the activities with results and
-  contributions. Note: Also evaluating a new verification method is a
-  contribution to be mentioned, if this is a side or main effect of
-  the activity. Do not forget to add yourself as an author if you contribute.}
 
+The verification and validation activities of openETCS fall in two
+categories. 
+\begin{itemize}
+\item They may serve the purpose of supporting the development
+of the EVC SW. These are activities as defined in the process
+definition D2.3a, actual verification or validation of design
+artifacts.
+\item They may serve to demonstrate or evaluate methods or tools for
+  V\&V. Such methods or tools are applied either to available design
+  artifacts, or some such artifacts are created specifically for the
+  purpose of the demonstration/evaluation.
+\end{itemize}
+Both kinds of activities are reported about in this document. It is
+structured according to the phases of the development. 
+
+\addtocounter{subsection}{-1}
 \subsection{Verification and Validation in the Planning Phase}
 \label{sec:vnv-0}
 
-There have been reviews of the planning documents \cmmnt{compile a
-  list}. 
+There have been reviews of the planning documents. These activities
+are not reported in detail, here.
 
-\cmmnt{\textbf{Template Start}}
-\input{VnV-Activity-Tmplt}
-\cmmnt{\textbf{Template End}}
+% \cmmnt{\textbf{Template Start}}
+% \input{VnV-Activity-Tmplt}
+% \cmmnt{\textbf{Template End}}
 
 \subsection{Verification and Validation in the System Design Phase}
 \label{sec:vnv-1}
@@ -189,43 +214,48 @@ There have been reviews of the planning documents \cmmnt{compile a
 % formal analyses. This activity is part of the System Design
 % Verification. 
 
+%\newpage
 \input{Subset-026-TWT}
 
-\input{MORC-eventB}
+\addtocounter{subsection}{2}
+% \subsection{Verification and Validation in the Sub-System Architecture Design Phase}
+% \label{sec:vnv-2}
 
-\subsection{Verification and Validation in the Sub-System Architecture Design Phase}
-\label{sec:vnv-2}
+% No verification to be attributed to this phase has been performed in openETCS.
 
-The DLR verified the Sub-System Architecture Design
-\cmmnt{citations}. \cmmnt{\qq{correct phase}}
 
-\subsection{Verification and Validation in the SW Specification Phase}
-\label{sec:vnv-3}
+% \subsection{Verification and Validation in the SW Specification Phase}
+% \label{sec:vnv-3}
 
-\input{OS-methodeB}
-
+% No verification to be attributed to this phase has been performed in openETCS.
 
 \subsection{Verification and Validation in the SW Design Phase}
 \label{sec:vnv-4}
 
-Model-based testing applied to design models  \cmmnt{\qq{U Bremen}}
+\input{VnV-ADD-DLR}
+\newpage
+\input{VnV-TestGeneration-UHB-02}
 
 
-\input{ModesLevels-S3}
-
+\newpage
 \subsection{Verification and Validation in the SW Component Phase}
 \label{sec:vnv-5}
 
-\begin{itemize}
-\item Dedicated tests on single components \cmmnt{\qq{DB}}
-\item Formal code verification (FRAMA C on the bitwalker)
-\end{itemize}
 
 
+\input{VnV-Code-Basic}
+\newpage
+\input{VnV-Code-URO}
+\newpage
+\input{VnV-SCADETrainData-DLR}
+% \newpage
+% \input{VnV-Code-Fraunhofer}
+
+\newpage
 \subsection{Verification and Validation in the SW Integration Phase}
 \label{sec:vnv-6}
 
-Automatized integration tests on the SW components. 
+\bgcmmnt{There have been automated integration tests on the SW components.} 
 
 \subsection{Verification and Validation in the SW Validation Phase}
 \label{sec:vnv-7}
@@ -239,16 +269,19 @@ There have been validations on
   operational use cases.  
 \end{itemize}
 
+\input{VnV-Validation-DLR}
+
 \section{Conclusion}
 \label{sec:conclusion}
 
+\bgcmmnt{The conclusion will be written after the completion of the
+  V\&V activities.}
 
 %\nocite{*}
 
 \bibliographystyle{unsrt}
 
 \bibliography{bibliography}
-
 
 
 %===================================================

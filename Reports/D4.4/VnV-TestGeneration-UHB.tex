@@ -1,0 +1,188 @@
+
+\subsubsection{Model-based Test Generation for the ETCS Ceiling Speed Monitor}
+\label{sec:csmunibremen}
+
+\paragraph{Contributing project partners}
+% Usually, one main partner, perhaps with contributions from others
+Main contribution by University of Bremen, additional contributors: DLR and Siemens 
+
+\paragraph{Process step}
+% Classification of the activity according to D2.3a
+% Name what is verified and to which report this would contribute.
+% Use the numbers, e.g. System Design Verification Report (1-12).
+This activity is part of the process SW Design (Phase 4). It
+contributes to the SW Component Test
+Specification (4-22). 
+
+\paragraph{Object of verification}
+% Which openETCS artifact (github link) or other documents/programs
+% etc. (provide references)
+The object of verification are implementations of the ETCS
+Ceiling Speed Monitor (CSM).  
+
+
+\paragraph{Available specification}
+% The specification against which the object is to be checked. Usually
+% coming form some openETCS artifacts (GitHub reference, process
+% artifact number) or background material (reference, artifact number).
+
+The specification of speed and distance monitoring in \cite[Sec.~3.13]{subset-026:3.3.0}.
+
+\paragraph{Objective}
+%In an ordinary development, the main objective would be to verify or validate
+%something. Here, in openETCS, it would be quite common to demonstrate
+%the applicability of some method/tool, or evaluate its capabilities.
+
+The main objective is to evaluate and demonstrate the new input
+equivalence class partition test generation method developed by the
+team of the University of Bremen. The method guarantees 100 per cent
+error detection inside a fault domain, and is expected to provide high
+coverage outside the domain. Its results on the CSM are compared with the
+relevant system test cases as defined in then ETCS standard conformity
+test specification, Subset~076.
+
+
+\paragraph{Method/Approach}
+% Short description of how the verification/validation is performed
+
+A test model specifying the expected behaviour of the CSM has been
+developed in SysML, using state machines and block diagrams.  The
+model elements have been linked to the associated ETCS system
+requirements.  Since this SysML language subset can be associated with
+a formal semantics, it is possible to execute algorithms that
+automatically generate sets of executable test cases from the
+model. These sets of test cases permit to check implementations for
+compliance with the model. The tracing information enable to derive
+detailed coverage and fault identification information.
+
+The existing SUBSET-076 test cases were formalised using linear
+temporal logic (LTL), so that the same test data generation concept
+could be applied as for the test cases that were automatically
+identified: SUBSET-076 test cases do not provide concrete test data
+for every test step, but specify the general constraints from which
+concrete data can be elaborated.  This approach also allows to trace
+the model coverage achieved by the SUBSET-076 test cases.
+
+All tests were executed against software mutants derived from a
+reference implementation, using 3 different mutation generators in
+order to avoid a mutation bias. For each testing strategy applied it
+was checked
+\begin{itemize}
+\item which parts of the test model were covered by the test execution, and
+\item which fault coverage (percentage of ``killed'' mutants) was achieved.
+\end{itemize}
+
+
+
+
+
+\paragraph{Means/Tools}
+% Could be integrated with the previous paragraph. Assign an
+% approrpiate tool class (T1, T2, T3) according to EN 50128. Try to assign a
+% maturity level 
+%https://github.com/openETCS/validation/blob/master/VerificationAndValidationPlan/V02/VnVUsrStrTmplt-140709-02.pdf
+
+The whole approach is fully supported by RT-Tester and its model-based
+testing component RTT-MBT. Test cases are described by LTL
+formulas. An integrated SMT-solver generate solutions for the LTL
+formulas which add  concrete data and makes the test cases
+executable. From the SysML test
+model, the tool automatically derives LTL
+formulas which describe the test cases. For the SUBSET-076 test cases,
+the LTL formulas have been provided manually and completed by the
+solver. 
+
+\paragraph{Results}
+% Results related to the objective.
+% Refer to appropriate document (preferably GitHub) for more complete description.
+The results can be summarised as follows.
+\begin{enumerate}
+\item The new equivalence class testing method shows significantly
+  higher test strength than all other methods used in the
+  comparison. It achieved nearly 100\% fault coverage for mutants
+  outside the fault domain (mutants inside the fault domain are always
+  killed, due to the guaranteed fault detection properties).
+
+\item The new method is very well suited for software testing and
+  HW/SW integration testing, where the high number of test cases
+  (approx.~5000 cases) can easily be executed, in particular, because
+  the test suite is fully automated. The new method, however, yields
+  too many test cases to be applied on system testing level with real
+  trains on real tracks.
+
+
+\item The SUBSET-076 test cases are missing 2 cases for the CSM in order to achieve
+requirements coverage. These can be easily identified and added. As a result,
+these test comprise 11 cases.
+
+\item With the missing test cases added, the SUBSET-076 achieve only a fault coverage of
+62\% -- this would certainly not suffice to obtain certification credit. It is
+possible, however, to add an acceptable number of test cases to the SUBSET-076
+suite for the CSM which would significantly increase its test strength.
+
+
+\end{enumerate}
+
+
+All   results have been published in 
+\begin{itemize}
+\item Jan Peleska and Wen-ling Huang: Complete model-based equivalence
+  class testing. Int J Softw Tools Technol Transfer. Published online:
+  21 November 2014. DOI 10.1007/s10009-014-0356-8.
+
+\item Felix H\"ubner, Wen-ling Huang, and Jan Peleska: Experimental
+  Evaluation of a Novel Equivalence Class Partition Testing
+  Strategy. In Jasmin Christian Blanchette and Nikolai Kosmatov
+  (eds.): Tests and Proofs - 9th International Conference, TAP 2015,
+  Held as Part of STAF 2015, L'Aquila, Italy, July 22-24,
+  2015. Proceedings. Lecture Notes in Computer Science 9154, Springer,
+  2015, pp. 155-172, doi 10.1007/978-3-319-21215-9\_10.
+
+\item C{\'e}cile Braunstein, Anne E. Haxthausen, Wen-ling Huang, Felix
+  H\"ubner, Jan Peleska, Uwe Schulze, and Linh Vu Hong: Complete
+  Model-Based Equivalence Class Testing for the ETCS Ceiling Speed
+  Monitor. In S. Merz and J. Pang (eds.): Proceedings of the ICFEM
+  2014. Springer, LNCS 8829, pp. 380-395, 2014. DOI
+  10.1007/978-3-319-11737-9\_25.
+
+
+\item Technical Report http://www.informatik.uni-bremen.de/agbs/testingbenchmarks/
+\newline
+openETCS/ceiling-speed-monitoring/testing\_the\_etcs\_csm.pdf
+
+
+\item C{\'e}cile Braunstein, Wen-ling Huang, Felix H\"ubner, Jan
+  Peleska, and Uwe Schulze: Evaluation of Model-Based Testing
+  Strategies for the ETCS Ceiling Speed Monitor.  Submitted to
+  Software Testing, Verification and Reliability journal.
+
+Also available as technical report
+\end{itemize}
+
+\paragraph{Observations/Comments}
+% An optional section where anything can be included which has been
+% observed without direct connection
+
+It is interesting to note that typical model-coverage driven test
+cases (e.g. transition coverage, MC/DC coverage), while achieving
+higher model coverage than the SUBSET-076 tests, do not achieve much
+higher fault coverage (approx.~68\%).  The reason is that these test
+cases are not invariant under syntactic model transformations: with
+another -- through semantically equivalent -- model, higher or lower
+test strength would be achieved with the coverage-driven test cases
+derived from that model.
+
+In contrast to that, the new equivalence class testing strategy is
+elaborated from the {\it semantic} representation of the model and is
+therefore invariant (i.e.~always maximal) under all syntactic model
+transformations that leave the behavioural semantics unchanged.
+
+
+\paragraph{Conclusion}
+%What has been achieved, what is missing, what has been learned
+
+The new test strategy has shown to provide superior test strength when
+compared to SUBSET-076 test cases and conventional model-coverage
+driven test cases that are typically provided by other model-based
+testing tools. As of today, RT-Tester is the only testing tool where
+the new test strategy is implemented.

@@ -17,6 +17,9 @@
 %============================
 % The document metadata is defined below
 
+%Background color of boxes in process graphic
+\definecolor{light-gray}{gray}{0.95}
+
 %assign a report number here
 \reportnum{OETCS/WP4/D4.3.3V0.0}
 
@@ -218,11 +221,8 @@ of ETCS in Levels 1 \& 2}
 
 
 
-\section{Background Information}
-\label{sec:Background}
-
-
-If specific information are needed the can be place here. (D4.2.3 shall not be repeated)
+%\section{Background Information}
+%\label{sec:Background}
 
 
 \chapter{Tool Chain}
@@ -238,15 +238,23 @@ Overall O~7.3.2 distinguishes two kind of tools:
 management, requirements traceability ...).
 \end{itemize}
 
-The CENELEC EN 50128 standard \cite{standard_railway_2011} defines the tool
-qualification as follows:\\
-{\it ``The objective is to provide evidence that potential
-failures of tools do not adversely affect the integrated tool-set output in a
-safety related manner that is undetected by technical and/or organizational
-measures outside the tool. To this end, software tools are categorized into
-three classes namely, T1, T2 \& T3 respectively.''}
+In doing so the development tools are mostly split in design and in V\&V tools as these are used by the two different sides od the development. Do to the separation of responsibilities as it is required by the CENELEC process (see D2.3 for details concerning openETCS) these tools are mainly used by different groups. The management tools are also refereed to as Cross-Cutting Tools as their functionality is used during different development phases and activities.
 
-We recall here the different class definitions:
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\linewidth]{./images/Toolchain-New-Version-V-Model-Nov-2015}
+\caption{Core openETCS Toolchain}
+\label{fig:Toolchain-New}
+\end{figure}
+
+The main components of the openETCS toolchain and there allocation to the V-Model development are presented in figure \ref{fig:Toolchain-New}.  The current version of the openETCS toolchain essentially uses two tool platforms, the open source platform based on Eclipse and the close source platform of SCADE. The interfaces been both platforms are SysML on the Architecture level and C Code on the Source Code level. Additional tools mainly V\&V related are using on of these artifacts formats as input. 
+
+Although the main functionality and artifact exchanges have been sampled during the openETCS development, it has not been possible for the development to continuously use the completely integrated toolchain as shown in figure \ref{fig:Toolchain-New}. Due to recurring challenges with Papyrus and SCADE SysML models the WP 3 design team has mainly worked with the SCADE platform, to ensure an usable product. Thereby, it has been difficult to establish traceability between the open source and the SCADE parts and to push tool qualification.
+
+\section{Tool Qualification}
+
+The CENELEC EN 50128 standard defines the required tool qualification as measures to ensure that a failures of the tool cannot directly be taken into the tool-set output. Thereby, failures have to be addressed in relation to the overall safety. Accordingly, tools are categorized in three classes.
+
 \begin{itemize}
 \item Tool class T1: No generated output can be used directly or indirectly to the
   safety critical executable code;
@@ -256,51 +264,10 @@ We recall here the different class definitions:
 \item Tool class T3: Generated output directly or indirectly  as part of the
   safety critical executable code.
 \end{itemize}
-The deliverable D2.2 \cite{pokam_report_2013} summarizes the requirements for the
-tool needed by the different tool classes. The report highlights that the
-effort differs depending on the tool class. Furthermore, for
-the most critical class T3,  the evidence should be provided that the output is
-conform to the specification or that \emph{any failure in the output
-  are detected}. 
 
-The standard defined how to classify each tool individually (see
-\cite{nielsen_efficient_2012,huang_test_2013} as an example).  But dealing with a tool
-chain, integrated within a tool platform, implies extra effort to
-ensure that the tool integration does not introduce new errors. For
-example mechanism such as artifacts versioning, time-stamping
-operations, etc ... should also be considered when qualifying the tool
-chain. This increased the number of tools to consider during the
-qualification process.
+Depending on it's use in the overall development toolchain a tool needs to satisfy the respective tool class. D2.2 gives an overview about the general requirements for the tools needed by the different tool classes. O~7.3.2 shows various methods how tools can be qualified in these classes. Thereby, not only a tool can be qualified for each other, but also the toolchain integration in a tool platform has to be checked for potential failure. This includes mechanism such as exchange formats, artifacts versioning, time-stamping operations. As the openETCS toolchain is mainly based on two tool platforms it uses the main principals already ensured at these platforms. 
 
-The effort of qualification depends on the number of tools under
-consideration, the tool classes and the tool error detection
-capabilities. To reduce the cost of the toolchain qualification and
-regarding the fact that our development imply regular releases, a
-systematic toolchain analysis approach has to be defined.
-
-Table~\ref{tab:oetcs_tool_classification} exemplary lists the tool
-classes for some of the tools employed in the openETCS
-project. Automatic code generator for SCADE model such as KCG or the
-Bitwalker tool have a direct effect on the generated code whereas ProR
-and Git do not. The classification for ProR would be different if it
-would be used for formal requirements that then could be automatically
-translated to a model (this would yield a T3-classification). The
-verification tools RT-Tester and CPN Tools are not in the ``direct''
-chain from requirements to code but they may fail to detect errors in
-the software or model.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.9\linewidth]{./images/Toolchain-New-Version-V-Model-Nov-2015}
-\caption{Core openETCS Toolchain}
-\label{fig:Toolchain-New}
-\end{figure}
-
-
-\section{Tool Qualification}
-
-
-
+Nevertheless a complete definition of interactions between these tools is needed to fully qualify the openETCS toolchain as it is. The main tools contained in the openETCS development toolchain based on D7.3 and D2.3 are listed in table~\ref{tab:ToolCat} and categorized according to the tool class needed for the intended use. The justification gives the current state of qualification. Nevertheless, these list can only be seen as the initial point, as an in-depth definition and failure analysis of the actually used tool chain would be needed for a real development process. As openETCS was a research project the focus was to establish the functionality which then can provide the basis for a qualification. However, the use of the close source platform SCADE was primarily driven by its already existing qualification, which has not been available at open source level.
 
 \begin{center}
 \tablecaption{OpenETCS toolchain and categorisation}
@@ -309,38 +276,46 @@ the software or model.
 \tabletail{ \hline \multicolumn{4}{|r|}{Continues on next page} \\ \hline}
 \tablelasttail{\hline}
 
-\begin{supertabular}[H]{|p{2cm}|p{4cm}|p{4cm}|p{4cm}|}
+\begin{supertabular}[H]{|p{2cm}|p{4cm}|p{2cm}|p{5cm}|}
 \hline ProR & Requirements management & T1 & \\
-
-
 \hline Papyrus Editor & Definition of the model architecture & T1 & \\
 \hline Papyrus SysML checker & Check SysML conformity of the model & T2 & \\
+\hline SCADE System Editor & Import and additional definition of model architecture & T1& \\
 \hline SCADE Editor & Low-level modeling and code generation & T1 & \\
 \hline SCADE Code Generator & Code generation & T3 & \\
-\hline ProR & Requirements management & T1 & \\
 \hline Bitwalker & Generation of data structures for modelling & T3 & \\
-\hline Git & Versioning \& Traceability & T1 & \\
+\hline Frama-C & Code analysis & T2 & \\ 
 \hline RT Tester & Model-based testing & T2 & \\ 
-\hline CPN Tools & Model checking and test case generation & T2 & \\
+\hline Eclipse Safety Framework & Safety assessment of error propagation& T2 & \\
+\hline ReqCycle & Traceability & T1 & \\
+\hline Jenkins & Tool integration & T3 & \\
+\hline Wiki/MyLyn & Documentation & T1 & \\
+\hline Git & Versioning \& Traceability & T3 & \\
 \end{supertabular} 
 \end{center}
 
-tool are coming from D7.3 table 1
-
-
-
-
-
-by Michael Jastram (or other expert from WP7)
-
-
-broad overview of the toolchain and the status of qualification (generall information can be placed in section Overview)
-- which tools have to be qualified
-- which tools are qualified? (in which way)
-- how should qualification be address for tools with pending qualification
+As the WP 3 and WP 7 activities have mainly been focused on establishing tool chain functionality, it has not been possible to provided openETCS specific qualifications for all T2 and T3 tools. But as SCADE Suite and the respective KCG for automatic C Code generation already provide a certification in respect to EN 50128 SIL 3/4, the basis for the overall toolchain qualification already exists. Anyhow for a concrete development use the specifically the Cross-Cutting tools and the V\&V tools have to be analyzed further to ensure complete failure detection.
 
 \section{SCADE}
 
+The SCADE platform containing among others SCADE System Editor, SCADE Editor, SCADE Display and their respective KCGs builds the main productive part of the openETCS toolchain. The main design work by WP 3 has been done with the SCADE Editor and all automatic generated code used has been created based on the SCADE Editor and SCADE Display models. As the SCADE language used as means of description is  an executable language with a deterministic semantics, the automatic code generation has been certified for C and Ada Code. Therefore, the use of SCADE as core of the productive design toolchain satisfies the tool requirements. The automatic checks done during the code generation also check consistence of the initial model.
+
+The certification only concerns the actual Code generation based on the SCADE Model. To ensure QA in the design process and to qualify the overall toolchain modeling guidelines and quality measures for version and configuration management are needed. During the openETCS development it had to be ensured that github does not merge different versions of a xscade SCADE model file as this caused consistence problems. The xml format used by SCADE is not compatible with the github merging principals. Therefore, the openETCS project used separated model parts and check out principals to ensure that only one personal at a time is allowed to change a file. Nevertheless, a complete document by WP 3 and WP 7 listing all established measures and coding rules to ensure model consistency has not been provided at this point. This does not directly creates any safety related failures as SCADE clearly identifies consistence problems and the git configuration management provides options to retrieve the stable versions.
+
+
+%\section{Safety Architect}
+
+%by FrederiqueVallee (or Francois Revest)
+
+%- use of Safety Architect in openETCS (maybe addressing relation to Eclipse Safety Framework)
+%- function in development process
+%- inputs and outputs
+%- results (in general, and specific for openETCS)
+
+
+
+
+<<<<<<< 98bb40606c415a456db258dec7efea3e55b1b512
 \section{Overview of Scade}
 
 Scade is a formal modeling language that provides both a graphical
@@ -409,9 +384,24 @@ by Francois Revest
 - function in development process
 - inputs and outputs
 - results (in general, and specific for openETCS)
+=======
+>>>>>>> 177957cb01e35c0d34d42bdada0bcdccbdbb0228
 
 \chapter{OpenETCS Development}
 \label{sec:development-process}
+
+As presented in-depth in D2.3 and its additional deliverables the openETCS Software development process follows the basic EN~50128 lifecycle but has adjusted its artifacts and development phases to accommodate the model-based development based on the openETCS toolchain and the agile development principals. The resulting openETCS development lifecycle is derived in D2.3a and shown in figure \ref{fig:lifecycle2}.
+
+\begin{figure}[hbt]
+  \centering
+  \def\svgwidth{.9\textwidth}
+  {\tiny
+  \input{./images/Prcss2_3a-03.pdf_tex}}
+  \caption{openETCS Development Lifecycle}
+  \label{fig:lifecycle2}
+\end{figure}
+
+
 
 The openETCS SW development process follows the Illustrative
 Development Lifecycle~2 \cite[Fig.~4]{EN50128:2011} of the EN~50128

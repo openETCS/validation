@@ -1,0 +1,105 @@
+
+
+\subsubsection{Basic Verification of the Implementation of ``Speed and
+  Distance Monitoring'' }
+\label{sec:}
+
+\paragraph{Contributing project partners}
+% Usually, one main partner, perhaps with contributions from others
+This work has been performed by the University of Rostock.
+
+\paragraph{Process step}
+% Classification of the activity according to D2.3a
+% Name what is verified and to which report this would contribute.
+% Use the numbers, e.g. System Design Verification Report (1-12).
+
+This activity is part of Phase~5, SW Component Implementation and Test. It
+addresses the requirement 5.1 (basic tests performed by the
+Implementer). 
+
+
+\paragraph{Object of verification}
+% Which openETCS artifact (github link) or other documents/programs
+% etc. (provide references)
+
+The object of verification is the SCADE package
+\texttt{SpeedSupervision\_Integration} incorporating the sub packages
+\texttt{CalcBrakingCurves}, \texttt{SDM\_Commands},
+\texttt{SDM\_GradientAcceleration}, \texttt{SDM\_Models},
+\texttt{SDM\_TargetLimits} and \texttt{TargetManagement}, together
+with the helper and type package \texttt{SDM\_Types}.
+
+\paragraph{Available specification}
+% The specification against which the object is to be checked. Usually
+% coming form some openETCS artifacts (GitHub reference, process
+% artifact number) or background material (reference, artifact number).
+
+The specification of speed and distance monitoring is given in
+\cite[Sec.~3.13]{subset-026:3.3.0}. 
+%Subset-026 (v3.3) Figure 28. 
+
+\paragraph{Objective}
+%In an ordinary development, the main objective would be to verify or validate
+%something. Here, in openETCS, it would be quite common to demonstrate
+%the applicability of some method/tool, or evaluate its capabilities.
+
+The objective is to establish that the code performs the expected
+functionality in standard (expected) usage scenarios. It is not
+meant to be exhaustive. Also, it shall check for performance and
+memory usage abnormalities. 
+
+\paragraph{Method/Approach}
+% Short description of how the verification/validation is performed
+
+The test has been performed by integrating the package
+\texttt{SpeedSupervision\_UnitTest\_Pkg} into the main module which
+provides the implementation code with inputs of a usage scenario. The
+test simulates a linear movement via generated odometry inputs,
+providing constant default national values, reasonable train data and
+a generic track that consists of one constant speed profile, a single,
+non-extending movement authority and a null-gradient. The correctness
+of the implementation reaction is checked mainly manually. 
+
+\paragraph{Means/Tools}
+% Could be integrated with the previous paragraph. Assign an
+% appropriate tool class (T1, T2, T3) according to EN 50128. Try to assign a
+% maturity level 
+%https://github.com/openETCS/validation/blob/master/VerificationAndValidationPlan/V02/VnVUsrStrTmplt-140709-02.pdf
+
+The test has been performed with the simulation functions (SCADE Suite
+Simulator) of the SCADE Suite Advanced Modeler, Version 6.1. Since the
+basic verification is to complemented by a full verification, the tool
+qualification level is (only) T1.  
+
+\paragraph{Results}
+% Results related to the objective.
+% Refer to appropriate document (preferably GitHub) for more complete description.
+
+The test has been applied to each version of the
+implementation. Only implementation versions which passed the test had
+been given clearance for integration.
+
+
+% \paragraph{Observations/Comments}
+% % An optional section where anything can be included which has been
+% % observed without direct connection
+
+
+
+% The test case is relatively static, simulating a linear movement via
+% generated odometry inputs, providing constant default national values,
+% reasonable train data and a generic track that consists of one
+% constant speed profile, a single, non-extending movement authority and
+% a null-gradient. The test bench does not compare against expected
+% values and heavily relies on human inspection. Without a multitude of
+% speed profiles (MRSP) this test case cannot cover multiple EBD
+% curves. This is up to larger test setups that also provide better data
+% visualizations.
+
+\paragraph{Conclusion}
+%What has been achieved, what is missing, what has been learned
+
+The test established readiness for integration testing. It does not
+cover the full
+verification of the code according to the Component Test Specification
+(4-22). 

@@ -43,6 +43,13 @@
   70565 Stuttgart\\
   Germany}
 
+\author{Marc Behrens}
+
+\affiliation{Deutsches Zentrum f\"ur Luft und Raumfahrt e.V.\\
+  Lilienthalplatz 7\\
+  38108 Braunschweig\\
+  Germany}
+
 %\author{Fabien~Belmonte}
 
 %\affiliation{Alstom Transport\\
@@ -95,25 +102,27 @@ This document is to be considered as ``living document'' that is continuously ex
 \issue{3.6.1.3 Train Position}
 What is the difference between the \emph{estimated train front end position} and the \emph{train confidence interval}? Both values are contained in the \emph{train position information}. It seems that the \emph{train confidence interval} is a more conservative approximation. If this is the case, how exactly is the \emph{estimated train front end position} defined?
 
-\resolution Write resolution here...
+\resolution The estimated train front end is the measured position of the train whereas the train confidence interval gets added to the estimated train front end and results in safe maximum front end or, if subtracted, in safe minimum front end, see SUBSET-026-3 figure 13c. Issue closed.
 
 \subsection{Subset 026 5.x}
 
 \issue{Semantics of the tables specifying the update of on-board variables}
 Do I read each row of such a table as ``If transition condition holds and a variable a the value as shown in the table, then change the value of that variable according to the table'' (i.e., the variable does not necessarily have the value as shown in the table) or ``If transition condition holds, then change the value of a variable according to the table'' (i.e., each variable has the value as shown in the table).
 
-\resolution The semantics is unclear and the values should be checked.
+\resolution The semantics is unclear and the values should be checked. Judging from the conditions it should be read as ``If transition condition holds, then change the value of a variable according to the table''. 
 
 
 \subsection{Subset 026 5.4 Procedure Start of Mission}
 
 \issue{5.4.2.2 Train Data}
 The specification seems to be inconsistent:
-In addition to the data listed, the control flow also depends on the status of the virtual balise cover and the radio network ID.
+The data listed, the control flow also depends on the status of the virtual balise cover.
 
-Our guess: radio network ID = RBC-ID
+\resolution The virtual balise cover is handled inside SUBSET-026-3.15.9 and can have the states: valid, removed, non-valid, ordered, deleted, stored. Should the virtual balise cover be handled inside this diagram? Clarification request sent to SUBSET-076 Working Group.
 
 %\issue{5.4.3.2 State S0 - Driver starts a mission} We assume that this also refers to a signal sent by the driver to the on-board unit (e.g., by pushing a button).
+
+
 
 \issue{5.4.3.2 State S0 - communication session}
 Can there be an active communication session other than with the RIU and the RBC?
@@ -127,16 +136,22 @@ In other words, what happens if the driver enters an invalid Driver-ID?
 \issue{5.4.3.2 State S1 - Driver-ID Validation}
  When does the Driver-ID become invalid or unknown? At End of Mission? The same holds for the \emph{train running number}.
 
+\resolution The Driver-ID is deleted when entering NP, see SUBSET-026-4.10.1.3.
 
 \issue{5.4.3.2 State S1 - Virtual Balise Cover}
 Virtual balise cover is not properly specified. The same holds for the process of setting/removing virtual balise cover. How does setting and removing a virtual balise cover change the status of the virtual balise cover? Our guess is that setting results in a valid virtual balise cover whereas removing changes the status to unknown.
 
+\resolution Clarification request sent to SUBSET-076 Working Group.
+
 \issue{5.4.3.2 State S1 - Transition E1}
 Last paragraph, S1: How do I understand ``possibly further to Train running number ...''?
+
+\resolution ``Possibly`` describes here the activated menu function to enter/ revalidate the train running number and/ or Virtual Balise Cover setting/ removal.
 
 \issue{5.4.3.2 State S2 - Missing case: level data is valid}
 There seems to be an inconsistency: It is not explicitly mentioned, that the paragraphs 3 \& 4 are related to the 'valid' case. This case is possible, see D2 but it is not mentioned how to proceed. We assume that also in this case para 3 and 4 in S2 are applied.
 
+\resolution Following D2 the level data is set to invalid. This case of a valid level data does not exist in S2.
 
 
 \issue{5.4.3.2 State S2 - Enter/Re-validate Level}
@@ -148,13 +163,15 @@ The specification distinguishes the following three cases:
 \end{enumerate}
 The purpose of this distinction is not clear as entering the level suffices (the current setting is invalid or unknown and thus irrelevant).
 
-\resolution It depends on the actual interface of the driver whether we need to distinguish between validation and reentering.
+\resolution It depends on the actual interface of the driver whether we need to distinguish between validation and reentering. From system perspective if the setting is set to unknown or invalid is often only distinguished via a visibility flag. Thus the rationale for invalid is to propose to the train driver the last value and have this value validated.
 
 \issue{5.4.3.2 State S3 - Selection of Radio Network}
 Inconsistency in the specification: It is not mentioned that a valid \emph{radio network ID} must be stored in the on-board unit, but this seems to be necessary because the driver may not select a new radio network. The type of the radio network IDs is not mentioned.
 
 \issue{5.4.3.2 State S3 - Mobile terminal}
 What happens if no Mobile terminal is registered to a Radio Network (or can we assume that at least one mobile terminal is always registered); see 2nd para in S3.
+
+\resolution L2 is not supported for this OBU or part of the track if no mobile terminal is registered.
 
 \issue{5.4.3.2 State S3 - RBC-ID}
 What is the difference between the \emph{RBC-ID} that may be invalid and the \emph{last stored RBC-ID}? Why can the latter not be invalid?
@@ -166,6 +183,8 @@ In item 2 in S3, the driver sets a radio network ID and RBC-ID to unknown but in
 
 \issue{5.4.3.2 State S3 - EIRENE Short Number}
 The option to use the EIRENE short number is unclear: I assume the RBC is triggered to send an RBC-ID (i.e., the respective variable is set to valid). However, what happens if something goes wrong? We read in 3.18.4.3.4.1:  ``... does not direct to a RBC with the stored RBC ID, the connection will be terminated''. So how does the flow continue and which state do we enter in this case?
+
+\resolution Describes in the EIRENE specification. Basically it applies when no Radio Subscriber Number is known and the EIRENE short number is called applying NID\_RADIO ``FFFF FFFF FFFF FFFF``.
 
 \issue{5.4.3.2 State S3 - missing cases}
 How do we proceed if the driver decides not to reenter the radio network ID? Likewise, how do we proceed if no mobile terminal is registered?
@@ -187,24 +206,35 @@ The same question arises at 5.4.5.3.g.
 Can we always expect an acknowledgment? (Sometimes it is specified that the RBC is, after some timeout, triggered again.) 
 \marginpar{Stephan}
 
+\resolution According to SUBSET-026-5.4.5.1 after passing D11 the process shall go to S10 after a loss of radio connection, i. e. when an acknowledgement is not received.
+
 \issue{5.4.3.3, last row on p.17}
 I assume that if the driver chooses to re-enter the level (see 5.4.5.3.e), then the values are set according to the table, and after he entered the level, at least the status of the ETCS level should be set to valid.
 
 \issue{5.4.5.1}
 What is meant by ``above D11'' in a flowchart where flow also goes from left to right, and what is meant by ``the nominal procedure applies''?
 
+\resolution The nominal procedure in contradiction to the  ``degraded situations`` refer to the flow chart as described in Figure 1.
+
 \issue{5.4.5.2}
 Where is the missing information specified?
+
+\resolution The operational situations come from requirements defined by the operator.
 
 \issue{5.4.5.3 a}
 Does ``if the position is still invalid'' (line 3) refer to a condition that is checked after the procedure Override has been executed?
 
+
+
 \issue{5.4.5.3 b,c,i}
 How does the process continue---as described in state S1?
+
+\resolution Clarification request forwarded to SUBSET-076 working group.
 
 \issue{5.4.5.3 f}
 How does the procedure continue; that is, to which state do we go? (Assumption: The mission is considered as started, see 5.4.6.1.) 
 
+\resolution The OBU enters NL via E10.
 
 \subsection{Subset 026 5.5 Procedure End of Mission}
 
@@ -221,15 +251,22 @@ By 5.5.3.1.2 and 5.5.3.1.3, this should hold for every ETCS level and not only f
 \issue{5.6.2.2 A030 - calling Trip procedure}
 We call the train trip procedure which itself calls Shunting. How do we ensure that this recursion eventually stops?
 
+\resolution After the driver acknowledges train trip and the train is at standstill and the ERTMS/ETCS level is 0 or NTC and no valid Train Data is on-board, see SUBSET-026-4.6.3 [68] the mode SH is activated automatically. In case the driver initiates shunting and a ``National trip procedure applies`` the system switches back to Train Trip.This would mean in order to be recursive the initial condition of mode FS, LS, OS, SR, PT, SN, UN or SB should be activated. THis case is expected to be taken care of inside the national trip procedure.
+
 \issue{5.6.2.2 D040 - ongoing mission}
 What is an ongoing mission?
+
+\resolution The definition of an on-going mission is implicitly defined between the ``Start of Mission`` and the ``End of Mission`, see SUBSET-026-5.4.6.1, SUBSET-026-5.12.2.
 
 \issue{5.6.4.1.2 -- termination}
 What happens after the driver has been informed; that is, do we continue as we would do in case the session was not terminated (i.e., as in A220)? The same question arises for the situation described in 5.6.4.3.
 
+\resolution In both cases no transition to shunting mode is performed. The first case because of the anster ``SH refused`` in the referenced case because of loss of radion connection which mos propapbly should lead in L2/3 to a message of kind ``SH impossible due to loss of radion connection``.
+
 \issue{5.6.4.1.3}
 Does this item refer to a transition directly after A220 or to 5.6.4.1.2?
 
+\resolution The hint to ``Override`` applies to all cases if no SH authorisation can be receeived and is by this referring to SUBSET-025-5.6.4.1.2.
 
 %\subsection{Subset 026 5.8 Procedure Override}
 
@@ -240,22 +277,34 @@ Does this item refer to a transition directly after A220 or to 5.6.4.1.2?
 \issue{5.11.2.2 A025}
 Considering the flow chart and D020, I assume the process shall go to D020 rather that A030.
 
+\resolution Corrected in SUBSET-026 v3.4.0.
+
 \issue{5.11.2.2 D80}
 Replace with D080.
+
+\resolution Editorial change request filed via SUBSET-076 working group.
 
 \issue{5.11.2.2 S130}
 After having acknowledged mode change to PT (see S120), the RBC is assumed to revoke all pending emergency stops. Is the RBC triggered by the on-board unit to do so (e.g., after D130) or does S120 serve as the trigger?
 
+\resolution In A115 the OBU reports the mode change and triggers the decision on trackside.
+
 \issue{5.11.4.1.2 - termination}
 How do we proceed after the communication session has been terminated?
 
+\resolution There is a manual solution according to SUBSSET-026-5.11.4.2 and a request report changes to trackside when in L2/L3. In this case the onboard is obliged to build up a radio connection, as defined in position report parameters SUBSET-026-7.4.2.15.
+
 \issue{5.11.4.2 - override}
 How do we proceed after override?
+
+\resolution The handling of the EOA when leaving Override, according to SUBSET-026-5.8.3.1.1, depends on the mode when entering Override.
 
 \subsection{Procedure On Sight and Comparable procedures}
 
 \issue{Delayed messages}
 What happens if the acknowledgment of the driver is received after the train is already braking due to overpassing the safe front?
+
+\resolution According to SUBSET-026-5.9.2.4 the brake command shall be released.
 
 \subsection{Interplay of the procedures}
 
@@ -265,9 +314,13 @@ To enter the ``Start of Mission'' procedure, the mode must be Standby (SB).
 This is not necessarily the case after finishing End of Mission. 
 Can the Train enter SB-mode after End of Mission and if so, how?
 
+\resolution End of mission can be reached by closing the desk SUBSET-026-5.12.2.3, entering SB, SL or SH. This also depends on the mode coming from SUBSET-026-5.2. While a mission is considered as started when entering FS, LS, SR, OS, NL, UN or SN mode SUBSET-026.5.4.6.1. SB is reached as desceibed in SUBSET-026-4.6.2. Situations in which the train end its mission and starts its mission are expected to be described in the respective operational rule.
+
+
 \issue{State after ``Train Trip'' \& ``Override''}
 Which procedures can be called after having finished the Override/Train Trip procedure?
 
+\resolution After Override expires the normal mode applies. The transitions after Train Trip are described within SUBSET-026-4.6.2.
 
 \bibliographystyle{unsrt}
 \bibliography{erdc}

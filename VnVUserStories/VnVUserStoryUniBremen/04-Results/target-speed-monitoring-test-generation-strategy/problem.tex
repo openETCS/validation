@@ -1,0 +1,71 @@
+\section{Problem Formulation and\\ General Idea}
+As mentioned before, state machines have been shown suitable to model the behavior of reactive systems in the past and MBT approaches chose them as description means for their input models. With respect to upcoming cyberphysical-systems state machines are not convenient, especially, due to the integration of components, such as sensors and actuators in today's embedded systems. Such hybrid systems can be described by a combination of state machines and conditioned constraint blocks. 
+Constraint blocks and parametric diagrams are well suited to describe mathematical expressions, as for example physical laws, due to their declarative manner. State machines on the opposite are an imperative, state-based description means and, hence, are not convenient to specify physical properties of the system. 
+There are many approaches in the field of control theory and simulation to handle physical properties, but in the field of MBT physical constraints are usually neglected or simplified and current test strategies do not take them into account. As a consequence, test cases generated using current tools and strategies may be unrealistic and violate physical constraints. 
+
+\begin{example}
+Assume test cases shall be generated for the TSM function. Without considering
+physical laws, a concrete test case might be generated that contains a
+sequence of train speed values that have sudden jumps from very low to very high
+values.
+Such a behavior is unrealistic, since the acceleration of a train is bounded by
+the train engine and train brakes.
+Figure~\ref{fig:temporal-evolution} describes the physical constraints, that
+model how the speed and position of a train should evolve over time. Considering
+this kind of physical constraints leads to test cases that are executable in a
+real environment.
+\end{example}
+
+To overcome this situation and to allow the utilization of parametric diagrams as well as constraint blocks, we propose the following approach:\\
+%\begin{tikzpicture}
+%\node[draw,align=left] (sm) {State\\ Machine};
+%\node[draw,align=left,right=1.5cm of sm] (at) {Abstract\\ Test\\ Cases};
+%\node[draw,align=left,right=1.5cm of at] (ct) {Concrete\\Test\\Cases};
+%\node[draw,align=left,above= of {$(at)!0.5!(ct)$}] (param) {Parametric\\Diagram}; 
+%\draw[thick,->] (sm)-- node[above=0.5cm,pos=0.5] (ecpt){ECPT} node[below,pos=0.5] {Step 1} (at);
+%\draw[thick,->] (at)-- node[below,pos=0.5] {Step 2} (ct);
+%\draw[thick,->] (param) |- (ct);
+%\end{tikzpicture}\\ 
+In a first step using an abstracted version of the state machine, abstract test cases are generated. 
+Such an abstracted version is a so-called \emph{simulation} of the concrete system~\cite{clarke_em-etal:1999a}; the former represents an over-approximation of the latter. The simulation can easily be obtained by using Boolean variables as guard condition for every transition in the state machine. These Boolean variables are not restricted on the state machine level but bound to concrete system variables in the parametric diagrams.\footnote{
+Given a concrete system description by means of a state machine, this simulation can as well be obtained automatically. 
+But in most cases, the a priori modeling of an abstract state machine description of the system might be more natural and reduce the modeling
+effort, as will be shown in section~\ref{sec:evaluation}.}
+%The simulation is obtained by abstracting guard conditions to Boolean variables, if needed. 
+Abstract test cases are constructed from this simulation model using an
+input equivalence class partitioning 
+test strategy with proven error detection capabilities~\cite{huang_complete_2014}. \footnote{Apart from that, the proposed approach allows the application of every other state machine based testing strategy}
+The  inputs associated with an abstract test case are sequences of input equivalence classes.
+
+In the second step, the abstract input sequences are resolved to sequences of concrete
+model variable valuations, using a mathematical constraint solver. 
+For this step,   the bindings of abstract Boolean
+condition variables to concrete model variables defined by parametric diagrams are taken into account.
+Additional physical constraints describing the temporal evolution  of system variables are considered
+in this step as well, which leads to realistic concrete test cases. 
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\node[constraint] (c1) {$\frac{d v}{d t}=a$};
+\node[constraint, below=of c1] (c2) { $ -10 \leq a \leq 2$ };
+\node[constraint, right=2 of c1] (c3) {$\frac{d D}{d t}=a*t+v$};
+\node[align=left,constraint, below=of c3] (c4) {$a\leq A_\text{s}$ \\ $\IF$ TSM.inState(EB)};
+
+\node[parameter, left=1.2cm of c1,above=0.6cm of c3] (df) {$D_\text{front}$};
+\node[parameter, above right=0.2cm and 0.5cm of c1] (ve) {$v_\text{est}$};
+\node[parameter, above left=0.2cm and 0.3cm of c4] (As) {$A_\text{safe}$};
+
+\draw[binding] (df) -- node[above,right] {$D$} (c3);
+\draw[binding] (ve) -| node[near end, left] {$v$} (c1.50);
+\draw[binding] (ve) -| node[near end, left] {$v$}(c3.150);
+\draw[binding] (As) -| node [near end, left] {$A_\text{s}$} (c4.150);
+
+\draw[double binding] (c1) -- node[right,near start] {$a$} node [near end, right] {$a$} (c2);
+\draw[double binding] (c1) -- node[near start, above] {$a$} node [near end, below] {$a $}  (c3);
+\draw[double binding] (c3) -- node[near start, right] {$a$} node [near end, left] {$a$} (c4);
+\end{tikzpicture}
+\caption{Parametric diagram describing the temporal evolution of the TSM}
+\label{fig:temporal-evolution}
+\end{figure}
+

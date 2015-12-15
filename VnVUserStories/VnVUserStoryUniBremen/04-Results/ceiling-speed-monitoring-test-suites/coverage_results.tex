@@ -1,0 +1,94 @@
+% .......................................................................
+\subsection{Requirements and Model Coverage}\label{sec:coverage}
+
+\begin{table}
+\caption{Requirements Coverage and Model Coverage Overview.}\label{tbl:coverage}
+\centering
+% ============================================================================
+% @done: Uwe: Put the new numbers/Check the numbers consistency
+% ============================================================================
+
+\footnotesize
+\begin{tabular}{p{38mm}p{20mm}p{20mm}p{20mm}p{20mm}}
+\hline\hline
+&
+{\bf Manually Defined Tests (A)} &
+{\bf Extended Manual Tests (B)} &
+{\bf Automatically Defined Tests (C)} &
+{\bf Equivalence Class\newline Testing (D)}
+\\\hline
+{\bf Requirements Coverage}\newline(ETCS specification)&
+24 of \numsubreq\newline(82,76\%)&
+\numsubreq{} of \numsubreq\newline(100\%)&
+\numsubreq{} of \numsubreq\newline(100\%)&
+\numsubreq{} of \numsubreq\newline(100\%)
+\\\hline
+{\bf Test Cases}&
+9&
+11&
+45&
+5524
+\\\hline
+{\bf Model Coverage}\newline
+States&
+9 of 9\newline(100\%)&
+9 of 9\newline(100\%)&
+9 of 9\newline(100\%)&
+9 of 9\newline(100\%)
+\\\hline
+{\bf Model Coverage}\newline
+Transitions&
+10 of 10\newline(100\%)&
+10 of 10\newline(100\%)&
+10 of 10\newline(100\%)&
+10 of 10\newline(90\%)
+\\\hline
+{\bf Model Coverage}\newline
+MCDC&
+8 of 10\newline(80\%)&
+8 of 10\newline(80\%)&
+10 of 10\newline(100\%)&
+10 of 10\newline(100\%)
+\\\hline
+
+{\bf Model Coverage}\newline
+HITR&
+1 of 5\newline(20\%)&
+3 of 5\newline(60\%)&
+5 of 5\newline(100\%)&
+5 of 5\newline(100\%)
+\\\hline\hline
+\end{tabular}
+\normalsize
+\label{tab:rtt:advanced}
+\end{table}%
+
+% --------------------------------------------------------------------------
+%Paragraphs describing requirements coverage:
+
+In Table \ref{tab:rtt:advanced} we compare the requirements and the model coverage
+of the test suites. Although all test suites cover all states and transitions of
+the model at least once, \emph{Test Suite A} does not cover all requirements
+completely (not all sub-requirements are covered).
+Each of the other three test suites covers all requirements
+of ETCS defined in \cite{ETCS-Subset076} including the sub-requirements from our
+analysis.
+
+Though \emph{Test Suite B} does cover all requirements, it does not cover all
+test cases that are automatically generated from the test model.
+Fewer combinations for guard conditions and high level transitions are executed
+with this test suite.
+
+The fully automatically generated \emph{Test Suite C} provides full requirements
+coverage which is expected, as this is the goal of the test suite.
+It also provides full model coverage which is an indication for testable
+requirements, a model that has been developed for testing purposes and for
+carefully defined satisfy relations from model elements to requirements.
+
+The test traces that are generated for \emph{Test Suite D} have been evaluated on
+the test model as well and through this, a test case coverage and requirements coverage
+has been calculated using the tracing information from the test model.
+\emph{Test Suite C} and \emph{Test Suite D} both achieve the same requirements
+and model coverage, but \emph{Test Suite D} uses more test cases to reach this
+coverage. In the following section, we will evaluate if the additional test cases
+result in an increased test strength of this test suite.

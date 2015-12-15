@@ -1,0 +1,94 @@
+1 &
+REQ-3.13.10.2.1 & {\sf <<Composite State>>} {\sf CSM\_ON}  
+\\\hline
+2 &
+REQ-3.13.10.2.2 & {\sf <<Transition>>} [{\sf EMER\_BRAKE} - {\sf NORMAL}]
+\\ & &
+{\sf <<Transition>>} [{\sf SERVICE\_BRAKE} - {\sf NORMAL}]
+\\\hline
+3 &
+REQ-3.13.10.2.3 & {\sf <<Transition>>} [{\sf WARNING} - {\sf
+SERVICE\_BRAKE}] ({\sf !sbCmd})
+\\ & &
+{\sf <<Basic State>>} {\sf SERVICE\_BRAKE}
+\\\hline
+4 &
+REQ-3.13.10.2.4 & {\sf <<Transition>>} [{\sf EMER\_BRAKE} - {\sf NORMAL}]
+\\ & &
+{\sf <<Transition>>} [{\sf SERVICE\_BRAKE} - {\sf NORMAL}]
+\\ & &
+{\sf <<Transition>>} [{\sf WARNING} - {\sf SERVICE\_BRAKE}] ({\sf !sbCmd})
+\\\hline
+5 &
+REQ-3.13.10.2.5 & {\sf <<Transition>>} [{\sf EMER\_BRAKE} - {\sf NORMAL}]
+\\ & &
+{\sf <<Transition>>} [{\sf SERVICE\_BRAKE} - {\sf NORMAL}]
+\\\hline
+6 &
+REQ-3.13.10.3.1 & {\sf <<Submachine State>>} {\sf CSM\_ON}
+\\\hline
+7 &
+REQ-3.13.10.3.2 & {\sf <<Basic State>>} {\sf OVERSPEED}  
+\\ & &
+{\sf <<Basic State>>} {\sf SERVICE\_BRAKE}  
+\\ & &
+{\sf <<Basic State>>} {\sf WARNING}  
+\\ & &
+{\sf <<Basic State>>} {\sf EMER\_BRAKE} 
+\\\hline
+8 &
+REQ-3.13.10.3.3 .r0 & {\sf <<Transition>>} [{\sf EMER\_BRAKE} - {\sf NORMAL}]
+\\
+ & .r1 & {\sf <<Transition>>} [{\sf OVERSPEED} - {\sf NORMAL}]
+\\ & &
+{\sf <<Transition>>} [{\sf SERVICE\_BRAKE} - {\sf NORMAL}]
+\\ & &
+{\sf <<Transition>>} [{\sf WARNING} - {\sf NORMAL}]
+\\ & &
+{\sf <<Transition>>} [{\sf EMER\_BRAKE} - {\sf NORMAL}]
+\\  & .t1 & {\sf <<Basic State>>} {\sf NORMAL}  
+\\  & .t2 & {\sf <<Basic State>>} {\sf OVERSPEED}  
+\\  & .t3 & {\sf <<Basic State>>} {\sf WARNING}  
+\\  & .t4 & {\sf <<Basic State>>} {\sf SERVICE\_BRAKE}  
+\\  & .t5 & {\sf <<Basic State>>} {\sf EMER\_BRAKE}  
+\\\hline
+9 & REQ-3.13.10.3.4 .r1c2 & {\sf <<Constraint>>} constraint\_14
+\\ & .r1c3 & {\sf <<Transition>>} [{\sf OVERSPEED} - {\sf NORMAL}]
+\\ & .r1c4 & {\sf <<Transition>>} [{\sf WARNING} - {\sf NORMAL}]
+\\ & .r1c5 & {\sf <<Transition>>} [{\sf EMER\_BRAKE} - {\sf NORMAL}]
+\\ & & {\sf <<Transition>>} [{\sf SERVICE\_BRAKE} - {\sf NORMAL}]
+\\ & .r3c1 & {\sf <<Transition>>} [{\sf NORMAL} - {\sf OVERSPEED}]
+\\ & .r3c2 & {\sf <<Constraint>>} constraint\_15
+\\ & .r4c1 & {\sf <<Constraint>>} constraint\_08 
+\\ & .r4c2 & {\sf <<Constraint>>} constraint\_16 
+\\ & .r4c3 & {\sf <<Transition>>} [{\sf OVERSPEED} - {\sf WARNING}]
+\\ & .r5c1 & {\sf <<Constraint>>} constraint\_10 
+\\ & & {\sf <<Constraint>>} constraint\_09 
+\\ & .r5c2 & {\sf <<Constraint>>} constraint\_17
+\\ & .r5c3 & {\sf <<Constraint>>} constraint\_12 
+\\ & & {\sf <<Constraint>>} constraint\_11 
+\\ & .r5c4 & {\sf <<Transition>>} [{\sf WARNING} - {\sf SERVICE\_BRAKE}]
+\\ & &
+{\sf <<Transition>>} [{\sf SERVICE\_BRAKE} - {\sf EMER\_BRAKE}]
+\\ & &
+{\sf <<Constraint>>} constraint\_13 
+\\\hline
+10 &
+REQ-3.13.10.3.5 & {\sf <<Constraint>>} constraint\_05 
+\\ & &
+{\sf <<Constraint>>} constraint\_06 
+\\ & &
+{\sf <<Constraint>>} constraint\_07 
+\\ & &
+{\sf <<Basic State>>} {\sf NORMAL} 
+\\ & &
+{\sf <<Constraint>>} constraint\_04 
+\\\hline
+11 &
+REQ-3.13.10.3.6 & {\sf <<Constraint>>} constraint\_05 
+\\ & &
+{\sf <<Constraint>>} constraint\_06 
+\\ & &
+{\sf <<Constraint>>} constraint\_07 
+\\ & &
+{\sf <<Constraint>>} constraint\_04 

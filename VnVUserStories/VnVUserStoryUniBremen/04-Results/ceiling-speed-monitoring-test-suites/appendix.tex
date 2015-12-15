@@ -1,0 +1,104 @@
+\section{Requirements Decomposition}
+
+\begin{table}
+\caption{Triggering of Train Interface commands and supervision statuses in ceiling speed monitoring (from~\cite[Table~5]{ETCSSRS-Principles}).}
+\begin{center}
+\footnotesize
+\begin{tabular}{|l|c|l|c|l|}
+\hline\hline
+{\bf id} & {\bf TC} & {\bf Estimated speed} & {\bf TI} & {\bf SSE} 
+\\\hline\hline
+REQ-3.13.10.3.3.t1 & t1 & $\vest \le \vmax$ & --- & Normal Status
+\\\hline
+REQ-3.13.10.3.3.t2 & t2 & $\vest > \vmax$ & --- & Overspeed Status
+\\\hline
+REQ-3.13.10.3.3.t3 & t3 & $\vest > \vmax + \dvw$ & --- & Warning Status
+\\\hline
+REQ-3.13.10.3.3.t4 & t4 & $\vest > \vmax + \dvs$ & SB & Intervention Status
+\\\hline
+REQ-3.13.10.3.3.t5 & t5 & $\vest > \vmax + \dve$ & EB & Intervention Status  
+\\\hline\hline
+\end{tabular}
+\normalsize
+\end{center}
+
+TC: trigger condition \newline
+TI: command triggered on train interface to brakes \newline
+SB: trigger service brake command (if available, otherwise trigger emergency brake)\newline
+EB: trigger emergency brake command 
+SSE: supervision status entered
+\label{tab:five}
+\end{table}%
+
+
+\begin{table}
+\caption{Revocation of Train Interface commands and supervision
+  statuses in ceiling speed monitoring
+  (from~\cite[Table~6]{ETCSSRS-Principles}).}
+
+
+\begin{minipage}{\textwidth}
+\centering
+\begin{tabular}{|l|l|c|l|l|}
+\hline\hline
+{\bf id} & {\bf RC} & {\bf Estimated Speed} & {\bf TICR} & {\bf SSR}
+\\\hline\hline
+REQ-3.13.10.3.3.r0 & r0 & Standstill & EB & Intervention Status
+\\\hline
+REQ-3.13.10.3.3.r1 & r1 & $\vest \le \vmax$ & SB  &
+Indication Status \\
+& & & EB$^*$ &
+Overspeed Status\\
+& & &  &
+Warning Status \\
+& & &  &
+Intervention Status (if SBI) \\
+& & &  &
+Intervention Status (if EB$^*$ )\\
+\hline
+\hline
+\end{tabular}
+\end{minipage}
+
+$^*$ Only if $\areb = 1$.
+\normalsize
+
+RC: revocation condition \newline
+TICR: command revoked on train interface to brakes \newline
+SSR: supervision status revoked
+
+
+\label{tab:six}
+\end{table}%
+
+
+
+\begin{table}
+\caption{Transitions between supervision statuses in ceiling speed
+  monitoring (from~\cite[Table~7]{ETCSSRS-Principles}).}
+\begin{center}
+%\begin{tabular}{|p{20mm}|p{20mm}|p{20mm}|p{20mm}|p{20mm}|}
+\begin{tabular}{|c|c|c|c|c|}
+\hline\hline
+\hspace {1em}Normal  &\hspace{1em} $< r1$ & \hspace{1em}$< r1$ &\hspace{1em} $< r1$ & $< r0,r1$
+\\\hline
+\hspace {1em} & \hspace{1em} Indication  & & & 
+ \\\hline
+\hspace {1em} $t2 >$ &\hspace {1em} $t2 > $ &\hspace{1em} Overspeed  & & 
+ \\\hline
+\hspace {1em} $t3 >$ & \hspace {1em} $t3 >$ & \hspace{1em} $t3 >$ &\hspace{1em} Warning  &
+ \\\hline
+\hspace {1em} $t4,t5 >$ & \hspace {1em} $t4,t5 >$ & \hspace{1em}$t4,t5 >$ & \hspace{1em}$t4,t5 >$ &\hspace{1em} Intervention
+\\\hline\hline
+\end{tabular}
+\end{center}
+
+
+\smallskip
+ The
+  sub-requirements IDs associated with each cell in the transition table
+   are of the form  REQ-3.13.10.3.4.rX.cY where X and Y
+  are the row and   column indexes, respectively. 
+\normalsize
+\label{tab:seven}
+\end{table}%

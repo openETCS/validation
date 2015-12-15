@@ -1,0 +1,97 @@
+% .......................................................................
+\subsection{Test Strength Comparison}\label{sec:mutations}
+
+\subsubsection*{Experimental Setup.}
+
+The strength of a test suite is the ability to detect real faults. 
+\cite{just_are_2014} shows that mutants are a valid substitute for real faults
+when comparing generated test suites. Mutants are modifications of the SUT with (automatically) seeded single faults. 
+Mutants in large numbers can be generated 
+by mutation operators, which apply slight syntactical changes
+to the original code.
+To compare the test strength of the generated test suites we measured the mutation score of 
+each test suite. The mutation score is the ratio of mutants that were
+``killed'' by a test suite to the total number of \textit{real} mutants\footnote{Only non-I/O-equivalent mutants are considered, since not every 
+syntactical modification results in a mutant showing deviating observable behaviour.}. A mutant is killed, if at least one test case of the test suite 
+does not pass.
+
+For the experimental evaluation we generated a correct Java implementation
+from the model shown in section~\ref{chap:model}. The java implementation was performed by
+hand in a straight forward way, resulting in 176 lines of code. Next, mutants
+were automatically generated from each implementation with the Major mutation
+framework~\cite{Just2014}.
+All applicable mutation operators were executed to generate single-fault
+mutants. For our concrete implementations these
+operators were as follows:
+arithmetic operator replacement (AOR),
+conditional operator replacement (COR), relational operator replacement (ROR),
+statement deletion (STD) and literal value replacement (LVR).
+Note that the mutation tool is unaware of any conformance relation.
+Therefore we manually investigated the generated mutants. Discarding I/O-equivalent mutants resulted  in
+a collection of 186 erroneous
+implementations.
+Finally, the three test suites specified above were executed against
+all mutants to measure the mutation score of the
+test suites.
+
+
+
+
+\subsubsection*{Experimental Results.}
+
+Table~\ref{tab:mutation} shows the mutation scores of the test suites.
+The manually defined test cases achieve the lowest mutation score of all
+examined strategies. This seems to correlate with the low model coverage shown in the previous section. 
+Further, the mutation score of the model
+derived tests is superior to the manually defined tests, as already expected by
+the higher (complete) model coverage.
+The last column of Table~\ref{tab:mutation} confirms, that for our model
+the equivalence class testing strategy behaves best in revealing the faults
+injected by the mutation tool.
+The test suite revealed all but one mutation.\footnote{Note that this result differs slightly from the result in \cite{huebner15}. There all mutants were killed.
+The reason for this deviation results from a different model we use in
+this paper. This model has more inputs than the reduced
+version in \cite{huebner15}.} Although the model derived test cases yield a full
+coverage of the test model, this criterion is not sufficient to reveal a
+considerable number of faults. 
+However, the equivalence class testing approach uses more rigorous criteria and
+this results in the detection of defects, which would not be revealed by test
+suites considering only model coverage criteria as described in section~\ref{sec:automated_ETCS_test}. 
+Note that the large number of test procedures 
+needed for the equivalence class tests is due to the detailed refinement and the use of
+boundary value tests. The equivalence class testing strategy can be applied with a coarser
+IECP for the cost of lower test strength. The reader may refer to \cite{huebner15} for a detailed evaluation of the different
+refinements and the impact on size and mutation score. 
+
+\begin{table}
+\caption{Mutation Score Overview.}
+\centering
+\begin{tabular}{p{40mm}p{18mm}p{18mm}p{24mm}p{18mm}}
+\hline\hline
+&
+{\bf Manually Defined Tests} &
+{\bf Extended Manual Tests} &
+{\bf Automatically Defined Tests} &
+{\bf Equivalence Class Testing}
+\\\hline
+{\bf Number of Test Cases} &
+9 &
+11 &
+45 &
+5524
+\\\hline
+{\bf Mutation Score}&
+108 of 186\newline(58 \%)&
+116 of 186\newline(62 \%)&
+126 of 186\newline(68 \%)&
+186 of 186\newline(100 \%)
+% \\\hline
+% {\bf Mutation Score} of equal sized random tests&
+% 115 of 358\newline(32 \%)&
+% todo of 358\newline(todo \%)&
+% 129 of 358\newline(36 \%)&
+% 336 of 358\newline(91 \%)
+\\\hline\hline
+\end{tabular}
+\label{tab:mutation}
+\end{table}%

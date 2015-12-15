@@ -1,0 +1,135 @@
+% ===========================================================
+%%@todo jp: check adjustments from uwe
+% ===========================================================
+
+The CSM model described in Section~\ref{chap:model} contains
+requirement tracing information. Instead of manually translating the
+test cases specified for the CSM feature into LTL formulas
+\footnote{as described in the previous section \ref{sec:manualTest}},
+the requirement tracing information from the model can be
+used to automatically generate test procedures covering these
+requirements.
+%% The tracing information in the test model
+%% and the test cases for the feature CSM are both based on the same
+%% requirement specification of the CSM feature. In both cases
+%% knowledge about the system and understanding of the requirements
+%% has been used to interpret the requirement and define tracing
+%% information. The difference is where and how the
+%% generated tracing information is represented and how it can be used further.
+%% When creating the model, the tracing information was directly defined
+%% as part of the model in form of SysML satisfy relations.
+%% This also allows to review the correctness of this tracing
+%% information directly in the test model.
+In this section, we describe how the requirement tracing information
+defined in the model can be used to automatically generate test
+procedures for full requirements coverage from the CSM model.
+Note that the test procedures in section \ref{sec:manualTest} also are
+automatically generated test procedures providing requirements coverage,
+but they have been generated from a manually developed formal test
+case specification. The approach presented here uses the requirement
+tracing information defined in the model to automatically generate
+the formal test case specification and in a second step to
+automatically generate the test procedures covering these test cases.
+Through this, a test suite is generated in a fully automated way
+that covers all requirements represented in the model.
+
+The test generation tool from our experiments platform automatically
+generates test cases for different kinds of model coverage strategies
+from a test model\footnote{More detailed explanation on the coverage criteria may be found in \cite{D34.1}.}:
+\begin{itemize}
+\item {\bf Basic Control State Coverage (BCS)}\newline
+      This type of behavioural coverage aims at covering each
+      basic control state of each state machine at least once.
+      No additional objectives are made about concurrent control
+      states or accompanying variable valuations when reaching
+      the control state under consideration.
+\item {\bf Transition Coverage (TR)}\newline
+      Transition coverage aims at covering each transition of
+      every state machine in the model. Again, no restrictions
+      are made regarding variable valuations, control states
+      and concurrent transitions to be performed when the one
+      under consideration is triggered.
+\item {\bf MC/DC Transition Coverage (MCDC)}\newline
+      Modified condition/decision (MC/DC) coverage is a variant
+      of transition coverage, where non-atomic guard conditions
+      are evaluated in a systematic manner.
+\item {\bf Hierarchic Transition Coverage (HITR)}\newline
+      For a transitions emanating from higher-level control states,
+      different underlying basic control states can be active when
+      the transition is triggered. Hierarchic transition coverage
+      aims at exercising these transitions once for every underlying
+      basic control state being active.
+\item {\bf Basic Control States Pair Coverage (BCSPAIR)}\newline
+      For concurrent state machines pairs of states of two
+      different state machines have to be active simultaneously.
+      This strategy does not apply to the test model under consideration,
+      because it does not contain concurrent state machines.
+      \footnote{This coverage criteria does not apply to the CSM
+      test model described in chapter \ref{chap:model}, as it
+      does not include concurrent state machines.}
+%% \item {\bf User Defined LTL Specification (UD)}\newline
+%%      For each LTL constraint that is linked to a system component
+%%      and that satisfies a requirement, a test case is generated
+%%      using the LTL constraint as the test goal.
+\end{itemize}
+
+The test model contains requirements together with satisfy relations
+linking them to model elements. These requirements are taken directly
+from the ETCS specification (\cite{ETCS}).
+The requirements 3.13.10.3.3 and 3.13.10.3.4 have been
+refined into sub-requirements to allow better tracing to model elements
+and to be able to define the requirements coverage in more detail.
+%% Therefore, the test model contains \numsubreq{} requirements which can be
+%% traced back to the \numreq{} requirements defined for the ceiling speed
+%% monitoring feature of ETCS.
+Satisfy relations are defined in the model that link transitions,
+basic control states or LTL-formulas to requirements.
+The test generation tool automatically generates test cases that
+cover states, transitions or user defined LTL constraints with
+the different test strategies described above.
+The satisfy relations defined in the
+model are used to determine the set of automatically generated
+test cases that satisfy a requirement.
+A requirement is covered if the respective set of the automatically
+generated test cases (generated from the model) has been covered.
+
+\begin{table}
+\caption{Model Derived Requirements Coverage Tests}\label{tbl:derivedtest}
+\tabsize
+\centering
+\begin{tabular}{p{40mm}p{30mm}r}
+\hline\hline
+Test Procedure Name & Requirements & Number of Test Cases\\
+\hline
+TP-REQ-3.13.10.2.1 & REQ-3.13.10.2.1 & 1\\
+TP-REQ-3.13.10.2.2 & REQ-3.13.10.2.2 & 2\\
+TP-REQ-3.13.10.2.3 & REQ-3.13.10.2.3 & 10\\
+TP-REQ-3.13.10.2.4 & REQ-3.13.10.2.4 & 3\\
+TP-REQ-3.13.10.2.5 & REQ-3.13.10.2.5 & 2\\
+TP-REQ-3.13.10.3.1 & REQ-3.13.10.3.1 & 2\\
+TP-REQ-3.13.10.3.2 & REQ-3.13.10.3.2 & 18\\
+TP-REQ-3.13.10.3.3 & REQ-3.13.10.3.3 & 24\\
+TP-REQ-3.13.10.3.4 & REQ-3.13.10.3.4 & 16\\
+TP-REQ-3.13.10.3.5 & REQ-3.13.10.3.5 & 6\\
+TP-REQ-3.13.10.3.6 & REQ-3.13.10.3.6 & 4\\
+\hline\hline
+\end{tabular}
+\end{table}
+
+For each of the requirements from the ETCS specification, one
+test procedure has been generated that covers all automatically generated
+test cases that satisfy the requirement (or any of its sub-requirements).
+Whether it is possible to completely
+cover a requirement in a single test procedure and how well
+requirement can be represented in a test model highly depends on
+the requirements and on the test model. In this case, we were able
+to link all requirements
+\footnote{All requirements under consideration that are relevant for ceiling speed monitoring}
+from the ETCS specification to
+test model elements and to automatically generate a test suite
+that provides full requirements coverage.
+Table \ref{tbl:derivedtest} also provides the number of test cases that
+are covered during the test procedure and that are necessary
+to test the requirement. Naturally test cases can occur in multiple
+test procedures.
+

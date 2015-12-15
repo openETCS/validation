@@ -1,0 +1,53 @@
+;Kommentar;Req.-ID
+t3 == ((V_release<V_est<=V_mrsp && d_maxsafefront>d_I));für SvL;Table 9
+t4 == ((V_release<V_est<=V_mrsp && d_maxsafefront>d_P)) ;für SvL;Table 9
+t7 == ((V_release<V_est<=V_mrsp+dV_warning && d_maxsafefront>d_W));für SvL;Table 9
+t10 == ((V_release<V_est<=V_mrsp+dV_sbi && d_maxsafefront>d_SBI2));für SvL;Table 9
+t13 == ((V_release<V_est<=V_mrsp+dV_ebi && d_maxsafefront>d_EBI));für SvL;Table 9
+r3 == !t4;;Table 11
+r2 == !t3;;Table 11
+r1 == (V_est <= V_release);;Table 11
+r0 == (V_est == 0);;Table 11
+triggercondition==0 iff r0;Def. triggercondition;
+triggercondition==1 iff r1 && !r0;Def. triggercondition;
+triggercondition==2 iff r2 && !r1;Def. triggercondition;
+triggercondition==3 iff t3 && !t4;Def. triggercondition;
+triggercondition==4 iff t4 && !t7;Def. triggercondition;
+triggercondition==5 iff t7 && !t10;Def. triggercondition;
+triggercondition==6 iff t10 && !t13;Def. triggercondition;
+triggercondition==7 iff t13;Def. triggercondition;
+dV_warning==(V_mrsp <= 110)*4 + (V_mrsp > 110 && V_mrsp <= 140)*((V_mrsp +10)/30 ) + (V_mrsp > 140)*5;copied from CSM model;3.13.9.2.6 p.116
+dV_sbi==(V_mrsp <= 110)*5.5 + (V_mrsp > 110 && V_mrsp <= 210)*(0.045*V_mrsp + 0.55) + (V_mrsp > 210)*10;copied from CSM model;3.13.9.2.5 p.116
+dV_ebi==(V_mrsp <= 110)*7.5 + (V_mrsp > 110 && V_mrsp <= 210)*(0.075*V_mrsp - 0.75) + (V_mrsp > 210)*15;copied from CSM model;3.13.9.2.3 p.115
+0>=V_est-A_safe*t_b;Brake Time;
+s==V_est*t_b - 1/2*A_safe*t_b*t_b;Brake Distance;
+d_EBD==d_Target-s;Safe Distance;
+d_EBI==d_EBD-V_est*T_be;d_EBI;
+d_SBI2==d_EBI-V_est*T_bs2;d_SBI2;3.13.9.3.3.2 p.119
+d_W==d_SBI2-V_est*T_warning;d_W;3.13.9.3.4.1 p.121
+d_P==d_SBI2-V_est*T_driver;d_P;3.13.9.3.5.1 p.122
+d_I==d_P-V_est*T_indication;d_I;3.13.9.3.6.1 p.125
+T_be==T_brake_emergency;;3.13.6.2.2.3 p. 109
+T_brake_emergency==T_brake_basic_eb;;A.3.8.4 p. 195
+T_brake_basic_eb==2.3+0.17*4*4;(=5,02) Annahme Zuglänge 400 m, Passagierzug;A.3.8.1 p.194
+T_bs2==2;T_bs2_locked verwendet, korrekt??;A.3.10.4 p.197
+T_warning==2;;A.3.1 p.182
+T_driver==4;;A.3.1 p.182
+T_indication==5;vereinfachung: 5s, da das Minimum 5s sind. Ansonsten müsste T_bs definiert werden;3.13.9.3.6.2 p.125
+V_release==1;constant value;
+V_mrsp==30;constant value;
+d_maxsafefront>=0;domain;
+d_maxsafefront<=d_Target;domain;
+d_Target==10000;constant value;
+a_cur<=10;domain;
+a_cur>=-10;domain;
+V_est>=0;domain;
+V_est<=100;domain;
+A_safe==5;constant value;
+t@1==t@0+delta_t@0;timed behaviour;
+V_est@1==V_est@0+a_cur@0*delta_t@0;timed behaviour;
+d_maxsafefront@1==0.5*a_cur@0*delta_t@0*delta_t@0 + V_est@0*delta_t@0 + d_maxsafefront@0;timed behaviour;
+((eb==1 && a_cur<=A_safe) || (eb==0)) && (a_cur>=-10) && (a_cur<=10);timed behaviour;
+t>=0;domain;
+t<=3600;domain;
+delta_t>0;domain;

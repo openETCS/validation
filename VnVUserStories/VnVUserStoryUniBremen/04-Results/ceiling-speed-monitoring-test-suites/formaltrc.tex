@@ -1,0 +1,226 @@
+% ============================================================================
+
+
+%@todo jp: Describe how requirements are formally reflected by sets of computations, and how these sets can be specified by means of LTL safety formulas and revise the 
+%following paragraphs
+
+
+Consider, for example, the zero-time transition
+{\sf NORMAL} $\trans$ {\sf SERVICE\_BRAKE}. To cover this situation, we need to 
+\begin{enumerate}
+\item Enter   {\sf NORMAL} in a quiescent model state -- this is specified by 
+$$[\mathsf{NORMAL} \wedge \vest \le \vmax]$$
+\item Stay there until the speed exceeds $\vmax + \dvs(\vmax)$ but remains less or equal to $\vmax+\dve$.
+\end{enumerate}
+Formally this is expressed in LTL by 
+\[
+\begin{array}{l}
+ \mathsf{Finally} ([\mathsf{NORMAL}\wedge \vest \le \vmax]  \wedge {}
+ \\\tabf
+ ([\mathsf{NORMAL}\wedge \vest \le \vmax]
+ \\\tabf \ \
+ \mathsf{Until}
+ \\\tabf\
+ [\mathsf{NORMAL}\wedge \vest > \vmax+\dvs(\vmax) \wedge {}
+ \\\tabf \  \
+ \vest \le \vmax+\dve(\vmax)]))
+\end{array}
+\]
+This is expressed by constraint\_09 linked to REQ-3.13.10.3.4.r5c1 in Table~\ref{table:req-tracing}.
+%% and specified in Table~\ref{tab:constraints}.
+Similarly, covering the zero-time transition {\sf NORMAL} $\trans$ {\sf EMER\_BRAKE} requires a trace satisfying
+\[
+\begin{array}{l}
+ \mathsf{Finally} ([\mathsf{NORMAL}\wedge \vest \le \vmax]  \wedge {}
+ \\\tabf
+ ([\mathsf{NORMAL}\wedge \vest \le \vmax]
+ \\\tabf \ \
+ \mathsf{Until}
+ \\\tabf\
+ [\mathsf{NORMAL}\wedge \vest > \vmax+\dve(\vmax)]))
+\end{array}
+\]
+%% (this is specified as constraint\_10 in Table~\ref{tab:constraints}).
+Similar constraints are specified for 
+REQ-3.13.10.3.4.r1c2,
+REQ-3.13.10.3.4.r3c2,
+REQ-3.13.10.3.4.r4c1,
+REQ-3.13.10.3.4.r4c2,
+REQ-3.13.10.3.4.r5c2,
+REQ-3.13.10.3.4.r5c3 and 
+REQ-3.13.10.3.4.r5c4
+as well as for requirements REQ-3.13.10.3.5 and REQ-3.13.10.3.6.
+
+
+%% \begin{table}
+%% \caption{Constraints related to complex requirements listed in Table~\ref{table:req-tracing}.}
+%% \begin{center}
+%% \scriptsize
+%% \hspace*{-10mm}
+%% \begin{tabular}{|l|p{12cm}|}
+%% \hline\hline
+%% {\sf <<Constraint>>} & {\bf LTL Formula}
+%% \\\hline\hline
+%% constraint\_01 & 
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} [\mathsf{EMER\_BRAKE} \wedge \neg \sbia \wedge 
+%%          \vest > 0 \wedge \vest \le  \vmax \wedge\neg  \areb]$ 
+%% \vspace*{1mm}         
+%% }
+%% \\\hline
+%% constraint\_02 &  
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} [\mathsf{SERVICE\_BRAKE} \wedge\neg\sbia \wedge\vest\le\vmax]$
+%% \vspace*{1mm}
+%% }
+%% \\\hline
+%% constraint\_03 &  
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} [\mathsf{SERVICE\_BRAKE} \wedge\neg\sbia\wedge \vest > \vmax + \dvs(\vmax) \wedge \vest \le \vmax + \dve(\vmax)]$
+%% \vspace*{1mm}
+%% }
+%% \\\hline
+%% constraint\_04 & 
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} [\mathsf{CSM\_OFF} \wedge \csmsw \wedge \vest > \vmax  \wedge \vest \le \vmax + \dvw(\vmax) ]$
+%% \vspace*{1mm}
+%% } 
+%% \\\hline
+%% constraint\_05 &
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} [\mathsf{CSM\_OFF} \wedge\csmsw \wedge \vest > \vmax + \dvw(\vmax) \wedge \vest\le\vmax+\dvs(\vmax) ]$
+%% \vspace*{1mm}
+%% }  
+%% \\\hline
+%% constraint\_06 & 
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} [\mathsf{CSM\_OFF} \wedge\csmsw\wedge \vest > \vmax + \dvs(\vmax) \wedge \vest \le \vmax + \dve(\vmax) ]$
+%% \vspace*{1mm}
+%% } 
+%% \\\hline
+%% constraint\_07 &  
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} [\mathsf{CSM\_OFF} \wedge\csmsw\wedge \vest > \vmax + \dve(\vmax) ]$
+%% \vspace*{1mm}
+%% }
+%% \\\hline
+%% constraint\_08 &  
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} ([\mathsf{NORMAL} \wedge \vest\le\vmax] \wedge  
+%% ([\mathsf{NORMAL} \wedge  \vest\le\vmax]\ \mathbf{Until}\ [\mathsf{NORMAL} \wedge \vest > \vmax + \dvw(\vmax) \wedge \vest\le\vmax + \dvs(\vmax) ]))$
+%% \vspace*{1mm}
+%% }
+%% \\\hline
+%% constraint\_09 &  
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} ([\mathsf{NORMAL} \wedge \vest\le\vmax] \wedge  
+%% ([\mathsf{NORMAL} \wedge  \vest\le\vmax]\ \mathbf{Until}\ [\mathsf{NORMAL} \wedge \vest > \vmax + \dvs(\vmax) \wedge \vest\le\vmax + \dve(\vmax) ]))$
+%% \vspace*{1mm}
+%% }
+%% \\\hline
+%% constraint\_10 &  
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} ([\mathsf{NORMAL} \wedge \vest\le\vmax] \wedge  
+%% ([\mathsf{NORMAL} \wedge  \vest\le\vmax]\ \mathbf{Until}\ [\mathsf{NORMAL} \wedge \vest > \vmax + \dve(\vmax)]))$
+%% \vspace*{1mm}
+%% }
+%% \\\hline
+%% constraint\_11 &  
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} ([\mathsf{OVERSPEED} \wedge \vest\le\vmax] \wedge  
+%% ([\mathsf{OVERSPEED} \wedge  \vest\le\vmax]\ \mathbf{Until}\ [\mathsf{OVERSPEED} \wedge \vest > \vmax + \dvs(\vmax) \wedge \vest\le\vmax + \dve(\vmax) ]))$
+%% \vspace*{1mm}
+%% }
+%% \\\hline
+%% constraint\_12 &  
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} ([\mathsf{OVERSPEED} \wedge \vest\le\vmax] \wedge  
+%% ([\mathsf{OVERSPEED} \wedge  \vest\le\vmax]\ \mathbf{Until}\ [\mathsf{OVERSPEED} \wedge \vest > \vmax + \dve(\vmax)]))$
+%% \vspace*{1mm}
+%% }
+%% \\\hline
+%% constraint\_13 &  
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} ([\mathsf{WARNING} \wedge \vest\le\vmax] \wedge  
+%% ([\mathsf{WARNING} \wedge  \vest\le\vmax]\ \mathbf{Until}\ [\mathsf{WARNING} \wedge \vest > \vmax + \dve(\vmax)]))$
+%% \vspace*{1mm}
+%% }
+%% \\\hline
+%% constraint\_14 &  
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} ([\mathsf{M\_SDMTYPE != CSM} \ \wedge \ 
+%% {\sf IndicationStatus}] \mathbf{Until}\ 
+%% [\mathsf{M\_SDMTYPE != CSM} \ \wedge \  {\sf IndicationStatus} ] \wedge
+%% \mathsf{SUTCommand} \ \wedge \ \vest \leq \vmax ])$
+%% \vspace*{1mm}
+%% }
+%% \\\hline
+%% constraint\_15 &  
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} ([\mathsf{M\_SDMTYPE != CSM} \ \wedge \ 
+%% {\sf IndicationStatus}] \mathbf{Until}\ 
+%% [\mathsf{M\_SDMTYPE != CSM} \ \wedge \  {\sf IndicationStatus} ] \wedge
+%% \mathsf{SUTCommand} \ \wedge \ \vest > \vmax \ \wedge \ \vest \leq \vmax + \dvw(\vmax) ])$
+%% \vspace*{1mm}
+%% }
+%% \\\hline
+%% constraint\_16 &  
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} ([\mathsf{M\_SDMTYPE != CSM} \ \wedge \ 
+%% {\sf IndicationStatus}] \mathbf{Until}\ 
+%% [\mathsf{M\_SDMTYPE != CSM} \ \wedge \  {\sf IndicationStatus} ] \wedge
+%% \mathsf{SUTCommand} \ \wedge \  \vest > \vmax
+%% + \dvw(\vmax) \ \wedge \ \vest \leq \vmax + \dvs(\vmax)])$
+%% \vspace*{1mm}
+%% }
+%% \\\hline
+%% constraint\_17 &  
+%% \parbox{120mm}{
+%% \vspace*{1mm}
+%% $\mathbf{Finally} ([\mathsf{M\_SDMTYPE != CSM} \ \wedge \ 
+%% {\sf IndicationStatus}] \mathbf{Until}\ 
+%% [\mathsf{M\_SDMTYPE != CSM} \ \wedge \  {\sf IndicationStatus} ] \wedge
+%% \mathsf{SUTCommand} \ \wedge \  \vest > \vmax
+%% + \dvs(\vmax) ])$
+%% \vspace*{1mm}
+%% }
+%% \\\hline
+
+%% \hline
+%% \end{tabular}
+%% \normalsize
+%% \end{center}
+%% \label{tab:constraints}
+%% \end{table}%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% =============================================================================

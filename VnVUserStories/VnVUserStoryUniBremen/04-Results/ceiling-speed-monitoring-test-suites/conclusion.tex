@@ -1,0 +1,85 @@
+\section{Conclusions}
+\label{sec:conc}
+% ====================================================================
+
+
+
+% ====================================================================
+\paragraph{Discussion of results}
+In this article, the ceiling speed monitoring function of the European Train
+Control System has been used as a case study for evaluating various
+model-based testing strategies and comparing their  strength with 
+the associated tests contained in the ETCS standard, the latter having
+been developed by
+domain experts in a manual way. 
+A test model of the CSM has been presented. It is expressed in SysML and interpreted
+in a formal behavioural semantics based on Kripke structures.
+The MBT strategies comprised ``standard'' 
+model coverage techniques
+(basic control state, transition, MC/DC coverage, and hierarchic
+transition coverage applicable to composite state machines), as well as a complete
+input equivalence class testing strategy. The comparison of the strategies involved focused on requirements coverage and test strength. 
+It turned out that the manually 
+developed test suite contained in the ETCS standard has some deficiencies regarding requirements coverage; as a result, their test strength is considerably lower than 
+the strength of any of the MBT strategies. 
+
+The test strength of the different strategies has been evaluated using a CSM reference
+implementation programmed in Java, from which 368 mutations have been generated.
+The complete input equivalence class testing strategy 
+turned out to have significantly higher test strength 
+(mutation score of nearly 100\%), when compared to any of the 
+other strategies, and the test suite contained in the ETCS standard was significantly
+weaker than the other strategies. Suggestions were presented how the latter suite 
+should be extended, resulting in moderate additional effort only. 
+
+The nearly complete mutation score achieved by the equivalence class method
+confirms the hypothesis that complete testing strategies are also of great
+practical value when applied against implementations that are outside the 
+specified fault domain where {\it every} SUT error is detected by at least one test case. On the other hand, the complete strategy increased the test suite size
+by a factor of 100 and more in comparison to the suites resulting from the other
+strategies. This indicates that the complete strategies may be less suitable for
+applications outside the safety-critical systems domain, where lesser test strength
+may still be acceptable. It has been analysed why the non-complete MBT strategies 
+still resulted in a mutation score of 85\%, and it was pointed out that this
+is due to the simple decision structure in the CSM, where guard conditions are
+relatively wide and most control modes can be
+reached from any other mode in one step. 
+
+
+
+% ====================================================================
+\paragraph{Ongoing work}
+The nature of the input equivalence classes used in the CSM case study is quite ``conventional'' in the sense that they are made up from intervals of real numbers. The underlying equivalence class testing theory, however, does not depend on this simple
+class structure: since the equivalence concept is based on equivalent behaviours derived from the behavioural model's transition relation, the theory covers classes
+of discrete points in the state space as well. Exploiting this fact, the construction of
+equivalence classes for train configurations in railway networks 
+is currently  investigated in collaboration with other authors~\cite{ftscs}, 
+for the purpose of testing interlocking control systems with acceptable effort. 
+
+In this context, an extension of the equivalence class testing theory to nondeterministic models is currently being prepared for publication. This extension makes use of an
+abstraction of nondeterministic IOSTS with infinite input domains, but 
+finite internal state and output domains to nondeterministic finite state machines 
+(NFSMs). This
+abstraction enables us to transfer   complete test suites for NFSM
+as presented in~\cite{petrenko_testing_2011,petrenko_testing_2014,hierons_testing_2004}
+to complete test suites for IOSTS. The motivation of this theory extension to nondeterministic models is as follows: when performing MBT in a safety-critical context,
+the correctness and completeness of the test model is of utmost importance. Therefore
+formal verification techniques, in particular variants of model checking, are applied
+to verify the test model before using it for automated test suite generation.
+Typical verification methods that can be applied successfully for this purpose
+use over-approximation of the model in order to facilitate the verification process. 
+As a consequence, the test model to be used as input for the automated testing campaign
+becomes nondeterministic. An example for a model verification in the interlocking 
+control systems domain by means of bounded model checking in combination with $k$-induction is presented
+in~\cite{ftscs}. 
+
+
+
+
+
+% ====================================================================
+\paragraph{Acknowledgements}
+C{\'e}cile Braunstein's work is funded by ITEA2 project openETCS under grant agreement~11025. 
+Felix H{\"u}bner's research contribution is funded by 
+Siemens~AG in the context of the SyDE Graduate School on System Design.\footnote{http://www.informatik.uni-bremen.de/syde/index.php?home-en}
+The work of Wen-ling Huang and Jan Peleska is funded by the project \emph{ITTCPS -- Implementable Testing Theory for Cyber-physical Systems}\footnote{http://www.informatik.uni-bremen.de/agbs/projects/ittcps/index.html} which has been granted in the context of the German Universities Excellence Initiative.\footnote{http://en.wikipedia.org/wiki/German\_Universities\_Excellence\_Initiative}

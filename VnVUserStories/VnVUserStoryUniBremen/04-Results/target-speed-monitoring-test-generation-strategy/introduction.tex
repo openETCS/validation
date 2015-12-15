@@ -1,0 +1,79 @@
+\section{Introduction}
+
+
+\paragraph{Model-based testing}
+Model-based testing (MBT) has gained much attention during the last 
+decade~\cite{utting_taxonomy_2012-2,Petrenko:2012:MTS:2347096.2347101,anand_orchestrated_2013}. This is mainly due to the fact that 
+MBT enables a high degree of automation, increasing the efficiency of test-related
+verification and validation activities in a considerable way. 
+The main automation benefits are mechanized test case creation from the model, 
+test data calculation by means of mathematical constraint solvers, test procedure generation using model-based code generation techniques, and compilation of traceability data relating testing artifacts to requirements by exploiting traceability mechanisms available in the modeling languages~\cite{EPTCS111.1}.
+At the same time, MBT
+allows for the application of more complex test strategies. These provide higher test strength, but the test case generation algorithms involved can no longer be managed in a manual way; examples of these more complex strategies are given 
+in~\cite{hierons_testing_2004,petrenko_testing_2014,huang_complete_2014}. 
+
+
+For automated MBT, 
+the modeling formalism applied needs to be associated with a formalized behavioral semantics describing how model states, inputs, and outputs evolve over time.
+For test models described in the SysML formalism \cite{SysML15},  formalization options are described, for example, in \cite{EPTCS111.1,hilken_unified_2015}.
+With these results at hand, model-based testing against concurrent real-time SysML models 
+can be considered as a solved problem for continuous time/discrete control systems depending on notions of discrete or dense time, 
+but producing discrete control outputs only. 
+The system behavior over time is modeled, for example,
+by means of concurrent SysML state machines, whose trigger conditions depend 
+on variable values and timer conditions. This is then 
+formally specified
+by a transition relation describing how discrete control steps or time-delays are performed. Using, for example, an SMT solver that is also capable of floating point arithmetics, the possible transition steps 
+can be calculated. Specific test objectives can be encoded as additional constraints
+used in conjunction with the transition relation, so that the solutions provided by the
+constraint solver describe at the same time valid state transitions of the model and suitable candidates for the test objective under consideration.
+
+% ====================================================================
+\paragraph{The challenge}
+For real-time systems depending on mixed time-discrete and time-continuous
+evolutions of observables and/or control variables,  
+no comprehensive MBT methodology exists yet. While the formal semantics of 
+these so-called \emph{hybrid systems}   has been thoroughly 
+investigated~\cite{Hen96,alur01hierarchical},
+the automated calculation of suitable test data for practical MBT
+still remains a challenge. This is mainly due to the fact that best practices for
+specifying time-continuous evolutions in test models and creating associated concrete
+data by means of constraint solving are still subject to discussions. 
+
+
+% ====================================================================
+\paragraph{Objectives and main contributions}
+In this paper, a novel approach to MBT in a hybrid systems context is presented, based
+on the SysML modeling language. The utilization of blocks and associated diagrams for 
+decomposing the functionality of the system under test (SUT) and the use of state machines
+ is ``imported'' from proven MBT technology for time-discrete systems. 
+These description means are, however, combined with an abstraction technique and 
+extended by \emph{constraint blocks} and
+\emph{parametric diagrams}~\cite[Section~10]{SysML15} for modeling time-continuous dependencies between inputs, outputs, and model variables.
+From this descriptions means our proposed approach is able to generate concrete test cases in a fully automatic way.
+
+
+%####Moved to 3
+%Using a 2-step
+%approach,  
+%guard conditions of all state machines are  first 
+%abstracted to Boolean   variables. The resulting abstract system is a so-called \emph{simulation} of the concrete system~\cite{clarke_em-etal:1999a}; the former represents an over-approximation of the latter. Abstract test cases are constructed from this simulation model using an
+%input equivalence class partitioning 
+%test strategy with proven error detection capabilities~\cite{huang_complete_2014}.  
+%The  inputs associated with an abstract test case are sequences of input equivalence classes.
+%In the second step, the abstract input sequences are resolved to sequences of concrete
+%model variable valuations, using a mathematical constraint solver. For this step,   both the bindings of abstract Boolean
+%condition variables to concrete model variables and the  additional physical constraints 
+%encoded in constraint blocks and bound to concrete model variables by means of 
+%parametric diagrams are taken into account. 
+
+
+Our approach is illustrated and a proof of concept is given by application to a complex real-world system.
+We create a test model of a  control problem from the
+\emph{European Train Control System (ETCS)}, using the system requirement specification~\cite{ETCSSRS-Principles}. We describe how the expected EVC behavior can be modeled using the SysML subset indicated above, and the computational effort needed for automated test  generation by means of 
+an SMT solver is evaluated. 
+
+
+
+
+

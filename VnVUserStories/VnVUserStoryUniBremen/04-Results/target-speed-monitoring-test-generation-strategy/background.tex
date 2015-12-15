@@ -1,0 +1,100 @@
+\section{Background}
+In order to keep this paper self contained relevant parts of the European Train Control System and the Systems Modeling Language are introduced. 
+\subsection{European Train Control System}
+The European Train Control System (ETCS) shall replace existing national train control systems by a modern unified
+ system in the European Union. The system
+requirement specification is publicly available~\cite{ETCSSRS-Principles}. 
+
+The onboard computer of ETCS trains (the so-called \emph{European Vital Computer
+(EVC)}) performs -- among other safe\-ty-relevant control tasks -- \emph{target
+speed monitoring (TSM)}: the speed of the train, while approaching a target (for
+example, a train station or a level crossing), is monitored by the EVC, so that
+the ability to brake the train in time for the target is always
+ensured~\cite{ETCSSRS-Principles}. To this end, the speed-dependent
+\emph{braking curves} of the train have to be taken into account, so that the
+braking distance required is correctly calculated.
+
+% As part of the ETCS, the onboard computer of the train (European
+% Vital Computer, EVC) shall supervise the train. One safety function of the EVC
+% is the train's speed and distance monitoring. This safety function supervises and enforces speed and distance limits. 
+% The function can operate in three exclusive modes. One of them is the ``Target
+% Speed Monitoring'' (TSM).
+% This mode is active if a train approaches a target location (train station,
+% signal,\ldots). In this mode the train's current speed $V_\text{est}$ is
+% supervised according to the
+% maximum allowed speed ($V_\text{mrsp}$) and the distance to a target location, where
+% the train shall stop. Usually this location is in front of a signal. This TSM function 
+% shall serve as a running example, to illustrate our approach and to give a proof
+% of concept by application to a complex real world example.
+
+In the remainder, the following variables are used: $v_\text{est}$ is a system input describing the 
+current train speed. The maximum allowed speed on the track section of the train is denoted by $v_\text{mrsp}$. The value
+of $v_\text{mrsp}$ should remain constant over time, while $v_\text{est}$ should change according to the current
+acceleration $a$.  
+All track related locations, including the train position, are measured as track relative distances $D$,
+starting from zero (start location) and ending at the target location $D_\text{Target}$.
+The train position is given by variable $D_\text{front}$ and should always have
+values from the range $[0,D_\text{Target}]$. $D_\text{Target}$ is constant during runtime, while $D_\text{front}$ might change
+over time as the train moves forward towards the target location. 
+
+\subsection{Systems modeling language}
+
+OMG's \emph{Systems Modeling Language SysML}~\cite{SysML15} is a semi-formal language to specify a model of the system's structure and behavior. In addition, corresponding diagrams offer a graphical representation of parts of the model. Therefore, a system description is composed of different kinds of diagrams, for example block definition diagrams and internal block diagrams to describe the structure, complemented by activity and state machine diagrams to describe the behavior of the system. Our approach is working on state machines and constraint blocks. Therefore, to focus on the objectives of this paper, in the remainder only parametric diagrams and state machine diagrams are used. 
+
+
+
+\paragraph{Constraint blocks}
+Constraint blocks are used to
+express general dependencies between observables, such as physical laws. 
+Parametric diagrams are used to bind the generic names of these observables to the
+concrete model variables that are restricted by these constraints. Using these syntactic
+entities, the boundary conditions restricting time-continuous inputs or outputs of  
+the SUT can be suitably specified. 
+
+\begin{example}
+For the TSM function the braking distance has to be calculated. The motion of a train can be expressed by the
+equations for a translational acceleration, which are $v=a t + v_o$ and
+$s=\frac{1}{2} a t^2 + v_0t + s_0$. In Figure~\ref{fig:brakingdistance} both
+expressions are combined to calculate the braking distance $s$. The constraints are bound 
+to the system inputs ($v_\text{est}$ and $a$) in the parametric diagram.
+\end{example}
+SysML does not define a language to express constraints. In the remainder the natural mathematical notation is used, which is interpreted by our tools. In addition, it is possible to add conditions under which constraints are valid. Therefore, pseudocode is used. 
+In particular, such conditioned constraints can be used to specify the
+so-called \emph{flow conditions} of \emph{hybrid automata} associated with control modes specified in 
+state machines: following~\cite{Hen96}, these flow conditions describe the 
+restrictions to be observed by time-continuous variables, while the system resides in the
+given control mode. 
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\node[constraint] (c1) {Braking Time\\$\{0=a_b t_b + v_0\}$};
+\node[constraint,below=1cm of c1] (c2) {Braking Distance\\$\{s=\frac{1}{2}a_b t_b^2 + v_0 t_b\}$};
+\node[parameter, left=2cm of {$(c1)!0.5!(c2)$}] (p1) {$v_\text{est}$};
+\node[parameter, right=2cm of {$(c1)!0.5!(c2)$}] (p2) {$a$};
+\node[parameter, below=of c2] (p3) {$s$};
+%\node[constraint,below=1cm of c2] (c3) {Safe Distance\\$\{d_{\text{safe}}=d_{\text{target}}-s\}$};
+\draw[double binding] (c1) -- node[right, very near end]{$t_b$} node[left, very near start]{$t_b$} (c2);
+\draw[binding] (p1) |- node[above, near end] {$v_0$}(c1);
+\draw[binding] (p2) |- node[above, near end] {$a_b$}(c1);
+\draw[binding] (p1) |- node[below, near end] {$v_0$}(c2);
+\draw[binding] (p2) |- node[below, near end] {$a_b$}(c2);
+\draw[binding] (p3) -- node[right, very near end] {$s$} (c2);
+\end{tikzpicture}
+\caption{Parametric diagram for the calculation of the braking distance}
+\label{fig:brakingdistance}
+\end{figure}
+
+
+\paragraph{State machines and testing strategies}
+UML's state machines have been adopted for SysML without changes. Hence, SysML state machines are
+a variant of Harel's~statechart~formalism~\cite{harel96}. Therefore, many
+MBT-tools are using state machines as modeling
+formalism,~e.g.\cite{ali_searchbased_2011, bouquet_subset_2007} and many testing
+strategies have been developed in respect to state machines. This includes
+conventional strategies based on coverage criteria, but also complete test
+strategies, that give a guarantee that certain types of faults are revealed,
+given an assumption that only pre-defined types of faults can occur. In
+addition, it was shown in~\cite{hubner_experimental_2015} that test suites
+generated by a complete test strategy can have a very high test strength even if
+the assumption for completeness does not hold.
+

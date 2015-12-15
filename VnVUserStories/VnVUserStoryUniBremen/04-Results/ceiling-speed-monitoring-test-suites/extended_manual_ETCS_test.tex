@@ -1,0 +1,47 @@
+The test specification provided by the European Railway agency (\cite{ETCS-Subset076})
+contains test suites for the different ETCS features. The sub-requirements
+REQ-3.13.10.3.4.r1c2, REQ-3.13.10.3.4.r3c2, REQ-3.13.10.3.4.r4c2 and REQ-3.13.10.3.4.r5c2
+describe a transition from supervision status \emph{Indication} to \emph{Normal}, \emph{Overspeed}, \emph{Warning} and \emph{Intervention}.
+Supervision status \emph{Indication} is not used by CSM, but requirement
+REQ-3.13.10.3.6 states, that if CSM is ativated with supervision status
+being \emph{Indication}, the state changes shall occur as defined in the
+sub-requirements above.
+The manual test case for REQ-3.13.10.3.6 defined in \cite{ETCS-Subset076}
+only covers the state transition from \emph{Indication} to \emph{Normal}.
+Therefore the test manual test suite does not cover the sub-requirements
+REQ-3.13.10.3.4.r3c2, REQ-3.13.10.3.4.r4c2 and REQ-3.13.10.3.4.r5c2.
+
+Our analysis shows that the sub-requirements REQ-3.13.10.3.4.r5c3 and
+REQ-3.13.10.3.4.r5c4 are not covered by the tests defined in \cite{ETCS-Subset076}.
+These two sub-requirements define the behaviour of CSM with
+supervision status being \emph{Overspeed} and the trigger conditions
+require to directly change to \emph{Intervention} (REQ-3.13.10.3.4.r5c3) and
+supervision status being \emph{Warning} and the trigger conditions
+require to change to \emph{Intervention} (REQ-3.13.10.3.4.r5c4).
+
+To be able to compare the test manually defined suite with automatically
+generated test suites presented in \ref{sec:automated_ETCS_test} and the equivalence class testing
+approach presented in \ref{sec:ecpt}, additional test procedure have manually been added
+to cover the missing requirements\footnote{See table \ref{tbl:extendedmanualtest}}.
+
+\begin{table}
+\tabsize
+\renewcommand{\arraystretch}{1.2}
+\caption{Additional test cases to cover the remaining sub-requirements.}
+\label{tbl:extendedmanualtest}
+\begin{tabular}{lp{.37\textwidth}p{6.4cm}}
+\hline\hline
+Identifier & Target of the test & Covered Requirements \\
+\hline
+TC-CSM-8 & 
+When entering CSM mode the Indication status is overwritten &
+REQ-3.13.10.3.4.r1c2, REQ-3.13.10.3.4.r3c2,\newline
+REQ-3.13.10.3.4.r4c2, REQ-3.13.10.3.4.r5c2,\newline
+REQ-3.13.10.3.6 \\ \hline
+TC-CSM-9 & 
+Switching from \emph{Overspeed} to \emph{Intervention} and \emph{Warning} to \emph{Intervention}&
+REQ-3.13.10.3.4.r5c3, REQ-3.13.10.3.4.r5c4 \\
+\hline\hline
+\end{tabular}
+\normalsize
+\end{table}

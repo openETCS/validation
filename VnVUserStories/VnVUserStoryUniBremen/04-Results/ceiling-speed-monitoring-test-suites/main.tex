@@ -1,0 +1,98 @@
+%\documentclass[runningheads,a4paper]{lincs}
+%\documentclass[sttt]{svjour}
+\documentclass{template/openetcs_article}
+
+
+\usepackage{xspace}
+\usepackage{rotating,url,color}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage{datetime}
+\usepackage{moreverb}
+\usepackage{fancyvrb}
+
+\urldef{\mailboth}\path|{huang,jp}@informatik.uni-bremen.de|
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent {\bf Keywords} \enspace\ignorespaces#1}
+
+\input{command.tex}
+\input{macro.tex}
+
+\usepackage{hyperref}
+\graphicspath{{./template/}{.}{./figures/}}
+
+% ===================================================================================
+\begin{document}
+% ===================================================================================
+\frontmatter
+\project{openETCS}
+%============================
+% The document metadata is defined below
+
+%assign a report number here
+\reportnum{OETCS/WP4/CSM~--~01/00}
+
+%define your workpackage here
+\wp{Work Package 4: ``Verification
+\& Validation Strategy''\\
+Work Package 7: Tool Chain}
+
+
+%set a title here
+\title{A {SysML} Test Model and Test Suite for the {ETCS} Ceiling Speed Monitor}
+
+%set a subtitle here
+\subtitle{Technical report}
+
+%set the date of the report here
+\date{2015-10-09}
+
+% define the coverart
+\coverart[width=350pt]{openETCS_EUPL.png}
+ 
+%define the type of report
+\reporttype{Technical Report}
+
+\author{C\'{e}cile Braunstein \and Wen-ling Huang \and Felix H\"ubner \and Jan
+  Peleska \and Uwe Schulze}
+\affiliation{University Bremen}
+ 
+\begin{abstract}
+This technical report contributes to the openETCS project, work packages 
+WP4 -- Verification \& Validation Strategy , and WP7 -- Tool Chain. 
+An analysis of the existing ETCS SUBSET-076 system tests for the ETCS onboard 
+ceiling speed monitor is presented. Alternative algorithms  with higher test strength are
+investigated. The underlying testing technology has been implemented in the RT-Tester
+model-based testing tool which has been made available for the openETCS tool chain 
+as part of WP7.
+
+Apart from functional and non-functional 
+requirements specifications, the published standard of the European Train Control System (ECTS) also contains a collection of system test suites. One of these suites is aimed at testing the Ceiling Speed Monitor (CSM) which is a function of the European Vital Computer (EVC), the main onboard controller of ETCS trains.
+In this report we present a detailed comparison of   the CSM test suite specified in the ETCS standard with
+tests generated from a CSM test model, using several automated generation strategies.  
+The test strength of the suites is evaluated using mutations of a CSM software 
+implementation.
+It turn out that the test suite specified in the ETCS standard is significantly weaker than any of the suites generated with the model-based approach. The greatest test strength is provided by an equivalence partition testing strategy which has been previously elaborated by the authors. The CSM test model has been elaborated by the authors from the ETCS system requirements. Both the model and the model-based test suites have been made   publicly available.
+\keywords{Model-based testing, Equivalence class partition testing, UML/SysML, European Train Control System ETCS, Ceiling Speed Monitoring}
+\end{abstract}
+
+\maketitle
+
+\input{introduction.tex}
+\input{csm.tex}
+\input{requirements.tex}
+\input{ecpt.tex}
+\input{experiments.tex}
+\input{relatedwork.tex}
+\input{conclusion.tex}
+
+\bibliographystyle{plain}
+\bibliography{references,jp}
+
+
+%\appendix
+%\input{appendix}
+
+\end{document}

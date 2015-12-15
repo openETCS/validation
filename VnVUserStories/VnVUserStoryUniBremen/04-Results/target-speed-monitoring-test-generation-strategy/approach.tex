@@ -1,0 +1,239 @@
+\section{Two-step Approach}
+
+
+
+
+% Two-step approach:
+% first step: over-approximation, build a statemachine with input equivalence
+% classes. 
+% 
+% 
+% In the current flow of the ECPT\todo[inline]{ECPT erklaeren in Background}
+% approach tests are generated automatically from the state machine. At first the state machine is transformed into an internal
+% representation. The behavioral semantics are defined by a state transition
+% system. On this an input equivalence class partitioning is applied, resulting in
+% a finite state machine, on which the W-method can be applied. By selecting
+% concrete test data from the input equivalence classes, concrete test cases can
+% be obtained. Concrete test data can be calculated, because all concrete system
+% inputs state changes are modeled explicitly by state machines. 
+% 
+% Drawbacks: no notion of time, modelling effort
+
+
+\paragraph{Step~1. System abstraction}
+
+In the first step, the system behavior is abstracted. The idea is to use an 
+overapproximation of the specified system's behavior: all traces possible in the concrete system based on the specification, considering all
+physical and system related constraints, are also observable in the abstract
+model. Whether a trace in the abstract model has a concrete solution in the real
+world, depends on the abstraction and constraints. This is a conservative
+approach, which guarantees that every system behavior is covered by the model,
+while unrealistic traces might remain. If in the second step, no concrete
+solution for an abstract test exists, it can be deduced, that this behavior is
+not possible (assuming that the constraints are correct), and therefore it is
+safe to neglect this test case.
+
+%In the model abstraction, guard conditions occurring in state machines are 
+%abstracted by Boolean variables, following the technique for generating simulations
+%as described in~\cite{clarke_em-etal:1999a}. Additional physical constraints modeled in 
+%constraint blocks are disregarded at this stage. Every state sequence that may occur
+%in the concrete system is represented by an   
+
+
+\begin{example}
+\label{ex:abstraction}
+%One way to include abstraction is to introduce abstract input symbols.
+Consider  the following complex boolean expression, taken from the
+ETCS specification \cite{ETCSSRS-Principles}:
+
+\begin{align}
+V_\text{est} > V_\text{mrsp} + DV_\text{ebi}(V_\text{mrsp}) 
+\lor D_\text{front} > D_\text{EBI} 
+\end{align} 
+
+This boolean expression describes a trigger condition for the onboard controller
+of the train to automatically activate the 
+%If the condition is fulfilled, the system shall automatically activate the
+%train's 
+emergency brakes. Variable $V_\text{est}$ describes the current train
+speed.
+If this speed exceeds the maximum allowed speed $V_\text{mrsp}$ by more than an
+offset $DV_\text{ebi}$, the emergency brakes are activated. Alternatively,
+%If the train speed is
+%below this threshold, but 
+if the front of the train $D_\text{front}$ is too close
+to the target location (this is expressed by $D_\text{front} > D_\text{EBI}$), the emergency brakes are
+activated as well.
+
+Instead of explicitly describing this trigger condition by concrete model variables, an abstract input variable
+$t_{13}$ is introduced. The state machine transition that uses this abstract input variable looks like
+this:
+\begin{tikzpicture}
+\node[draw,rounded corners] (l1) {L1};
+\node[draw,rounded corners, right=1cm of l1] (l2) {L2};
+\draw[->] (l1) -- (l2) node[pos=0.5,above] {$\lbrack t_{13}\rbrack$};
+\end{tikzpicture}.
+In this case we introduced a new free input variable. It can be assumed, that
+the value of this variable can change arbitrarily over time. This is a safe
+overapproximation of the real system.
+\end{example}
+
+The replacement of a complex guard-condition by a new boolean input
+variable is always possible, but $n$ replacements introduce $n$ new inputs.
+In the worst case this results in $2^n$ new input equivalence classes of the SUT~\cite{huang_complete_2014}: each feasible conjunction of the positive or negated 
+Boolean expressions associated with each of the abstraction variables $t_i$ specifies
+an input equivalence class.
+For realistic models, 
+not all combinations of valuations of the complex conditions are possible.
+Using an SMT solver, impossible input combinations can be dropped a priori. These combinations
+are ignored in the test generation.  
+
+With this abstract description of the system behavior at hand, we are able to
+apply the test generation strategy 
+presented in~\cite{huang_complete_2014} and create a test suite,
+whose inputs are represented by abstract equivalence classes.
+%Note that our approach described in this paper is independent of the concrete
+%test strategy, and every other strategy could be applied as well.
+
+\begin{example}
+For our running example, the TSM function, we introduced nine abstract input variables. 
+From the $2^9=512$ possible combinations, only eight combinations were valid. Two of the combinations
+can be considered as equivalent~\cite{huang_complete_2014}. Thus, seven input equivalence classes
+were calculated from our abstract model.
+\end{example} 
+
+The result of the first step in our test case generation is a set of
+abstract test cases. An abstract test case is a sequence of system states
+$\langle\bar{s}_0,\ldots,\bar{s}_n\rangle$, where $\bar{s}_i: V_\text{abstract} \rightarrow D$ is the
+valuation function, mapping the (abstract) Boolean system variables $t_k$
+ to their values $\bar{s}_i(t_k)$    in the
+$i$-th state.
+
+% ===============================================================
+\paragraph{Step 2. Concretization}\label{sec:concretization}
+
+While the first step defined abstract test cases that are related to
+computations in the abstract test model, the second step
+aims at constructing concrete test data.
+%for system tests concrete test data is
+%needed. For testing it is necessary to specify concrete test data composed
+%of inputs that stimulate the SUT and outputs that can be observed.
+
+A concrete test case is a sequence of concrete 
+system states $\langle s_0,\ldots,s_n\rangle$. Each $s_i$ is a valuation function   
+$s_i: V\cup  V_\text{abstract} \rightarrow D$,
+where the concrete system variables $v$, including the inputs and outputs, as well as the 
+abstraction variable introduced before, are mapped
+to concrete values  $s_i(v)\in D$.
+
+For the concretization of the test cases, parametric diagrams were
+added as an additional description means. The 
+abstract variables introduced in Step~1 have to be related to concrete system
+variables by parametric diagrams.
+Two types of constraints can be
+defined: \emph{state invariants} and \emph{temporal evolution}.
+
+State invariants constrain the concrete system variables in every state and, therefore, in every test step of the test case, these
+invariants have to be fulfilled. In a parametric diagram
+a state invariant can be described by a constraint property. A parametric
+diagram with $m$ constraint properties that define state invariants
+($\text{INV}_1,\ldots,\text{INV}_m$) yields the invariant:
+
+$\text{INV} \equiv \bigwedge_{j=1}^{m} \text{INV}_j$
+
+Invariants in the concrete system are also used 
+to bind the values of abstract system variables to
+the concrete guard conditions they are abstracting.
+\begin{example}
+Considering trigger condition $t_{13}$ from example~\ref{ex:abstraction} the corresponding parametric diagram is shown in Figure~\ref{fig:parametric}. In this diagram $t_{13}$ gets bound to its concrete guard condition. 
+\end{example}
+Given this invariant, and given an abstract test case
+\mbox{$\langle\bar{s}_0,\ldots,\bar{s}_n\rangle$}, we want to calculate a concrete test case
+\mbox{$\langle s_0,\ldots,s_n\rangle$} that uses the same valuations of the abstract 
+system variables -- that is, the same equivalence classes -- as prescribed by the
+abstract test case. This is encoded by the following formula, where
+%
+%
+%
+%. To describe this problem as an SMT instance, let
+%$V_i$ denote the variable symbols from $V\cup V_\text{abstract}$ in the $i$-th state. $v_i$ denotes the variable $v$ in the
+%$i$-th state. 
+%In the following formulas, 
+$\phi[t/x]$ denotes  the formula derived from $\phi$ by exchanging every free occurrence of $x$ by the term $t$.
+
+
+\begin{align}
+\bigwedge_{i=0}^{n}& \big(\bigwedge_{t\in V_\text{abstract}} s_i(t) =\bar{s}_i(t) \wedge {}\\
+& 
+%\text{INV}[\bar{s}_i(v')/v'\in V_\text{abstract},v_i/v\in (V\setminus V_\text{abstract})]
+\ \ \text{INV}[s_i(v)/v, v\in V\cup V_\text{abstract}]\big)
+\end{align}
+The above formula can be solved by an SMT solver.
+The result is a concrete mapping of variables from $V$ to concrete values.
+Using these concrete values, a concrete test case $\langle s_0,\ldots,s_n\rangle$ is
+calculated.
+% 
+%  \todo[inline]{ohne Gewaehr:
+% was die folgende Formel ausdruecken soll:
+% konkreter Testfall ergibt sich, indem man (a) die Werte aus dem abstrakten
+% Testfall uebernimmt (b) fuer jedes i die Invarianten loesen laesst, um die
+% konkreten Werte zu bekommen }
+% $<s_0,\ldots,s_n>$ is a concrete test case of $<\bar{s}_0,\ldots,\bar{s}_n>$ if and only if 
+% $\bigwedge_{i=0}^{n}(s_i|_{V\cap V_\text{abstract}}= \bar{s}_i|_{V\cap V_\text{abstract}} \land\text{INV}[x/s_i(x),y/\bar{s}_i(y)])$. 
+
+Apart from that, the temporal evolution of system variables is described by means of parametric diagrams. 
+In contrast to an invariant, such constraints describe the change of values between two test steps. For example it may necessary to constrain the change of velocity
+and location due to the physical laws of acceleration.
+Figure~\ref{fig:temporal-evolution} gives an example for this kind of
+constraints. This kind of constraints can best be described by differential equations.
+
+In our approach we support the definition of linear differential equations.
+These equations can be discretized and translated to expressions relating pre
+and post states. These expressions contain unprimed variable symbols $V$ describing
+the variable in the pre-state $s_i$, and primed variable symbols~$V'$ describing the
+post-state $s_{i+1}$.
+%constraints over variables from one system state $s_i$ (unprimed variables) to
+% the next system state $s_{i+1}$ (primed variables).
+For example the differential equation $\frac{d v}{d t}=a$ in
+Figure~\ref{fig:temporal-evolution} can be expressed by the constraint:
+$t'=t+\Delta t \land 
+{V_\text{est}}'={V_\text{est}}+{a}\cdot\Delta t$.
+
+All constraint properties describing temporal evolution
+(TEMP$_1$,\ldots,TEMP$_p$) can be summarized:
+
+$\text{TEMP}=\bigwedge_{k=1}^{p}\text{TEMP}_k$
+
+We extend the SMT instance to generate concrete test cases respecting  the
+time-continuous evolution defined by parametric diagrams as follows:
+
+%\begin{align}
+%\bigwedge_{i=0}^{n}& \wedge_{v\in V_\text{abstract}} v=\bar{s}_i(v) \\
+%&\land
+%\text{INV}[\bar{s}_i(v')/v'\in V_\text{abstract},v_i/v\in (V\setminus
+%V_\text{abstract})]\\
+%&\land\bigwedge_{i=0}^{n}\text{TEMP}[\bar{s}_i(v)/v\in
+%V_\text{abstract},\bar{s}_{i+1}(v)/v'\in V'_\text{abstract},\\
+%&v_i/v\in (V\setminus
+%V_\text{abstract}),v_{i+1}/v'\in (V'\setminus
+%V'_\text{abstract})]
+%\end{align}
+
+\begin{align}
+\bigwedge_{i=0}^{n}& \big(\bigwedge_{t\in V_\text{abstract}} s_i(t) =\bar{s}_i(t) \wedge {}\\
+& \ \ 
+\text{INV}[s_i(v)/v, v\in V\cup V_\text{abstract}]\big) \wedge  {}  \\
+\bigwedge_{i=0}^{n-1} & \text{TEMP}[s_i(v)/v, v \in V\cup V_\text{abstract}, \\
+&
+\phantom{\text{TEMP}[}
+s_{i+1}(v)/v', v'\in V'\cup V_\text{abstract}']
+\end{align}
+
+
+
+  
+% $<s_0,\ldots,s_n>$ is a concrete test case of $<\bar{s}_0,\ldots,\bar{s}_n>$ if and only if
+% \begin{align*}
+% \bigwedge_{i=0}^{n}&(s_i|_{V\cap V_\text{abstract}}= \bar{s}_i|_{V\cap V_\text{abstract}}\land\text{INV}[x/s(x),y/\bar{s}(y)])\\
+% \land\bigwedge_{i=0}^{n-1}&\text{TEMP}[x/s_i(x),x'/s_{i+1}(x)]
+% \end{align*} 

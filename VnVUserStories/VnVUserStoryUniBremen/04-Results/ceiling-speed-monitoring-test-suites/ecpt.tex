@@ -1,0 +1,427 @@
+\newcommand{\q}{\textbf{q}}
+
+\section{Improving Tests through Equivalence Class Testing Strategy}\label{sec:ecpt}
+\label{sec:ecpt}
+
+ In~\cite{peleska_sttt_2014}, two of the authors have presented a novel complete 
+input equivalence class partition (IECP) testing strategy. In \cite{peleska_csm_2014}
+this approach has first been applied to the Ceiling Speed Monitor and the analysis of
+manually created mutants indicated that this strategy is superior to model derived test cases relying on
+structural criteria of the state machine. In \cite{huebner15} the approach was evaluated 
+with automatically generated mutants from a Java implementation. Here different refinements of
+the strategy were compared and evaluated. For the Ceiling Speed Monitor a mutation score of 100 \%
+could be achieved using a combination of equivalence class testing and boundary value tests.  
+
+
+
+%@todo: copied from TAP publication, update the following sections for journal
+%version
+
+\subsection{Semantic Domain.} 
+
+The novel equivalence class partition testing strategy presented 
+in~\cite{peleska_sttt_2014} is applicable to deterministic, livelock-free systems 
+with conceptually infinite input domains and finite internal state and output domains.
+``Conceptually infinite'' means that the domains are too large to be explicitly 
+enumerated for test purposes. This includes physical models with real-valued inputs,
+but can also apply to finite but very large data types such as 64 bit integers or
+doubles as used in typical programming languages or modelling formalisms. As pointed out 
+in~\cite{peleska_sttt_2014,peleska_csm_2014}, this class of systems is quite
+significant in the embedded systems domain: typical candidates are controllers 
+processing analogue inputs and deriving discrete control decisions from these inputs, such
+as thrust reversal controllers in aircrafts, or the speed monitors and airbag controllers described
+in this paper.
+
+The strategy has been proven to  be complete on the semantic domain of \emph{Reactive Input Output State Transition Systems (RIOSTS)} ${\cal S} = (S,s_0,R,V,D)$. These systems have state spaces $S$,
+initial state $s_0\in S$, and transition relations $R\subseteq S\times S$. Their state spaces
+consist of valuation functions $s: V\fun D$, where $V$ is a set of variable symbols and $D$ is 
+the union of all variable domains. The variable symbols can be partitioned into $V = I\cup M \cup O$,
+where $I$ comprises input variables, $M$ (internal) model variables, and $O$ output variables.
+RIOSTS distinguish between \emph{quiescent} states $s\in S_Q$ and \emph{transient} states $s'\in S_T$,
+such that $S_Q\cup S_T$ partitions the state space $S$. Transitions from quiescent states only change
+input valuations, while internal model variables and output variables remain unchanged. The
+resulting post-states may be quiescent or transient. Transitions from transient states always have
+uniquely determined quiescent post-states (so we only allow deterministic RIOSTS here), and the associated transitions  leave the inputs
+unchanged. This concept represents a natural abstraction of timed formalisms, where 
+delay transitions allow for time to pass and inputs to be changed, while discrete
+transitions produce output and change internal state, but are executed in zero 
+time~\cite[p.~687]{DBLP:books/daglib/0020348}.
+
+By associating atomic propositions $AP$ with free variables in $V$, any RIOSTS can be extended to a 
+Kripke Structure~\cite{clarke_em-etal:1999a} 
+$K({\cal S}) = (S,s_0,R,V,D,L,AP)$. The labelling function $L:S\fun 2^{AP}$
+maps $s\in S$ to the set of all atomic propositions $p\in AP$ that evaluate to $\ist$,
+when replacing every free variable $v$ of $p$ by its valuation $s(v)$ in state $s$.
+
+\paragraph{Notation.}
+In the exposition below, variable symbols are enumerated with the naming conventions
+   $I = \{ x_1,\dots,x_k\}$, $M = \{m_1,\dots, m_p\}$, $O = \{y_1,\dots,y_q\}$. We use   notation
+$\vec x = (x_1,\dots,x_k)$  for input variable vectors, and their   valuation in state $s$ is written as $s(\vec x) = (s(x_1),\dots,s(x_k))$. $D_I = D_{x_1}\times\dots\times D_{x_k}$ denotes the Cartesian product of the input variable domains. Tuples $\vec m, \vec y$ and $D_M$ and $D_O$ are defined over model variables and outputs in an analogous way. By $s\oplus\{\vec x \mapsto \vec c\}, \ \vec c \in D_I$ we denote the state $s'$ which coincides with $s$ on all variables from $M\cup O$, but maps the input vector to valuation $s'(\vec x) = \vec c$. 
+For $(s_1,s_2)\in R$ we also use the shorter expression $R(s_1,s_2)$.  Restricting a state $s$ to variable symbols from a set $U \subseteq V$ is denoted by $s|_U$. This function has domain $U$ and coincides with $s$ on this domain.
+
+% --------------------------------------------------------------------------
+\subsection{Application to Concrete Modelling Formalisms.} 
+The test strategy described below is elaborated on the semantic domain of RIOSTS. Every concrete
+modelling formalism whose behavioural semantics can be represented by RIOSTS is automatically 
+equipped with such a test strategy: the concrete model $M$ is translated into its corresponding RIOSTS ${\cal S}$. Then the test strategy is applied to ${\cal S}$, and this results in a set of test cases, each case represented by a finite sequence of inputs to the SUT. When executing the test cases, 
+the transition relation of ${\cal S}$ is used to determine whether the SUT's reactions to these
+input sequences are adequate. In this article, concrete models are expressed by SysML state machines,
+and these can be associated with RIOSTS semantics which is consistent with the semi-formal specification of state machine behaviour in the UML/SysML standards~\cite{uml_2_4,SysML12}.
+
+
+
+
+% --------------------------------------------------------------------------
+\subsection{Equivalence Classes.}
+We use the term {\it trace} to denote finite sequences of states, input vectors, or output vectors.
+Applying a trace $\iota = \vec c_1\dots\vec c_n$ 
+of input vectors $\vec c_i\in D_I$ to an RIOSTS ${\cal S} = (S,s_0,R,V,D)$  residing in some quiescent state
+$s\in S$ stimulates a sequence of state transitions, each pair of consecutive states
+connected by the transition relation $R$, and with associated  output changes  
+as triggered by these inputs. 
+Restricting this   sequence to quiescent states, this results in
+a trace of states
+$\tau = s_1.s_2\dots s_n$ such that $s_i(\vec x) = \vec c_i, i = 1,\dots,n$, and
+$s_i(\vec y)$ is the last STS output resulting from application of $\vec c_1\dots\vec c_i$ 
+to state $s$.\footnote{Observe that the restriction to quiescent states does not result in a loss
+of information. Every transient state has the internal and output variable valuations coinciding with its quiescent pre-state, and its input valuation is identical to that of its quiescent
+post-state.} This trace $\tau$ is  denoted by $s/\iota$. The restriction of $s/\iota$ to output variables is denoted by the trace $(s/\iota)|_O$.
+Since transient states have unique quiescent post-states, $(s/\iota)|_O$ is a uniquely determined
+output trace.
+Two quiescent states $s, s'$ are {\it I/O-equivalent}, written $s\sim s'$, 
+if every non-empty input trace $\iota$, when applied to $s$ and $s'$, results in the same outputs, that is,  
+$(s/\iota)|_O = (s'/\iota)|_O$. Two STS ${\cal S}, {\cal S}'$ with the same input domain are I/O-equivalent, if their initial states 
+are I/O-equivalent.
+Note that  $s\sim s'$ asserts equivalent I/O-behaviour {\it in the future}, while it still admits that states $s$ and $s'$ show different output valuations, i.e.~$s|_O \neq s'|_O$. 
+ 
+
+Since I/O-equivalence  $\sim$ is an equivalence relation on quiescent states, 
+we can factorise $S_Q$ with respect to  $\sim$.
+The \emph{initial input equivalence class partitioning (IECP)} ${\cal I}\subseteq\mathbb{P}(D_I)$ 
+associated with $S_Q/_\sim$ is 
+the coarsest partitioning of $D_I$ such that for all $\q\in S_Q/_\sim$, $X\in {\cal I}$,
+there exists a uniquely determined I/O-equivalence class $ \delta(\q,X)\in S_Q/_\sim$, 
+such that
+\begin{equation}\label{eq:iecpa}
+ \forall s\in \q, \vec c\in X: s/\vec c \in \delta(\q,X)
+\end{equation}
+and there exists a well-defined output $\omega(\q,X)\in D_O$, such that
+\begin{equation}\label{eq:iecpb}
+\forall s\in \q, \vec c\in X: (s/\vec c)|_O =  \omega(\q,X)
+\end{equation}
+It is shown in~\cite{peleska_sttt_2014} that $S_Q/_\sim$ is finite
+ if the RIOSTS ${\cal S}$
+has finite internal state domains and finite output domains, while the input domains may be infinite.
+Moreover,   the coarsest partitioning ${\cal I}$  exists, and it is finite and uniquely determined under these prerequisites.
+For these RIOSTS, 
+properties (\ref{eq:iecpa}) and (\ref{eq:iecpb}) induce an abstraction    
+  to DFSMs   
+with state space $S_Q/_\sim$, input alphabet ${\cal I}$, and output alphabet
+$D_O$:  (\ref{eq:iecpa})
+specifies a well-defined total transition function $\delta : S_Q/_\sim\times {\cal I} \fun S_Q/_\sim$, and (\ref{eq:iecpb}) a well-defined
+output function $\omega : S_Q/_\sim\times {\cal I} \fun D_O$.
+When partitioning ${\cal I}$ further to a refined IECP $\overline{\cal I}$,
+the characteristic properties (\ref{eq:iecpa}),(\ref{eq:iecpb}) are preserved.  
+
+A finite sequence $X_1\dots X_k, X_i\in{\cal I}$   is called an \emph{abstract test case}:
+concrete test input vectors $\vec c_i$  can be selected from each $X_i$, and, when applied
+to the initial state $s_0$, this selection induces a trace $s_1\dots s_k$ of 
+quiescent states, such that
+$$
+\exists \q_1,\dots,\q_k\in  S_Q/_\sim:\forall i \in \{ 1,\dots,k \}: 
+s_i\in \q_i\wedge \q_i = \delta(\q_{i-1},X_i)
+$$
+The IECP properties imply that the
+\emph{expected results} associated with this test case are then specified by the
+output trace $\omega(\q_{i-1},X_i), i=1,\dots,k$.
+
+
+ 
+
+In~\cite{peleska_sttt_2014} an algorithm for calculating  $S_Q/_\sim$ and ${\cal I}$ is given.
+This algorithm produces propositions over variables from $V$, 
+specifying the members of $S_Q/_\sim$ and ${\cal I}$, respectively. Making use of an SMT solver, the algorithm allows for identifying the  reachable I/O-equivalence classes
+ $\q \in S_Q/_\sim$. As a consequence, every proposition characterising an abstract test
+ case $X_1\dots X_k$  is actually feasible: this means that we can find concrete
+traces in ${\cal S}$ such that, after deleting the transient states, the resulting
+quiescent state sequence $s_0.s_1\dots s_k$ fulfils $s_i\in\q_i$ for $i = 0,\dots,k$ 
+and $s(\vec x)\in X_i$ for $i = 1,\dots,k$.
+
+For the model described in section~\ref{chap:model}, input equivalence
+classes are unions of convex subsets of $\mathbb{R}^n$. It should be noted, however, that the
+notion of I/O-equivalence and IECPs introduced here is far more general, since arbitrary propositional specifications of I/O-equivalence classes can be handled by the 
+underlying theory. The input equivalence classes identified in~\cite[Example~1]{peleska_sttt_2014}, for example, contain members 
+$z$ specified by conditions $z\!\! \mod m = n$.
+
+
+
+
+% --------------------------------------------------------------------------
+\subsection{Fault Models.}
+%Complete black box test strategies are typically defined with respect to a given fault model 
+%${\cal F} = ({\cal S},\sqsubseteq,{\cal D})$: ${\cal S}$ is the reference model 
+%representing the ideal SUT behaviour. Relation $\sqsubseteq$ is a conformance relation describing
+%the acceptable SUT behaviours,  so that an SUT whose behaviour is represented by some  
+%${\cal S}'$ shall be accepted if and only if ${\cal S}' \sqsubseteq {\cal S}$.
+%The fault domain ${\cal D}$ specifies a set of models that may or may not conform to ${\cal S}$,
+%and it is assumed that the true behaviour of the SUT is identical to that of an   ${\cal S}'$
+%contained in ${\cal D}$.
+
+For the semantic domain of RIOSTS,
+the fault models ${\cal F} = ({\cal S},\sim,{\cal D}({\cal S},m,\overline{{\cal I}}))$ are specified as follows.
+The reference models ${\cal S}$ are semantic RIOSTS representations  of models elaborated in concrete formalisms, such that the expected behaviour of the SUT is specified by ${\cal S}$ up to 
+I/O-equivalence. We use  I/O-equivalence as conformance relation.
+
+
+Positive integer $m$ fulfils   
+$m\ge n$, where $n$ is the number of I/O-equivalence classes of ${\cal S}$.
+IECP $\overline{{\cal I}}$ is a refinement of the initial coarsest IECP ${\cal I}$  associated with ${\cal S}$.
+Then the
+  members ${\cal S}'$ of the fault domain ${\cal D}({\cal S},m,\overline{{\cal I}})$ 
+are RIOSTS specified as follows.
+\begin{enumerate}
+\item The states of ${\cal S}'$ are defined over the same I/O variable space $ I \cup O$ as defined for the model ${\cal S}$.
+
+\item Initial state $s_0'$ of ${\cal S}'$ coincides with initial state 
+$s_0$ of ${\cal S}$ on $I\cup O$. 
+
+\item ${\cal S}'$ generates only finitely many different output values. 
+
+\item ${\cal S}'$ has a well-defined reset operation allowing to re-start the system from its initial state.
+
+\item The number of I/O-equivalence classes of ${\cal S}'$ is less or equal $m$.
+ 
+
+
+\item
+\label{item:adequacy}  If ${\cal I}$, ${\cal I}'$ are the initial coarsest IECP of  ${\cal S}$, ${\cal S}'$, respectively, 
+fulfilling the characteristic properties~(\ref{eq:iecpa}), (\ref{eq:iecpb}), then 
+$\overline{{\cal I}}$ fulfils
+  the following \emph{adequacy condition}: 
+\begin{equation}\label{eq:x2}
+\begin{array}{l}
+\forall X\in {\cal I}, X'\in {\cal I}':  
+\big(X\cap X'\neq\varnothing \Rightarrow
+\exists \overline{X}\in \overline{{\cal I}}: \overline{X} \subseteq X\cap X'\big)
+\end{array}
+\end{equation}
+
+
+\end{enumerate}
+
+
+
+The intuition behind the adequacy condition~\ref{item:adequacy} is as follows. Every possible behaviour of a fault domain member ${\cal S}'$ can be exercised by visiting a state in 
+some I/O-equivalence class $\q'$ and applying an input of some IECP member $X'\in {\cal I}'$
+to this state. Using the refined IECP $\overline{{\cal I}}$ in the test suite as described below,
+ensures that an input from $\overline{X}\subseteq X'\in {\cal I}'$ will be selected when 
+${\cal S}'$ resides in $\q'$, so the behaviour associated with $(\q',X')$ will be stimulated in
+at least one of the test cases. If,  when in a 
+state of $\q'$,  ${\cal S}'$
+conforms to the behaviour of ${\cal S}$ for all inputs from $X \setminus X'$, but fails
+for inputs from $X\cap X'$, inputs selected from $\overline{X}\subseteq X\cap X'$ will uncover this error.
+
+Conversely, suppose now that
+ the reference model  ${\cal S}$ behaves differently, when IECs $X_1, X_2\in {\cal I}$
+are applied in some state $\q$. Suppose further that ${\cal S}'$ fails to make this case 
+distinction in a corresponding state $\q'$. Then there exists $X'\in {\cal I}'$ such that
+ ${\cal S}'$ shows the same behaviour for all $\vec c\in X'$, but $X_1\cap X'\neq \varnothing$
+ and $X_2\cap X'\neq \varnothing$, so two different behaviours should be visible according
+ to the reference model. Now the adequacy condition guarantees that there exist two IEC
+$\overline{X}_1, \overline{X}_2\in \overline{{\cal I}}$, such that 
+$\overline{X}_1\subseteq X_1\cap X'$ and 
+$\overline{X}_2\subseteq X_2\cap X'$.
+ As a consequence, if inputs from every input class 
+of $\overline{{\cal I}}$ are exercised, the behavioural differences for inputs from
+$X_1\cap X'$ and $X_2\cap X'$ will be revealed. Summarising, the adequacy condition ensures that 
+the IECP $\overline{{\cal I}}$ from where input data to the SUT is selected is fine-grained 
+enough to stimulate every possibly deviating behaviour of ${\cal S}$ and ${\cal S}'$. These facts
+are exploited in the complete test strategy described next.
+ 
+ 
+ 
+
+% ==========================================================================
+\subsection{Complete Finite Test Suite.}
+
+The complete DFSM abstraction ${\cal M}$
+ of ${\cal S}$ with states $S_Q/_\sim$, input alphabet
+ $\overline{{\cal I}}$, transition function and output function
+  as characterised in (\ref{eq:iecpa}), (\ref{eq:iecpb}), allows for application of 
+finite complete DFSM testing strategies, such as the \emph{W-Method} introduced 
+in~\cite{chow:wmethod,vasilevskii1973}. 
+The general form of a W-Method test suite is 
+\begin{equation}\label{eq:wtestsuite}
+{\cal W} = P.\big(\bigcup_{i=0}^{m-n}\overline{\cal I}^i.W\big)
+\end{equation}
+where $P$ is the state transition cover, $\overline{\cal I}^i$ denotes the input trace segments of length $i$, and $W$ is the characterisation set.  Every test of  ${\cal W}$ consists of a (possibly empty) input trace from $P$, concatenated with an arbitrary input trace of length zero up to $m-n$, and  terminated by an input trace from the characterisation set. 
+$P$  is the union of a {\it state cover} $C$ and  a
+{\it transition cover} 
+$C.\overline{\cal I}$: $C$ contains   the empty trace $\varepsilon$,
+ and for any state $\q$ of ${\cal M}$, there exists an input trace in $C$ which, 
+ when applied to the initial state, ends at $\q$. The transition cover  
+ is defined by 
+ $C.\overline{\cal I}=\{\iota.X~|~\iota \in C, X\in \overline{\cal I}\}.$ Summarising, the input sequences of a state transition cover ensure that (1) every state of the reference 
+DFSM ${\cal M}$ associated with the reference model ${\cal S}$ is visited, and (2) every transition from every state is exercised.    A characterisation set is a set of input traces distinguishing each pair of states in a minimal DFSM. Using minimisation algorithms such as the one specified in~\cite{gill62}, characterisation sets can be constructed as a by-product of the minimisation process.
+
+The test suite generated according to (\ref{eq:wtestsuite}) is called an 
+\emph{abstract test suite}, because its elements are abstract test cases as defined above:
+the inputs to be used in each test case are not yet
+represented by concrete input vectors $\vec c$, but by input equivalence classes 
+$\overline{X}\in \overline{{\cal I}}$. For creating an executable test suite,  inputs
+$\vec c\in \overline{X}$ have to be selected for every   
+$\overline{X}\in\overline{{\cal I}}$. 
+
+The W-Method is complete for the fault model of all DFSM over the
+same input and output alphabet and with at most $m$ states. It is shown in~\cite{peleska_sttt_2014}
+that the associated   test suites with concrete inputs $\vec c\in \overline{X}$ are also complete for 
+${\cal F} = ({\cal S},\sim,{\cal D}({\cal S},m,\overline{{\cal I}}))$. This completeness 
+result is independent on the choice of concrete input data selected from each input 
+equivalence class $X\in\overline{\cal I}$.
+
+The fault domain ${\cal D}({\cal S},m,\overline{{\cal I}})$ introduced above
+can be extended by increasing $m$ or by refining $\overline{{\cal I}}$. Increasing
+$m$ increases the maximal length of input sequences in test cases in a linear way.
+This affects the size of the test suite exponentially, 
+but allows for fault domain members with 
+higher \emph{recurrence diameters} $r$~\cite{biere_linear_2006}: 
+this is the length of the longest loop-free path in
+a Kripke structure. Erroneous SUT behaviour that only occurs at the end of such a longest loop 
+free path may only be detected if the test cases use input sequences that are long enough
+to traverse the SUT state up to the length of the recurrence diameter. 
+
+Refining $\overline{{\cal I}}$ increases the size of the IECP, and this size 
+increases the number of test cases in a polynomial way. It has to be noted, however,
+that uniformly refining all members of $\overline{{\cal I}}$ -- for example, by using 
+a sub-paving strategy as it is well known from interval analysis~\cite{jaulin2001} -- increases the size of the IECP exponentially with each new refinement step. 
+The resulting fault domain contains members ${\cal S}'$ 
+possessing narrower \emph{trapdoors}: these
+are refined input guard conditions $g\wedge \delta$ applicable in certain ${\cal S}'$-states,
+where  ${\cal S}'$ should behave uniformly for all inputs satisfying $g$. 
+The true behaviour of ${\cal S}'$, however, 
+conforms to the expected behaviour modelled by ${\cal S}$ only for inputs
+fulfilling $g\wedge \neg\delta$, while   erroneous behaviour is revealed for inputs 
+satisfying $g\wedge \delta$.
+
+\subsection{Refinement and Randomisation of Equivalence Partition Tests}\label{sec:ecpt:refinement}
+%\subsection{Randomisation of Equivalence Partition Tests}\label{sec:randomisation}
+
+As we have seen above, the fault domain ${\cal D}({\cal S},m,\overline{{\cal I}})$ can be enlarged
+via $m$ or $\overline{{\cal I}}$. As a drawback this seriously affects the size of the
+resulting complete test suite ${\cal W}$. Therefore a refinement of the input equivalence 
+class partitioning $\overline{{\cal I}}$ should be used which effectively increases the resulting 
+test suites ability to uncover faults. In \cite{huebner15} two refinement heuristics were investigated and it could be
+shown that these heuristics are able to improve the test strength of the resulting test suite.
+Basically these two improvements work as follows:
+
+\begin{enumerate}
+  \item An input partitioning $\overline{\cal I}$ is used. $\overline{\cal I}$ is a refinement of the initial coarsest IECP and
+reflects all case distinctions visible in guard conditions.
+\item Additionally all boundary value conditions can be used in order to generate boundary
+value tests of the original equivalence classes
+\footnote{This can be done by adding extra constraints defining the
+  boundaries of the original equivalence classes. As an example
+  consider the guard condition $x\leq n$ restricting the input
+  variable $x$ in input equivalence class $\overline{X}\in
+  \overline{\cal I}$ to values less or equal $n$. In this case the
+  additional constraint $\gamma$ defined as $x=n$ yields two new
+  equivalence classes $\overline{X}_\gamma\subset\overline{X} $ and
+  $\overline{X}_{\neg\gamma}\subset\overline{X}$ with
+  $\overline{X}_{\gamma}\cap
+  \overline{X}_{\neg\gamma}=\emptyset$. $\overline{X}_{\gamma}$ is the
+  set of input vectors $\vec c_{\overline{X}_\gamma}$ that fulfill
+  $x=n$ and thus are the boundaries of the original equivalence class
+  $\overline{X}$ containing all input vectors, where $x<n$ or $x=n$.}.
+\end{enumerate}
+
+
+% As we have seen above, enlarging the fault domain 
+% ${\cal D}({\cal S},m,\overline{{\cal I}})$ via $m$ or $\overline{{\cal I}}$ 
+% seriously affects the size of the
+% resulting complete test suite ${\cal W}$. 
+
+In \cite{huebner15} another improvement of the equivalence class approach has been
+presented. This strategy 
+% We therefore investigate an alternative approach
+% in this paper that 
+aims at increasing the test strength of ${\cal W}$
+   for SUTs ${\cal S}''$ whose
+true behaviour is reflected by RIOSTS   {\it outside} 
+${\cal D}({\cal S},m,\overline{{\cal I}})$. For obvious reasons it is assumed that these 
+SUTs still fulfil  the RIOSTS 
+compatibility requirements 1 -- 4 of the fault domain definition. This means that
+${\cal S}''$ may have more than $m$ I/O-equivalence classes and may need an IECP
+that is more fine-grained than $\overline{{\cal I}}$, but it is still assumed that 
+${\cal S}''$ is an RIOSTS using the same I/O variables and possessing the same visible
+initial state and fulfilling a reset condition.
+
+To this end, we observe that the completeness property of the test suites introduced 
+above does not depend on the concrete values selected from each input equivalence 
+class $\overline{X}\in \overline{{\cal I}}$. For members ${\cal S}'\in {\cal D}({\cal S},m,\overline{{\cal I}})$ it would suffice to fix one input vector 
+$\vec c_{\overline{X}}$ for every
+$\overline{X}\in \overline{{\cal I}}$. Alternatively, we could also choose different members at random,
+each time an input from some class $\overline{X}$ 
+is required according to the abstract test suite
+definition.
+% and decide at random whether to choose internal or boundary 
+% values from   $\overline{X}$.
+While this alternative would not affect the suite's completeness property
+when applied against members of ${\cal D}({\cal S},m,\overline{{\cal I}})$,
+it favourably affects the test strength against RIOSTS outside 
+${\cal D}({\cal S},m,\overline{{\cal I}})$: the chances for uncovering trapdoors
+are obviously increased. This approach results in an 
+\emph{adaptive random testing strategy}, where the selection of input data is no longer 
+performed uniformly over the complete input domain, but selectively for each input equivalence
+class $\overline{X}\in \overline{{\cal I}}$. Moreover, the random values from such 
+an $\overline{X}$ are only applied when an $\overline{X}$-input is required according to the 
+abstract test suite constructed from Equation~(\ref{eq:wtestsuite}). The experimental results in
+\cite{huebner15} indicate, that the randomisation of the input selection is able to improve the 
+mutation score for erroneous implementations that are {\it outside} the fault domain without increasing
+the size of the resulting test suite and without nullifying the completeness result for 
+implementations inside the fault domain.
+  
+
+
+% Technically the randomisation is implemented by running an SMT solver
+% repeatedly to find concrete values of every input equivalence class
+% $\overline{X}\in \overline{{\cal I}}$. The abstract test suite constructed from
+% Equation~(\ref{eq:wtestsuite}) is a sequence on input equivalence classes. According to
+% our equivalence class construction \cite{peleska_sttt_2014},
+% an input equivalence class $\overline{X}\in \overline{{\cal I}}$ is defined by
+% a proposition\footnote{The proposition is
+% guaranteed to have a solution, since it describes an input equivalence class,
+% which has at least one member and thus at least one assignment that fulfills the
+% proposition.}  $g_{\overline{X}}$, containing solely variables in $I$.
+% Using an SMT solver to solve  $g_{\overline{X}}$ results in a concrete input
+% vector $\vec c \in{\overline{X}}$. Rerunning the solver for the same
+% $\overline{X}$ and prohibiting existing solutions $c_1, \ldots, c_{n-1}$
+% with a refined constraint
+% $g_{\overline{X}}\land\overset{n-1}{\underset{i=1}{\bigwedge}}\neg c_i$ will
+% result in a new solution $c_n$, i.e.
+% a new concrete input $c_n\in \overline{X}$ of the input equivalence class. 
+% The negation of existing solution yields an exponential growth of the runtime of
+% the SMT solver in the worst case. Therefore two other heuristics were
+% implemented:\\
+% (a) the internal heuristics of the SAT solver have been randomized to get a
+% ``random'' solution of $g_{\overline{X}}$. 
+% (b)
+% Interval analysis can be used to find a subpaving, that is an inner approximation of $g_{\overline{X}}$. From
+% this subpaving random elements can be selected using a random number generator.
+% As another runtime optimization the input selection can be parallelized. Once
+% the input equivalence class partitioning $\overline{\cal I}$ is  available, candidates
+% from every input equivalence class
+% $\overline{X}$ can be calculated separately and in parallel, to find as many
+% different concrete values as needed. 
+% % The construction of the test oracles, i.e.
+% % the expected outputs resulting from the execution of an input sequence from the
+% % test suite ${\cal W}$ can be calculated from the abstract test suite and is
+% % independent of the concrete inputs. 
+
+% It has to be noted, however, that the complete test suite generated according to
+% (\ref{eq:wtestsuite}) will not guarantee that every pair $(\q,\overline{X})$ with $\q\in S/_\sim$ and
+% $\overline{X}\in\overline{\cal I}$ will be exercised the same number of times. Therefore we add
+% test cases to ensure a minimal number $a$ each $(\q,\overline{X})$ is exercised, each time with 
+% a new random selection $\vec c\in \overline{X}$. For these additional test cases we just repeat
+% suitable cases from ${\cal W}$. If $p$ estimates the probability to detect a trapdoor when
+% selecting a random value in $(\q,\overline{X})$, then the probability to uncover this during the
+% randomised test suite is $1 - (1 - p)^a$.

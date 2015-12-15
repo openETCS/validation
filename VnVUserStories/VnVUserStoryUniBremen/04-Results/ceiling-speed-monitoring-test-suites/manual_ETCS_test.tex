@@ -1,0 +1,192 @@
+The European Railway agency provides a test specification
+\cite{ETCS-Subset076} along with the requirements of the EVC.  The
+tests aim at verifying the conformity and the functionality of the onboard 
+subsystems against the system requirement specification (SRS)
+\cite{ETCS}.  The SRS has been decomposed into a set of features such
+that a feature groups a set of requirements that can be tested at the
+available interfaces. The test cases have been designed to ensure that
+a test of a given feature is independent of all other
+feature. Moreover tests are only described as a reaction to a given
+stimulation at the interface of the feature.
+
+The test specification formalises the test cases
+description, each test case is composed of
+\begin{itemize}
+\item  a unique identifier,
+\item  a short description of the target of the test,
+\item  a list of covered requirement,
+\item an initial state of the test e.g. initial assignment to the
+internal test variables,
+\item the test  steps:  inputs change and expected outputs, and
+\item a final test state e.g. initial assignment to the
+internal test variables.
+\end{itemize}
+
+
+Table~\ref{tbl:manualtest} summarizes the available
+tests. The second column describes the objective of each test.  The
+column ``Covers Requirements'' shows the list of requirements covered
+by the tests. We have refined the list provided by the standard. We
+first refer to the sub-requirement when needed and secondly, we add
+some requirements that are covered by side effect  to be able to
+provide more accurate requirement coverage.
+
+The ceiling speed monitoring feature is associated with 8 test cases
+in~\cite{ETCS-Subset076}.  They cover the change of the speed
+supervision status and the brake commands depending on  the train
+speed. We only use seven of them (TC-CSM-[1-7]), the one missing
+covers a requirement that we assume, is “delegated” to the surrounding software
+of the CSM.
+Eight test cases cover the general requirement of the speed and
+distance monitoring feature in~\cite{ETCS-Subset076}. Four of those
+are test cases outside the scope of the ceiling speed monitoring and
+therefore not included in our benchmark.
+The four others cover the requirements {\sf REQ-3.13.10.2.3} and
+{\sf REQ-3.13.10.2.4} but only in the target speed monitoring section. We
+have adapted them to fit into the collection of CSM tests. Moreover,
+we grouped them in pairs (TC-GR-[1-2]) . Each pair is dealing with two different ways
+of receiving inputs depending on the  ERTMS mode that is not
+relevant for testing the CSM function.
+
+
+\begin{table}
+\tabsize
+\renewcommand{\arraystretch}{1.2}
+\caption{Test cases from the Subset 076}
+\label{tbl:manualtest}
+\begin{tabular}{lp{.48\textwidth}p{4.9cm}}
+\hline\hline
+Identifier & Target of the test & Covered Requirements \\
+\hline
+TC-CSM-1 & 
+When the train runs in CSM  and does not exceed the
+the permitted speed, no intervention is triggered and the 
+{\sf NormalStatus} is displayed.& 
+REQ-3.13.10.3.1, REQ-3.13.10.3.3,\newline
+REQ-3.13.10.3.5 \\ \hline
+TC-CSM-2 & 
+When the train runs in CSM and the speed is between the permitted
+speed and the Warning limit, no intervention is triggered and the 
+{\sf OverspeedStatus} is displayed. Once the train speed is below 
+the permitted speed the {\sf NormalStatus} is displayed. & 
+REQ-3.13.10.3.1, REQ-3.13.10.3.2,\newline
+REQ-3.13.10.3.3, REQ-3.13.10.3.4 \\ \hline
+TC-CSM-3 & 
+When the train runs in CSM and the speed is between the Warning limit
+speed and the SBI supervision limit, no intervention is triggered and the 
+{\sf WarningStatus} is displayed. Once the train speed is below 
+the permitted speed the {\sf NormalStatus} is displayed. & 
+REQ-3.13.10.3.1, REQ-3.13.10.3.2, \newline
+REQ-3.13.10.3.3, REQ.3.13.10.3.4.r4 \\ \hline
+TC-CSM-4 & 
+When the train runs in CSM and the speed is between the SBI
+supervision limit and
+the EBI supervision limit , the service brake intervention is triggered and the 
+{\sf InterventionStatus} is displayed. Once the train speed is below 
+the permitted speed the {\sf NormalStatus} is displayed. & 
+REQ-3.13.10.2.2, REQ-3.13.10.3.1,\newline
+REQ-3.13.10.3.2, REQ-3.13.10.3.3,\newline 
+REQ-3.13.10.3.4 \\ \hline
+TC-CSM-5 & 
+When the train runs in CSM and the speed is greater then 
+the EBI supervision limit , the emergency brake intervention is triggered and the 
+{\sf InterventionStatus} is displayed. Once the train reaches
+standstill the {\sf NormalStatus} is displayed. & 
+REQ-3.13.10.2.2, REQ-3.13.10.2.5, \newline
+REQ-3.13.10.3.1, REQ-3.13.10.3.2, \newline
+REQ-3.13.10.3.3, REQ-3.13.10.3.4 \\ \hline
+TC-CSM-6 & 
+When entering CSM mode the Indication status is overwritten &
+REQ-3.13.10.3.1, REQ-3.13.10.3.3,\newline
+REQ-3.13.10.3.4, REQ-3.13.10.3.6 \\ \hline
+TC-CSM-7 & 
+When the train is between the permitted speed and the Warning limit
+the  SBI  supervision limit also referred
+as the FLOI (First Line Of Intervention) is 
+displayed. Once the train speed is below 
+the permitted speed the {\sf NormalStatus} is displayed  & 
+REQ-3.13.10.3.1, REQ-3.13.10.3.2,\newline
+REQ-3.13.10.3.3, REQ-3.13.10.3.4, \newline
+REQ-3.13.10.3.5\\ \hline
+TC-GR-1 & 
+When the use of service brake is not allowed the emergency brake
+command shall be triggered instead. The emergency brake is then revoked
+according to the service brake revocation.& 
+REQ-3.13.10.2.1, REQ-3.13.10.2.3,\newline
+REQ-3.13.10.2.4, REQ-3.13.10.3.3,\newline
+REQ-3.13.10.3.4 \\ \hline
+TC-GR-2 & 
+The use of service brake is not allowed and the train exceeds the EBI
+supervision limit, the emergency brake command shall be triggered. 
+The emergency brake is then revoked only when the train reaches
+standstill.&
+REQ-3.13.10.2.1, REQ-3.13.10.2.3,\newline
+REQ-3.13.10.2.4, REQ-3.13.10.3.3,\newline
+REQ-3.13.10.3.4 \\ 
+\hline\hline
+\end{tabular}
+\normalsize
+\end{table}
+
+
+
+
+These 9 test cases has been translated into LTL formula to fit our
+experiments platform. This translation is performed by representing
+the steps by a sequence of nested until operator.
+Let the test sequence be of the following form: $i_0,i_1,o_0,i_2, o_1,o_2$ where
+$i_k$ ($o_k$) represents an input (resp. output) assignment to an interface
+variables. The associated LTL formula will be in the following form:\\
+$$ \mathsf{Finally}( [i_0 \wedge i_1 \wedge o_0] \wedge ([i_0 \wedge i_1 \wedge
+o_0] \; \mathsf{Until} \;[i_2 \wedge \mathsf{Finally}([o_1 \wedge o_2]) ) $$
+Intuitively the inputs are set and do not change until a new input configuration
+is reached and implies new  output values.
+
+\begin{figure}
+\begin{Verbatim}[numbers=left]
+TC-CSM-2;
+ Finally ([currentSpeed > 0 && 
+           currentSpeed < V_mrsp &&
+           SpeedSupervisionStatus == NormalStatus && 
+           displayPermittedSpeed == 1 ]
+          &&
+          ([currentSpeed > 0 && 
+            currentSpeed < V_mrsp &&
+            SpeedSupervisionStatus == NormalStatus && 
+            displayPermittedSpeed == 1 ]
+          Until
+          (([currentSpeed > V_mrsp && 
+             currentSpeed <= V_mrsp + dV_Waring(V_mrsp)]  && 
+             Finally[
+                     SpeedSupervisionStatus ==  OverspeedStatus && 
+                     displayPermittedSpeed == 1 && 
+                     displaySBI == 1 && 
+                     ServiceBrakeCommand == 0 ])
+              &&
+              ([currentSpeed > V_mrsp  && 
+                currentSpeed <= V_mrsp + dV_Waring(V_mrsp) ]   
+              Until
+              ([currentSpeed > 0 && currentSpeed < V_mrsp ] &&
+                Finally[SpeedSupervisionStatus == NormalStatus ])))));
+
+\end{Verbatim}
+\caption{Example of test case TC-CSM-2 as LTL formula\label{fig:testltlex}}
+\end{figure}
+
+Figure \ref{fig:testltlex} shows the LTL formula used to represent the
+test case TC-CSM-2. 
+\begin{itemize}
+\item lines 2-5~: The train is moving within the permitted speed and
+the DMI aspects is coherent with the normal status.
+\item lines 7-13~: The train stays in the initial configuration until
+the speed is greater than permitted speed but below the Warning limit.
+\item lines 14-21~: The DMI information changes according to the new
+speed.
+\item line 23~: The train speed is now back below the permitted.
+\item line 24~: The Normal status is now displayed.
+\end{itemize}
+
+
+
+%%  LocalWords:  EVC EBI WarningStatus InterventionStatus SBI CSM FLOI  REQ
+%%  LocalWords:  DMI

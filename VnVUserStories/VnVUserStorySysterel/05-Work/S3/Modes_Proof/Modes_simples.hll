@@ -1,0 +1,112 @@
+
+
+/**********************************/
+/* Non Leading */
+
+Declarations: 
+bool Condition46;
+bool Equipment_not_isolated;
+bool SoM_Possible ;
+bool Mode_NonLeading;
+bool cond_To_NL ;
+bool No_Trip_Condition ;
+
+Definitions:
+
+Equipment_not_isolated :=  Data_From_DMI.'ETCS_Isolated'  == false
+		 & pre(currentMode, 'Level_And_Mode_Types_Pkg::IS'  ) != 'Level_And_Mode_Types_Pkg::IS' ;
+
+SoM_Possible := Equipment_not_isolated & OnBoard_Powered & ~Failure_Occured  & ~Data_From_Track.'Emergency_Stop_Message_Received' 
+		 & pre(currentMode, 'Level_And_Mode_Types_Pkg::SB'  ) == 'Level_And_Mode_Types_Pkg::SB' 
+		 & Data_From_Localisation.'Train_Standstill'
+		 & Data_From_TIU.'train_status'.'valid' 
+		 & Data_From_TIU.'train_status'.'m_cab_st' == 'TIU_Types_Pkg::desk_A_is_open'
+		 & Cab == 'TIU_Types_Pkg::CabA' ;
+
+
+Mode_NonLeading:= currentMode == 'Level_And_Mode_Types_Pkg::NL' ;
+
+
+cond_To_NL := Data_From_TIU.'train_status'.'m_nonleading_st'== 'TIU_Types_Pkg::non_leading_permitted' 
+             & pre(currentMode, 'Level_And_Mode_Types_Pkg::SB'  ) == 'Level_And_Mode_Types_Pkg::SB' & Data_From_DMI.'Req_NL';
+
+
+No_Trip_Conditions :=  ~Data_From_Track.'Emergency_Stop_Message_Received'
+                   & Valid_Train_Data_Stored;
+
+/* Condition 46 :
+To no_Leading
+*/
+
+
+Condition46 := 'ManageModes_#1/ComputeModesConditions_##1/>Condition46';
+
+
+Proof Obligations:
+( SoM_Possible & No_Trip_Conditions & cond_To_NL) -> ( Condition46 & Mode_NonLeading );
+
+
+/**********************************/
+
+/* Condition 1 :
+The driver isolates the ERTMS/ETCS on-board equipment.
+*/
+
+Declarations: 
+bool Condition1;
+bool Equipment_isolation;
+bool Mode_Isolation;
+
+Definitions:
+
+Equipment_isolation :=  Data_From_DMI.'ETCS_Isolated' ;
+
+Mode_Isolation := currentMode == 'Level_And_Mode_Types_Pkg::IS' ;
+
+
+Condition1 := 'ManageModes_#1/ComputeModesConditions_##1/>Condition1';
+
+
+Proof Obligations:
+Equipment_isolation -> ( Condition1 & Mode_Isolation );
+
+/**********************************/
+/* Unfitted */
+/*
+Declarations: 
+bool Condition60;
+bool Mode_Unfitted;
+bool cond_To_UN ;
+bool Valid_Train_Data_Was_true;
+bool Start_Was_Requested_For_Level0;
+int [0,11] cpt;
+bool Waiting_Start;
+
+Definitions:
+Mode_Unfitted:= currentMode == 'Level_And_Mode_Types_Pkg::UN' ;
+
+cond_To_NL := Data_From_TIU.'train_status'.'m_nonleading_st'== 'TIU_Types_Pkg::non_leading_permitted' 
+             & Data_From_DMI.'Req_NL';
+
+Valid_Train_Data_Was_true := Valid_Train_Data_Stored, Valid_Train_Data_Was_true # X(Valid_Train_Data_Stored) ;
+Start_Was_Requested_For_Level0 := Data_From_DMI.'Req_Start' & Current_Level =='M_LEVEL_Level_0' , Start_Was_Requested_For_Level0 # X(Data_From_DMI.'Req_Start' & Current_Level =='M_LEVEL_Level_0' ) ;
+
+cpt := 0, if ~(Valid_Train_Data_Was_true & Start_Was_Requested_For_Level0 ) & X(Valid_Train_Data_Was_true & Start_Was_Requested_For_Level0 ) then 11 elif cpt>0 then cpt-1 else 0;
+
+Waiting_Start := false, if ~(Valid_Train_Data_Stored) & X(Valid_Train_Data_Stored) then true else Waiting_Start;
+
+cond_To_UN := Valid_Train_Data_Was_True & Start_Was_Requested_For_Level0 & Data_From_DMI.'Ack_UN' ;
+*/
+/* Condition 60 :
+To Unfitted
+*/
+/*
+
+Condition60 := 'ManageModes_#1/ComputeModesConditions_##1/>Condition60';
+
+
+Proof Obligations:
+( SoM_Possible & ~cond_To_NL & Waiting_Start & Start_Was_Requested_For_Level0) -> ( Data_To_DMI.'Ack_UN'  ); */
+/*( SoM_Possible & ~cond_To_NL & cond_To_UN) -> ( Condition60 & Mode_Unfitted ); */
+
+

@@ -1,0 +1,147 @@
+
+
+\subsubsection{Verification of Management of Radio Communication function (Systerel) }
+\label{sec:}
+
+\paragraph{Contributing project partners}
+% Usually, one main partner, perhaps with contributions from others
+The work has been performed by Systerel
+
+\paragraph{Process step}
+% Classification of the activity according to D2.3a
+% Name what is verified and to which report this would contribute.
+% Use the numbers, e.g. System Design Verification Report (1-12).
+
+
+This activity contributes to:
+\begin{itemize}
+\item the Elaborated System Requirements (1.07)
+\item the Sub-System Requirement Specification (1.10)
+\item the System Design Verification Report  (1.12)  
+\end{itemize}
+
+
+
+\paragraph{Object of verification}
+% Which openETCS artifact (github link) or other documents/programs
+% etc. (provide references)
+
+The object of verification is the Event-B model for the communication
+establishing at {\url{https://github.com/openETCS/model-evaluation/tree/master/model/Event_B_Systerel/Subset_026_comm_session}}. It
+is from the strictly formal modeling phase and represents the communication
+session management of the OBU.
+
+
+\paragraph{Available specification}
+% The specification against which the object is to be checked. Usually
+% coming form some openETCS artifacts (GitHub reference, process
+% artifact number) or background material (reference, artifact number).
+
+The model implements the requirements for the communication session management
+as described in Subset-026 chapter 3.5.
+
+This section describes the establishing, maintaining and termination of a
+communication session of the OBU with on-track systems.
+
+
+\paragraph{Objective}
+%In an ordinary development, the main objective would be to verify or validate
+%something. Here, in openETCS, it would be quite common to demonstrate
+%the applicability of some method/tool, or evaluate its capabilities.
+
+
+One goal is the development of a strictly formal, fully proven model of the
+communication session management and to provide evidence of covering the
+necessary requirements of Subset-026 as well as proving correctness of the model
+wrt.\ the requirements and attaining a good coverage of the model wrt.\ the
+requirements.
+
+The second goal is to correctly implement the applicable safety requirements
+identified by the safety analysis. Both functional and safety requirements
+should be traced in the model and a requirement document in a standardized
+format.
+
+The formal model will represent the described functionality on the system level,
+the correct functioning can be validated by step-wise simulation and
+model-checking of deadlock-freeness.
+
+
+\paragraph{Method/Approach}
+% Short description of how the verification/validation is performed
+
+At first, the basic functionality described in the chapter 3.5 that are
+identified. These serve as basis for a first abstract model, which is refined
+iteratively, adding the desired level of detail. The elements of Subset-026 are
+traced using links from Event-B to the ProR file in ReqIf format. Requirements
+are formalized as invariants and proven where applicable.
+
+\paragraph{Means/Tools}
+% Could be integrated with the previous paragraph. Assign an
+% approrpiate tool class (T1, T2, T3) according to EN 50128. Try to assign a
+% maturity level 
+%https://github.com/openETCS/validation/blob/master/VerificationAndValidationPlan/V02/VnVUsrStrTmplt-140709-02.pdf
+
+
+The means used are:
+\begin{itemize}
+\item open source Rodin tool (\url{http://www.event-b.org/}), including plug-ins
+  (for details
+  see~\url{https://github.com/openETCS/model-evaluation/blob/master/model/Event_B_Systerel/Subset_026_comm_session/latex/subset_3_5.pdf})
+\item ProR requirements modeling tool~\url{http://www.pror.org}
+\item open source ProB model checker and B model
+  simulator~\url{http://www.stups.uni-duesseldorf.de/ProB/index.php5/Main_Page}
+\item open source CVC3 (\url{http://www.cs.nyu.edu/acsys/cvc3/}), verIT
+  (\url{www.verit-solver.org}) and Alt-Ergo (\url{http://alt-ergo.lri.fr}) SMT
+  solvers
+\end{itemize}
+
+All the tools are on class T1.
+
+\paragraph{Results}
+% Results related to the objective.
+% Refer to appropriate document (preferably GitHub) for more complete description.
+
+
+\begin{itemize}
+\item The result is a fully formal model of the communication session management
+  as described in chapter 3.5 of Subset-026.
+\item Each implemented element of this section is linked to the ProR
+  requirements file, both specification elements that describe how something has
+  to be done, as well as requirements that describe what must be achieved.
+\item The model can be simulated / animated, either with the AnimB or the ProB
+  plug-in, validating the functional capabilities.
+\item The safety requirements are formalized as invariants in predicate logic,
+  their proofs are for the most part fully automatic.
+\item It was found that while the Subset-026 communication management explicitly
+  allows multiple communication partners (see RBC handover), there is no
+  explicit limit of established communication connections given in chapter 3.5.
+\item A complete covering of the elements of Subset-026 was not realized, e.g.,\
+  there is a representation of the contents of a message, but its explicit
+  format is not implemented. This is considered an implementation detail without
+  influence for a system level analysis. In general, Event-B models will not be
+  refined up to the implementation level.
+\end{itemize}
+
+See {\url{https://github.com/openETCS/validation/blob/master/Reports/D4.3/D4.3.1-Final-VV-report-on-model/D4.3.1.pdf}} and {\url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/04-Results/d-EventB-VnV/EventB-Rodin-VnV.pdf}}.
+
+
+
+\paragraph{Observations/Comments}
+% An optional section where anything can be included which has been
+% observed without direct connection
+
+
+\paragraph{Conclusion}
+%What has been achieved, what is missing, what has been learned
+
+Having an abstract formal model of the implemented functionality which can be
+simulated, allows for interesting insights into the overall functioning of a
+system. Formalized requirements are very helpful in both the identification of
+ambiguous requirements and in their clarification.
+
+The elements of Subset-026 are of very different nature. Some describe rather
+low-level specification details, other describe ``real'' requirements. Without
+an analysis as done with this Event-B model, it can be difficult to decide which
+elements must be considered on a system level analysis and which on the lower
+implementation level.
+

@@ -1,0 +1,235 @@
+\documentclass{template/openetcs_report}
+% Use the option "nocc" if the document is not licensed under Creative Commons
+% \documentclass[nocc]{template/openetcs_article}
+\usepackage{lipsum,url}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{fixme}
+\usepackage{lscape} 
+\usepackage{pgfgantt}
+\usepackage{adjustbox}
+\usepackage{datetime}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{enumerate}
+\graphicspath{{schema/}}
+\usepackage{amsfonts}
+\definecolor{hblue}{RGB}{79,129,189}
+\usepackage{relsize}
+
+
+% user specified macros
+\input{macros.tex}
+
+\newcommand{\smartsolver}{\mbox{S\textsmaller[1]{3}}\xspace}
+\newcommand{\SAT}{{SAT}}
+\newcommand{\HLL}{{HLL}}
+\newcommand{\LLL}{{LLL}}
+\newcommand{\openETCS}{\textsf{openETCS}}
+\newcommand{\ETCS}{\textsf{ETCS}}
+\newcommand{\SCADE}{\textsc{Scade}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\mychapter}[2]{
+    \setcounter{chapter}{#1}
+    \setcounter{section}{0}
+    \chapter*{#2}
+}
+
+\graphicspath{{./template/}{.}{./images/}}
+\begin{document}
+\frontmatter
+\project{openETCS}
+
+% Please do not change anything above this line ============================ The
+% document metadata is defined below
+
+\reportnum{OETCS/WP4/D4.3.1}
+
+% define your workpackage or task here
+\wp{openETCS@ITEA Work Package 4.2: ``Verification \& Validation of the Formal Model''}
+
+% set a title here
+\title{D4.3.1 V\&V report on the applicability of the V\&V approach to the formal abstract model}
+
+% set a subtitle here
+\subtitle{Version 04}
+
+% set the date of the report here
+\date{January 2014\\revised November 2015 }
+
+%document approval                                                                                                                                          %define the name and affiliation of the people involved in the documents approbation here                                                                    
+\creatorname{}                                                                                                                                
+\creatoraffil{}                                                                                                                                                                                                                                                                                   
+\techassessorname{}                                                                                                                       
+\techassessoraffil{}                                                                                                                                                                                                                                                                        
+\qualityassessorname{}                                                                                                                       
+\qualityassessoraffil{}                                                                                                                      
+                                                                                                                                                            
+\approvalname{Klaus-R\"udiger Hase}                                                                                                                         
+\approvalaffil{DB Netz}  
+
+
+% define a list of authors and their affiliation here
+\author{Marc~Behrens}
+
+\affiliation{Deutsches Zentrum für Luft und Raumfahrt e.V.}
+
+
+
+\author{Ana Cavalli \and João Santos \and Huu-Nghia Nguyen}
+
+\affiliation{Institut Mines-Télécom}
+
+  
+\author{Stefan Rieger}
+
+\affiliation{TWT GmbH Science \& Inovation}
+
+\author{Cécile Braunstein}
+\affiliation{Uni Bremen}
+  
+\author{Uwe Steinke}
+\affiliation{Siemens}
+
+\author{Benoît~Lucet \and Matthias Güdemann \and Brice~Gombault \and Marielle~Petit-Doche} 
+
+\affiliation{Systerel}
+
+\author{Alexander Nitsch \& Benjamin Beichler}
+
+\affiliation{University of Rostock}
+ 
+\author{Silvano Dal Zilio \and Ning Ge}
+
+\affiliation{LAAS-CNRS}
+
+\author{Marc Pantel} 
+  
+\affiliation{INPT}
+ 
+% define the coverart
+\coverart[width=350pt]{openETCS_EUPL}
+
+% define the type of report
+\reporttype{}
+
+
+
+\begin{abstract}
+
+This document presents the final of
+verification and validation of the formal model.
+Specifically, the following sections present the contributions of partners of WP 4: 
+\begin{itemize}
+  \item Section~\ref{sec:int} --- Institut Mines-Télécom: Verification of the Movement Authority (Subset-026 chapter 3.8) 
+  \item Section~\ref{sec:twt} -- TWT GmbH Science \& Innovation: Verification of Procedures (Subset-026 chapter 5)
+  \item Section~\ref{sec:ubremen} -- University of Bremen: Verification of the Management of the Radio
+  Comumunication (Subset-026 chapter 3.5) 
+  \item Section~\ref{sec:urostock} -- University of Rostock: Verification of the Speed and distance  Monitoring  (Subset-026 chapter 3.13)
+  \item Section~\ref{sec:systerel} -- Systerel: Verification of Procedure on-Sight (Subset-026 chapter 5), the Management of Radio Communication (Subset-026 chapter 3.5) and the management of modes and levels function (Subset-26 chapter 4.6 and several sections of chapter 5)
+  \item Section~\ref{sec:laas} --LAAS and INPT: Verification of the Speed and Distance Monitoring (Subset-026 chapter 3.13)
+\end{itemize}
+ 
+\end{abstract}
+
+% ============================= Do not change the next three lines
+\maketitle \tableofcontents \listoffiguresandtables \newpage
+% =============================
+
+% The actual document starts below this line =============================
+
+
+% Start here
+
+\mychapter{0}{Introduction}
+This verification evaluated in five different approaches that the design conforms to an excerpt of Subset-026 \cite{unisig_subset-026_2012}  related to the specification \cite{tsi-2012-88-eu} \cite{tsi-2012-696-eu}.  It is the first of three reports. It is performed before a design or development process is available. The design used for verification in this report is created and adapted to improve later results of verification. Due to the applicable restrictions the results of the first report focus on the verification itself rather than to give a verdict about conformity of design. All following reports will focus solely on the design provided by the work package "Modelling – Code Generation".
+
+To ensure the correctness and consistency of a design model and its implementation, the
+validation and verification has to be performed alongside with the modeling process. 
+As the model and code of the EVC are produced by WP3,
+thus this task will be performed repeatedly during WP3 and will provide
+feedback to it.
+
+
+\newpage
+
+\input{mines-telecom-D4-3-1}
+
+\newpage
+
+
+\let\oldparagraph\paragraph
+\let\oldsubparagraph\subparagraph
+
+\renewcommand{\paragraph}[1]{\subsection{#1}}
+\renewcommand{\subparagraph}[1]{\subsubsection{#1}}
+
+\input{twt-D4-2-1}
+
+%\newpage
+
+\input{UniBremen-D4-2-1}
+
+%\newpage
+
+\input{URO-D4-3-1}
+
+%\newpage
+
+
+\let\paragraph\oldparagraph
+\let\paragraph\oldsubparagraph
+
+
+\mychapter{5}{Systerel}
+\label{sec:systerel}
+
+Railway and aerospace critical software require rigorous design, verification and validation processes. These can be achieved by the use of formal  methods as recommended by  the standards in these domains~\cite{standard_railway_2011,standard_aerospace_2011}.
+
+One possibility is to apply formal methods from the early stage of the design to produce ``correct-by-construction'' software. Numbers of success stories have already been described, for example in the railway industry with the B method~\cite{behm1999meteor,DBLP:conf/zum/BadeauA05,essame2006b}. Another approach is to introduce formal  methods later, during an independent verification and validation phase: starting from an informal specification, the properties to verify are identified and formally  specified in parallel to the software design activities. Then, they are automatically checked on an executable model or the code.
+
+In the following we will describe the two approaches applied on three models:
+
+\begin{enumerate}
+\item VnV on classical B  model that cover software design level, in the objective to provide an open-source approach; this model specifies the procedure "On-Sight" (Subset-026 chapter 5.9).
+\item VnV on Event-B model that cover system level and support safety analysis; this model specifies the "Management of radio communication function" (Subset-26 chapter 3.5).
+\item VnV on Scade model that cover software design level; this model specifies the "modes and level management" function (Subset-26 chapter 4.6 and several sections of chapter 5).
+\end{enumerate}
+
+
+
+\input{BmodelVnV}
+
+\input{EventB-Rodin-VnV}
+
+%\input{ScadeModelVnV}
+
+\input{ScadeModelVnVS3}
+
+\newpage
+
+\input{LAASINPT-D4-2-1}
+
+\mychapter{7}{Conclusion}
+\label{sec:conclusion}
+
+
+
+%\nocite{*}
+%===================================================
+%Do NOT change anything below this line
+
+%\bibliographystyle{IEEEtran}
+\bibliographystyle{unsrt}
+
+\bibliography{biblio}
+%
+
+\end{document}

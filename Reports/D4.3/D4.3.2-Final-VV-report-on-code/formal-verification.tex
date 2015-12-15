@@ -1,0 +1,230 @@
+
+\chapter{Formal verification with \framacwp}
+\label{cha:formal-verification}
+
+
+In this chapter we introduce the formal verification tools used in this tutorial.
+We will afterwards present to what extent the functions from
+Chapters~3--5 could be deductively verified.
+
+Within \framac, the \wpframac plug-in \cite{wp} enables deductive verification of \isoc programs that have been annotated with the ANSI\slash ISO C Specification Language (\acsl)\cite{acsl}.
+The \wpframac plug-in uses weakest precondition computations to generate proof obligations.
+To formally prove the \acsl properties, these proof obligations can be submitted to external automatic theorem provers or interactive proof assistants.
+
+We used the \wpframac plugin-in of Sodium release of \framac\footnote{%
+ See \url{http://frama-c.com/install-sodium-20150201.html}
+}
+together with  the automatic theorem provers \altergo (version~0.99.1)\footnote{%
+  See \url{http://alt-ergo.lri.fr}
+},
+\cvc (version~1.4) and Z3 (version~4.4.0)\footnote{%
+  For the use of \cvc (see \url{http://cvc4.cs.nyu.edu/web})
+  and Z3 (see \url{http://research.microsoft.com/en-us/um/redmond/projects/z3})
+  we relied on version~0.86 of the \whythree platform for deductive
+  program verification (see \url{http://why3.lri.fr}).
+}.
+
+Here are the options of \framac that we used and that influence the
+number of generated proof obligations.
+
+\begin{lstlisting}[style = func-decl]
+-wp
+-wp-rte
+-warn-signed-downcast
+-warn-signed-overflow
+-warn-unsigned-overflow
+-wp-no-bits
+-wp-model Typed+ref
+-wp-par 1
+-wp-timeout 20 
+-wp-prover z3
+-wp-prover cvc4
+-wp-prover alt-ergo
+\end{lstlisting}
+
+
+We list in the following tables the number of generated
+verification conditions (VC), as well as the percentage of proven verification conditions.
+The tables show that all verification conditions could be verified.
+
+Please note that the number of proven verification conditions do \emph{not} reflect
+on the quality\slash strength of the individual provers.
+The reason for that is that we ``pipe'' each verification
+condition sequentially through \wpqed, \z, \cvc and \altergo.
+If one prover succeeds, then the remaining provers are not called.
+
+\clearpage
+
+\section{Verification of bit stream and lower-level bit operations}
+\label{sec:bitstream-verification}
+
+Table~\ref{tbl:bitstream-verification} shows the result of formal verification
+for the functions from Chapters~\ref{cha:bitstream} and ~\ref{cha:low-level bitstream}.
+All verification conditions could be automatically verified.
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|l|ccc|cccc|}
+\hline
+\multirow{2}{*}{\textbf{component}} &
+\multicolumn{3}{c|}{ \textbf{vcs}} &
+\multicolumn{4}{c|}{\textbf{individual provers}}\\
+\cline{2-8}
+               &  all & proven & (\%) & qed & alt-ergo & cvc4 & z3  \\
+\hline
+\hline
+bit stream     & 58 &  58 & 100 & 19 &  0 & 0 & 39  \\
+\hline
+bit stream (inverse)  & 58 & 58 & 100 & 33 &  2 & 1 & 22  \\
+\hline
+lower-level bit ops & 126 & 126 & 100 & 55 &  0 & 1 & 70  \\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:bitstream-verification} Verfication results for bit stream and lower-level bit operations}
+\end{table}
+
+\FloatBarrier  % forces the output of listings/tables
+
+\section{Verification of static ETCS packets}
+\label{sec:packets-without-niter-verification}
+
+Tables~\ref{tbl:packets-without-niter-tracktotrain-part1},
+\ref{tbl:packets-without-niter-tracktotrain-part2},
+\ref{tbl:packets-without-niter-traintotrack} and
+\ref{tbl:packets-without-niter-bothways}
+show the results of formal verification for static packets.
+
+All static packets \emph{without} optional values could be automatically verified.
+The formal specfication and verification of static packets with optional values or
+dynamic packets could not be completely executed in the course of the project and 
+remains to be done as future work.
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|m{10ex}|m{5ex}m{5ex}m{5ex}|m{5ex}m{5ex}m{5ex}m{5ex}|}
+\hline
+\multirow{2}{*}{\textbf{PacketID}} &
+\multicolumn{3}{c|}{ \textbf{VCs}} &
+\multicolumn{4}{c|}{\textbf{Individual Provers}}\\
+\cline{2-8}
+               &  All & Proven & (\%) & Qed & Alt-Ergo & CVC4 & Z3  \\
+\hline
+\hline
+16 & 436 & 436 & 100 & 318 & 0 & 1 & 117\\
+\hline
+39 & 483 & 483 & 100 & 346 & 0 & 1 & 136\\
+\hline
+42 & 559 & 543 & 97 & 399 & 0 & 1 & 143\\
+\hline
+45 & 389 & 389 & 100 & 290 & 0 & 1 & 98\\
+\hline
+57 & 483 & 483 & 100 & 346 & 0 & 1 & 136\\
+\hline
+65 & 624 & 624 & 100 & 430 & 0 & 1 & 193\\
+\hline
+66 & 389 & 389 & 100 & 290 & 0 & 1 & 98\\
+\hline
+71 & 530 & 530 & 100 & 374 & 0 & 1 & 155\\
+\hline
+72 & 999 & 957 & 95 & 671 & 0 & 1 & 285\\
+\hline
+76 & 958 & 938 & 97 & 644 & 9 & 1 & 284\\
+\hline
+90 & 474 & 465 & 98 & 341 & 0 & 1 & 123\\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:packets-without-niter-tracktotrain-part1} Verfication results for static track to train packets part 1}
+\end{table}
+
+\FloatBarrier  % forces the output of listings/tables
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|m{10ex}|m{5ex}m{5ex}m{5ex}|m{5ex}m{5ex}m{5ex}m{5ex}|}
+\hline
+\multirow{2}{*}{\textbf{PacketID}} &
+\multicolumn{3}{c|}{ \textbf{VCs}} &
+\multicolumn{4}{c|}{\textbf{Individual Provers}}\\
+\cline{2-8}
+               &  All & Proven & (\%) & Qed & Alt-Ergo & CVC4 & Z3  \\
+\hline
+\hline
+131 & 624 & 624 & 100 & 430 & 0 & 1 & 193\\
+\hline
+132 & 389 & 389 & 100 & 290 & 0 & 1 & 98\\
+\hline
+133 & 718 & 718 & 100 & 486 & 0 & 1 & 231\\
+\hline
+134 & 624 & 624 & 100 & 430 & 0 & 1 & 193\\
+\hline
+136 & 474 & 465 & 98 & 341 & 0 & 1 & 123\\
+\hline
+137 & 389 & 389 & 100 & 290 & 0 & 1 & 98\\
+\hline
+138 & 483 & 483 & 100 & 346 & 0 & 1 & 136\\
+\hline
+139 & 483 & 483 & 100 & 346 & 0 & 1 & 136\\
+\hline
+140 & 389 & 389 & 100 & 290 &  0 &  1 & 98\\
+\hline
+141 & 436 & 436 & 100 & 318 & 0 & 1 & 117\\
+\hline
+254 & 342 & 342 & 100 &262 & 0 & 1 & 79\\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:packets-without-niter-tracktotrain-part2} Verfication results for static track to train  packets part 2}
+\end{table}
+
+\FloatBarrier  % forces the output of listings/tables
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|m{10ex}|m{5ex}m{5ex}m{5ex}|m{5ex}m{5ex}m{5ex}m{5ex}|}
+\hline
+\multirow{2}{*}{\textbf{PacketID}} &
+\multicolumn{3}{c|}{ \textbf{VCs}} &
+\multicolumn{4}{c|}{\textbf{Individual Provers}}\\
+\cline{2-8}
+               &  All & Proven & (\%) & Qed & Alt-Ergo & CVC4 & Z3  \\
+\hline
+\hline
+0 & 926 & 910 & 98 & 621 & 0 & 0 & 289\\
+\hline
+1 & 973 & 948 & 97 & 649 & 6 & 2 & 291\\
+\hline
+4 & 342 & 342 & 100 & 262 & 0 & 1 & 79\\
+\hline
+9 & 342 & 342 & 100 & 262 & 0 & 1 & 79\\
+\hline
+44 & 389 & 389 & 100 & 290 & 0 & 1 & 98\\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:packets-without-niter-traintotrack} Verfication results for static  train to track packets}
+\end{table}
+
+\FloatBarrier  % forces the output of listings/tables
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|m{10ex}|m{5ex}m{5ex}m{5ex}|m{5ex}m{5ex}m{5ex}m{5ex}|}
+\hline
+\multirow{2}{*}{\textbf{PacketID}} &
+\multicolumn{3}{c|}{ \textbf{VCs}} &
+\multicolumn{4}{c|}{\textbf{Individual Provers}}\\
+\cline{2-8}
+               &  All & Proven & (\%) & Qed & Alt-Ergo & CVC4 & Z3  \\
+\hline
+\hline
+255 & 239 & 239 & 100 & 192 & 0 & 1 & 46\\
+\hline
+\end{tabular}
+\end{center}
+\caption{\label{tbl:packets-without-niter-bothways} Verfication results for both-ways packets}
+\end{table}
+
+\FloatBarrier  % forces the output of listings/tables
+

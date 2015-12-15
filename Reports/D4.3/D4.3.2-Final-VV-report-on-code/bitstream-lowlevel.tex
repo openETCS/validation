@@ -1,0 +1,576 @@
+
+\FloatBarrier
+
+\chapter{Low-level bitstream operations}
+\label{cha:low-level bitstream}
+
+In this chapter, we describe the implementation of the
+low-level bitstream operations.
+%
+They were used to implement the bit sequence abstraction level, cf.\
+Chapter~\ref{cha:bitstream}.
+%
+Since a write operation moves bits from a \inl{uint64_t} value
+into an array of \inl{uint8_t} values, and a read operations
+moved them the other way round,
+we need bit operations on both data types.
+%
+They are given in
+Subsection~\ref{subsec:low-level 8 array} 
+for an array of \inl{uint8_t}, 
+in Subsection~\ref{subsec:low-level 8} for a single \inl{uint8_t},
+and
+in Subsection~\ref{subsec:low-level 64} for single \inl{uint64_t}.
+
+
+
+\section{Reading and writing individual bits}
+
+
+\subsection{Reading and writing 8 bit arrays}
+\label{subsec:low-level 8 array}
+
+
+In this section, we discuss the operations for read and write of a
+single bit from/into a byte array.
+
+The operation \inl{TestBit8Array(addr,size,pos)} returns the
+\inl{pos}$^{\mbox{\scriptsize th}}$ bit
+within the array at \inl{addr}
+of byte-size \inl{size}.\footnote{
+	This parameter isn't actually used in the code, but merely
+	in the contract.
+}
+Its contract and its implementation is shown in
+Listing~\ref{lst:TestBit8Array}.
+%
+See Listing~\ref{lst:bit predicate defs} for the definition of the predicate
+\inl{Bit8Array}.
+%
+The array bits are counted starting with the most significant one of
+the first byte.
+%
+A call to \inl{TestBit8(bytevalue,bitadr)} returns the 
+\inl{bitadr}$^{\mbox{\scriptsize th}}$ bit
+within \inl{bytevalue}, this operation is discussed in
+Subsection~\ref{subsec:low-level 8} below.
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires valid:  \valid_read(addr + (0..size-1));
+    requires size:   8 * size <= UINT32_MAX;
+    requires pos:    pos < 8 * size;
+
+    assigns \nothing;
+
+    ensures result:  \result != 0 <==> Bit8Array(addr, pos);
+*/
+static inline int TestBit8Array(uint8_t*  addr, uint32_t size, uint32_t pos)
+{
+    return TestBit8(addr[pos / 8], pos % 8);
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:TestBit8Array}Reading a bit of an \inl{uint8_t} array}
+\end{listing}
+
+\FloatBarrier
+
+
+
+
+
+
+
+
+
+
+Similarly, the operation \inl{SetBit8Array(addr,size,pos,flag)}
+sets the
+\inl{pos}$^{\mbox{\scriptsize th}}$ bit within the array at
+\inl{addr} of
+byte-size \inl{size} to \inl{flag}.
+%
+Its contract is shown in Listing~\ref{lst:SetBit8Array}.
+%
+It requires
+%
+\begin{itemize}
+\item the whole array to be accessible for update (requirement
+	property ``\inl{valid}''),
+\item each possible bit position in the array to fit into a
+	\inl{uint32_t} (property ``\inl{size}''), and
+\item the given \inl{pos} to be a valid bit position in the array
+	(property ``\inl{pos}'').
+\end{itemize}
+%
+The \inl{assigns} clause allows the operation to change the
+contents of the array,
+but no other memory locations.
+%
+On completion, the operation shall guarantee
+\begin{itemize}
+\item that the value of \inl{flag}\footnote{
+		Any non-zero \inl{flag} value is treated like 1.
+		This is ensured by the contract of the called operation
+		\inl{SetBit8}, cf.\ Subsection~\ref{subsec:low-level 8}.
+	}
+	is actually stored at the designated bit
+	position (postcondition property ``\inl{middle}'';
+	the call \inl{Bit8Array()} succeeds if, and only if, the
+	\inl{pos}$^{\mbox{\scriptsize th}}$ bit within the byte
+	array at \inl{addr} is set, 
+	cf.\ Listing~\ref{lst:bit predicate defs} in
+	Section~\ref{sec:bit operations in framac}), and
+\item that all other bits remain unchanged 
+	(properties ``\inl{left}'', ``\inl{right}'').
+\end{itemize}
+%
+Two fairly sophisticated hints had to be provided as assertions in
+the body in order for
+the provers to establish the contract's post-conditions.
+
+
+
+
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires valid:  \valid(addr + (0..size-1));
+    requires size:   8 * size <= UINT32_MAX;
+    requires pos:    pos < 8 * size;
+
+    assigns addr[0..size-1];
+
+    ensures left:   Unchanged{Here,Old}(addr, 0, pos);
+    ensures middle: Bit8Array(addr, pos) <==> (flag != 0);
+    ensures right:  Unchanged{Here,Old}(addr, pos + 1, 8 * size);
+*/
+static inline void SetBit8Array(uint8_t* addr, uint32_t size, uint32_t pos, int flag)
+{
+    uint32_t i = pos / 8u;
+    uint32_t k = pos % 8u;
+
+    addr[i] = SetBit8(addr[i], k, flag);
+
+    // The following assertion claims that in byte with index "pos/8"
+    // the bits with indices different from "k" do not change
+    /*@
+      assert bits_in_byte:
+        \forall integer j; (0 <= j < 8  && j != k) ==>
+        (Bit8(addr[pos/8], j) <==> \at(Bit8(addr[pos/8], j), Pre));
+    */
+
+    // The following assertion claims that in every byte
+    // with an index that is different from "pos/8" no bit is changed.
+
+    /*@
+        assert other_bytes:
+        \forall integer l, j; (0 <= l < size  &&  l != pos/8  &&  0 <= j < 8) ==>
+          (Bit8(addr[l], j) <==> \at(Bit8(addr[l], j), Pre));
+    */
+
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:SetBit8Array}Writing a bit of an \inl{uint8_t} array}
+\end{listing}
+
+
+\clearpage
+
+\subsection{Reading and writing 8 bit words}
+\label{subsec:low-level 8}
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires pre:  pos < 8;
+
+    assigns \nothing;
+
+    ensures pos:  \result != 0 <==> Bit8(value, pos);
+*/
+static inline int TestBit8(uint8_t value, uint32_t pos)
+{
+    uint8_t mask = ((uint8_t) 1) << (7u - pos);
+    uint8_t flag = value & mask;
+
+    return flag != 0;
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:TestBit8}Reading a bit of \inl{uint8_t}}
+\end{listing}
+
+
+The operation \inl{TestBit8(value,pos)} returns the
+\inl{pos}$^{\mbox{\scriptsize th}}$
+bit of \inl{value}.
+%
+Its contract is shown in Listing~\ref{lst:TestBit8}.
+%
+\begin{itemize}
+\item The value of \inl{pos} must not exceed 7 
+	(requirement property ''\inl{pre}''),
+\item no memory may be modified (\inl{assigns}), and 
+\item the result is non-zero if, and only
+	if, the specified bit is set (postcondition property
+	``\inl{pos}''; the call \inl{Bit8(value,pos)} succeeds 
+	if, and only if, the \inl{pos}$^{\mbox{\scriptsize th}}$ of
+	the byte \inl{value} is set, 
+	cf.\ Listing~\ref{lst:bit predicate defs} in
+	Section~\ref{sec:bit operations in framac}).
+\end{itemize}
+%
+The shown implementation additionally guarantees that the result is
+zero or one, which
+is not specified in the contract since this property isn't needed.
+%
+Returning just \inl{flag} rather than \inl{flag!=0u}
+would satisfy the
+contract also, and would be slightly faster.
+
+
+
+
+
+
+Dual to \inl{TestBit8}, the operation
+\inl{SetBit8(value,pos,flag)}
+returns \inl{value}, 
+with the \inl{pos}$^{\mbox{\scriptsize th}}$ bit
+set to \inl{flag}.
+%
+Its contract is shown in Listing~\ref{lst:SetBit8}.
+%
+\begin{itemize}
+\item Again, the value of \inl{pos} mustn't exceed 7 
+	(requirement property ``\inl{pre}''),
+\item no memory may be modified (\inl{assigns} clause),
+\item the return value coincides with \inl{value}, except possibly
+	at \inl{pos} (postcondition properties ``\inl{left}'' 
+	and ``\inl{right}''; a call
+	\inl{EqualBits8(x,y,first,last)} succeeds if, and
+	only if, the \inl{uint8_t} values \inl{x} and
+	\inl{y} agree on all bits in range
+	[\inl{first}\ldots\inl{last}), cf.\ also
+	Listing~\ref{lst:EqualBits64} in 
+	Section~\ref{sec:bit operations in framac}), and 
+\item \inl{flag} is written to the appropriate bit of 
+	\inl{value} (property ``\inl{pos}'').
+\end{itemize}
+%
+The implementation branches on the value of \inl{flag}, and
+clears or sets the
+appropriate bit in the usual way.
+%
+Note that both our contract and our implementation enable us to set
+a bit by supplying a
+\inl{flag} value of e.g.\ 2, whereas the code 
+``\inl{mask=flag<<(7-pos);return(value&~mask)\|mask}'' does not.
+
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires pre: pos < 8;
+
+    assigns \nothing;
+
+    ensures left:   EqualBits8(\result, value, 0,  pos);
+    ensures pos:    Bit8(\result, pos) <==> (flag != 0);
+    ensures right:  EqualBits8(\result, value, pos + 1,  8);
+*/
+static inline uint8_t SetBit8(uint8_t value, uint32_t pos, int flag)
+{
+    uint8_t mask = ((uint8_t) 1) << (7u - pos);
+
+    return (flag == 0) ? (value & ~mask) : (value | mask);
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:SetBit8}Writing a bit of \inl{uint8_t}}
+\end{listing}
+
+
+\FloatBarrier
+
+\subsection{Reading and writing 64 bit words}
+\label{subsec:low-level 64}
+
+
+
+The operations to read and write a bit of a \inl{uint64_t}
+are closely similar to
+those working on a \inl{uint8_t}.
+%
+They are shown in Listing~\ref{lst:TestBit64}
+and \ref{lst:SetBit64} without repeating the comments given
+in Subsection~\ref{subsec:low-level 8} for the 8 bit version.
+%
+See Listing~\ref{lst:bit predicate defs} for the employed \acsl predicates.
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+   requires pre: pos < 64;
+
+   assigns \nothing;
+
+   ensures set_bit: \result != 0 <==> Bit64(value, pos);
+*/
+int TestBit64(uint64_t value, uint32_t pos)
+{
+    uint64_t mask = ((uint64_t) 1) << (63u - pos);
+    uint64_t flag = value & mask;
+
+    return flag != 0u;
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:TestBit64}Reading a bit of \inl{uint64_t}}
+\end{listing}
+
+\FloatBarrier
+
+Listing~\ref{lst:SetBit64} shows the operation \inl{SetBit64}.
+%
+Note that it has a redundant postcondition, viz.\ property
+``\inl{upper}'', which guarantees that the leading zeros in
+\inl{value} are kept in the result, up to, but excluding
+position \inl{pos}.
+%
+This property was needed to enable the provers to verify code that uses
+\inl{SetBit64}.
+
+
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires pre: pos < 64;
+
+    assigns \nothing;
+
+    ensures left:     EqualBits64(\result, value, 0,  pos);
+    ensures set_bit:  flag != 0  <==>  Bit64(\result, pos);
+    ensures right:    EqualBits64(\result, value, pos + 1,  64);
+    ensures upper:    \forall integer i; i >= 64 - pos ==>
+                         (UpperBitsNotSet(value, i) ==> UpperBitsNotSet(\result, i));
+*/
+uint64_t SetBit64(uint64_t value, uint32_t pos, int flag)
+{
+    uint64_t mask = ((uint64_t) 1u) << (63 - pos);
+
+    return (flag == 0) ? (value & ~mask) : (value | mask);
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:SetBit64}Writing a bit of \inl{uint64_t}}
+\end{listing}
+
+\FloatBarrier
+
+The operation \inl{UpperBitsNotSet64(value,length)} succeeds,
+i.e.\ returns a
+non-zero value, if, and only if, all bits of \inl{value} except
+the least significant
+\inl{length} ones are zero.
+%
+It is used in the implementation of packet writing functions like
+\inl{AdhesionFactor_EncodeBit} 
+%\fxfatal{oder doch AdhesionFactor\_EncodeBit ?}
+(see Section~\ref{sec:adhesionfactor-encodebit})
+to check that no non-zero bits from the packet structure (like
+\inl{struct AdhesionFactor}) are ignored due to space
+limitations in the bitstream.
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+/*@
+    requires pre: length <= 64;
+
+    assigns \nothing;
+
+    ensures  not_set: \result <==> UpperBitsNotSet(value, length);
+*/
+int UpperBitsNotSet64(uint64_t value, uint32_t length);
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:UpperBitsNotSet64}Test that upper bits are not set}
+\end{listing}
+
+\clearpage
+
+\section{Formalization of bit operations in \framac}
+\label{sec:bit operations in framac}
+
+The definition of predicate \inl{Bit8} is shown in 
+Listing~\ref{lst:bit predicate defs}.
+%
+It relies on the \framac library predicate \inl{BitTest},
+performing a coordinate
+transformation to fit \framac's notion of bit positions with the
+notion of ETCS.
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+  predicate Bit8{A}(uint8_t v, integer n)  = BitTest(v, 7 - n);
+
+  predicate Bit64{A}(uint64_t v, integer n) = BitTest(v, 63 - n);
+
+  predicate Bit8Array{A}(uint8_t* a, integer n) = Bit8(a[n / 8],n % 8);
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:bit predicate defs}Definition of bit test predicates}
+\end{listing}
+
+
+\FloatBarrier
+
+
+The predicate \inl{UpperBitsNotSet(value,length)} succeeds if,
+and only if,
+all but possibly 
+the least significant \inl{length} bits of \inl{value} are zero.
+%
+Its definition is shown in Listing~\ref{lst:UpperBitsNotSet integer}.
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+predicate
+  UpperBitsNotSet{A}(integer value, integer length) =
+    \forall integer i; length <= i ==> !BitTest(value, i);
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:UpperBitsNotSet integer}
+	Definition of the low-level predicate \inl{UpperBitsNotSet}}
+\end{listing}
+
+\FloatBarrier
+
+
+Listing~\ref{lst:EqualBits64} shows the predicate
+\inl{EqualBits64} that was used in the 64-bit
+operations' contracts.
+%
+The call \inl{EqualBits64(x,y,first,last)} succeeds if, and only
+if, the \inl{uint64_t} values  \inl{x} and  \inl{y}
+agree on all bits in the range from \inl{first} to \inl{last}).
+%
+The predicate \inl{EqualBits8}, used in
+Subsection~\ref{subsec:low-level 8}, is defined in similar way; its
+definition need not be shown here.
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+predicate
+  EqualBits64{A}(uint64_t x, uint64_t y, integer first, integer last) =
+    \forall integer i; 64 - last <= i < 64 - first 
+      ==> (BitTest(x, i) <==> BitTest(y, i));
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:EqualBits64}
+        Definition of the low-level predicate \inl{EqualBits64}}
+\end{listing}
+
+\FloatBarrier
+
+
+In order for the provers to find all low-level validation proofs, we
+needed to supply three redundant properties about
+\inl{EqualBits64} and \inl{UpperBitsNotSet}; they are shown
+in Listing~\ref{lst:axioms64}.
+%
+Axiom \inl{equal_bits64_0} states that two \inl{uint64_t}
+values must be equal, if they agree on all 64 bit positions.
+%
+Axiom \inl{upper_bits_less_than} states that in a nonnegative number
+less than $2^n$ all bits are zero, except for possibly
+the least significant \inl{n} ones.
+%
+The necessity of these extra axioms might indicate an
+incompleteness in \framac's actual bit-operator theory; this is currently
+investigated.
+%
+Axiom \inl{equal_bits64_1} is just a (relaxed)
+rephrasing of the definition
+in Listing~\ref{lst:EqualBits64}, using a different index scheme.
+%
+It is necessary due to the provers' weakness in applying index
+transformations.
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+axiomatic BitProperties
+{
+  axiom equal_bits64_0:
+    \forall uint64_t x, y; EqualBits64(x, y, 0, 64) ==> x == y;
+
+  axiom equal_bits64_1:
+    \forall uint64_t x, y, integer p, q;
+      (\forall integer k; p <= k < q 
+         ==> \let j = q-1-k; (BitTest(x, j) <==> BitTest(y, j)))
+      ==> EqualBits64(x, y, 64-(q-p), 64);
+
+  axiom upper_bits_less_than:
+    \forall integer x, n; x >= 0 ==> n >= 0 ==>
+      (UpperBitsNotSet(x, n) <==> x < (1 << n));
+}
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:axioms64}\acsl axioms used in 64-bit contracts}
+\end{listing}
+
+\FloatBarrier
+
+Finally, for a nonnegative integer \inl{v},
+the predicate \inl{BitTest(v,n)} succeeds if, and only if, the
+\inl{n}$^{\mbox{\scriptsize th}}$ bit is set in the binary
+representation of
+\inl{v}, i.e.\ iff the truncating integer division of \inl{v} by
+$2^{\mbox{\scriptsize\inl{n}}}$ yields an odd number.
+%
+This predicate comes with the standard library of the \framac system,
+however, without any detailed documentation.
+%
+Its declaration is shown in Listing~\ref{lst:BitTest}.
+
+
+\begin{listing}[hbt]
+\begin{minipage}{0.99\textwidth}
+\begin{lstlisting}[style=acsl-block]
+predicate   BitTest(integer v, integer n);
+\end{lstlisting}
+\end{minipage}
+\caption{\label{lst:BitTest}
+	The \framac library predicate \inl{BitTest}}
+\end{listing}
+

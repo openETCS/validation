@@ -1,11 +1,11 @@
 
 
-\subsubsection{Verification of Procedure On-Sight (Systerel) }
+\subsubsection{Verification of the Procedure On-Sight (Systerel) }
 \label{sec:}
 
 \paragraph{Contributing project partners}
 % Usually, one main partner, perhaps with contributions from others
-The work has been performed by Systerel
+The work has been performed by Systerel.
 
 \paragraph{Process step}
 % Classification of the activity according to D2.3a
@@ -18,6 +18,7 @@ This activity contributes to:
 \item the Software Requirement Specification  (3.16)
 \item the Software Specification Verification Report  (3.18)  
 \item the Software Architecture and Design Specification (4.19)
+\item the SW Component Test Specification (4-22)
 \item the Software Design Verification Report  (4.23)  
 \item the Software Components (5.24)
 \item the Software Component Verification Report  (5.26)  
@@ -29,7 +30,9 @@ This activity contributes to:
 % Which openETCS artifact (github link) or other documents/programs
 % etc. (provide references)
 
-The object of verification is the Classical B model for the procedure On-Sight at {\url{https://github.com/openETCS/model-evaluation/tree/master/model/Classical_B_Systerel/obu_classicalB}}. 
+The object of verification is a formal model in Classical~B for the
+procedure On-Sight. It is available at
+{\url{https://github.com/openETCS/model-evaluation/tree/master/model/Classical_B_Systerel/obu_classicalB}}.
 
 
 \paragraph{Available specification}
@@ -37,7 +40,8 @@ The object of verification is the Classical B model for the procedure On-Sight a
 % coming form some openETCS artifacts (GitHub reference, process
 % artifact number) or background material (reference, artifact number).
 
-The model implements the requirements for the The Procedure On-Sight, as described in {\itshape System Requirements Specification, Chapter 5}.
+The model implements the requirements for the procedure On-Sight, as
+described in Subset~026 \cite[Sec.~5]{subset-026:3.3.0}.
 
 
 
@@ -47,19 +51,26 @@ The model implements the requirements for the The Procedure On-Sight, as describ
 %the applicability of some method/tool, or evaluate its capabilities.
 
 
-The goal is to produce a B model which implement the On-Sight procedure.
-The B model shall be formally proved (verified) and shall allow to generate an executable C code.
+The goal is to produce a B model which implement the On-Sight
+procedure.  The B model shall be formally proved (verified) and shall
+allow to generate an executable C code. The main objective of the
+activity is to show the applicability of the B method and its
+implementing and supporting tools to the development task.
 
 
 
 \paragraph{Method/Approach}
 % Short description of how the verification/validation is performed
 
-At first, a formal model is defined with the B method using the AtelierB  tool.
-Then the model is formally verified by proof and model-checking.
-Functional properties can also be defined and validate by proof or model-checking on the B model.
+At first, a formal model is defined with the B method using the
+Atelier~B tool.  Then the model is formally verified by proof (typing
+and value constraints) and model-checking (additional checks of
+invariants and freedom of deadlocks).  Functional properties can also
+be defined and validated by proof or model-checking on the B model.
 
-Finally, C code is automatically translated from the B model.
+Finally, C code is automatically generated from the B model. To check
+consistency of a modified or additionally provided implementation
+model, tests for checking conformance to the formal model are generated
 
 \paragraph{Means/Tools}
 % Could be integrated with the previous paragraph. Assign an
@@ -70,9 +81,9 @@ Finally, C code is automatically translated from the B model.
 
 The means used are:
 \begin{itemize}
-\item Atelier B to  design, check, verify and prove the model (qualified by industrial railway actors)
+\item Atelier~B to  design, check, verify and prove the model (qualified by industrial railway actors)
 \item ProB to perform model-checking
-\item Atelierb translators to produce C code (Code translator shall be T3 level to obtain certified code).
+\item Atelier~B translators to produce C code (Code translator shall be T3 level to obtain certified code).
 \end{itemize}
 
 
@@ -83,16 +94,19 @@ The means used are:
 
 \begin{itemize}
 \item The result is a fully formal model of the procedure On-Sight.
-\item The C code has been automatically  translated.
-\item The model  is formally proved.
+\item The C code has been automatically generated.
+\item typing and value constraints have been formally proved for the model.
 \item Some properties have been checked by model checking.
 \end{itemize}
 
-See {\url{https://github.com/openETCS/validation/blob/master/Reports/D4.3/D4.3.1-Final-VV-report-on-model/D4.3.1.pdf}} and {\url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/04-Results/b-ClassicalB-VnV/BmodelVnV.pdf}}.
+See
+{\url{https://github.com/openETCS/validation/blob/master/Reports/D4.3/D4.3.1-Final-VV-report-on-model/D4.3.1.pdf}}
+and
+{\url{https://github.com/openETCS/validation/blob/master/VnVUserStories/VnVUserStorySysterel/04-Results/b-ClassicalB-VnV/BmodelVnV.pdf}}.
 
 
 
-\paragraph{Observations/Comments}
+%\paragraph{Observations/Comments}
 % An optional section where anything can be included which has been
 % observed without direct connection
 
@@ -100,5 +114,10 @@ See {\url{https://github.com/openETCS/validation/blob/master/Reports/D4.3/D4.3.1
 \paragraph{Conclusion}
 %What has been achieved, what is missing, what has been learned
 
-The B~method, along with its verification processes and tools, meets the goals and activities of the openETCS project in terms of quality, rigor, safety and credibility.\\
-There is yet to develop open-source POG and build a framework for proving, but this is compensated by the fact that work on the subject is ongoing, and ProB is an effective tool for verification.
+The B~method, along with its verification processes and tools, meets
+the goals and activities of the openETCS project in terms of quality,
+rigor, safety and credibility.\\ 
+To also satisfy the requirement of open proof, an open-source proof
+obligation generator is to be developed, and a framework for
+proving has to be built. There are  but this is compensated by the fact that work on the subject
+is ongoing, and ProB is an effective tool for verification.
